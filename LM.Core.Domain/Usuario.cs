@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+
+namespace LM.Core.Domain
+{
+    public class Usuario
+    {
+        public long Id { get; set; }
+
+        [Required(ErrorMessage = "O campo [Nome] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        public string Nome { get; set; }
+
+        [Required(ErrorMessage = "O campo [Email] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        public string Email { get; set; }
+
+        public string Login { get; set; }
+
+        [Required(ErrorMessage = "O campo [Senha] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "A senha deve possuir entre 5-20 caracteres.")]
+        public string Senha { get; set; }
+
+        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}\-\d{2}", ErrorMessage = "Formato do campo [CPF] é inválido!")]
+        [Required(ErrorMessage = "O campo [CPF] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        public string Cpf { get; set; }
+
+        [DisplayName("Data de Nascimento")]
+        [Required(ErrorMessage = "O campo [Data de Nascimento] é de preenchimento obrigatório!")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? DataNascimento { get; set; }
+
+        [Required(ErrorMessage = "O campo [Sexo] é de preenchimento obrigatório!")]
+        public string Sexo { get; set; }
+
+        public string Origem { get; set; }
+        public string ImgPerfil { get; set; }
+        public TipoUsuario Tipo { get; set; }
+        public string UsuarioIdRedeSocial { get; set; }
+
+        public virtual StatusUsuarioPontoDemanda StatusUsuarioPontoDemanda { get; set; }
+        public virtual ICollection<Integrante> MapIntegrantes { get; set; }
+
+        public Integrante Integrante { get { return MapIntegrantes.First(); }}
+
+        public void DefinirSexo(string persona)
+        {
+            var tipo = persona.Split('-')[0];
+            switch (tipo)
+            {
+                case "menino":
+                    Sexo = "M";
+                    break;
+                case "menina":
+                    Sexo = "F";
+                    break;
+                case "homem":
+                    Sexo = "M";
+                    break;
+                case "mulher":
+                    Sexo = "F";
+                    break;
+                case "empregado":
+                    Sexo = "M";
+                    break;
+                case "empregada":
+                    Sexo = "F";
+                    break;
+                case "idoso":
+                    Sexo = "M";
+                    break;
+                case "idosa":
+                    Sexo = "F";
+                    break;
+                default:
+                    throw new ApplicationException("Tipo de usuário inválido");
+            }
+        }
+    }
+}
+
