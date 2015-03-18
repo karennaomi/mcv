@@ -7,6 +7,7 @@ namespace LM.Core.Application
     public interface IPedidoAplicacao : IRelacionaPontoDemanda
     {
         IEnumerable<PedidoItem> ListarItensPorCategoria(int categoriaId);
+        IEnumerable<PedidoItem> ListarItensPorStatus(StatusPedido status);
         IList<Categoria> ListarSecoes(StatusPedido status);
         void RemoverItem(long itemId);
         void AtualizarQuantidadeDoItem(long itemId, decimal quantidade);
@@ -24,6 +25,11 @@ namespace LM.Core.Application
         public IEnumerable<PedidoItem> ListarItensPorCategoria(int categoriaId)
         {
             return _repositorio.ListarItensPorCategoria(PontoDemandaId, categoriaId);
+        }
+
+        public IEnumerable<PedidoItem> ListarItensPorStatus(StatusPedido status)
+        {
+            return _repositorio.ListarItensPorStatus(PontoDemandaId, status);
         }
 
         public IList<Categoria> ListarSecoes(StatusPedido status)
