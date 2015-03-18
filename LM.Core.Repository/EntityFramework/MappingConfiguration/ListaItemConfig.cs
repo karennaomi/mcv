@@ -15,7 +15,7 @@ namespace LM.Core.Repository.EntityFramework.MappingConfiguration
             Property(i => i.QuantidadeDoEstoqueEstimado).HasColumnName("QT_ESTIMADA_ESTOQUE").IsOptional();
             Property(i => i.QuantidadeDeSugestaoDeCompra).HasColumnName("QT_SUGESTAO_COMPRA").IsOptional();
             Property(i => i.Status).HasColumnName("TX_STATUS_ITEM");
-            Property(i => i.ValorMedioDeConsumoPorIntegrante).HasColumnName("VL_CONSUMO_MEDIO_INTEGRANTE");
+            Property(i => i.ValorMedioDeConsumoPorIntegrante).HasColumnName("VL_CONSUMO_MEDIO_INTEGRANTE").IsOptional();
             Property(i => i.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(i => i.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 

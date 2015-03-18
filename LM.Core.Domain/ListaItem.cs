@@ -10,7 +10,7 @@ namespace LM.Core.Domain
         public decimal? QuantidadeDoEstoqueEstimado { get; set; }
         public decimal? QuantidadeDeSugestaoDeCompra { get; set; }
         public string Status { get; set; }
-        public decimal ValorMedioDeConsumoPorIntegrante { get; set; }
+        public decimal? ValorMedioDeConsumoPorIntegrante { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
 
