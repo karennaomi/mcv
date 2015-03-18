@@ -10,8 +10,8 @@ namespace LM.Core.Repository.EntityFramework.MappingConfiguration
             ToTable("TB_LISTA_PRODUTO_ITEM");
             HasKey(i => i.Id);
             Property(i => i.Id).HasColumnName("ID_LISTA_PRODUTO_ITEM");
-            Property(i => i.QuantidadeDeConsumo).HasColumnName("QT_CONSUMO");
-            Property(i => i.QuantidadeEmEstoque).HasColumnName("QT_ESTOQUE");
+            Property(i => i.QuantidadeDeConsumo).HasColumnName("QT_CONSUMO").IsOptional();
+            Property(i => i.QuantidadeEmEstoque).HasColumnName("QT_ESTOQUE").IsOptional();
             Property(i => i.QuantidadeDoEstoqueEstimado).HasColumnName("QT_ESTIMADA_ESTOQUE").IsOptional();
             Property(i => i.QuantidadeDeSugestaoDeCompra).HasColumnName("QT_SUGESTAO_COMPRA").IsOptional();
             Property(i => i.Status).HasColumnName("TX_STATUS_ITEM");

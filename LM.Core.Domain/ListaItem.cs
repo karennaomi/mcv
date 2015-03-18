@@ -5,8 +5,8 @@ namespace LM.Core.Domain
     public class ListaItem
     {
         public long Id { get; set; }
-        public decimal QuantidadeDeConsumo { get; set; }
-        public decimal QuantidadeEmEstoque { get; set; }
+        public decimal? QuantidadeDeConsumo { get; set; }
+        public decimal? QuantidadeEmEstoque { get; set; }
         public decimal? QuantidadeDoEstoqueEstimado { get; set; }
         public decimal? QuantidadeDeSugestaoDeCompra { get; set; }
         public string Status { get; set; }
