@@ -63,6 +63,7 @@
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusCadastro.cs" />
+    <Compile Include="StatusCompra.cs" />
     <Compile Include="StatusPedido.cs" />
     <Compile Include="StatusUsuarioPontoDemanda.cs" />
     <Compile Include="TipoUsuario.cs" />
