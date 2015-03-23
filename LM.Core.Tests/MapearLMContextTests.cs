@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using LM.Core.Repository.EntityFramework;
 using NUnit.Framework;
 
 namespace LM.Core.Tests
@@ -78,6 +77,18 @@ namespace LM.Core.Tests
             Assert.IsNotNull(pedido.PontoDemanda);
             Assert.IsNotNull(pedido.Produto);
             Assert.IsNotNull(pedido.Integrante);
+        }
+
+        [Test]
+        public void MapearCompra()
+        {
+            var compra = _contexto.Compras.Find(10199);
+            Assert.IsNotNull(compra.PontoDemanda);
+            Assert.IsNotNull(compra.Integrante);
+            Assert.IsNotNull(compra.Itens);
+            Assert.IsTrue(compra.Itens.Any());
+            Assert.IsNotNull(compra.Itens.First().ListaItem);
+            Assert.IsNotNull(compra.Itens.First().Produto);
         }
     }
 }

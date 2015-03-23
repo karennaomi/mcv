@@ -1,20 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9C5E17C-5A94-455C-AEEF-4A934509F6F2}</ProjectGuid>
+    <ProjectGuid>{56572574-CB65-4843-8469-E6FC47563A05}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LM.Core.Repository</RootNamespace>
-    <AssemblyName>LM.Core.Repository</AssemblyName>
+    <RootNamespace>LM.Core.RepositorioEF</RootNamespace>
+    <AssemblyName>LM.Core.RepositorioEF</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -37,14 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="LM.Core.Domain">
+      <HintPath>..\packages\LM.Core.Domain.1.0.3\lib\net45\LM.Core.Domain.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,17 +51,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextoADO.cs" />
-    <Compile Include="PontoDemandaADO.cs" />
+    <Compile Include="CategoriaEF.cs" />
+    <Compile Include="ContextoEF.cs" />
+    <Compile Include="IntegranteEF.cs" />
+    <Compile Include="ListaEF.cs" />
+    <Compile Include="MappingConfiguration\CategoriaConfig.cs" />
+    <Compile Include="MappingConfiguration\CompraConfig.cs" />
+    <Compile Include="MappingConfiguration\CompraItemConfig.cs" />
+    <Compile Include="MappingConfiguration\EnderecoConfig.cs" />
+    <Compile Include="MappingConfiguration\GrupoDeIntegrantesConfig.cs" />
+    <Compile Include="MappingConfiguration\ImagemConfig.cs" />
+    <Compile Include="MappingConfiguration\IntegranteConfig.cs" />
+    <Compile Include="MappingConfiguration\ListaConfig.cs" />
+    <Compile Include="MappingConfiguration\ListaItemConfig.cs" />
+    <Compile Include="MappingConfiguration\PedidoItemConfig.cs" />
+    <Compile Include="MappingConfiguration\PeriodoConfig.cs" />
+    <Compile Include="MappingConfiguration\PersonaConfig.cs" />
+    <Compile Include="MappingConfiguration\PontoDemandaConfig.cs" />
+    <Compile Include="MappingConfiguration\ProdutoConfig.cs" />
+    <Compile Include="MappingConfiguration\StatusUsuarioPontoDemandaConfig.cs" />
+    <Compile Include="MappingConfiguration\UsuarioConfig.cs" />
+    <Compile Include="PedidoEF.cs" />
+    <Compile Include="PersonaEF.cs" />
+    <Compile Include="PontoDemandaEF.cs" />
+    <Compile Include="ProdutoEF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UsuarioEF.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LM.Core.Domain\LM.Core.Domain.csproj">
-      <Project>{8da30815-769e-4227-9c93-eba728d7d8d4}</Project>
-      <Name>LM.Core.Domain</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

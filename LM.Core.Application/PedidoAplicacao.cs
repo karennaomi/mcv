@@ -1,5 +1,5 @@
 ﻿using LM.Core.Domain;
-using LM.Core.Repository;
+using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
 namespace LM.Core.Application

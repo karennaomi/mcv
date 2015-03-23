@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Categoria.cs" />
     <Compile Include="Cidade.cs" />
+    <Compile Include="Compra.cs" />
+    <Compile Include="CompraItem.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />
     <Compile Include="CustomException\LoginInvalidoException.cs" />
@@ -62,6 +64,14 @@
     <Compile Include="PontoDemanda.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositorio\IRepositorioCategoria.cs" />
+    <Compile Include="Repositorio\IRepositorioIntegrante.cs" />
+    <Compile Include="Repositorio\IRepositorioLista.cs" />
+    <Compile Include="Repositorio\IRepositorioPedido.cs" />
+    <Compile Include="Repositorio\IRepositorioPersona.cs" />
+    <Compile Include="Repositorio\IRepositorioPontoDemanda.cs" />
+    <Compile Include="Repositorio\IRepositorioProduto.cs" />
+    <Compile Include="Repositorio\IRepositorioUsuario.cs" />
     <Compile Include="StatusCadastro.cs" />
     <Compile Include="StatusCompra.cs" />
     <Compile Include="StatusPedido.cs" />

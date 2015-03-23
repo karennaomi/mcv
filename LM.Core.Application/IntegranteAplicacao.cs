@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
-using LM.Core.Repository;
+using LM.Core.Domain.Repositorio;
+using System.Linq;
 
 namespace LM.Core.Application
 {

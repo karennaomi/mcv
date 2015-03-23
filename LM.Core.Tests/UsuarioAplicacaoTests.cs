@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Transactions;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
 using LM.Core.Repository;
-using LM.Core.Repository.EntityFramework;
 using Moq;
 using NUnit.Framework;
+using System.Linq;
+using System.Transactions;
 
 namespace LM.Core.Tests
 {

@@ -1,7 +1,7 @@
 ﻿
 namespace LM.Core.Domain
 {
-    public enum StatusCompra
+    public enum StatusCompra : short
     {
         ItemAComprar = 0,
         Comprado = 1,

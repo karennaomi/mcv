@@ -1,27 +1,12 @@
 ﻿using LM.Core.Domain;
-using LM.Core.Repository.EntityFramework;
+using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace LM.Core.Repository
 {
-    public interface IRepositorioPontoDemanda
-    {
-        PontoDemanda Salvar(PontoDemanda pontoDemanda);
-        IList<PontoDemanda> Listar(long usuarioId);
-        PontoDemanda Obter(long id, long usuarioId);
-        void DefinirFrequenciaDeConsumo(long pontoDemandaId, long usuarioId, int frequencia);
-    }
-
     public class PontoDemandaADO : IRepositorioPontoDemanda
     {
-        private readonly ContextoEF _contextoEF;
-        public PontoDemandaADO()
-        {
-            _contextoEF = new ContextoEF();
-        }
-
         public PontoDemanda Salvar(PontoDemanda pontoDemanda)
         {
             var parameters = new[]
@@ -45,17 +30,6 @@ namespace LM.Core.Repository
             }
         }
 
-        public IList<PontoDemanda> Listar(long usuarioId)
-        {
-            return _contextoEF.PontosDemanda.Where(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId)).ToList();
-        }
-
-        public PontoDemanda Obter(long id, long usuarioId)
-        {
-            var pontoDemanda = _contextoEF.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == id);
-            return pontoDemanda;
-        }
-
         public void DefinirFrequenciaDeConsumo(long pontoDemandaId, long usuarioId, int frequencia)
         {
             var parameters = new[]
@@ -69,6 +43,17 @@ namespace LM.Core.Repository
             {
                 contexto.ExecutaProcedure("SP_WEB_ATUALIZA_FREQUENCIA_COMPRA", parameters);
             }
+        }
+
+
+        public IList<PontoDemanda> Listar(long usuarioId)
+        {
+            throw new System.NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
+        }
+
+        public PontoDemanda Obter(long id, long usuarioId)
+        {
+            throw new System.NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
         }
     }
 }
