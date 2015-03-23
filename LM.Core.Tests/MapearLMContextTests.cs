@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using LM.Core.RepositorioEF;
 using NUnit.Framework;
 
 namespace LM.Core.Tests

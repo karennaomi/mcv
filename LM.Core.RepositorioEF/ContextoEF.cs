@@ -14,7 +14,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Lista> Listas { get; set; }
         public DbSet<PedidoItem> PedidoItens { get; set; }
-        //public DbSet<Compra> Compras { get; set; }
+        public DbSet<Compra> Compras { get; set; }
 
         public ContextoEF() : base("SOL")
         {
