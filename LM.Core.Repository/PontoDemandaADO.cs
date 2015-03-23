@@ -1,5 +1,6 @@
 ﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -48,12 +49,12 @@ namespace LM.Core.Repository
 
         public IList<PontoDemanda> Listar(long usuarioId)
         {
-            throw new System.NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
+            throw new NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
         }
 
         public PontoDemanda Obter(long id, long usuarioId)
         {
-            throw new System.NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
+            throw new NotImplementedException("Use o metodo da classe PontoDemandaEF do pacote LM.Core.RepositorioEF");
         }
     }
 }
