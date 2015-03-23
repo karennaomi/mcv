@@ -1,8 +1,7 @@
-﻿using LM.Core.Application;
+﻿using System.Linq;
+using LM.Core.Application;
 using LM.Core.Domain;
-using LM.Core.Repository;
 using NUnit.Framework;
-using System.Linq;
 using System.Transactions;
 
 namespace LM.Core.Tests

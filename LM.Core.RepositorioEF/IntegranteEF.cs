@@ -1,4 +1,8 @@
-﻿namespace LM.Core.RepositorioEF
+﻿using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
+using System.Data.Entity;
+
+namespace LM.Core.RepositorioEF
 {
     public class IntegranteEF : IRepositorioIntegrante
     {

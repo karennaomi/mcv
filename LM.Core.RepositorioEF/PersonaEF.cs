@@ -1,4 +1,9 @@
-﻿namespace LM.Core.RepositorioEF
+﻿using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LM.Core.RepositorioEF
 {
     public class PersonaEF : IRepositorioPersona
     {

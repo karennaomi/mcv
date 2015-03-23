@@ -1,4 +1,9 @@
-﻿using System;
+﻿using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace LM.Core.RepositorioEF
 {

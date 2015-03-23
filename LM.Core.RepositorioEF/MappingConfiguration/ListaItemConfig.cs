@@ -1,4 +1,7 @@
-﻿namespace LM.Core.RepositorioEF.MappingConfiguration
+﻿using LM.Core.Domain;
+using System.Data.Entity.ModelConfiguration;
+
+namespace LM.Core.RepositorioEF.MappingConfiguration
 {
     public class ListaItemConfig : EntityTypeConfiguration<ListaItem>
     {

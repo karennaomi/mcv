@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using LM.Core.Domain;
 
 namespace LM.Core.RepositorioEF.MappingConfiguration
 {
