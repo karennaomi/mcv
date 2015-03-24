@@ -16,8 +16,12 @@ namespace LM.Core.Application
     {
         private readonly IRepositorioPontoDemanda _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, long usuarioId)
-            : base(usuarioId)
+
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario) : this(repositorio, appUsuario, 0)
+        {
+        }
+
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, long usuarioId) : base(usuarioId)
         {
             _repositorio = repositorio;
             _appUsuario = appUsuario;
