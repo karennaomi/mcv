@@ -26,7 +26,7 @@ namespace LM.Core.Tests
         {
             var mockAppUsuario = ObterMockAppUsuario();
             var app = new PontoDemandaAplicacao(ObterPontoDemandaRepo(), mockAppUsuario.Object, 9999);
-            Assert.Throws<PontoDemandaNaoPertenceAoUsuarioException>(() => app.VerificarPontoDemanda(3));
+            Assert.Throws<PontoDemandaInvalidoException>(() => app.VerificarPontoDemanda(3));
         }
 
         [Test]

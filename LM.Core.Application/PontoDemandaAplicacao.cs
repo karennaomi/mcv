@@ -59,7 +59,7 @@ namespace LM.Core.Application
         public long VerificarPontoDemanda(long id)
         {
             var pontosDemanda = Listar();
-            if (pontosDemanda.All(p => p.Id != id)) throw new PontoDemandaNaoPertenceAoUsuarioException();
+            if (pontosDemanda.All(p => p.Id != id)) throw new PontoDemandaInvalidoException("Ponto de demanda não pertence ao usuário atual.");
             return id;
         }
     }
