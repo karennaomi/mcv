@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System.Linq;
+using LM.Core.Domain;
+using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
@@ -10,6 +12,7 @@ namespace LM.Core.Application
         IList<PontoDemanda> Listar();
         PontoDemanda Obter(long id);
         void DefinirFrequenciaDeConsumo(long pontoDemandaId, long usuarioId, int frequencia);
+        long VerificarPontoDemanda(long id);
     }
 
     public class PontoDemandaAplicacao : RelacionaUsuario, IPontoDemandaAplicacao
@@ -52,18 +55,12 @@ namespace LM.Core.Application
         {
             _repositorio.DefinirFrequenciaDeConsumo(pontoDemandaId, usuarioId, frequencia);
         }
-        //public IEnumerable<PontoDemanda> ListarPontosDemanda()
-       //{
-       //    return _repositorio.ListarPontoDemanda();
-       //}
 
-       // public PontoDemanda BuscaPontoDemandaPorUsuario(int usuarioId)
-       // {
-       //     return _repositorio.BuscarPontoDemandaPorUsuario(usuarioId);
-
-       // }
-
-
-        
+        public long VerificarPontoDemanda(long id)
+        {
+            var pontosDemanda = Listar();
+            if (pontosDemanda.All(p => p.Id != id)) throw new PontoDemandaNaoPertenceAoUsuarioException();
+            return id;
+        }
     }
 }

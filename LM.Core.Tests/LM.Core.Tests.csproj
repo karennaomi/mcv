@@ -49,18 +49,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="LM.Core.Application, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\LM.Core.Application.1.1.0\lib\net45\LM.Core.Application.dll</HintPath>
-    </Reference>
-    <Reference Include="LM.Core.Domain, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\LM.Core.Domain.1.1.0\lib\net45\LM.Core.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="LM.Core.RepositorioEF, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\LM.Core.RepositorioEF.1.0.1\lib\net45\LM.Core.RepositorioEF.dll</HintPath>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -98,6 +86,20 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LM.Core.Application\LM.Core.Application.csproj">
+      <Project>{8d889dc1-2d06-46cd-90db-0000cd807c58}</Project>
+      <Name>LM.Core.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LM.Core.Domain\LM.Core.Domain.csproj">
+      <Project>{8da30815-769e-4227-9c93-eba728d7d8d4}</Project>
+      <Name>LM.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LM.Core.RepositorioEF\LM.Core.RepositorioEF.csproj">
+      <Project>{56572574-cb65-4843-8469-e6fc47563a05}</Project>
+      <Name>LM.Core.RepositorioEF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
