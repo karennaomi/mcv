@@ -16,7 +16,7 @@ namespace LM.Core.Tests
         public void CriacaoDoUsuarioDeveDefinirStatusCadastroComoEtapaDeInformacoesPessoaisCompleta()
         {
             var mockAppUsuario = ObterMockAppUsuario();
-            var app = new PontoDemandaAplicacao(ObterPontoDemandaRepo(), mockAppUsuario.Object, 9999);
+            var app = ObterPontoDemandaAplicacao(mockAppUsuario.Object);
             var pontoDemanda = app.Criar(_newPontoDemanda);
             mockAppUsuario.Verify(m => m.AtualizaStatusCadastro(9999, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id));
         }
@@ -24,18 +24,21 @@ namespace LM.Core.Tests
         [Test]
         public void PontoDemandaQueNaoPertenceAoUsuarioLancaException()
         {
-            var mockAppUsuario = ObterMockAppUsuario();
-            var app = new PontoDemandaAplicacao(ObterPontoDemandaRepo(), mockAppUsuario.Object, 9999);
+            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
             Assert.Throws<PontoDemandaInvalidoException>(() => app.VerificarPontoDemanda(3));
         }
 
         [Test]
         public void PontoDemandaQuePertenceAoUsuarioRetornaIdCorreto()
         {
-            var mockAppUsuario = ObterMockAppUsuario();
-            var app = new PontoDemandaAplicacao(ObterPontoDemandaRepo(), mockAppUsuario.Object, 9999);
+            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
             var pontoDemandaId = app.VerificarPontoDemanda(2);
             Assert.AreEqual(2, pontoDemandaId);
+        }
+
+        private IPontoDemandaAplicacao ObterPontoDemandaAplicacao(IUsuarioAplicacao appUsuario)
+        {
+            return new PontoDemandaAplicacao(ObterPontoDemandaRepo(), appUsuario, 9999);
         }
 
         private IRepositorioPontoDemanda ObterPontoDemandaRepo()
@@ -53,6 +56,7 @@ namespace LM.Core.Tests
         private static Mock<IUsuarioAplicacao> ObterMockAppUsuario()
         {
             var repoMock = new Mock<IUsuarioAplicacao>();
+            repoMock.Setup(r => r.Obter(It.IsAny<int>())).Returns(Fakes.Usuario());
             return repoMock;
         }
     }

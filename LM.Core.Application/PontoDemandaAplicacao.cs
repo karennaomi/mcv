@@ -32,13 +32,15 @@ namespace LM.Core.Application
 
         public PontoDemanda Criar(PontoDemanda pontoDemanda)
         {
-            pontoDemanda.GrupoDeIntegrantes = new GrupoDeIntegrantes
-            {
-                Integrantes = new[] {new Integrante {EhUsuarioSistema = true, Usuario = new Usuario {Id = UsuarioId}}}
-            };
+            pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
             pontoDemanda = _repositorio.Salvar(pontoDemanda);
             _appUsuario.AtualizaStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
+        }
+
+        private static GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
+        {
+            throw new System.NotImplementedException();
         }
 
         public IList<PontoDemanda> Listar()

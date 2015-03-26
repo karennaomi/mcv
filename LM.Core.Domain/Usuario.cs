@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace LM.Core.Domain
 {
-    public class Usuario
+    public class Usuario : IValidatableObject
     {
         public long Id { get; set; }
 
@@ -44,6 +44,15 @@ namespace LM.Core.Domain
 
         public Integrante Integrante { get { return MapIntegrantes.First(); }}
 
+        public int ObterIdade()
+        {
+            if (!DataNascimento.HasValue) throw new ApplicationException("Data de nascimento inválida");
+            var hoje = DateTime.Today;
+            var idade = hoje.Year - DataNascimento.Value.Year;
+            if (DataNascimento.Value.Date > hoje.Date.AddYears(-idade)) idade--;
+            return idade;
+        }
+
         public void DefinirSexo(string persona)
         {
             var tipo = persona.Split('-')[0];
@@ -76,6 +85,16 @@ namespace LM.Core.Domain
                 default:
                     throw new ApplicationException("Tipo de usuário inválido");
             }
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
+            {
+                results.Add(new ValidationResult("O sexo selecionado é inválido: " + Sexo, new[] { "Sexo" }));
+            }
+            return results;
         }
     }
 }

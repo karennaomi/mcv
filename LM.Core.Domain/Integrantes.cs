@@ -15,6 +15,19 @@ namespace LM.Core.Domain
             Ativo = true;
             DataInclusao = DateTime.Now;
         }
+
+        public Integrante(Usuario usuario)
+        {
+            Ativo = true;
+            DataInclusao = DateTime.Now;
+            Usuario = usuario;
+            DataNascimento = usuario.DataNascimento;
+            EhUsuarioSistema = true;
+            Nome = usuario.Nome;
+            Papel = IntegrantePapel.Administrador;
+            GrupoDeIntegrantes = new GrupoDeIntegrantes{ Nome = "Grupo do " + usuario.Nome};
+        }
+
         public long Id { get; set; }
         public string Nome { get; set; }
         public DateTime? DataNascimento { get; set; }

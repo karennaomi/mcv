@@ -5,16 +5,16 @@ namespace LM.Core.Tests
 {
     internal class Fakes
     {
-        internal static Usuario Usuario()
+        internal static Usuario Usuario(int idade = 30, string sexo = "M")
         {
             return new Usuario
             {
                 Nome = "John Doe",
                 Email = "johndoe@mail.com",
                 Cpf = "472.724.573-68",
-                DataNascimento = DateTime.Now.AddYears(-30),
+                DataNascimento = DateTime.Now.AddYears(-idade),
                 Senha = "123456",
-                Sexo = "M",
+                Sexo = sexo,
                 Tipo = TipoUsuario.Administrador
             };
         }
@@ -28,6 +28,14 @@ namespace LM.Core.Tests
                 {
                     Integrantes = new []{ new Integrante{ Id = 1234 }}
                 }
+            };
+        }
+
+        internal static Integrante Integrante(int idade, string sexo)
+        {
+            return new Integrante
+            {
+                Usuario = Usuario(idade, sexo)
             };
         }
     }

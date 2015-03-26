@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using LM.Core.Domain;
 using NUnit.Framework;
 
 namespace LM.Core.Tests
@@ -68,6 +69,12 @@ namespace LM.Core.Tests
             var usuario = Fakes.Usuario();
             usuario.DefinirSexo("idosa-18-27");
             Assert.AreEqual("F", usuario.Sexo);
+        }
+
+        [Test]
+        public void ObterIdade18Anos()
+        {
+            Assert.AreEqual(18, new Usuario {DataNascimento = DateTime.Now.AddYears(-18)}.ObterIdade());
         }
     }
 }

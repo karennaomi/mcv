@@ -16,26 +16,32 @@ namespace LM.Core.Tests
         public void CriacaoDoUsuarioDeveDefinirStatusCadastroComoEtapaDeInformacoesPessoaisCompleta()
         {
             var usuario = Fakes.Usuario();
-            var app = new UsuarioAplicacao(ObterUsuarioRepo(usuario));
-            usuario = app.Criar(usuario);
-            Assert.AreEqual(StatusCadastro.EtapaDeInformacoesPessoaisCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
+            var app = ObterAppUsuario();
+            using (new TransactionScope())
+            {
+                usuario = app.Criar(usuario);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesPessoaisCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
+            }
         }
 
         [Test]
         public void CriaUmUsuario()
         {
-            var app = new UsuarioAplicacao(new UsuarioEF());
+            var app = ObterAppUsuario();
             using (new TransactionScope())
             {
                 var usuario = app.Criar(Fakes.Usuario());
                 Assert.IsTrue(usuario.Id > 0);
+                Assert.IsTrue(usuario.Integrante.Id > 0);
+                Assert.IsTrue(usuario.Integrante.Persona.Id > 0);
+                Assert.IsTrue(usuario.Integrante.GrupoDeIntegrantes.Id > 0);
             }
         }
 
         [Test]
         public void AtualizaStatusCadastro()
         {
-            var app = new UsuarioAplicacao(new UsuarioEF());
+            var app = ObterAppUsuario();
             using (new TransactionScope())
             {
                 var usuario = app.Criar(Fakes.Usuario());
@@ -47,7 +53,7 @@ namespace LM.Core.Tests
         [Test]
         public void AtualizaStatusCadastroComPontoDemanda()
         {
-            var app = new UsuarioAplicacao(new UsuarioEF());
+            var app = ObterAppUsuario();
             var pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
             using (new TransactionScope())
             {
@@ -58,11 +64,9 @@ namespace LM.Core.Tests
             }
         }
 
-        private static IRepositorioUsuario ObterUsuarioRepo(Usuario usuario)
+        private static IUsuarioAplicacao ObterAppUsuario()
         {
-            var repoMock = new Mock<IRepositorioUsuario>();
-            repoMock.Setup(r => r.Criar(It.IsAny<Usuario>())).Returns(usuario);
-            return repoMock.Object;
+            return new UsuarioAplicacao(new UsuarioEF(), new IntegranteAplicacao(new IntegranteEF(), new PersonaAplicacao(new PersonaEF()), null));
         }
     }
 }
