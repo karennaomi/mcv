@@ -48,7 +48,7 @@ namespace LM.Core.RepositorioEF
 
         public Usuario ValidarLogin(string email, string senha)
         {
-            var usuario = _contextoEF.Usuarios.SingleOrDefault(u => u.Login == email && u.Senha == senha);
+            var usuario = _contextoEF.Usuarios.FirstOrDefault(u => u.Login == email && u.Senha == senha);
             if(usuario == null) throw new LoginInvalidoException();
             return usuario;
         }
