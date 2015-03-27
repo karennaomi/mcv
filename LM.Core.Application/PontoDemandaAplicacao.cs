@@ -19,28 +19,33 @@ namespace LM.Core.Application
     {
         private readonly IRepositorioPontoDemanda _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
+        private readonly ICidadeAplicacao _appCidade;
 
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario) : this(repositorio, appUsuario, 0)
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, ICidadeAplicacao appCidade)
+            : this(repositorio, appUsuario, appCidade, 0)
         {
         }
 
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, long usuarioId) : base(usuarioId)
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, ICidadeAplicacao appCidade, long usuarioId) : base(usuarioId)
         {
             _repositorio = repositorio;
             _appUsuario = appUsuario;
+            _appCidade = appCidade;
         }
 
         public PontoDemanda Criar(PontoDemanda pontoDemanda)
         {
             pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
-            pontoDemanda = _repositorio.Salvar(pontoDemanda);
+            pontoDemanda.GrupoDeIntegrantes.Nome = "Integrantes: " + pontoDemanda.Nome;
+            pontoDemanda.Endereco.Cidade = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome);
+            pontoDemanda = _repositorio.Criar(pontoDemanda);
             _appUsuario.AtualizaStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
         }
 
-        private static GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
+        private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
         {
-            throw new System.NotImplementedException();
+            return _appUsuario.Obter(UsuarioId).Integrante.GrupoDeIntegrantes;
         }
 
         public IList<PontoDemanda> Listar()

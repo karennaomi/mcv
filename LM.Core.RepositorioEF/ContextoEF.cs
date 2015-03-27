@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF.MappingConfiguration;
 
@@ -15,6 +16,8 @@ namespace LM.Core.RepositorioEF
         public DbSet<Lista> Listas { get; set; }
         public DbSet<PedidoItem> PedidoItens { get; set; }
         public DbSet<Compra> Compras { get; set; }
+        public DbSet<Cidade> Cidades { get; set; }
+        public DbSet<CompraAtiva> ComprasAtivas { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -38,10 +41,13 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new ImagemConfig());
             modelBuilder.Configurations.Add(new ListaConfig());
             modelBuilder.Configurations.Add(new ListaItemConfig());
-            modelBuilder.Configurations.Add(new PeriodoConfig());
             modelBuilder.Configurations.Add(new PedidoItemConfig());
+            modelBuilder.Configurations.Add(new PeriodoConfig());
             modelBuilder.Configurations.Add(new CompraConfig());
             modelBuilder.Configurations.Add(new CompraItemConfig());
+            modelBuilder.Configurations.Add(new ListaCompraItemConfig());
+            modelBuilder.Configurations.Add(new PedidoCompraItemConfig());
+            modelBuilder.Configurations.Add(new CompraAtivaConfig());
         }
     }
 }

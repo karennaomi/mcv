@@ -18,9 +18,22 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 
             HasRequired(i => i.Compra).WithMany(c => c.Itens).Map(m => m.MapKey("ID_COMPRA"));
-            HasOptional(i => i.ListaItem).WithMany().Map(m => m.MapKey("ID_LISTA_PRODUTO_ITEM"));
-            HasOptional(i => i.Produto).WithMany().Map(m => m.MapKey("ID_PRODUTO"));
         }
     }
 
+    public class ListaCompraItemConfig : EntityTypeConfiguration<ListaCompraItem>
+    {
+        public ListaCompraItemConfig()
+        {
+            HasOptional(i => i.Item).WithMany().Map(m => m.MapKey("ID_LISTA_PRODUTO_ITEM"));
+        }
+    }
+
+    public class PedidoCompraItemConfig : EntityTypeConfiguration<PedidoCompraItem>
+    {
+        public PedidoCompraItemConfig()
+        {
+            HasOptional(i => i.Item).WithMany().Map(m => m.MapKey("ID_PEDIDO"));
+        }
+    }
 }

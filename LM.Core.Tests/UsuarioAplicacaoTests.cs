@@ -1,4 +1,6 @@
-﻿using LM.Core.Application;
+﻿using System;
+using System.Collections.ObjectModel;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
@@ -46,6 +48,7 @@ namespace LM.Core.Tests
             {
                 var usuario = app.Criar(Fakes.Usuario());
                 app.AtualizaStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
+                usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
             }
         }
@@ -59,14 +62,76 @@ namespace LM.Core.Tests
             {
                 var usuario = app.Criar(Fakes.Usuario());
                 app.AtualizaStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, pontoDemandaId);
+                usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
                 Assert.AreEqual(pontoDemandaId, usuario.StatusUsuarioPontoDemanda.PontoDemandaId);
             }
         }
 
+        [Test]
+        public void CriarUsuario18AnosSexoMasculinoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(18, "M", 18, 27);
+        }
+
+        [Test]
+        public void CriarUsuario18AnosSexoFemininoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(18, "F", 18, 27);
+        }
+
+        [Test]
+        public void CriarUsuario27AnosSexoMasculinoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(27, "M", 18, 27);
+        }
+
+        [Test]
+        public void CriarUsuario27AnosSexoFemininoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(27, "F", 18, 27);
+        }
+
+        [Test]
+        public void CriarUsuario23AnosSexoMasculinoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(23, "M", 18, 27);
+        }
+
+        [Test]
+        public void CriarUsuarioIdadeNegativaLancaException()
+        {
+            Assert.Throws<ApplicationException>(() => IntegrantePersonaTestes(-1, "F", 18, 27));
+        }
+
+        [Test]
+        public void CriarUsuarioIdadeMaior150AnosLancaException()
+        {
+            Assert.Throws<ApplicationException>(() => IntegrantePersonaTestes(151, "F", 18, 27));
+        }
+
+        [Test]
+        public void CriarUsuario23AnosSexoFemininoDefinePersonaCorreta()
+        {
+            IntegrantePersonaTestes(23, "F", 18, 27);
+        }
+
+        private static void IntegrantePersonaTestes(int idade, string sexo, int idadeInicial, int idadeFinal)
+        {
+            var integrante = Fakes.Integrante(idade, sexo);
+            var usuario = integrante.Usuario;
+            usuario.MapIntegrantes = new Collection<Integrante>{ integrante };
+            integrante.Usuario = usuario;
+            var app = ObterAppUsuario();
+            usuario = app.Criar(usuario);
+            Assert.AreEqual(sexo, usuario.Integrante.Persona.Sexo);
+            Assert.AreEqual(idadeInicial, usuario.Integrante.Persona.IdadeInicial);
+            Assert.AreEqual(idadeFinal, usuario.Integrante.Persona.IdadeFinal);
+        }
+
         private static IUsuarioAplicacao ObterAppUsuario()
         {
-            return new UsuarioAplicacao(new UsuarioEF(), new IntegranteAplicacao(new IntegranteEF(), new PersonaAplicacao(new PersonaEF()), null));
+            return new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
         }
     }
 }

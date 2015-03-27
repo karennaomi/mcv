@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.Entity;
+using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System;
@@ -27,6 +28,7 @@ namespace LM.Core.RepositorioEF
 
         public Usuario Criar(Usuario usuario)
         {
+            _contextoEF.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
             usuario = _contextoEF.Usuarios.Add(usuario);
             _contextoEF.SaveChanges();
             return usuario;

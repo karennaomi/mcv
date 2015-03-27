@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.Entity;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,13 @@ namespace LM.Core.RepositorioEF
             throw new NotImplementedException("Use o metodo da classe PontoDemandaADO do pacote LM.Core.Repository");
         }
 
-        public PontoDemanda Salvar(PontoDemanda pontoDemanda)
+        public PontoDemanda Criar(PontoDemanda pontoDemanda)
         {
-            throw new NotImplementedException("Use o metodo da classe PontoDemandaADO do pacote LM.Core.Repository");
+            _contextoEF.Entry(pontoDemanda.GrupoDeIntegrantes).State = EntityState.Modified;
+            _contextoEF.Entry(pontoDemanda.Endereco.Cidade).State = EntityState.Unchanged;
+            _contextoEF.PontosDemanda.Add(pontoDemanda);
+            _contextoEF.SaveChanges();
+            return pontoDemanda;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LM.Core.Domain
 {
-    public class CompraItem
+    public abstract class CompraItem
     {
         public long Id { get; set; }
         public StatusCompra Status { get; set; }
@@ -11,9 +11,17 @@ namespace LM.Core.Domain
         public decimal? Valor { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        
+
         public virtual Compra Compra { get; set; }
-        public virtual ListaItem ListaItem { get; set; }
-        public virtual Produto Produto { get; set; }
+    }
+
+    public class ListaCompraItem : CompraItem
+    {
+        public virtual ListaItem Item { get; set; }
+    }
+
+    public class PedidoCompraItem : CompraItem
+    {
+        public virtual PedidoItem Item { get; set; }
     }
 }
