@@ -22,8 +22,6 @@ namespace LM.Core.Domain
         [StringLength(20, MinimumLength = 5, ErrorMessage = "A senha deve possuir entre 5-20 caracteres.")]
         public string Senha { get; set; }
 
-        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}\-\d{2}", ErrorMessage = "Formato do campo [CPF] é inválido!")]
-        [Required(ErrorMessage = "O campo [CPF] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         public string Cpf { get; set; }
 
         [DisplayName("Data de Nascimento")]
@@ -45,6 +43,7 @@ namespace LM.Core.Domain
         public Integrante Integrante { get { return MapIntegrantes.First(); }}
 
         public string DeviceId { get; set; }
+        public string DeviceType { get; set; }
 
         public int ObterIdade()
         {

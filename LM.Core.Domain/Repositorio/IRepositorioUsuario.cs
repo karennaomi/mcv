@@ -9,6 +9,6 @@ namespace LM.Core.Domain.Repositorio
         void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null);
         bool VerificarSeCpfJaExiste(string cpf);
         Usuario ValidarLogin(string email, string senha);
-        void AtualizarDeviceId(long usuarioId, string deviceId);
+        void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId);
     }
 }

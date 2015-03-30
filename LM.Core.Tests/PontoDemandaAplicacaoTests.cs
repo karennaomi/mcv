@@ -21,9 +21,10 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var unitOfWork = new UnitOfWorkEF();
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(unitOfWork), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), appUsuario, new CidadeAplicacao(new CidadeEF()), usuario.Id);
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(unitOfWork), appUsuario, new CidadeAplicacao(new CidadeEF()), usuario.Id);
                 app.Criar(_newPontoDemanda);
             }
         }
@@ -52,6 +53,33 @@ namespace LM.Core.Tests
             Assert.AreEqual(2, pontoDemandaId);
         }
 
+        [Test]
+        public void Frequencia1DefineReposicao7Estoque3()
+        {
+            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var pontoDemanda = app.DefinirFrequenciaDeConsumo(999, 1);
+            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
+            Assert.AreEqual(7, pontoDemanda.QuantidadeDiasAlertaReposicao);
+        }
+
+        [Test]
+        public void Frequencia2DefineReposicao14Estoque3()
+        {
+            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var pontoDemanda = app.DefinirFrequenciaDeConsumo(999, 2);
+            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
+            Assert.AreEqual(14, pontoDemanda.QuantidadeDiasAlertaReposicao);
+        }
+
+        [Test]
+        public void Frequencia3DefineReposicao28Estoque3()
+        {
+            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var pontoDemanda = app.DefinirFrequenciaDeConsumo(999, 3);
+            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
+            Assert.AreEqual(28, pontoDemanda.QuantidadeDiasAlertaReposicao);
+        }
+
         private IPontoDemandaAplicacao ObterPontoDemandaAplicacao(IUsuarioAplicacao appUsuario)
         {
             return new PontoDemandaAplicacao(ObterPontoDemandaRepo(), appUsuario, new CidadeAplicacao(new CidadeEF()), 9999);
@@ -60,6 +88,7 @@ namespace LM.Core.Tests
         private IRepositorioPontoDemanda ObterPontoDemandaRepo()
         {
             var repoMock = new Mock<IRepositorioPontoDemanda>();
+            repoMock.Setup(r => r.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(Fakes.PontoDemanda());
             repoMock.Setup(r => r.Criar(_newPontoDemanda)).Returns<PontoDemanda>(x => x);
             repoMock.Setup(r => r.Listar(It.IsAny<long>())).Returns(new List<PontoDemanda>
             {

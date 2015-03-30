@@ -20,6 +20,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(u => u.Sexo).HasColumnName("TX_SEXO");
             Property(u => u.Tipo).HasColumnName("ID_TIPO_USUARIO");
             Property(u => u.DeviceId).HasColumnName("TX_DeviceId");
+            Property(u => u.DeviceType).HasColumnName("TX_DeviceType");
 
             HasRequired(u => u.StatusUsuarioPontoDemanda).WithRequiredPrincipal(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
 

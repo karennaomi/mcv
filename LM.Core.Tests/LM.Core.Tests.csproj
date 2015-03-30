@@ -72,8 +72,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CompraAtivaAplicacao.cs" />
     <Compile Include="CompraAtivaAplicacaoTests.cs" />
+    <Compile Include="NotificacaoAplicacaoTests.cs" />
     <Compile Include="PedidoAplicacaoTests.cs" />
     <Compile Include="ListaAplicacaoTests.cs" />
     <Compile Include="PersonaTests.cs" />

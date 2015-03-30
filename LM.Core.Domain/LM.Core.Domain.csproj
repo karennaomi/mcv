@@ -76,6 +76,7 @@
     <Compile Include="Repositorio\IRepositorioPontoDemanda.cs" />
     <Compile Include="Repositorio\IRepositorioProduto.cs" />
     <Compile Include="Repositorio\IRepositorioUsuario.cs" />
+    <Compile Include="Repositorio\IUnitOfWork.cs" />
     <Compile Include="StatusCadastro.cs" />
     <Compile Include="StatusCompra.cs" />
     <Compile Include="StatusPedido.cs" />

@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Collections.Generic;
+using LM.Core.Domain;
 using System;
 
 namespace LM.Core.Tests
@@ -27,7 +28,7 @@ namespace LM.Core.Tests
                 Id = 666,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes
                 {
-                    Integrantes = new []{ new Integrante{ Id = 1234 }}
+                    Integrantes = new List<Integrante>{ new Integrante{ Id = 1234 }}
                 },
                 Endereco = new Endereco { Cidade = new Cidade { Nome = "São Paulo" }, Alias = "Casa de sap", Descricao = "Rua dos bobos", Numero = 0, Bairro = "Vl Olimpia", Cep = "04458001", Latitude = -23.611926900000000M, Longitude = -46.661498300000000M }
             };

@@ -34,14 +34,14 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp();
 
-            var itens = pedidoApp.ListarItensPorCategoria(9000);
+            var itens = pedidoApp.ListarItensPorCategoria(2000);
             var idItem = itens.First().Id;
             var totalDeItems = itens.Count();
             
             using (new TransactionScope())
             {
                 pedidoApp.RemoverItem(idItem);
-                Assert.IsTrue(pedidoApp.ListarItensPorCategoria(9000).Count() == totalDeItems - 1);
+                Assert.IsTrue(pedidoApp.ListarItensPorCategoria(2000).Count() == totalDeItems - 1);
             }
         }
 
@@ -59,11 +59,11 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp();
 
-            var item = pedidoApp.ListarItensPorCategoria(9000).First();
+            var item = pedidoApp.ListarItensPorCategoria(2000).First();
             using (new TransactionScope())
             {
                 pedidoApp.AtualizarQuantidadeDoItem(item.Id, 12);
-                Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(9000).First().Quantidade);
+                Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(2000).First().Quantidade);
             }
         }
 

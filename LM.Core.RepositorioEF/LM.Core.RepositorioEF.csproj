@@ -76,6 +76,7 @@
     <Compile Include="PontoDemandaEF.cs" />
     <Compile Include="ProdutoEF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWorkEF.cs" />
     <Compile Include="UsuarioEF.cs" />
   </ItemGroup>
   <ItemGroup>

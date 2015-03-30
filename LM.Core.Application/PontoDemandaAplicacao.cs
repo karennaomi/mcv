@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.Remoting;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -11,7 +12,7 @@ namespace LM.Core.Application
         PontoDemanda Criar(PontoDemanda pontoDemanda);
         IList<PontoDemanda> Listar();
         PontoDemanda Obter(long id);
-        void DefinirFrequenciaDeConsumo(long pontoDemandaId, long usuarioId, int frequencia);
+        PontoDemanda DefinirFrequenciaDeConsumo(long id, int frequencia);
         long VerificarPontoDemanda(long id);
     }
 
@@ -37,7 +38,7 @@ namespace LM.Core.Application
         {
             pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
             pontoDemanda.GrupoDeIntegrantes.Nome = "Integrantes: " + pontoDemanda.Nome;
-            pontoDemanda.Endereco.Cidade = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome);
+            pontoDemanda.Endereco.Cidade = new Cidade { Id = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome).Id };
             pontoDemanda = _repositorio.Criar(pontoDemanda);
             _appUsuario.AtualizarStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
@@ -58,9 +59,24 @@ namespace LM.Core.Application
             return _repositorio.Obter(id, UsuarioId);
         }
 
-        public void DefinirFrequenciaDeConsumo(long pontoDemandaId, long usuarioId, int frequencia)
+        public PontoDemanda DefinirFrequenciaDeConsumo(long id, int frequencia)
         {
-            _repositorio.DefinirFrequenciaDeConsumo(pontoDemandaId, usuarioId, frequencia);
+            var pontoDemanda = Obter(id);
+            switch (frequencia)
+            {
+                case 1:
+                    pontoDemanda.QuantidadeDiasAlertaReposicao = 7;
+                    break;
+                case 2:
+                    pontoDemanda.QuantidadeDiasAlertaReposicao = 14;
+                    break;
+                case 3:
+                    pontoDemanda.QuantidadeDiasAlertaReposicao = 28;
+                    break;
+            }
+            pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
+            _repositorio.SalvarAlteracoes();
+            return pontoDemanda;
         }
 
         public long VerificarPontoDemanda(long id)

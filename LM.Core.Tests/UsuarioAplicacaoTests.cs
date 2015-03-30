@@ -116,6 +116,12 @@ namespace LM.Core.Tests
             IntegrantePersonaTestes(23, "F", 18, 27);
         }
 
+        [Test]
+        public void AtualizarDeviceInfo()
+        {
+            ObterAppUsuario().AtualizarDeviceInfo(2, "google", "nsuiahfui2u2h2u9hf42");
+        }
+
         private static void IntegrantePersonaTestes(int idade, string sexo, int idadeInicial, int idadeFinal)
         {
             var integrante = Fakes.Integrante(idade, sexo);
@@ -131,7 +137,7 @@ namespace LM.Core.Tests
 
         private static IUsuarioAplicacao ObterAppUsuario()
         {
-            return new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+            return new UsuarioAplicacao(new UsuarioEF(new UnitOfWorkEF()), new PersonaAplicacao(new PersonaEF()));
         }
     }
 }
