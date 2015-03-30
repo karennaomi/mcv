@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Reflection;
+using LM.Core.Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace LM.Core.RepositorioEF.MappingConfiguration
@@ -18,6 +19,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(u => u.DataNascimento).HasColumnName("DT_NASCIMENTO");
             Property(u => u.Sexo).HasColumnName("TX_SEXO");
             Property(u => u.Tipo).HasColumnName("ID_TIPO_USUARIO");
+            Property(u => u.DeviceId).HasColumnName("TX_DeviceId");
 
             HasRequired(u => u.StatusUsuarioPontoDemanda).WithRequiredPrincipal(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
 

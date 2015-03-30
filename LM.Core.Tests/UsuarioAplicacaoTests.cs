@@ -47,7 +47,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var usuario = app.Criar(Fakes.Usuario());
-                app.AtualizaStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
+                app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
                 usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
             }
@@ -61,7 +61,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var usuario = app.Criar(Fakes.Usuario());
-                app.AtualizaStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, pontoDemandaId);
+                app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, pontoDemandaId);
                 usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
                 Assert.AreEqual(pontoDemandaId, usuario.StatusUsuarioPontoDemanda.PontoDemandaId);

@@ -12,7 +12,8 @@ namespace LM.Core.Application
         Usuario Obter(string email);
         Usuario Criar(Usuario usuario);
         Usuario ValidarLogin(string email, string senha);
-        void AtualizaStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null);
+        void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null);
+        void AtualizarDeviceId(long usuarioId, string deviceId);
     }
 
     public class UsuarioAplicacao : IUsuarioAplicacao
@@ -64,9 +65,14 @@ namespace LM.Core.Application
             return _repositorio.ValidarLogin(email, senha);
         }
 
-        public void AtualizaStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
+        public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
             _repositorio.AtualizarStatusCadastro(usuarioId, statusCadastro, pontoDemandaId);
+        }
+
+        public void AtualizarDeviceId(long usuarioId, string deviceId)
+        {
+            _repositorio.AtualizarDeviceId(usuarioId, deviceId);
         }
     }
 }

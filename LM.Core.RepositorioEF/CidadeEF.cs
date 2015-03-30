@@ -17,7 +17,7 @@ namespace LM.Core.RepositorioEF
         {
             try
             {
-                var cidade = _contextoEF.Cidades.SingleOrDefault(c => c.Nome.Contains(nome));
+                var cidade = _contextoEF.Cidades.SingleOrDefault(c => c.Nome == nome);
                 if (cidade == null) throw new ApplicationException(string.Format("A cidade {0} não foi encontrada na nossa base de dados.", nome));
                 return cidade;
             }

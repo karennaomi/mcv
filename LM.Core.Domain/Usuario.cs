@@ -44,6 +44,8 @@ namespace LM.Core.Domain
 
         public Integrante Integrante { get { return MapIntegrantes.First(); }}
 
+        public string DeviceId { get; set; }
+
         public int ObterIdade()
         {
             if (!DataNascimento.HasValue) throw new ApplicationException("Data de nascimento inválida");
@@ -96,6 +98,7 @@ namespace LM.Core.Domain
             }
             return results;
         }
+
     }
 }
 

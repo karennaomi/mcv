@@ -9,28 +9,28 @@ namespace LM.Core.RepositorioEF
 {
     public class UsuarioEF : IRepositorioUsuario
     {
-        private readonly ContextoEF _contextoEF;
+        private readonly ContextoEF _contexto;
 
         public UsuarioEF()
         {
-            _contextoEF = new ContextoEF();
+            _contexto = new ContextoEF();
         }
 
         public Usuario Obter(long id)
         {
-            return _contextoEF.Usuarios.Find(id);
+            return _contexto.Usuarios.Find(id);
         }
 
         public Usuario ObterPorEmail(string email)
         {
-            return _contextoEF.Usuarios.SingleOrDefault(u => u.Email == email);
+            return _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
         }
 
         public Usuario Criar(Usuario usuario)
         {
-            _contextoEF.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
-            usuario = _contextoEF.Usuarios.Add(usuario);
-            _contextoEF.SaveChanges();
+            _contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
+            usuario = _contexto.Usuarios.Add(usuario);
+            _contexto.SaveChanges();
             return usuario;
         }
 
@@ -40,19 +40,26 @@ namespace LM.Core.RepositorioEF
             usuario.StatusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
             usuario.StatusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
             if (pontoDemandaId != null && pontoDemandaId > 0) usuario.StatusUsuarioPontoDemanda.PontoDemandaId = pontoDemandaId;
-            _contextoEF.SaveChanges();
+            _contexto.SaveChanges();
         }        
 
         public bool VerificarSeCpfJaExiste(string cpf)
         {
-            return _contextoEF.Usuarios.Any(u => u.Cpf == cpf);
+            return _contexto.Usuarios.Any(u => u.Cpf == cpf);
         }
 
         public Usuario ValidarLogin(string email, string senha)
         {
-            var usuario = _contextoEF.Usuarios.FirstOrDefault(u => u.Login == email && u.Senha == senha);
+            var usuario = _contexto.Usuarios.FirstOrDefault(u => u.Login == email && u.Senha == senha);
             if(usuario == null) throw new LoginInvalidoException();
             return usuario;
+        }
+
+        public void AtualizarDeviceId(long usuarioId, string deviceId)
+        {
+            var usuario = Obter(usuarioId);
+            usuario.DeviceId = deviceId;
+            _contexto.SaveChanges();
         }
     }
 }

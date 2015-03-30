@@ -39,7 +39,7 @@ namespace LM.Core.Application
             pontoDemanda.GrupoDeIntegrantes.Nome = "Integrantes: " + pontoDemanda.Nome;
             pontoDemanda.Endereco.Cidade = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome);
             pontoDemanda = _repositorio.Criar(pontoDemanda);
-            _appUsuario.AtualizaStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
+            _appUsuario.AtualizarStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
         }
 

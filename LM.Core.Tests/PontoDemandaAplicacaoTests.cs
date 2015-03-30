@@ -34,7 +34,7 @@ namespace LM.Core.Tests
             var mockAppUsuario = ObterMockAppUsuario();
             var app = ObterPontoDemandaAplicacao(mockAppUsuario.Object);
             var pontoDemanda = app.Criar(_newPontoDemanda);
-            mockAppUsuario.Verify(m => m.AtualizaStatusCadastro(9999, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id));
+            mockAppUsuario.Verify(m => m.AtualizarStatusCadastro(9999, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id));
         }
 
         [Test]
