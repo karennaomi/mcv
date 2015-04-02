@@ -5,6 +5,11 @@ namespace LM.Core.Domain
 {
     public class Compra
     {
+        public Compra()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+        }
+
         public long Id { get; set; }
         public int LojaId { get; set; }
 

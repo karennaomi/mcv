@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CidadeAplicacao.cs" />
     <Compile Include="CategoriaAplicacao.cs" />
+    <Compile Include="CompraAplicacao.cs" />
     <Compile Include="CompraAtivaAplicacao.cs" />
     <Compile Include="NotificacaoAplicacao.cs" />
     <Compile Include="PedidoAplicacao.cs" />

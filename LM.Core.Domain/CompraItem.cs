@@ -4,6 +4,14 @@ namespace LM.Core.Domain
 {
     public abstract class CompraItem
     {
+        protected CompraItem()
+        {
+            var agora = DateTime.Now;
+            DataCompra = agora;
+            DataInclusao = agora;
+            DataAlteracao = agora;
+        }
+
         public long Id { get; set; }
         public StatusCompra Status { get; set; }
         public DateTime? DataCompra { get; set; }

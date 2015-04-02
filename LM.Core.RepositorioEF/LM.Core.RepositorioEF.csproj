@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompraEF.cs" />
     <Compile Include="CompraAtivaEF.cs" />
     <Compile Include="CidadeEF.cs" />
     <Compile Include="CategoriaEF.cs" />
