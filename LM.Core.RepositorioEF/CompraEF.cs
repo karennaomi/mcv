@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.SqlClient;
+using System.Linq;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Data.Entity;
 
@@ -32,7 +34,18 @@ namespace LM.Core.RepositorioEF
                 
             }
             _contexto.SaveChanges();
+
+            PreencheTabelaRelacionamentoCompraPedido(compra);
+
             return compra;
+        }
+
+        private void PreencheTabelaRelacionamentoCompraPedido(Compra compra)
+        {
+            foreach (var compraItem in compra.Itens.OfType<PedidoCompraItem>())
+            {
+                _contexto.Database.ExecuteSqlCommand("INSERT INTO [dbo].[TB_Compra_Item_Pedido] VALUES(@compraItemId, @pedidoItem)", new SqlParameter("@compraItemId", compraItem.Id), new SqlParameter("@pedidoItem", compraItem.Item.Id));
+            }
         }
     }
 }

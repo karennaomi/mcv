@@ -34,7 +34,7 @@ namespace LM.Core.Tests
             Assert.AreEqual("A compra deve possuir itens.", ex.Message);
         }
 
-        private Compra GetCompra()
+        private static Compra GetCompra()
         {
             var agora = DateTime.Now;
             var contexto = new ContextoEF();
