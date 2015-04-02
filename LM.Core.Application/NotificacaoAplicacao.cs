@@ -28,10 +28,8 @@ namespace LM.Core.Application
                 Action = action
 
             });
-            
-            var response = _pushServiceClient.Execute(request);
-            var a = response.Content;
 
+            var taskResponse = _pushServiceClient.ExecutePostTaskAsync(request);
         }
     }
 }
