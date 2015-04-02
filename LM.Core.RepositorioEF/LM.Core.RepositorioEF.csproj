@@ -58,6 +58,7 @@
     <Compile Include="MappingConfiguration\CompraAtivaConfig.cs" />
     <Compile Include="MappingConfiguration\CategoriaConfig.cs" />
     <Compile Include="MappingConfiguration\CompraConfig.cs" />
+    <Compile Include="MappingConfiguration\CompraItemSubstitutoConfig.cs" />
     <Compile Include="MappingConfiguration\CompraItemConfig.cs" />
     <Compile Include="MappingConfiguration\EnderecoConfig.cs" />
     <Compile Include="MappingConfiguration\GrupoDeIntegrantesConfig.cs" />

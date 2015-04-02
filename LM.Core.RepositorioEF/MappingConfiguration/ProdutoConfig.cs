@@ -8,12 +8,16 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
         public ProdutoConfig()
         {
             ToTable("TB_PRODUTO");
-            HasKey(g => g.Id);
-            Property(g => g.Id).HasColumnName("ID_PRODUTO");
+            HasKey(p => p.Id);
+            Property(p => p.Id).HasColumnName("ID_PRODUTO");
+            Property(p => p.Ean).HasColumnName("CD_PRODUTO_EAN");
+            Property(p => p.Ativo).HasColumnName("FL_PRODUTO_ATIVO").IsOptional();
+            Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional();
+            Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 
             HasRequired(p => p.Info).WithRequiredPrincipal();
-            HasMany(g => g.Imagens).WithMany().Map(m => m.ToTable("TB_PRODUTO_IMAGEM").MapLeftKey("ID_PRODUTO").MapRightKey("ID_IMAGEM"));
-            HasMany(g => g.Categorias).WithMany().Map(m => m.ToTable("TB_PRODUTO_CATEGORIA").MapLeftKey("ID_PRODUTO").MapRightKey("ID_CATEGORIA"));
+            HasMany(p => p.Imagens).WithMany().Map(m => m.ToTable("TB_PRODUTO_IMAGEM").MapLeftKey("ID_PRODUTO").MapRightKey("ID_IMAGEM"));
+            HasMany(p => p.Categorias).WithMany().Map(m => m.ToTable("TB_PRODUTO_CATEGORIA").MapLeftKey("ID_PRODUTO").MapRightKey("ID_CATEGORIA"));
 
         }
     }

@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Runtime.Remoting;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.RepositorioEF;
 using NUnit.Framework;
+using System.Linq;
 
 namespace LM.Core.Tests
 {
@@ -90,6 +89,13 @@ namespace LM.Core.Tests
             Assert.IsNotNull(compra.Integrante);
             Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any());
             //Assert.IsTrue(compra.Itens.OfType<PedidoCompraItem>().Any());
+        }
+
+        [Test]
+        public void MapearCompraItemSubstituto()
+        {
+            var compra = _contexto.Compras.First(c => c.Id == 3);
+            Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
         }
 
         [Test]

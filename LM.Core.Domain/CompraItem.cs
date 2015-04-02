@@ -21,6 +21,8 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
 
         public virtual Compra Compra { get; set; }
+
+        public virtual CompraItemSubstituto ItemSubstituto { get; set; }
     }
 
     public class ListaCompraItem : CompraItem
@@ -31,5 +33,23 @@ namespace LM.Core.Domain
     public class PedidoCompraItem : CompraItem
     {
         public virtual PedidoItem Item { get; set; }
+    }
+
+    public class ProdutoCompraItem : CompraItem
+    {
+        public virtual Produto Produto { get; set; }
+    }
+
+    public class CompraItemSubstituto
+    {
+        public CompraItemSubstituto()
+        {
+            DataInclusao = DateTime.Now;
+        }
+
+        public long SubstitutoId { get; set; }
+        public virtual CompraItem Original { get; set; }
+        public string Motivo { get; set; }
+        public DateTime? DataInclusao { get; set; }
     }
 }
