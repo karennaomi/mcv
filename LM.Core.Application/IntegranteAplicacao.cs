@@ -8,7 +8,7 @@ namespace LM.Core.Application
     public interface IIntegranteAplicacao
     {
         Integrante Criar(Integrante integrante);
-        void Apagar(long id, long pontoDemandaId);
+        void Apagar(long usuarioId, long pontoDemandaId, long integranteId);
     }
 
     public class IntegranteAplicacao : IIntegranteAplicacao
@@ -26,11 +26,11 @@ namespace LM.Core.Application
             return _repositorio.Criar(integrante);
         }
 
-        public void Apagar(long id, long pontoDemandaId)
+        public void Apagar(long usuarioId, long pontoDemandaId, long integranteId)
         {
-            var pontoDemanda = _appPontoDemanda.Obter(pontoDemandaId);
-            if (pontoDemanda.GrupoDeIntegrantes.Integrantes.All(i => i.Id != id)) throw new IntegranteNaoPertenceAPontoDemandaException();
-            _repositorio.Apagar(id);
+            var pontoDemanda = _appPontoDemanda.Obter(usuarioId, pontoDemandaId);
+            if (pontoDemanda.GrupoDeIntegrantes.Integrantes.All(i => i.Id != integranteId)) throw new IntegranteNaoPertenceAPontoDemandaException();
+            _repositorio.Apagar(integranteId);
         }
     }
 }

@@ -7,61 +7,56 @@ using System.Collections.Generic;
 
 namespace LM.Core.Application
 {
-    public interface IPontoDemandaAplicacao : IRelacionaUsuario
+    public interface IPontoDemandaAplicacao
     {
-        PontoDemanda Criar(PontoDemanda pontoDemanda);
-        IList<PontoDemanda> Listar();
-        PontoDemanda Obter(long id);
-        PontoDemanda DefinirFrequenciaDeConsumo(long id, int frequencia);
-        long VerificarPontoDemanda(long id);
+        PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda);
+        IList<PontoDemanda> Listar(long usuarioId);
+        PontoDemanda Obter(long usuarioId, long pontoDemandaId);
+        PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia);
+        long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
     }
 
-    public class PontoDemandaAplicacao : RelacionaUsuario, IPontoDemandaAplicacao
+    public class PontoDemandaAplicacao : IPontoDemandaAplicacao
     {
         private readonly IRepositorioPontoDemanda _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
         private readonly ICidadeAplicacao _appCidade;
 
         public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, ICidadeAplicacao appCidade)
-            : this(repositorio, appUsuario, appCidade, 0)
-        {
-        }
-
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, ICidadeAplicacao appCidade, long usuarioId) : base(usuarioId)
         {
             _repositorio = repositorio;
             _appUsuario = appUsuario;
             _appCidade = appCidade;
         }
 
-        public PontoDemanda Criar(PontoDemanda pontoDemanda)
+        public PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda)
         {
-            pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
+            pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario(usuarioId);
             pontoDemanda.GrupoDeIntegrantes.Nome = "Integrantes: " + pontoDemanda.Nome;
             pontoDemanda.Endereco.Cidade = new Cidade { Id = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome).Id };
             pontoDemanda = _repositorio.Criar(pontoDemanda);
-            _appUsuario.AtualizarStatusCadastro(UsuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
+            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
         }
 
-        private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
+        private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario(long usuarioId)
         {
-            return _appUsuario.Obter(UsuarioId).Integrante.GrupoDeIntegrantes;
+            return _appUsuario.Obter(usuarioId).Integrante.GrupoDeIntegrantes;
         }
 
-        public IList<PontoDemanda> Listar()
+        public IList<PontoDemanda> Listar(long usuarioId)
         {
-            return _repositorio.Listar(UsuarioId);
+            return _repositorio.Listar(usuarioId);
         }
 
-        public PontoDemanda Obter(long id)
+        public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _repositorio.Obter(id, UsuarioId);
+            return _repositorio.Obter(usuarioId, pontoDemandaId);
         }
 
-        public PontoDemanda DefinirFrequenciaDeConsumo(long id, int frequencia)
+        public PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia)
         {
-            var pontoDemanda = Obter(id);
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
             switch (frequencia)
             {
                 case 1:
@@ -79,11 +74,11 @@ namespace LM.Core.Application
             return pontoDemanda;
         }
 
-        public long VerificarPontoDemanda(long id)
+        public long VerificarPontoDemanda(long usuarioId, long pontoDemandaId)
         {
-            var pontosDemanda = Listar();
-            if (pontosDemanda.All(p => p.Id != id)) throw new PontoDemandaInvalidoException("Ponto de demanda não pertence ao usuário atual.");
-            return id;
+            var pontosDemanda = Listar(usuarioId);
+            if (pontosDemanda.All(p => p.Id != pontoDemandaId)) throw new PontoDemandaInvalidoException("Ponto de demanda não pertence ao usuário atual.");
+            return pontoDemandaId;
         }
     }
 }

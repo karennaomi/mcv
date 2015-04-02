@@ -19,9 +19,9 @@ namespace LM.Core.RepositorioEF
             return _uniOfWork.Contexto.PontosDemanda.Where(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId)).ToList();
         }
 
-        public PontoDemanda Obter(long id, long usuarioId)
+        public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _uniOfWork.Contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == id);
+            return _uniOfWork.Contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
         }
 
         public void SalvarAlteracoes()

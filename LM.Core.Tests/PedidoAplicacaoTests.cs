@@ -10,6 +10,12 @@ namespace LM.Core.Tests
     [TestFixture]
     public class PedidoAplicacaoTests
     {
+        private static long _pontoDemandaId;
+        public PedidoAplicacaoTests()
+        {
+            _pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
+        }
+
         [Test]
         public void AdiconarUmItemEmUmPedido()
         {
@@ -24,7 +30,7 @@ namespace LM.Core.Tests
 
             using (new TransactionScope())
             {
-                item = pedidoApp.AdicionarItem(item);
+                item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
                 Assert.IsTrue(item.Id > 0);
             }
         }
@@ -34,14 +40,14 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp();
 
-            var itens = pedidoApp.ListarItensPorCategoria(2000);
+            var itens = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000);
             var idItem = itens.First().Id;
             var totalDeItems = itens.Count();
             
             using (new TransactionScope())
             {
-                pedidoApp.RemoverItem(idItem);
-                Assert.IsTrue(pedidoApp.ListarItensPorCategoria(2000).Count() == totalDeItems - 1);
+                pedidoApp.RemoverItem(_pontoDemandaId, idItem);
+                Assert.IsTrue(pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).Count() == totalDeItems - 1);
             }
         }
 
@@ -50,7 +56,7 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp();
 
-            var secoes = pedidoApp.ListarSecoes(StatusPedido.Pendente);
+            var secoes = pedidoApp.ListarSecoes(_pontoDemandaId, StatusPedido.Pendente);
             Assert.IsTrue(secoes.All(s => s.SubCategorias.Count > 0));
         }
 
@@ -59,17 +65,17 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp();
 
-            var item = pedidoApp.ListarItensPorCategoria(2000).First();
+            var item = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First();
             using (new TransactionScope())
             {
-                pedidoApp.AtualizarQuantidadeDoItem(item.Id, 12);
-                Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(2000).First().Quantidade);
+                pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, item.Id, 12);
+                Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First().Quantidade);
             }
         }
 
         private static IPedidoAplicacao ObterPedidoApp()
         {
-            return new PedidoAplicacao(new PedidoEF(), new ContextoEF().PontosDemanda.First().Id);
+            return new PedidoAplicacao(new PedidoEF());
         }
     }
 }

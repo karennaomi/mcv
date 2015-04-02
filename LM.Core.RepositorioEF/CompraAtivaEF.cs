@@ -14,12 +14,12 @@ namespace LM.Core.RepositorioEF
             _contextoEF = new ContextoEF();
         }
 
-        public CompraAtiva Obter(long pontoDemandaId, long usuarioId)
+        public CompraAtiva Obter(long usuarioId, long pontoDemandaId)
         {
             return _contextoEF.ComprasAtivas.FirstOrDefault( c => c.PontoDemanda.Id == pontoDemandaId && c.Usuario.Id == usuarioId && c.FimCompra == null);
         }
 
-        public CompraAtiva AtivarCompra(long pontoDemandaId, long usuarioId)
+        public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
              var compraAtiva = _contextoEF.ComprasAtivas.Add(new CompraAtiva
              {

@@ -6,7 +6,7 @@ namespace LM.Core.Domain.Repositorio
     {
         PontoDemanda Criar(PontoDemanda pontoDemanda);
         IList<PontoDemanda> Listar(long usuarioId);
-        PontoDemanda Obter(long id, long usuarioId);
+        PontoDemanda Obter(long usuarioId, long pontoDemandaId);
         void SalvarAlteracoes();
     }
 }

@@ -4,52 +4,52 @@ using System.Collections.Generic;
 
 namespace LM.Core.Application
 {
-    public interface IPedidoAplicacao : IRelacionaPontoDemanda
+    public interface IPedidoAplicacao
     {
-        IEnumerable<PedidoItem> ListarItensPorCategoria(int categoriaId);
-        IEnumerable<PedidoItem> ListarItensPorStatus(StatusPedido status);
-        IList<Categoria> ListarSecoes(StatusPedido status);
-        void RemoverItem(long itemId);
-        void AtualizarQuantidadeDoItem(long itemId, decimal quantidade);
-        PedidoItem AdicionarItem(PedidoItem item);
+        IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
+        IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status);
+        IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status);
+        void RemoverItem(long pontoDemandaId, long itemId);
+        void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item);
     }
 
-    public class PedidoAplicacao : RelacionaPontoDemanda, IPedidoAplicacao
+    public class PedidoAplicacao : IPedidoAplicacao
     {
         private readonly IRepositorioPedido _repositorio;
-        public PedidoAplicacao(IRepositorioPedido repositorio, long pontoDemandaId) : base(pontoDemandaId)
+        public PedidoAplicacao(IRepositorioPedido repositorio)
         {
             _repositorio = repositorio;
         }
 
-        public IEnumerable<PedidoItem> ListarItensPorCategoria(int categoriaId)
+        public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarItensPorCategoria(PontoDemandaId, categoriaId);
+            return _repositorio.ListarItensPorCategoria(pontoDemandaId, categoriaId);
         }
 
-        public IEnumerable<PedidoItem> ListarItensPorStatus(StatusPedido status)
+        public IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status)
         {
-            return _repositorio.ListarItensPorStatus(PontoDemandaId, status);
+            return _repositorio.ListarItensPorStatus(pontoDemandaId, status);
         }
 
-        public IList<Categoria> ListarSecoes(StatusPedido status)
+        public IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status)
         {
-            return _repositorio.ListarSecoes(PontoDemandaId, status);
+            return _repositorio.ListarSecoes(pontoDemandaId, status);
         }
 
-        public void RemoverItem(long itemId)
+        public void RemoverItem(long pontoDemandaId, long itemId)
         {
-            _repositorio.RemoverItem(PontoDemandaId, itemId);
+            _repositorio.RemoverItem(pontoDemandaId, itemId);
         }
 
-        public void AtualizarQuantidadeDoItem(long itemId, decimal quantidade)
+        public void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarQuantidadeDoItem(PontoDemandaId, itemId, quantidade);
+            _repositorio.AtualizarQuantidadeDoItem(pontoDemandaId, itemId, quantidade);
         }
 
-        public PedidoItem AdicionarItem(PedidoItem item)
+        public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
-            return _repositorio.AdicionarItem(PontoDemandaId, item);
+            return _repositorio.AdicionarItem(pontoDemandaId, item);
         }
     }
 }

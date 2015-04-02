@@ -12,12 +12,14 @@ namespace LM.Core.Tests
     [TestFixture]
     public class CompraAtivaAplicacaoTests
     {
+        private const int UsuarioId = 3;
+        private const int PontoDemandaId = 1;
         [Test]
         public void CriaUmaCompraAtiva()
         {
             using (new TransactionScope())
             {
-                var compraAtiva = GetApp(GetMockNotificacaoApp().Object).AtivarCompra();
+                var compraAtiva = GetApp(GetMockNotificacaoApp().Object).AtivarCompra(UsuarioId, PontoDemandaId);
                 Assert.IsTrue(compraAtiva.Id > 0);
             }
         }
@@ -27,7 +29,8 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var compraAtiva = GetApp(GetMockNotificacaoApp().Object).FinalizarCompra();
+                var compraAtiva = GetApp(GetMockNotificacaoApp().Object).AtivarCompra(UsuarioId, PontoDemandaId);
+                compraAtiva = GetApp(GetMockNotificacaoApp().Object).FinalizarCompra(UsuarioId, PontoDemandaId);
                 Assert.IsNotNull(compraAtiva.FimCompra);
             }
         }
@@ -38,7 +41,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var mockNotificacao = GetMockNotificacaoApp();
-                var compraAtiva = GetApp(mockNotificacao.Object).AtivarCompra();
+                var compraAtiva = GetApp(mockNotificacao.Object).AtivarCompra(UsuarioId, PontoDemandaId);
                 mockNotificacao.Verify(v => v.EnviarNotificacao(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
             }
         }
@@ -46,22 +49,20 @@ namespace LM.Core.Tests
         [Test]
         public void LancaExcecaoQuandoNaoExisteCompraAtivaETentaFinalizar()
         {
-            Assert.Throws<ApplicationException>(() => GetMockedApp().FinalizarCompra());
+            Assert.Throws<ApplicationException>(() => GetMockedApp().FinalizarCompra(9999, 9999));
         }
 
         private static ICompraAtivaAplicacao GetApp(INotificacaoAplicacao appNotificacao)
         {
-            return new CompraAtivaAplicacao(new CompraAtivaEF(), GetPontoDemandaApp(), appNotificacao, 17, UsuarioId);
+            return new CompraAtivaAplicacao(new CompraAtivaEF(), GetPontoDemandaApp(), appNotificacao);
         }
 
         private static ICompraAtivaAplicacao GetMockedApp()
         {
             var mockRepo = new Mock<IRepositorioCompraAtiva>();
-            return new CompraAtivaAplicacao(mockRepo.Object, GetPontoDemandaApp(), GetMockNotificacaoApp().Object, 17, UsuarioId);
+            return new CompraAtivaAplicacao(mockRepo.Object, GetPontoDemandaApp(), GetMockNotificacaoApp().Object);
         }
-
-        private const int UsuarioId = 3;
-
+        
         private static IPontoDemandaAplicacao GetPontoDemandaApp()
         {
             var pontoDemanda = Fakes.PontoDemanda();
@@ -70,7 +71,7 @@ namespace LM.Core.Tests
             pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante{Usuario = new Usuario{Id = 2, DeviceId = "sk98023ndds", DeviceType = "apple"}});
             pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante { Usuario = new Usuario { Id = UsuarioId, DeviceId = "sfnjk823jkj", DeviceType = "google" } });
             var mockApp = new Mock<IPontoDemandaAplicacao>();
-            mockApp.Setup(a => a.Obter(It.IsAny<long>())).Returns(pontoDemanda);
+            mockApp.Setup(a => a.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(pontoDemanda);
             return mockApp.Object;
         }
 

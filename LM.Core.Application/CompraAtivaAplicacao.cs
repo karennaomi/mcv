@@ -5,48 +5,46 @@ using LM.Core.Domain.Repositorio;
 
 namespace LM.Core.Application
 {
-    public interface ICompraAtivaAplicacao : IRelacionaPontoDemanda, IRelacionaUsuario
+    public interface ICompraAtivaAplicacao
     {
-        CompraAtiva AtivarCompra();
-        CompraAtiva FinalizarCompra();
+        CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
+        CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId);
     }
 
-    public class CompraAtivaAplicacao : RelacionaPontoDemandaUsuario, ICompraAtivaAplicacao
+    public class CompraAtivaAplicacao : ICompraAtivaAplicacao
     {
         private readonly IRepositorioCompraAtiva _compraAtivaRepo;
         private readonly IPontoDemandaAplicacao _appPontoDemanda;
         private readonly INotificacaoAplicacao _appNotificacao;
-        public CompraAtivaAplicacao(IRepositorioCompraAtiva compraAtivaRepo, IPontoDemandaAplicacao appPontoDemanda, INotificacaoAplicacao appNotificacao) : this(compraAtivaRepo, appPontoDemanda, appNotificacao, 0, 0) { }
-        public CompraAtivaAplicacao(IRepositorioCompraAtiva compraAtivaRepo, IPontoDemandaAplicacao appPontoDemanda, INotificacaoAplicacao appNotificacao, long pontoDemandaId, long usuarioId) : base(pontoDemandaId, usuarioId)
+        public CompraAtivaAplicacao(IRepositorioCompraAtiva compraAtivaRepo, IPontoDemandaAplicacao appPontoDemanda, INotificacaoAplicacao appNotificacao)
         {
             _compraAtivaRepo = compraAtivaRepo;
             _appPontoDemanda = appPontoDemanda;
             _appNotificacao = appNotificacao;
         }
 
-        public CompraAtiva AtivarCompra()
+        public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
-            var compraAtiva = _compraAtivaRepo.AtivarCompra(PontoDemandaId, UsuarioId);
-            NotificarIntegrantes();
+            var compraAtiva = _compraAtivaRepo.AtivarCompra(usuarioId, pontoDemandaId);
+            NotificarIntegrantes(usuarioId, pontoDemandaId);
             return compraAtiva;
         }
 
-        private void NotificarIntegrantes()
+        private void NotificarIntegrantes(long usuarioId, long pontoDemandaId)
         {
-            _appPontoDemanda.UsuarioId = UsuarioId;
-            var pontoDemanda = _appPontoDemanda.Obter(PontoDemandaId);
+            var pontoDemanda = _appPontoDemanda.Obter(usuarioId, pontoDemandaId);
             var integrantesComUsuario = pontoDemanda.GrupoDeIntegrantes.Integrantes.Where(i => i.Usuario != null).ToList();
             if(!integrantesComUsuario.Any()) return;
-            var usuarios = integrantesComUsuario.Where(i => i.Usuario.Id != UsuarioId).Select(i => i.Usuario);
+            var usuarios = integrantesComUsuario.Where(i => i.Usuario.Id != usuarioId).Select(i => i.Usuario);
             foreach (var usuario in usuarios)
             {
                 _appNotificacao.EnviarNotificacao(usuario.DeviceType, usuario.DeviceId, "O modo de compra foi habilitado no ponto de demanda " + pontoDemanda.Nome, "compras");
             }
         }
 
-        public CompraAtiva FinalizarCompra()
+        public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)
         {
-            var compraAtiva = _compraAtivaRepo.Obter(PontoDemandaId, UsuarioId);
+            var compraAtiva = _compraAtivaRepo.Obter(usuarioId, pontoDemandaId);
             if (compraAtiva == null) throw new ApplicationException("Nenhuma compra ativa para o ponto de demanda especificado.");
             return _compraAtivaRepo.FinalizarCompra(compraAtiva);
         }

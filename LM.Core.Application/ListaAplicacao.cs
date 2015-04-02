@@ -4,102 +4,58 @@ using System.Collections.Generic;
 
 namespace LM.Core.Application
 {
-    public interface IListaAplicacao : IRelacionaPontoDemanda
+    public interface IListaAplicacao
     {
-        ListaItem AdicionarItem(ListaItem item);
-        void RemoverItem(long id);
-        IList<Categoria> ListarSecoes();
-        IEnumerable<ListaItem> ListarItensPorCategoria(int categoriaId);
-        void AtualizarEstoqueDoItem(long itemId, decimal quantidade);
-        void AtualizarConsumoDoItem(long itemId, decimal quantidade);
-        void AtualizarPeriodoDoItem(long itemId, int periodoId);
+        ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
+        void RemoverItem(long pontoDemandaId, long itemId);
+        IList<Categoria> ListarSecoes(long pontoDemandaId);
+        IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
+        void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
     }
 
-    public class ListaAplicacao : RelacionaPontoDemanda, IListaAplicacao
+    public class ListaAplicacao : IListaAplicacao
     {
         private readonly IRepositorioLista _repositorio;
-        public ListaAplicacao(IRepositorioLista repositorio, long pontoDemandaId) : base(pontoDemandaId)
+        public ListaAplicacao(IRepositorioLista repositorio)
         {
             _repositorio = repositorio;
         }
 
-        public ListaItem AdicionarItem(ListaItem item)
+        public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
-            return _repositorio.AdicionarItem(PontoDemandaId, item);
+            return _repositorio.AdicionarItem(pontoDemandaId, item);
         }
 
-        public void RemoverItem(long id)
+        public void RemoverItem(long pontoDemandaId, long itemId)
         {
-            _repositorio.RemoverItem(PontoDemandaId, id);
+            _repositorio.RemoverItem(pontoDemandaId, itemId);
         }
 
-        public IList<Categoria> ListarSecoes()
+        public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            return _repositorio.ListarSecoes(PontoDemandaId);
+            return _repositorio.ListarSecoes(pontoDemandaId);
         }
 
-        public IEnumerable<ListaItem> ListarItensPorCategoria(int categoriaId)
+        public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarItensPorCategoria(PontoDemandaId, categoriaId);
+            return _repositorio.ListarItensPorCategoria(pontoDemandaId, categoriaId);
         }
 
-        public void AtualizarEstoqueDoItem(long itemId, decimal quantidade)
+        public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarEstoqueDoItem(PontoDemandaId, itemId, quantidade);
+            _repositorio.AtualizarEstoqueDoItem(pontoDemandaId, itemId, quantidade);
         }
 
-        public void AtualizarConsumoDoItem(long itemId, decimal quantidade)
+        public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarConsumoDoItem(PontoDemandaId, itemId, quantidade);
+            _repositorio.AtualizarConsumoDoItem(pontoDemandaId, itemId, quantidade);
         }
 
-        public void AtualizarPeriodoDoItem(long itemId, int periodoId)
+        public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
         {
-            _repositorio.AtualizarPeriodoDoItem(PontoDemandaId, itemId, periodoId);
+            _repositorio.AtualizarPeriodoDoItem(pontoDemandaId, itemId, periodoId);
         }
     }
 }
-
-
-
-//private readonlListaRepositorioEFDO _repositorio;
-
-//public ListaAplicacao()
-//{
-//    _repositorio = neListaRepositorioEFDO();
-//}
-
-//public void SalvarLista(Lista lista)
-//{
-//    if (lista.IdLista > 0)
-
-//    {
-//        lista.DtAlteracao = DateTime.Parse(String.Format("{0:d/M/yyyy HH:mm:ss}", DateTime.Now));
-//    }
-//    else
-//    {
-//        lista.DtInclusao = DateTime.Now;
-//    }
-//    _repositorio.SalvarLista(lista);
-//}
-
-//public IEnumerable<Lista> ExibirListas()
-//{
-//    return _repositorio.ListarListas(9999);
-//}
-
-
-//public Lista ListaPorId(int idLista)
-//{
-//    return _repositorio.ListPorId(idLista, 9999);
-//}
-
-//public Lista CriarListaConsumo(int pontoDemandaId)
-//{
-//    return _repositorio.CriarListaConsumo(pontoDemandaId, 9999);
-//}
-
-//public Lista BuscarListaConsumo(int pontoDemandaId)
-//{
-//    return _repositorio.BuscarListaConsumo(pontoDemandaId, 9999);
-//}

@@ -1,9 +1,7 @@
-﻿using System;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
-using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
 
@@ -16,7 +14,7 @@ namespace LM.Core.Tests
         public void NaoPodeApagarUmIntegranteQueNaoPertenceAoPonteDemandaEspecificado()
         {
             var app = ObterAppIntegrante(ObterIntegranteRepo().Object);
-            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Apagar(9999, 123));
+            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Apagar(9999, 9999, 123));
         }
 
         [Test]
@@ -24,7 +22,7 @@ namespace LM.Core.Tests
         {
             var repoMock = ObterIntegranteRepo();
             var app = ObterAppIntegrante(repoMock.Object);
-            app.Apagar(1234, 123);
+            app.Apagar(9999, 1234, 1234);
             repoMock.Verify(r => r.Apagar(1234), Times.Once);
         }
 
@@ -43,7 +41,7 @@ namespace LM.Core.Tests
         private static IPontoDemandaAplicacao ObterAppPontoDemanda()
         {
             var appMock = new Mock<IPontoDemandaAplicacao>();
-            appMock.Setup(d => d.Obter(It.IsAny<long>())).Returns(Fakes.PontoDemanda);
+            appMock.Setup(d => d.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(Fakes.PontoDemanda);
             return appMock.Object;
         }
     }
