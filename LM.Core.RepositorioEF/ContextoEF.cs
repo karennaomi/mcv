@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF.MappingConfiguration;
 
@@ -46,7 +45,6 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new CompraConfig());
             modelBuilder.Configurations.Add(new CompraItemConfig());
             modelBuilder.Configurations.Add(new ListaCompraItemConfig());
-            modelBuilder.Configurations.Add(new ProdutoCompraItemConfig());
             modelBuilder.Configurations.Add(new PedidoCompraItemConfig());
             modelBuilder.Configurations.Add(new CompraItemSubstitutoConfig());
             modelBuilder.Configurations.Add(new CompraAtivaConfig());

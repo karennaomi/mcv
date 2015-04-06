@@ -6,6 +6,7 @@ namespace LM.Core.Application
 {
     public interface IProdutoAplicacao
     {
+        Produto Criar(Produto produto);
         IEnumerable<Produto> ListarPorCategoria(int categoriaId);
     }
 
@@ -15,8 +16,13 @@ namespace LM.Core.Application
         public ProdutoAplicacao(IRepositorioProduto repositorio)
         {
             _repositorio = repositorio;
-        }     
-    
+        }
+
+        public Produto Criar(Produto produto)
+        {
+            return _repositorio.Criar(produto);
+        }
+
         public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
         {
             return _repositorio.ListarPorCategoria(categoriaId);

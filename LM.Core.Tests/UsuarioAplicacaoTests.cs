@@ -129,10 +129,13 @@ namespace LM.Core.Tests
             usuario.MapIntegrantes = new Collection<Integrante>{ integrante };
             integrante.Usuario = usuario;
             var app = ObterAppUsuario();
-            usuario = app.Criar(usuario);
-            Assert.AreEqual(sexo, usuario.Integrante.Persona.Sexo);
-            Assert.AreEqual(idadeInicial, usuario.Integrante.Persona.IdadeInicial);
-            Assert.AreEqual(idadeFinal, usuario.Integrante.Persona.IdadeFinal);
+            using (new TransactionScope())
+            {
+                usuario = app.Criar(usuario);
+                Assert.AreEqual(sexo, usuario.Integrante.Persona.Sexo);
+                Assert.AreEqual(idadeInicial, usuario.Integrante.Persona.IdadeInicial);
+                Assert.AreEqual(idadeFinal, usuario.Integrante.Persona.IdadeFinal);
+            }
         }
 
         private static IUsuarioAplicacao ObterAppUsuario()

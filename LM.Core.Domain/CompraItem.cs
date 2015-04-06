@@ -13,6 +13,7 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
+        public int ProdutoId { get; set; }
         public StatusCompra Status { get; set; }
         public DateTime? DataCompra { get; set; }
         public decimal? Quantidade { get; set; }
@@ -21,7 +22,6 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
 
         public virtual Compra Compra { get; set; }
-
         public virtual CompraItemSubstituto ItemSubstituto { get; set; }
     }
 
@@ -33,11 +33,6 @@ namespace LM.Core.Domain
     public class PedidoCompraItem : CompraItem
     {
         public virtual PedidoItem Item { get; set; }
-    }
-
-    public class ProdutoCompraItem : CompraItem
-    {
-        public virtual Produto Produto { get; set; }
     }
 
     public class CompraItemSubstituto

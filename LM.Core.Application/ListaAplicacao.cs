@@ -18,13 +18,16 @@ namespace LM.Core.Application
     public class ListaAplicacao : IListaAplicacao
     {
         private readonly IRepositorioLista _repositorio;
-        public ListaAplicacao(IRepositorioLista repositorio)
+        private readonly IProdutoAplicacao _appProduto;
+        public ListaAplicacao(IRepositorioLista repositorio, IProdutoAplicacao appProduto)
         {
             _repositorio = repositorio;
+            _appProduto = appProduto;
         }
 
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
+            if (item.Produto.Id == 0) _appProduto.Criar(item.Produto);
             return _repositorio.AdicionarItem(pontoDemandaId, item);
         }
 

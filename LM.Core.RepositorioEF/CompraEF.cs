@@ -1,48 +1,46 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
-using LM.Core.Domain;
-using LM.Core.Domain.Repositorio;
-using System.Data.Entity;
 
 namespace LM.Core.RepositorioEF
 {
     public class CompraEF : IRepositorioCompra
     {
-        private readonly ContextoEF _contexto;
-        public CompraEF()
+        private readonly IUnitOfWork<ContextoEF> _uniOfWork;
+        public CompraEF(IUnitOfWork<ContextoEF> uniOfWork)
         {
-            _contexto = new ContextoEF();
+            _uniOfWork = uniOfWork;
         }
 
         public Compra Criar(Compra compra)
         {
-            compra = _contexto.Compras.Add(compra);
-            _contexto.Entry(compra.Integrante).State = EntityState.Unchanged;
-            _contexto.Entry(compra.PontoDemanda).State = EntityState.Unchanged;
+            _uniOfWork.Contexto.Entry(compra.Integrante).State = EntityState.Unchanged;
+            _uniOfWork.Contexto.Entry(compra.PontoDemanda).State = EntityState.Unchanged;
+
+            var lista = _uniOfWork.Contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == compra.PontoDemanda.Id);
             foreach (var compraItem in compra.Itens)
             {
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
-                    _contexto.Entry(listaCompraItem.Item).State = EntityState.Unchanged;
+                    if (lista == null || listaCompraItem.Item.Id <= 0) continue;
+                    var itemLocal = lista.Itens.FirstOrDefault(i => i.Id == listaCompraItem.Item.Id);
+                    if (itemLocal == null) continue;
+                    listaCompraItem.ProdutoId = itemLocal.Produto.Id;
+                    listaCompraItem.Item = itemLocal;
                 }
                 else if(compraItem is PedidoCompraItem)
                 {
                     var pedidoCompraItem = compraItem as PedidoCompraItem;
-                    _contexto.Entry(pedidoCompraItem.Item).State = EntityState.Unchanged;
+                    _uniOfWork.Contexto.Entry(pedidoCompraItem.Item).State = EntityState.Unchanged;
                 } 
-                else if (compraItem is ProdutoCompraItem)
-                {
-                    var produtoCompraItem = compraItem as ProdutoCompraItem;
-                    foreach (var categoria in produtoCompraItem.Produto.Categorias)
-                    {
-                        _contexto.Entry(categoria).State = EntityState.Unchanged;
-                    }
-                }
             }
-            _contexto.SaveChanges();
+            
+            compra = _uniOfWork.Contexto.Compras.Add(compra);
+            _uniOfWork.Contexto.SaveChanges();
 
             PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>());
             /*
@@ -60,7 +58,7 @@ namespace LM.Core.RepositorioEF
         {
             foreach (var compraItem in itens)
             {
-                _contexto.Database.ExecuteSqlCommand("INSERT INTO [dbo].[TB_Compra_Item_Pedido] VALUES(@compraItemId, @pedidoItem)", new SqlParameter("@compraItemId", compraItem.Id), new SqlParameter("@pedidoItem", compraItem.Item.Id));
+                _uniOfWork.Contexto.Database.ExecuteSqlCommand("INSERT INTO [dbo].[TB_Compra_Item_Pedido] VALUES(@compraItemId, @pedidoItem)", new SqlParameter("@compraItemId", compraItem.Id), new SqlParameter("@pedidoItem", compraItem.Item.Id));
             }
         }
     }

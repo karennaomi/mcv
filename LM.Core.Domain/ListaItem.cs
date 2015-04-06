@@ -5,6 +5,11 @@ namespace LM.Core.Domain
 {
     public class ListaItem
     {
+        public ListaItem()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+        }
+
         public long Id { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }

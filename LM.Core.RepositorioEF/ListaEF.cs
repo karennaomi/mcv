@@ -9,22 +9,22 @@ namespace LM.Core.RepositorioEF
 {
     public class ListaEF : IRepositorioLista
     {
-        private readonly ContextoEF _contextoEF;
-        public ListaEF()
+        private readonly IUnitOfWork<ContextoEF> _uniOfWork;
+        public ListaEF(IUnitOfWork<ContextoEF> uniOfWork)
         {
-            _contextoEF = new ContextoEF();
+            _uniOfWork = uniOfWork;
         }
         
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            _contextoEF.Entry(item.Produto).State = EntityState.Unchanged;
-            _contextoEF.Entry(item.Periodo).State = EntityState.Unchanged;
+            _uniOfWork.Contexto.Entry(item.Produto).State = EntityState.Unchanged;
+            _uniOfWork.Contexto.Entry(item.Periodo).State = EntityState.Unchanged;
             item.DataInclusao = DateTime.Now;
             item.DataAlteracao = DateTime.Now;
             item.Status = "I";
             lista.Itens.Add(item);
-            _contextoEF.SaveChanges();
+            _uniOfWork.Contexto.SaveChanges();
             return item;
         }
 
@@ -34,8 +34,8 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(lista, itemId);
             item.DataAlteracao = DateTime.Now;
             lista.Itens.Remove(item);
-            _contextoEF.Entry(item).State = EntityState.Deleted;
-            _contextoEF.SaveChanges();
+            _uniOfWork.Contexto.Entry(item).State = EntityState.Deleted;
+            _uniOfWork.Contexto.SaveChanges();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
@@ -56,7 +56,7 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
             item.QuantidadeEmEstoque = quantidade;
             item.DataAlteracao = DateTime.Now;
-            _contextoEF.SaveChanges();
+            _uniOfWork.Contexto.SaveChanges();
         }
 
         public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
@@ -64,7 +64,7 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
             item.QuantidadeDeConsumo = quantidade;
             item.DataAlteracao = DateTime.Now;
-            _contextoEF.SaveChanges();
+            _uniOfWork.Contexto.SaveChanges();
         }
 
         public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
@@ -72,14 +72,14 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
             item.Periodo = new Periodo { Id = periodoId };
             item.DataAlteracao = DateTime.Now;
-            _contextoEF.Entry(item).State = EntityState.Modified;
-            _contextoEF.Entry(item.Periodo).State = EntityState.Unchanged;
-            _contextoEF.SaveChanges();
+            _uniOfWork.Contexto.Entry(item).State = EntityState.Modified;
+            _uniOfWork.Contexto.Entry(item.Periodo).State = EntityState.Unchanged;
+            _uniOfWork.Contexto.SaveChanges();
         }
 
         private Lista ObterListaPorPontoDemanda(long pontoDemandaId)
         {
-            var lista = _contextoEF.Listas.FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
+            var lista = _uniOfWork.Contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
             if(lista == null) throw new ApplicationException("O ponto de demanda não possui uma lista.");
             return lista;
         }
