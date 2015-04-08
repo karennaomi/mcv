@@ -94,7 +94,7 @@ namespace LM.Core.Tests
         [Test]
         public void MapearCompraItemSubstituto()
         {
-            var compra = _contexto.Compras.First(c => c.Id == 3);
+            var compra = _contexto.Compras.First(c => c.Id == 6);
             Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
         }
 
@@ -111,6 +111,15 @@ namespace LM.Core.Tests
             var comrpaAtiva = _contexto.ComprasAtivas.First();
             Assert.IsNotNull(comrpaAtiva.PontoDemanda);
             Assert.IsNotNull(comrpaAtiva.Usuario);
+        }
+
+        [Test]
+        public void MapearTemplateMensagem()
+        {
+            var templateEmail = _contexto.TemplatesMensagens.OfType<TemplateMensagemEmail>().First();
+            var templatePush = _contexto.TemplatesMensagens.OfType<TemplateMensagemPush>().First();
+            Assert.IsNotNull(templateEmail);
+            Assert.IsNotNull(templatePush);
         }
     }
 }

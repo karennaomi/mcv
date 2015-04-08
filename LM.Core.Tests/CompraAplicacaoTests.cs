@@ -1,5 +1,4 @@
-﻿using System.Data.Entity.Validation;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF;
 using NUnit.Framework;
@@ -74,21 +73,16 @@ namespace LM.Core.Tests
                 });
 
                 var app = GetCompraApp();
-                try
-                {
-                    compra = app.Criar(compra);
-                }
-                catch (DbEntityValidationException ex)
-                {
-                    throw ex;
-                }
+                compra = app.Criar(compra);
+                
                 Assert.IsTrue(compra.Id > 0);
+                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Id == 12));
                 Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Count() == 2);
             }
         }
 
         [Test]
-        public void CriarCompraDevePossuirItens()
+        public void CompraDevePossuirItens()
         {
             var compra = new Compra();
             var app = GetCompraApp();
@@ -96,7 +90,37 @@ namespace LM.Core.Tests
             Assert.AreEqual("A compra deve possuir itens.", ex.Message);
         }
 
-        private CompraAplicacao GetCompraApp()
+        [Test]
+        public void CompraDevePossuirPontoDemanda()
+        {
+            var compra = GetCompra();
+            compra.PontoDemanda = new PontoDemanda();
+            var app = GetCompraApp();
+            var ex = Assert.Throws<ApplicationException>(() => app.Criar(compra));
+            Assert.AreEqual("A compra deve possuir ponto de demanda.", ex.Message);
+        }
+
+        [Test]
+        public void CompraDevePossuirIntegrante()
+        {
+            var compra = GetCompra();
+            compra.Integrante = new Integrante();
+            var app = GetCompraApp();
+            var ex = Assert.Throws<ApplicationException>(() => app.Criar(compra));
+            Assert.AreEqual("A compra deve possuir integrante.", ex.Message);
+        }
+
+        [Test]
+        public void CompraDevePossuirUsuario()
+        {
+            var compra = GetCompra();
+            compra.Integrante = new Integrante { Id = 1234, Usuario = new Usuario()};
+            var app = GetCompraApp();
+            var ex = Assert.Throws<ApplicationException>(() => app.Criar(compra));
+            Assert.AreEqual("O integrante da compra deve possuir um usuário.", ex.Message);
+        }
+
+        private static CompraAplicacao GetCompraApp()
         {
             var uow = new UnitOfWorkEF();
             return new CompraAplicacao(new CompraEF(uow), new ListaAplicacao(new ListaEF(uow), new ProdutoAplicacao(new ProdutoEF(uow))));
@@ -112,11 +136,12 @@ namespace LM.Core.Tests
             var listaItem = lista.Itens.First();
             var pedidoItem1 = pedidoItens.First();
             var pedidoItem2 = pedidoItens.OrderBy(i => i.Id).Skip(1).First();
-            
+
+            var integrante = pontoDemanda.GrupoDeIntegrantes.Integrantes.First();
             return new Compra
             {
                 PontoDemanda = new PontoDemanda { Id = pontoDemanda.Id },
-                Integrante = new Integrante{ Id = pontoDemanda.GrupoDeIntegrantes.Integrantes.First().Id },
+                Integrante = new Integrante { Id = integrante.Id, Usuario = new Usuario { Id = integrante .Usuario.Id} },
                 Itens = new Collection<CompraItem>
                 {
                     new ListaCompraItem { Item = new ListaItem { Id = listaItem.Id }, ProdutoId = listaItem.Produto.Id, Quantidade = 2, Valor = 2.5M, Status = StatusCompra.Comprado },

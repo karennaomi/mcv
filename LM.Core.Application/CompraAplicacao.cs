@@ -23,7 +23,7 @@ namespace LM.Core.Application
 
         public Compra Criar(Compra compra)
         {
-            if(compra.Itens == null || !compra.Itens.Any()) throw new ApplicationException("A compra deve possuir itens.");
+            compra.Validar();
             ChecarItensNovos(compra);
             return _compraRepo.Criar(compra);
         }
@@ -38,15 +38,6 @@ namespace LM.Core.Application
                 compraItemNovo.Item.QuantidadeEmEstoque = compraItemNovo.Quantidade;
                 compraItemNovo.Item.Status = "A";
                 _appLista.AdicionarItem(compra.PontoDemanda.Id, compraItemNovo.Item);
-                
-                //compra.Itens.Add(new ListaCompraItem
-                //{
-                //    Quantidade = compraItemNovo.Quantidade,
-                //    Valor = compraItemNovo.Valor,
-                //    Status = compraItemNovo.Status,
-                //    ItemSubstituto = compraItemNovo.ItemSubstituto,
-                //    Item = listaItem
-                //});
             }
         }
     }

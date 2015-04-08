@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LM.Core.Domain
 {
@@ -36,6 +37,14 @@ namespace LM.Core.Domain
             
             Itens.Add(itemOriginal);
             Itens.Add(itemSubstituto);
+        }
+
+        public void Validar()
+        {
+            if (Itens == null || !Itens.Any()) throw new ApplicationException("A compra deve possuir itens.");
+            if (PontoDemanda == null || PontoDemanda.Id == 0) throw new ApplicationException("A compra deve possuir ponto de demanda.");
+            if (Integrante == null || Integrante.Id == 0) throw new ApplicationException("A compra deve possuir integrante.");
+            if (Integrante.Usuario == null || Integrante.Usuario.Id == 0) throw new ApplicationException("O integrante da compra deve possuir um usuário.");
         }
     }
 }

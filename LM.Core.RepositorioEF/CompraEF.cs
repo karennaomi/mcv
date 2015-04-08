@@ -20,17 +20,24 @@ namespace LM.Core.RepositorioEF
             _uniOfWork.Contexto.Entry(compra.Integrante).State = EntityState.Unchanged;
             _uniOfWork.Contexto.Entry(compra.PontoDemanda).State = EntityState.Unchanged;
 
-            var lista = _uniOfWork.Contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == compra.PontoDemanda.Id);
+            var lista = _uniOfWork.Contexto.Listas.Local.FirstOrDefault(l => l.PontoDemanda.Id == compra.PontoDemanda.Id);
             foreach (var compraItem in compra.Itens)
             {
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
-                    if (lista == null || listaCompraItem.Item.Id <= 0) continue;
-                    var itemLocal = lista.Itens.FirstOrDefault(i => i.Id == listaCompraItem.Item.Id);
-                    if (itemLocal == null) continue;
-                    listaCompraItem.ProdutoId = itemLocal.Produto.Id;
-                    listaCompraItem.Item = itemLocal;
+                    if (lista != null)
+                    {
+                        var itemLocal = lista.Itens.FirstOrDefault(i => i.Id == listaCompraItem.Item.Id);
+                        if (itemLocal == null) continue;
+                        listaCompraItem.ProdutoId = itemLocal.Produto.Id;
+                        listaCompraItem.Item = itemLocal;
+                    }
+                    else if (listaCompraItem.Item.Id > 0)
+                    {
+                        _uniOfWork.Contexto.Entry(listaCompraItem.Item).State = EntityState.Unchanged;
+                    }
+                    
                 }
                 else if(compraItem is PedidoCompraItem)
                 {

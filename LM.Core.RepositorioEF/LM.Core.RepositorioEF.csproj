@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TemplateMensagemEF.cs" />
     <Compile Include="CompraEF.cs" />
     <Compile Include="CompraAtivaEF.cs" />
     <Compile Include="CidadeEF.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ContextoEF.cs" />
     <Compile Include="IntegranteEF.cs" />
     <Compile Include="ListaEF.cs" />
+    <Compile Include="MappingConfiguration\TemplateMensagemConfig.cs" />
     <Compile Include="MappingConfiguration\CompraAtivaConfig.cs" />
     <Compile Include="MappingConfiguration\CategoriaConfig.cs" />
     <Compile Include="MappingConfiguration\CompraConfig.cs" />
