@@ -10,7 +10,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             ToTable("TB_Compra_Item");
             HasKey(i => i.Id);
             Property(i => i.Id).HasColumnName("ID_COMPRA_ITEM");
-            Property(i => i.ProdutoId).HasColumnName("ID_PRODUTO");
+            Property(i => i.ProdutoId).HasColumnName("ID_PRODUTO").IsOptional();
             Property(i => i.Status).HasColumnName("ID_STATUS_COMPRA");
             Property(i => i.DataCompra).HasColumnName("DT_COMPRA").IsOptional();
             Property(i => i.Quantidade).HasColumnName("QT_COMPRA").IsOptional();

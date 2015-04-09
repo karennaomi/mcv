@@ -11,5 +11,6 @@ namespace LM.Core.Domain.Repositorio
         void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
+        void Salvar();
     }
 }

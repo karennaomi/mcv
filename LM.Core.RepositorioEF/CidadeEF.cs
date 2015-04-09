@@ -7,17 +7,21 @@ namespace LM.Core.RepositorioEF
 {
     public class CidadeEF : IRepositorioCidade
     {
-        private readonly ContextoEF _contextoEF;
+        private readonly ContextoEF _contexto;
         public CidadeEF()
         {
-            _contextoEF = new ContextoEF();
+            _contexto = new ContextoEF();
+        }
+        public CidadeEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
         }
 
         public Cidade Buscar(string nome)
         {
             try
             {
-                var cidade = _contextoEF.Cidades.SingleOrDefault(c => c.Nome == nome);
+                var cidade = _contexto.Cidades.AsNoTracking().SingleOrDefault(c => c.Nome == nome);
                 if (cidade == null) throw new ApplicationException(string.Format("A cidade {0} não foi encontrada na nossa base de dados.", nome));
                 return cidade;
             }

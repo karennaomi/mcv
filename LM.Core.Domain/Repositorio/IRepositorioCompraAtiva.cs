@@ -2,8 +2,7 @@
 {
     public interface IRepositorioCompraAtiva
     {
-        CompraAtiva Obter(long usuarioId, long pontoDemandaId);
         CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
-        CompraAtiva FinalizarCompra(CompraAtiva compraAtiva);
+        CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId);
     }
 }

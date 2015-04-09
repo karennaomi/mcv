@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using LM.Core.Domain;
@@ -40,14 +41,18 @@ namespace LM.Core.Application
         {
             _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
             usuario.Login = usuario.Email;
-            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new StatusUsuarioPontoDemanda();
-            usuario.StatusUsuarioPontoDemanda.StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta;
+            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
+            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta
+            });
 
             var integrante = new Integrante(usuario);
             usuario.MapIntegrantes = new Collection<Integrante> { integrante };
             usuario.Integrante.Persona = ObterPersonaDoUsuario(usuario);
 
             _repositorio.Criar(usuario);
+            _repositorio.Salvar();
             return usuario;
         }
 
@@ -68,11 +73,13 @@ namespace LM.Core.Application
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
             _repositorio.AtualizarStatusCadastro(usuarioId, statusCadastro, pontoDemandaId);
+            _repositorio.Salvar();
         }
 
         public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)
         {
             _repositorio.AtualizarDeviceInfo(usuarioId, deviceType, deviceId);
+            _repositorio.Salvar();
         }
     }
 }

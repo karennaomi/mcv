@@ -13,7 +13,7 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
-        public int ProdutoId { get; set; }
+        public int? ProdutoId { get; set; }
         public StatusCompra Status { get; set; }
         public DateTime? DataCompra { get; set; }
         public decimal? Quantidade { get; set; }

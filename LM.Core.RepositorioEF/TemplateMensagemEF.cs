@@ -6,15 +6,15 @@ namespace LM.Core.RepositorioEF
 {
     public class TemplateMensagemEF : IRepositorioTemplateMensagem
     {
-        private readonly ContextoEF _contextoEF;
+        private readonly ContextoEF _contexto;
         public TemplateMensagemEF()
         {
-            _contextoEF = new ContextoEF();
+            _contexto = new ContextoEF();
         }
 
         public T ObterPorTipo<T>(TipoTemplateMensagem tipo) where T : TemplateMensagem
         {
-            return _contextoEF.TemplatesMensagens.OfType<T>().FirstOrDefault(t => t.Tipo == tipo);
+            return _contexto.TemplatesMensagens.AsNoTracking().OfType<T>().FirstOrDefault(t => t.Tipo == tipo);
         }
     }
 }

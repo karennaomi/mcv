@@ -9,50 +9,52 @@ namespace LM.Core.RepositorioEF
 {
     public class UsuarioEF : IRepositorioUsuario
     {
-        private readonly IUnitOfWork<ContextoEF> _uniOfWork;
-        public UsuarioEF(IUnitOfWork<ContextoEF> uniOfWork)
+        private readonly ContextoEF _contexto;
+        public UsuarioEF(ContextoEF contexto)
         {
-            _uniOfWork = uniOfWork;
+            _contexto = contexto;
+        }
+        public UsuarioEF()
+        {
+            _contexto = new ContextoEF();
         }
 
         public Usuario Obter(long id)
         {
-            return _uniOfWork.Contexto.Usuarios.Find(id);
+            var usuario =_contexto.Usuarios.Find(id);
+            if (usuario == null) throw new ApplicationException("Usuário não encontrado, id " + id);
+            return usuario;
         }
 
         public Usuario ObterPorEmail(string email)
         {
-            return _uniOfWork.Contexto.Usuarios.SingleOrDefault(u => u.Email == email);
+            return _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
         }
 
         public Usuario Criar(Usuario usuario)
         {
-            _uniOfWork.Contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
-            usuario = _uniOfWork.Contexto.Usuarios.Add(usuario);
-            _uniOfWork.Contexto.SaveChanges();
+            _contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
+            usuario = _contexto.Usuarios.Add(usuario);
             return usuario;
         }
 
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
             var usuario = Obter(usuarioId);
-            usuario.StatusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
-            usuario.StatusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
-            if (pontoDemandaId != null && pontoDemandaId > 0)
-            {
-                usuario.StatusUsuarioPontoDemanda.PontoDemandaId = pontoDemandaId;
-            }
-            _uniOfWork.Contexto.SaveChanges();
+            var statusUsuarioPontoDemanda = (pontoDemandaId.HasValue ? usuario.StatusUsuarioPontoDemanda.SingleOrDefault(s => s.PontoDemandaId == pontoDemandaId) : usuario.StatusUsuarioPontoDemanda.First()) ?? usuario.StatusUsuarioPontoDemanda.First();
+            statusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
+            statusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
+            statusUsuarioPontoDemanda.PontoDemandaId = pontoDemandaId;
         }        
 
         public bool VerificarSeCpfJaExiste(string cpf)
         {
-            return _uniOfWork.Contexto.Usuarios.Any(u => u.Cpf == cpf);
+            return _contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf);
         }
 
         public Usuario ValidarLogin(string email, string senha)
         {
-            var usuario = _uniOfWork.Contexto.Usuarios.FirstOrDefault(u => u.Login == email && u.Senha == senha);
+            var usuario = _contexto.Usuarios.AsNoTracking().FirstOrDefault(u => u.Login == email && u.Senha == senha);
             if(usuario == null) throw new LoginInvalidoException();
             return usuario;
         }
@@ -62,7 +64,11 @@ namespace LM.Core.RepositorioEF
             var usuario = Obter(usuarioId);
             usuario.DeviceType = deviceType;
             usuario.DeviceId = deviceId;
-            _uniOfWork.Contexto.SaveChanges();
+        }
+
+        public void Salvar()
+        {
+            _contexto.SaveChanges();
         }
     }
 }

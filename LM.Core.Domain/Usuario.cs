@@ -37,7 +37,7 @@ namespace LM.Core.Domain
         public TipoUsuario Tipo { get; set; }
         public string UsuarioIdRedeSocial { get; set; }
 
-        public virtual StatusUsuarioPontoDemanda StatusUsuarioPontoDemanda { get; set; }
+        public virtual ICollection<StatusUsuarioPontoDemanda> StatusUsuarioPontoDemanda { get; set; }
         public virtual ICollection<Integrante> MapIntegrantes { get; set; }
 
         public Integrante Integrante { get { return MapIntegrantes.First(); }}

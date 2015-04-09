@@ -122,8 +122,7 @@ namespace LM.Core.Tests
 
         private static CompraAplicacao GetCompraApp()
         {
-            var uow = new UnitOfWorkEF();
-            return new CompraAplicacao(new CompraEF(uow), new ListaAplicacao(new ListaEF(uow), new ProdutoAplicacao(new ProdutoEF(uow))));
+            return new CompraAplicacao(new CompraEF());
         }
 
         private Compra GetCompra()

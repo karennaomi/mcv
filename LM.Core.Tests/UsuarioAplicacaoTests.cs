@@ -22,7 +22,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 usuario = app.Criar(usuario);
-                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesPessoaisCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesPessoaisCompleta, usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
             }
         }
 
@@ -49,7 +49,7 @@ namespace LM.Core.Tests
                 var usuario = app.Criar(Fakes.Usuario());
                 app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
                 usuario = app.Obter(usuario.Id);
-                Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
+                Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
             }
         }
 
@@ -63,8 +63,8 @@ namespace LM.Core.Tests
                 var usuario = app.Criar(Fakes.Usuario());
                 app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, pontoDemandaId);
                 usuario = app.Obter(usuario.Id);
-                Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.StatusCadastro);
-                Assert.AreEqual(pontoDemandaId, usuario.StatusUsuarioPontoDemanda.PontoDemandaId);
+                Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.AreEqual(pontoDemandaId, usuario.StatusUsuarioPontoDemanda.First().PontoDemandaId);
             }
         }
 
@@ -140,7 +140,7 @@ namespace LM.Core.Tests
 
         private static IUsuarioAplicacao ObterAppUsuario()
         {
-            return new UsuarioAplicacao(new UsuarioEF(new UnitOfWorkEF()), new PersonaAplicacao(new PersonaEF()));
+            return new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
         }
     }
 }

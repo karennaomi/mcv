@@ -22,7 +22,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(u => u.DeviceId).HasColumnName("TX_DeviceId");
             Property(u => u.DeviceType).HasColumnName("TX_DeviceType");
 
-            HasRequired(u => u.StatusUsuarioPontoDemanda).WithRequiredPrincipal(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
+            HasMany(u => u.StatusUsuarioPontoDemanda).WithRequired(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
 
             Ignore(u => u.Integrante);
             Ignore(u => u.UsuarioIdRedeSocial);

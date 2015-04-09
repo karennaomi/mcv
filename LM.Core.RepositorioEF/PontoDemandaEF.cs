@@ -8,35 +8,30 @@ namespace LM.Core.RepositorioEF
 {
     public class PontoDemandaEF : IRepositorioPontoDemanda
     {
-        private readonly IUnitOfWork<ContextoEF> _uniOfWork;
-        public PontoDemandaEF(IUnitOfWork<ContextoEF> uniOfWork)
+        private readonly ContextoEF _contexto;
+        public PontoDemandaEF()
         {
-            _uniOfWork = uniOfWork;
+            _contexto = new ContextoEF();
         }
 
         public IList<PontoDemanda> Listar(long usuarioId)
         {
-            return _uniOfWork.Contexto.PontosDemanda.Where(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId)).ToList();
+            return _contexto.PontosDemanda.AsNoTracking().Where(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId)).ToList();
         }
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _uniOfWork.Contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
+            return _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
         }
 
         public void SalvarAlteracoes()
         {
-            _uniOfWork.Contexto.SaveChanges();
+            _contexto.SaveChanges();
         }
 
-        public PontoDemanda Criar(PontoDemanda pontoDemanda)
+        public PontoDemanda Criar(long usuarioId, PontoDemanda novoPontoDemanda)
         {
-            _uniOfWork.Contexto.Entry(pontoDemanda.GrupoDeIntegrantes).State = EntityState.Modified;
-            _uniOfWork.Contexto.Entry(pontoDemanda.Endereco.Cidade).State = EntityState.Unchanged;
-            _uniOfWork.Contexto.PontosDemanda.Add(pontoDemanda);
-            _uniOfWork.Contexto.SaveChanges();
-            return pontoDemanda;
-                
+            return new ComandoCriarPontoDemanda(usuarioId, novoPontoDemanda).Executar();
         }
     }
 }

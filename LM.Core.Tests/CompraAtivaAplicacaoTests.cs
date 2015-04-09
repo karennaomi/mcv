@@ -54,7 +54,7 @@ namespace LM.Core.Tests
         [Test]
         public void LancaExcecaoQuandoNaoExisteCompraAtivaETentaFinalizar()
         {
-            Assert.Throws<ApplicationException>(() => GetMockedApp().FinalizarCompra(9999, 9999));
+            Assert.Throws<ApplicationException>(() => GetMockedApp().FinalizarCompra(UsuarioId, 666));
         }
 
         private static ICompraAtivaAplicacao GetApp(INotificacaoAplicacao appNotificacao)
@@ -65,6 +65,7 @@ namespace LM.Core.Tests
         private static ICompraAtivaAplicacao GetMockedApp()
         {
             var mockRepo = new Mock<IRepositorioCompraAtiva>();
+            mockRepo.Setup(r => r.FinalizarCompra(It.IsAny<long>(), It.IsAny<long>())).Throws<ApplicationException>();
             return new CompraAtivaAplicacao(mockRepo.Object, GetNotificacaoApp(GetMockRestService().Object));
         }
         

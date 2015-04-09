@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.Remoting;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -19,29 +18,14 @@ namespace LM.Core.Application
     public class PontoDemandaAplicacao : IPontoDemandaAplicacao
     {
         private readonly IRepositorioPontoDemanda _repositorio;
-        private readonly IUsuarioAplicacao _appUsuario;
-        private readonly ICidadeAplicacao _appCidade;
-
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario, ICidadeAplicacao appCidade)
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio)
         {
             _repositorio = repositorio;
-            _appUsuario = appUsuario;
-            _appCidade = appCidade;
         }
 
         public PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda)
         {
-            pontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario(usuarioId);
-            pontoDemanda.GrupoDeIntegrantes.Nome = "Integrantes: " + pontoDemanda.Nome;
-            pontoDemanda.Endereco.Cidade = new Cidade { Id = _appCidade.Buscar(pontoDemanda.Endereco.Cidade.Nome).Id };
-            pontoDemanda = _repositorio.Criar(pontoDemanda);
-            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
-            return pontoDemanda;
-        }
-
-        private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario(long usuarioId)
-        {
-            return _appUsuario.Obter(usuarioId).Integrante.GrupoDeIntegrantes;
+            return _repositorio.Criar(usuarioId, pontoDemanda);
         }
 
         public IList<PontoDemanda> Listar(long usuarioId)

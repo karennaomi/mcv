@@ -8,26 +8,36 @@ namespace LM.Core.RepositorioEF
 {
     public class ProdutoEF : IRepositorioProduto
     {
-        private readonly IUnitOfWork<ContextoEF> _uniOfWork;
-        public ProdutoEF(IUnitOfWork<ContextoEF> uniOfWork)
+        private readonly ContextoEF _contexto;
+        public ProdutoEF()
         {
-            _uniOfWork = uniOfWork;
+            _contexto = new ContextoEF();
+        }
+
+        public ProdutoEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
         }
 
         public Produto Criar(Produto produto)
         {
             foreach (var categoria in produto.Categorias)
             {
-                _uniOfWork.Contexto.Entry(categoria).State = EntityState.Unchanged;
+                _contexto.Entry(categoria).State = EntityState.Unchanged;
             }
-            produto = _uniOfWork.Contexto.Produtos.Add(produto);
-            _uniOfWork.Contexto.SaveChanges();
+            produto = _contexto.Produtos.Add(produto);
             return produto;
         }
 
         public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
         {
-            return _uniOfWork.Contexto.Produtos.Where(p => p.Categorias.Any(c => c.Id == categoriaId));
+            return _contexto.Produtos.AsNoTracking().Where(p => p.Categorias.Any(c => c.Id == categoriaId));
+        }
+
+
+        public void Salvar()
+        {
+            _contexto.SaveChanges();
         }
     }
 }

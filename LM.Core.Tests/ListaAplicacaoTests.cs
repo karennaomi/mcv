@@ -103,8 +103,7 @@ namespace LM.Core.Tests
         
         private static IListaAplicacao ObterListaApp()
         {
-            var uow = new UnitOfWorkEF();
-            return new ListaAplicacao(new ListaEF(uow), new ProdutoAplicacao(new ProdutoEF(uow)));
+            return new ListaAplicacao(new ListaEF());
         }
     }
 }

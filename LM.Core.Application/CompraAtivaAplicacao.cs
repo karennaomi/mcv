@@ -30,9 +30,7 @@ namespace LM.Core.Application
 
         public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)
         {
-            var compraAtiva = _compraAtivaRepo.Obter(usuarioId, pontoDemandaId);
-            if (compraAtiva == null) throw new ApplicationException("Nenhuma compra ativa para o ponto de demanda especificado.");
-            compraAtiva = _compraAtivaRepo.FinalizarCompra(compraAtiva);
+            var compraAtiva = _compraAtivaRepo.FinalizarCompra(usuarioId, pontoDemandaId);
             _appNotificacao.NotificarIntegrantesDoPontoDamanda(usuarioId, pontoDemandaId, TipoTemplateMensagem.FinalizarCompra, "compras");
             return compraAtiva;
         }

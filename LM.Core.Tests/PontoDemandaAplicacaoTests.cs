@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using System.Transactions;
 using LM.Core.Application;
 using LM.Core.Domain;
@@ -19,35 +19,27 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var unitOfWork = new UnitOfWorkEF();
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(unitOfWork), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(unitOfWork), appUsuario, new CidadeAplicacao(new CidadeEF()));
-                app.Criar(usuario.Id, Fakes.PontoDemanda());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var pontoDemanda = Fakes.PontoDemanda();
+                pontoDemanda.Id = 0;
+                app.Criar(usuario.Id, pontoDemanda);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
             }
-        }
-
-        [Test]
-        public void CriacaoDoPontoDemandaDeveDefinirStatusCadastroComoEtapaDeInformacoesDoPontoDeDemandaCompleta()
-        {
-            var pontoDemanda = Fakes.PontoDemanda();
-            var mockAppUsuario = ObterMockAppUsuario();
-            var app = ObterPontoDemandaAplicacao(mockAppUsuario.Object, pontoDemanda);
-            pontoDemanda = app.Criar(9999, pontoDemanda);
-            mockAppUsuario.Verify(m => m.AtualizarStatusCadastro(9999, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id));
         }
 
         [Test]
         public void PontoDemandaQueNaoPertenceAoUsuarioLancaException()
         {
-            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var app = ObterPontoDemandaAplicacao();
             Assert.Throws<PontoDemandaInvalidoException>(() => app.VerificarPontoDemanda(9999, 3));
         }
 
         [Test]
         public void PontoDemandaQuePertenceAoUsuarioRetornaIdCorreto()
         {
-            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var app = ObterPontoDemandaAplicacao();
             var pontoDemandaId = app.VerificarPontoDemanda(9999, 2);
             Assert.AreEqual(2, pontoDemandaId);
         }
@@ -55,7 +47,7 @@ namespace LM.Core.Tests
         [Test]
         public void Frequencia1DefineReposicao7Estoque3()
         {
-            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var app = ObterPontoDemandaAplicacao();
             var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 1);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(7, pontoDemanda.QuantidadeDiasAlertaReposicao);
@@ -64,7 +56,7 @@ namespace LM.Core.Tests
         [Test]
         public void Frequencia2DefineReposicao14Estoque3()
         {
-            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var app = ObterPontoDemandaAplicacao();
             var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 2);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(14, pontoDemanda.QuantidadeDiasAlertaReposicao);
@@ -73,39 +65,29 @@ namespace LM.Core.Tests
         [Test]
         public void Frequencia3DefineReposicao28Estoque3()
         {
-            var app = ObterPontoDemandaAplicacao(ObterMockAppUsuario().Object);
+            var app = ObterPontoDemandaAplicacao();
             var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 3);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(28, pontoDemanda.QuantidadeDiasAlertaReposicao);
         }
 
-        private IPontoDemandaAplicacao ObterPontoDemandaAplicacao(IUsuarioAplicacao appUsuario, PontoDemanda pontoDemanda = null)
+        private static IPontoDemandaAplicacao ObterPontoDemandaAplicacao(PontoDemanda pontoDemanda = null)
         {
-            return new PontoDemandaAplicacao(ObterPontoDemandaRepo(pontoDemanda), appUsuario, new CidadeAplicacao(new CidadeEF()));
+            return new PontoDemandaAplicacao(ObterPontoDemandaRepo(pontoDemanda));
         }
 
-        private IRepositorioPontoDemanda ObterPontoDemandaRepo(PontoDemanda pontoDemanda)
+        private static IRepositorioPontoDemanda ObterPontoDemandaRepo(PontoDemanda pontoDemanda)
         {
             var repoMock = new Mock<IRepositorioPontoDemanda>();
             repoMock.Setup(r => r.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(Fakes.PontoDemanda());
 
-            repoMock.Setup(r => r.Criar(pontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 1; return x; });
+            repoMock.Setup(r => r.Criar(9999, pontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 1; return x; });
             repoMock.Setup(r => r.Listar(It.IsAny<long>())).Returns(new List<PontoDemanda>
             {
                 new PontoDemanda { Id = 1 }, new PontoDemanda { Id = 2 }
             
             });
             return repoMock.Object;
-        }
-
-        private static Mock<IUsuarioAplicacao> ObterMockAppUsuario()
-        {
-            var integrante = Fakes.Integrante(30, "M");
-            integrante.GrupoDeIntegrantes = new GrupoDeIntegrantes();
-            integrante.Usuario.MapIntegrantes = new Collection<Integrante> { integrante };
-            var repoMock = new Mock<IUsuarioAplicacao>();
-            repoMock.Setup(r => r.Obter(It.IsAny<long>())).Returns(integrante.Usuario);
-            return repoMock;
         }
     }
 }

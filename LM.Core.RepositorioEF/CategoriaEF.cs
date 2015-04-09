@@ -7,15 +7,15 @@ namespace LM.Core.RepositorioEF
 {
     public class CategoriaEF : IRepositorioCategoria
     {
-        private readonly ContextoEF _contextoEF;
+        private readonly ContextoEF _contexto;
         public CategoriaEF()
         {
-            _contextoEF = new ContextoEF();
+            _contexto = new ContextoEF();
         }
 
         public IList<Categoria> Listar(int secaoId)
         {
-            return _contextoEF.Categorias.Where(c => c.CategoriaPai.Id == secaoId).OrderBy(c => c.Nome).ToList();
+            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id == secaoId).OrderBy(c => c.Nome).ToList();
         }
     }
 }

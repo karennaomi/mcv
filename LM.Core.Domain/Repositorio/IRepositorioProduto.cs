@@ -6,5 +6,6 @@ namespace LM.Core.Domain.Repositorio
     {
         Produto Criar(Produto produto);
         IEnumerable<Produto> ListarPorCategoria(int categoriaId);
+        void Salvar();
     }
 }

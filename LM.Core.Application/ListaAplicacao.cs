@@ -18,22 +18,22 @@ namespace LM.Core.Application
     public class ListaAplicacao : IListaAplicacao
     {
         private readonly IRepositorioLista _repositorio;
-        private readonly IProdutoAplicacao _appProduto;
-        public ListaAplicacao(IRepositorioLista repositorio, IProdutoAplicacao appProduto)
+        public ListaAplicacao(IRepositorioLista repositorio)
         {
             _repositorio = repositorio;
-            _appProduto = appProduto;
         }
 
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
-            if (item.Produto.Id == 0) _appProduto.Criar(item.Produto);
-            return _repositorio.AdicionarItem(pontoDemandaId, item);
+            item = _repositorio.AdicionarItem(pontoDemandaId, item);
+            _repositorio.Salvar();
+            return item;
         }
 
         public void RemoverItem(long pontoDemandaId, long itemId)
         {
             _repositorio.RemoverItem(pontoDemandaId, itemId);
+            _repositorio.Salvar();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
@@ -49,16 +49,19 @@ namespace LM.Core.Application
         public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
             _repositorio.AtualizarEstoqueDoItem(pontoDemandaId, itemId, quantidade);
+            _repositorio.Salvar();
         }
 
         public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
             _repositorio.AtualizarConsumoDoItem(pontoDemandaId, itemId, quantidade);
+            _repositorio.Salvar();
         }
 
         public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
         {
             _repositorio.AtualizarPeriodoDoItem(pontoDemandaId, itemId, periodoId);
+            _repositorio.Salvar();
         }
     }
 }

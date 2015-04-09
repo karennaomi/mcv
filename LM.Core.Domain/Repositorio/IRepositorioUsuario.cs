@@ -10,5 +10,6 @@ namespace LM.Core.Domain.Repositorio
         bool VerificarSeCpfJaExiste(string cpf);
         Usuario ValidarLogin(string email, string senha);
         void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId);
+        void Salvar();
     }
 }

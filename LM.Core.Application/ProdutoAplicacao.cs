@@ -20,7 +20,9 @@ namespace LM.Core.Application
 
         public Produto Criar(Produto produto)
         {
-            return _repositorio.Criar(produto);
+            produto = _repositorio.Criar(produto);
+            _repositorio.Salvar();
+            return produto;
         }
 
         public IEnumerable<Produto> ListarPorCategoria(int categoriaId)

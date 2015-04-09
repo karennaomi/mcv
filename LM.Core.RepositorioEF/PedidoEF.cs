@@ -9,10 +9,10 @@ namespace LM.Core.RepositorioEF
 {
     public class PedidoEF : IRepositorioPedido
     {
-        private readonly ContextoEF _contextoEF;
+        private readonly ContextoEF _contexto;
         public PedidoEF()
         {
-            _contextoEF = new ContextoEF();
+            _contexto = new ContextoEF();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
@@ -39,7 +39,7 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(itens, id);
             item.Status = StatusPedido.ExcluidoPeloUsuario;
             item.DataAlteracao = DateTime.Now;
-            _contextoEF.SaveChanges();
+            _contexto.SaveChanges();
         }
 
         public void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade)
@@ -47,31 +47,30 @@ namespace LM.Core.RepositorioEF
             var item = ObterItem(ListarItens(pontoDemandaId), itemId);
             item.Quantidade = quantidade;
             item.DataAlteracao = DateTime.Now;
-            _contextoEF.SaveChanges();
+            _contexto.SaveChanges();
         }
 
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
             item.PontoDemanda = new PontoDemanda { Id = pontoDemandaId };
-            var usuario = _contextoEF.Usuarios.Find(item.Integrante.Usuario.Id);
-            item.Integrante = usuario.Integrante;
-            _contextoEF.Entry(item.PontoDemanda).State = EntityState.Unchanged;
-            _contextoEF.Entry(item.Produto).State = EntityState.Unchanged;
+            item.Integrante = _contexto.Usuarios.Single(u => u.Id == item.Integrante.Usuario.Id).Integrante;
+            _contexto.Entry(item.PontoDemanda).State = EntityState.Unchanged;
+            _contexto.Entry(item.Produto).State = EntityState.Unchanged;
             item.Data = DateTime.Now;
             item.DataInclusao = DateTime.Now;
             item.DataAlteracao = DateTime.Now;
             item.Status = StatusPedido.Pendente;
-            _contextoEF.PedidoItens.Add(item);
-            _contextoEF.SaveChanges();
+            _contexto.PedidoItens.Add(item);
+            _contexto.SaveChanges();
             return item;
         }
 
         private IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _contextoEF.PedidoItens.Where(p => p.PontoDemanda.Id == pontoDemandaId);
+            return _contexto.PedidoItens.Where(p => p.PontoDemanda.Id == pontoDemandaId);
         }
 
-        private PedidoItem ObterItem(IEnumerable<PedidoItem> itens, long id)
+        private static PedidoItem ObterItem(IEnumerable<PedidoItem> itens, long id)
         {
             var item = itens.SingleOrDefault(i => i.Id == id);
             if (item == null) throw new ApplicationException("O pedido não possui o item informado.");
