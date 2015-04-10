@@ -19,12 +19,25 @@ namespace LM.Core.RepositorioEF
         {
             ChecarItensNovos();
             ChecarItens();
-            
-            _contexto.Entry(_novaCompra.Integrante).State = EntityState.Unchanged;
+
+            ChecarIntegrante();
             ChecarPontoDemanda();
             
             _novaCompra = _contexto.Compras.Add(_novaCompra);
             return _novaCompra;
+        }
+
+        private void ChecarIntegrante()
+        {
+            var integranteLocal = _contexto.Integrantes.Local.SingleOrDefault(i => i.Id == _novaCompra.Integrante.Id);
+            if (integranteLocal != null)
+            {
+                _novaCompra.Integrante = integranteLocal;
+            }
+            else
+            {
+                _contexto.Entry(_novaCompra.Integrante).State = EntityState.Unchanged;
+            }
         }
 
         private void ChecarPontoDemanda()
