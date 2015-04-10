@@ -17,9 +17,14 @@ namespace LM.Core.Application
     public class PedidoAplicacao : IPedidoAplicacao
     {
         private readonly IRepositorioPedido _repositorio;
-        public PedidoAplicacao(IRepositorioPedido repositorio)
+        private readonly ICompraAtivaAplicacao _appCompraAtiva;
+        private readonly INotificacaoAplicacao _appNotificacao;
+
+        public PedidoAplicacao(IRepositorioPedido repositorio, ICompraAtivaAplicacao appCompraAtiva, INotificacaoAplicacao appNotificacao)
         {
             _repositorio = repositorio;
+            _appCompraAtiva = appCompraAtiva;
+            _appNotificacao = appNotificacao;
         }
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
@@ -49,7 +54,13 @@ namespace LM.Core.Application
 
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
-            return _repositorio.AdicionarItem(pontoDemandaId, item);
+            item = _repositorio.AdicionarItem(pontoDemandaId, item);
+            var compraAtiva = _appCompraAtiva.Obter(pontoDemandaId);
+            if (compraAtiva != null)
+            {
+                _appNotificacao.Notificar(item.Integrante.Usuario, compraAtiva.Usuario, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, "pedidos");
+            }
+            return item;
         }
     }
 }

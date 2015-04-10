@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System.Linq;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
@@ -42,19 +43,15 @@ namespace LM.Core.Tests
         [Test]
         public void AtivarCompraNotificaUsuarios()
         {
-            using (new TransactionScope())
-            {
-                var mockRestService = GetMockRestService();
-                var appNotificacao = GetNotificacaoApp(mockRestService.Object);
-                var compraAtiva = GetApp(appNotificacao).AtivarCompra(UsuarioId, PontoDemandaId);
-                mockRestService.Verify(v => v.Post(It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(2));
-            }
+            var mockRestService = GetMockRestService();
+            GetMockedApp(mockRestService.Object).AtivarCompra(UsuarioId, PontoDemandaId);
+            mockRestService.Verify(v => v.Post(It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(2));
         }
 
         [Test]
         public void LancaExcecaoQuandoNaoExisteCompraAtivaETentaFinalizar()
         {
-            Assert.Throws<ApplicationException>(() => GetMockedApp().FinalizarCompra(UsuarioId, 666));
+            Assert.Throws<ApplicationException>(() => GetMockedApp(GetMockRestService().Object).FinalizarCompra(UsuarioId, 666));
         }
 
         private static ICompraAtivaAplicacao GetApp(INotificacaoAplicacao appNotificacao)
@@ -62,16 +59,24 @@ namespace LM.Core.Tests
             return new CompraAtivaAplicacao(new CompraAtivaEF(), appNotificacao);
         }
 
-        private static ICompraAtivaAplicacao GetMockedApp()
+        private static ICompraAtivaAplicacao GetMockedApp(IRestService restService)
         {
+            var pontoDemanda = Fakes.PontoDemanda();
+            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante {Usuario = new Usuario {Id = 7}});
+            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante {Usuario = new Usuario {Id = 9}});
             var mockRepo = new Mock<IRepositorioCompraAtiva>();
+            mockRepo.Setup(r => r.AtivarCompra(It.IsAny<long>(), It.IsAny<long>())).Returns(new CompraAtiva
+            {
+                PontoDemanda = pontoDemanda,
+                Usuario = pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == 6).Usuario
+            });
             mockRepo.Setup(r => r.FinalizarCompra(It.IsAny<long>(), It.IsAny<long>())).Throws<ApplicationException>();
-            return new CompraAtivaAplicacao(mockRepo.Object, GetNotificacaoApp(GetMockRestService().Object));
+            return new CompraAtivaAplicacao(mockRepo.Object, GetNotificacaoApp(restService));
         }
         
         private static INotificacaoAplicacao GetNotificacaoApp(IRestService restService)
         {
-            return new NotificacaoAplicacao(restService, GetPontoDemandaApp(), new TemplateMensagemAplicacao(new TemplateMensagemEF()));
+            return new NotificacaoAplicacao(restService, new TemplateMensagemAplicacao(new TemplateMensagemEF()));
         }
 
         private static Mock<IRestService> GetMockRestService()

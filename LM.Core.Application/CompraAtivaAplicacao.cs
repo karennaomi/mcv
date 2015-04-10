@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 
 namespace LM.Core.Application
 {
     public interface ICompraAtivaAplicacao
     {
+        CompraAtiva Obter(long pontoDemandaId);
         CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
         CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId);
     }
@@ -21,17 +20,22 @@ namespace LM.Core.Application
             _appNotificacao = appNotificacao;
         }
 
+        public CompraAtiva Obter(long pontoDemandaId)
+        {
+            return _compraAtivaRepo.Obter(pontoDemandaId);
+        }
+
         public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
             var compraAtiva = _compraAtivaRepo.AtivarCompra(usuarioId, pontoDemandaId);
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(usuarioId, pontoDemandaId, TipoTemplateMensagem.AtivarCompra, "compras");
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario, compraAtiva.PontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
             return compraAtiva;
         }
 
         public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)
         {
             var compraAtiva = _compraAtivaRepo.FinalizarCompra(usuarioId, pontoDemandaId);
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(usuarioId, pontoDemandaId, TipoTemplateMensagem.FinalizarCompra, "compras");
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario, compraAtiva.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, "compras");
             return compraAtiva;
         }
     }

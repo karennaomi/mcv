@@ -1,6 +1,8 @@
 ﻿using LM.Core.Application;
 using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
 using System.Transactions;
@@ -75,7 +77,38 @@ namespace LM.Core.Tests
 
         private static IPedidoAplicacao ObterPedidoApp()
         {
-            return new PedidoAplicacao(new PedidoEF());
+            return new PedidoAplicacao(new PedidoEF(), GetCompraAtivaApp(), GetAppNotificacao(GetMockRestService().Object));
+        }
+
+        private static ICompraAtivaAplicacao GetCompraAtivaApp()
+        {
+            var repoMock = new Mock<IRepositorioCompraAtiva>();
+            repoMock.Setup(r => r.Obter(It.IsAny<long>())).Returns(new CompraAtiva
+            {
+                Usuario = new Usuario { Id = 1, Nome = "John" }
+            });
+            return new CompraAtivaAplicacao(repoMock.Object, null);
+        }
+
+        private static INotificacaoAplicacao GetAppNotificacao(IRestService restService)
+        {
+            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
+        }
+
+        private static ITemplateMensagemAplicacao GetTemplateMensagemApp()
+        {
+            var mockTemplateMensagemApp = new Mock<ITemplateMensagemAplicacao>();
+            mockTemplateMensagemApp.Setup(t => t.ObterPorTipo<TemplateMensagemPush>(It.IsAny<TipoTemplateMensagem>()))
+                .Returns(new TemplateMensagemPush
+                {
+                    Mensagem = "{PontoDemanda.Nome} {Remetente.Nome} {Destinatario.Nome}"
+                });
+            return mockTemplateMensagemApp.Object;
+        }
+
+        private static Mock<IRestService> GetMockRestService()
+        {
+            return new Mock<IRestService>();
         }
     }
 }

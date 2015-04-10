@@ -17,8 +17,8 @@ namespace LM.Core.Tests
         {
             var restService = new RestServiceWithRestSharp("http://localhost:45678");
             var appPontoDemanda = new PontoDemandaAplicacao(new PontoDemandaEF());
-            var appNotificacao = new NotificacaoAplicacao(restService, appPontoDemanda, new TemplateMensagemAplicacao(new TemplateMensagemEF()));
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(6, 17, TipoTemplateMensagem.AtivarCompra, "compras");
+            var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()));
+            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario{ Id = 6 }, new PontoDemanda { Id = 17 } , TipoTemplateMensagem.AtivarCompra, "compras");
         }
 
         [Test]
@@ -26,13 +26,24 @@ namespace LM.Core.Tests
         {
             var mockRestService = GetMockRestService();
             var appNotificacao = GetAppNotificacao(mockRestService.Object);
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(6, 17, TipoTemplateMensagem.AtivarCompra, "compras");
+            var pontoDemanda = Fakes.PontoDemanda();
+            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante{ Usuario = new Usuario { Id = 7 }});
+            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario { Id = 6 } , pontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
+            mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
+        }
+
+        [Test]
+        public void EnviaNotificacaoParaUsuarioEmCompraAtiva()
+        {
+            var mockRestService = GetMockRestService();
+            var appNotificacao = GetAppNotificacao(mockRestService.Object);
+            appNotificacao.Notificar(new Usuario { Id = 6 }, new Usuario { Id = 7 }, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.PedidoItemCriado, "compras");
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
         private static INotificacaoAplicacao GetAppNotificacao(IRestService restService)
         {
-            return new NotificacaoAplicacao(restService, GetPontoDemandaApp(), GetTemplateMensagemApp());
+            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
         }
 
         private static ITemplateMensagemAplicacao GetTemplateMensagemApp()
