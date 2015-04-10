@@ -6,6 +6,11 @@ namespace LM.Core.Domain
 {
     public class Endereco
     {
+        public Endereco()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+        }
+
         public long Id { get; set; }
         [DisplayName("Endereço")]
         public string Descricao { get; set; }

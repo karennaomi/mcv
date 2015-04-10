@@ -6,6 +6,10 @@ namespace LM.Core.Domain
 {
     public class PontoDemanda
     {
+        public PontoDemanda()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+        }
         public long Id { get; set; }
         public string Nome { get; set; }
         public short? QuantidadeDiasAlertaReposicao { get; set; }
