@@ -26,6 +26,7 @@ namespace LM.Core.Tests
             return new PontoDemanda
             {
                 Id = 666,
+                Tipo = TipoPontoDemanda.Praia,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes
                 {
                     Integrantes = new List<Integrante>{ new Integrante{ Id = 1234 }}

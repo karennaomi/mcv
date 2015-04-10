@@ -75,10 +75,6 @@
       <Project>{8da30815-769e-4227-9c93-eba728d7d8d4}</Project>
       <Name>LM.Core.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LM.Core.Repository\LM.Core.Repository.csproj">
-      <Project>{f9c5e17c-5a94-455c-aeef-4a934509f6f2}</Project>
-      <Name>LM.Core.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
