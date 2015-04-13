@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using LM.Core.Domain;
 
@@ -25,6 +26,7 @@ namespace LM.Core.RepositorioEF
             _novoPontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
             _novoPontoDemanda.Endereco.Cidade = _cidadeRepo.Buscar(_novoPontoDemanda.Endereco.Cidade.Nome);
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
+            if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista>{ new Lista() };
             if (_novoPontoDemanda.LojasFavoritas != null)
             {
                 foreach (var loja in _novoPontoDemanda.LojasFavoritas)

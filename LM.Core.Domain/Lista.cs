@@ -5,6 +5,13 @@ namespace LM.Core.Domain
 {
     public class Lista
     {
+        public Lista()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+            Nome = "Lista Gerada";
+            Status = "A";
+        }
+
         public long Id { get; set; }
         public string Nome { get; set; }
         public string Status { get; set; }

@@ -25,7 +25,9 @@ namespace LM.Core.Tests
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
-                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.IsTrue(pontoDemandaNovo.Listas.Any());
             }
         }
 
