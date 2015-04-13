@@ -32,6 +32,15 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void MapearPontoDemandaLojasFavoritas()
+        {
+            var pontoDemanda = _contexto.PontosDemanda.Find(4);
+            Assert.IsTrue(pontoDemanda.LojasFavoritas.Any());
+            Assert.IsNotNull(pontoDemanda.LojasFavoritas.First().Info.Endereco);
+        }
+
+
+        [Test]
         public void MapearIntegrante()
         {
             var integrante = _contexto.Integrantes.First();
@@ -120,6 +129,14 @@ namespace LM.Core.Tests
             var templatePush = _contexto.TemplatesMensagens.OfType<TemplateMensagemPush>().First();
             Assert.IsNotNull(templateEmail);
             Assert.IsNotNull(templatePush);
+        }
+
+        [Test]
+        public void MapearLojas()
+        {
+            var loja = _contexto.Lojas.First();
+            Assert.IsNotNull(loja.Info);
+            Assert.IsNotNull(loja.Info.Endereco);
         }
     }
 }

@@ -30,6 +30,62 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void CriarPontoDemandaComLojasFavoritas()
+        {
+            using (new TransactionScope())
+            {
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var pontoDemanda = Fakes.PontoDemanda();
+                pontoDemanda.LojasFavoritas = Fakes.Lojas();
+                pontoDemanda.Id = 0;
+                app.Criar(usuario.Id, pontoDemanda);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.IsTrue(pontoDemanda.LojasFavoritas.All(l => l.Id > 0));
+            }
+        }
+
+        [Test]
+        public void AdicionarLojaFavoritaNoPontoDemanda()
+        {
+            using (new TransactionScope())
+            {
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var pontoDemanda = Fakes.PontoDemanda();
+                pontoDemanda.Id = 0;
+                pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
+                app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
+
+                var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
+                Assert.IsTrue(pontoDemandaComLoja.LojasFavoritas.All(l => l.Id > 0));
+            }
+        }
+
+        [Test]
+        public void RemoverLojaFavoritaNoPontoDemanda()
+        {
+            using (new TransactionScope())
+            {
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var pontoDemanda = Fakes.PontoDemanda();
+                pontoDemanda.Id = 0;
+                pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
+                app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
+                
+                var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
+                app.RemoverLojaFavorita(usuario.Id, pontoDemandaComLoja.Id, pontoDemandaComLoja.LojasFavoritas.First().Id);
+
+                var pontoDemandaRemovida = app.Obter(usuario.Id, pontoDemanda.Id);
+                Assert.IsFalse(pontoDemandaRemovida.LojasFavoritas.Any());
+            }
+        }
+
+        [Test]
         public void PontoDemandaQueNaoPertenceAoUsuarioLancaException()
         {
             var app = ObterPontoDemandaAplicacao();

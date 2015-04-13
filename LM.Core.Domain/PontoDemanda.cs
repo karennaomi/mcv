@@ -22,6 +22,7 @@ namespace LM.Core.Domain
         public virtual Endereco Endereco { get; set; }
         public virtual GrupoDeIntegrantes GrupoDeIntegrantes { get; set; }
         public virtual ICollection<Lista> Listas { get; set; }
+        public virtual ICollection<Loja> LojasFavoritas { get; set; }
 
         public Usuario Usuario {
             get { return GrupoDeIntegrantes.Integrantes.Single(i => i.EhUsuarioSistema).Usuario; }

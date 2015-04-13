@@ -18,6 +18,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<Cidade> Cidades { get; set; }
         public DbSet<CompraAtiva> ComprasAtivas { get; set; }
         public DbSet<TemplateMensagem> TemplatesMensagens { get; set; }
+        public DbSet<Loja> Lojas { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -52,6 +53,9 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new TemplateMensagemConfig());
             modelBuilder.Configurations.Add(new TemplateMensagemPushConfig());
             modelBuilder.Configurations.Add(new TemplateMensagemEmailConfig());
+            modelBuilder.Configurations.Add(new LojaConfig());
+            modelBuilder.Configurations.Add(new LojaInfoConfig());
         }
     }
 }
+

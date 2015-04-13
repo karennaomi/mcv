@@ -48,9 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComandoAdicionarLojaFavorita.cs" />
     <Compile Include="ComandoCriarItemNaLista.cs" />
     <Compile Include="ComandoCriarCompra.cs" />
     <Compile Include="ComandoCriarPontoDemanda.cs" />
+    <Compile Include="MappingConfiguration\LojaConfig.cs" />
     <Compile Include="TemplateMensagemEF.cs" />
     <Compile Include="CompraEF.cs" />
     <Compile Include="CompraAtivaEF.cs" />

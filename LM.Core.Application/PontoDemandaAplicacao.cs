@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -13,6 +15,8 @@ namespace LM.Core.Application
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
         PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
+        void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
+        void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, int lojaId);
     }
 
     public class PontoDemandaAplicacao : IPontoDemandaAplicacao
@@ -54,7 +58,7 @@ namespace LM.Core.Application
                     break;
             }
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
-            _repositorio.SalvarAlteracoes();
+            _repositorio.Salvar();
             return pontoDemanda;
         }
 
@@ -63,6 +67,20 @@ namespace LM.Core.Application
             var pontosDemanda = Listar(usuarioId);
             if (pontosDemanda.All(p => p.Id != pontoDemandaId)) throw new PontoDemandaInvalidoException("Ponto de demanda não pertence ao usuário atual.");
             return pontoDemandaId;
+        }
+
+        public void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja)
+        {
+            _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemandaId, loja);
+        }
+
+        public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, int lojaId)
+        {
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
+            var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.Id == lojaId);
+            if(loja == null) throw new ApplicationException("Loja não encontrada.");
+            pontoDemanda.LojasFavoritas.Remove(loja);
+            _repositorio.Salvar();
         }
     }
 }

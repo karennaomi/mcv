@@ -1,7 +1,7 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace LM.Core.RepositorioEF
@@ -21,10 +21,12 @@ namespace LM.Core.RepositorioEF
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
+            var pontoDemanda = _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
+            if(pontoDemanda == null) throw new ApplicationException("Ponto de demanda não encontrado.");
+            return pontoDemanda;
         }
 
-        public void SalvarAlteracoes()
+        public void Salvar()
         {
             _contexto.SaveChanges();
         }
@@ -32,6 +34,12 @@ namespace LM.Core.RepositorioEF
         public PontoDemanda Criar(long usuarioId, PontoDemanda novoPontoDemanda)
         {
             return new ComandoCriarPontoDemanda(usuarioId, novoPontoDemanda).Executar();
+        }
+
+        public void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja)
+        {
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
+            new ComandoAdicionarLojaFavorita(_contexto, pontoDemanda, loja).Executar();
         }
     }
 }

@@ -5,8 +5,9 @@ namespace LM.Core.Domain.Repositorio
     public interface IRepositorioPontoDemanda
     {
         PontoDemanda Criar(long usuarioId, PontoDemanda novoPontoDemanda);
+        void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
-        void SalvarAlteracoes();
+        void Salvar();
     }
 }
