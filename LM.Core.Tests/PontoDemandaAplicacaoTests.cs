@@ -80,7 +80,7 @@ namespace LM.Core.Tests
                 app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
                 
                 var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
-                app.RemoverLojaFavorita(usuario.Id, pontoDemandaComLoja.Id, pontoDemandaComLoja.LojasFavoritas.First().Id);
+                app.RemoverLojaFavorita(usuario.Id, pontoDemandaComLoja.Id, pontoDemandaComLoja.LojasFavoritas.First().Idlocalizador);
 
                 var pontoDemandaRemovida = app.Obter(usuario.Id, pontoDemanda.Id);
                 Assert.IsFalse(pontoDemandaRemovida.LojasFavoritas.Any());

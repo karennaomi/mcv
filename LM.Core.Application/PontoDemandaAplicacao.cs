@@ -16,7 +16,7 @@ namespace LM.Core.Application
         PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
         void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
-        void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, int lojaId);
+        void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
     }
 
     public class PontoDemandaAplicacao : IPontoDemandaAplicacao
@@ -74,10 +74,10 @@ namespace LM.Core.Application
             _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemandaId, loja);
         }
 
-        public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, int lojaId)
+        public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
-            var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.Id == lojaId);
+            var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.Idlocalizador == localizadorId);
             if(loja == null) throw new ApplicationException("Loja não encontrada.");
             pontoDemanda.LojasFavoritas.Remove(loja);
             _repositorio.Salvar();
