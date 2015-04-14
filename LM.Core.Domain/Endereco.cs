@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace LM.Core.Domain
 {
@@ -27,6 +28,32 @@ namespace LM.Core.Domain
 
         [Required(ErrorMessage = "O campo [Cidade] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         public virtual Cidade Cidade { get; set; }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder(Descricao);
+            sb.Append(" ");
+            sb.Append(Numero);
+
+            Adicionar(sb, Bairro);
+            Adicionar(sb, Cep);
+            if (Cidade != null)
+            {
+                Adicionar(sb, Cidade.Nome);
+                if (Cidade.Uf != null)
+                {
+                    Adicionar(sb, Cidade.Uf.Sigla);
+                }
+            }
+            return sb.ToString();
+        }
+
+        private void Adicionar(StringBuilder sb, string conteudo)
+        {
+            if (string.IsNullOrWhiteSpace(conteudo)) return;
+            sb.Append(" - ");
+            sb.Append(conteudo);
+        }
     }
 }
 
