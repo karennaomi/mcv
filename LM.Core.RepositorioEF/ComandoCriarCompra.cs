@@ -1,7 +1,6 @@
-﻿using System.Data.Entity;
+﻿using LM.Core.Domain;
+using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using LM.Core.Domain;
 
 namespace LM.Core.RepositorioEF
 {

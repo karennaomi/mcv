@@ -1,8 +1,6 @@
-﻿using System.Runtime.InteropServices;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -14,6 +12,11 @@ namespace LM.Core.RepositorioEF
         public CompraEF()
         {
             _contexto = new ContextoEF();
+        }
+
+        public Compra Obter(long pontoDemandaId, long id)
+        {
+            return _contexto.Compras.SingleOrDefault(c => c.Id == id && c.PontoDemanda.Id == pontoDemandaId);
         }
 
         public Compra Criar(Compra compra)

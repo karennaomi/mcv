@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 
 namespace LM.Core.Application
 {
     public interface ICompraAplicacao
     {
+        Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
     }
 
@@ -17,6 +15,11 @@ namespace LM.Core.Application
         public CompraAplicacao(IRepositorioCompra compraRepo)
         {
             _compraRepo = compraRepo;
+        }
+
+        public Compra Obter(long pontoDemandaId, long id)
+        {
+            return _compraRepo.Obter(pontoDemandaId, id);
         }
 
         public Compra Criar(Compra compra)
