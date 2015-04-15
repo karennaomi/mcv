@@ -16,8 +16,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(e => e.Alias).HasColumnName("TX_ENDERECO_ALIAS");
             Property(e => e.Cep).HasColumnName("NR_ENDERECO_CEP");
             Property(e => e.Bairro).HasColumnName("NM_ENDERECO_BAIRRO");
-            Property(e => e.Latitude).HasColumnName("NR_ENDERECO_LATITUDE");
-            Property(e => e.Longitude).HasColumnName("NR_ENDERECO_LONGITUDE");
+            Property(e => e.Latitude).HasColumnName("NR_ENDERECO_LATITUDE").HasColumnType("decimal").HasPrecision(20, 15);
+            Property(e => e.Longitude).HasColumnName("NR_ENDERECO_LONGITUDE").HasColumnType("decimal").HasPrecision(20, 15);
             Property(e => e.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(e => e.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 
