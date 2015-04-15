@@ -23,7 +23,7 @@ namespace LM.Core.RepositorioEF
             try
             {
                 var cidade = _contexto.Cidades.AsNoTracking().SingleOrDefault(c => c.Nome == nome);
-                if (cidade == null) throw new ApplicationException(string.Format("A cidade {0} não foi encontrada na nossa base de dados.", nome));
+                if (cidade == null) return null;
                 var cidadeLocal = _contexto.Cidades.Local.SingleOrDefault(c => c.Id == cidade.Id);
                 if (cidadeLocal != null)
                 {
@@ -34,7 +34,7 @@ namespace LM.Core.RepositorioEF
             }
             catch (InvalidOperationException)
             {
-                throw new ApplicationException("Foram encontradas mais de uma cidade para o nome informado.");
+                return null;
             }
         }
 
