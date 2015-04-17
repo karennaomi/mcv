@@ -11,7 +11,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasKey(e => e.Id);
             Property(e => e.Id).HasColumnName("ID_ENDERECO");
             Property(e => e.Descricao).HasColumnName("NM_ENDERECO");
-            Property(e => e.Numero).HasColumnName("NR_ENDERECO");
+            Property(e => e.Numero).HasColumnName("NR_ENDERECO").IsOptional();
             Property(e => e.Complemento).HasColumnName("NM_ENDERECO_COMPLEMENTO");
             Property(e => e.Alias).HasColumnName("TX_ENDERECO_ALIAS");
             Property(e => e.Cep).HasColumnName("NR_ENDERECO_CEP");
@@ -21,7 +21,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(e => e.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(e => e.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 
-            HasRequired(e => e.Cidade).WithMany().Map(m => m.MapKey("ID_CIDADE"));
+            HasOptional(e => e.Cidade).WithMany().Map(m => m.MapKey("ID_CIDADE"));
         }
     }
 
