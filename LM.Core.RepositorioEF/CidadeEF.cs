@@ -37,14 +37,5 @@ namespace LM.Core.RepositorioEF
                 return null;
             }
         }
-
-        public void LimparCidadeNovas()
-        {
-            var cidadesLocaisNovas = _contexto.Cidades.Local.Where(c => c.Id == 0).ToList();
-            foreach (var cidadeLocal in cidadesLocaisNovas)
-            {
-                _contexto.Cidades.Local.Remove(cidadeLocal);
-            }
-        }
     }
 }

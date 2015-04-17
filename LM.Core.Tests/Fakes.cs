@@ -12,8 +12,8 @@ namespace LM.Core.Tests
             return new Usuario
             {
                 Nome = "John Doe",
-                Email = "johndoe@mail.com",
-                Cpf = "472.724.573-68",
+                Email = "john@doe.com",
+                Cpf = "423.817.304-00",
                 DataNascimento = DateTime.Now.AddYears(-idade),
                 Senha = "123456",
                 Sexo = sexo,
