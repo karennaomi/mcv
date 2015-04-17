@@ -71,7 +71,8 @@ namespace LM.Core.Application
 
         public void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja)
         {
-            _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemandaId, loja);
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
+            _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemanda, loja);
         }
 
         public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId)

@@ -150,7 +150,7 @@ namespace LM.Core.Tests
                 DataInicioCompra = agora.AddHours(-1.5),
                 DataCapturaPrimeiroItemCompra = agora.AddHours(-1.5),
                 DataFimCompra = agora,
-                LojaId = 2
+                LojaId = 2236
             };
         }
 

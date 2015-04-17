@@ -66,6 +66,7 @@
     <Compile Include="PontoDemanda.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositorio\IRepositorioLojaFavorita.cs" />
     <Compile Include="Repositorio\IRepositorioTemplateMensagem.cs" />
     <Compile Include="Repositorio\IRepositorioCidade.cs" />
     <Compile Include="Repositorio\IRepositorioCategoria.cs" />

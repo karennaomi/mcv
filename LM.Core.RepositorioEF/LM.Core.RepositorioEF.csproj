@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LojaFavoritaEF.cs" />
     <Compile Include="ComandoAdicionarLojaFavorita.cs" />
     <Compile Include="ComandoCriarItemNaLista.cs" />
     <Compile Include="ComandoCriarCompra.cs" />
