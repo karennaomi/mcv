@@ -49,12 +49,12 @@ namespace LM.Core.RepositorioEF
 
         public void VerificarSeCpfJaExiste(string cpf)
         {
-            if(_contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf)) throw new ApplicationException("Um usuário com esse cpf já existe em nossa base de dados.");
+            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf)) throw new UsuarioExistenteException("cpf");
         }
 
         public void VerificarSeEmailJaExiste(string email)
         {
-            if(_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new ApplicationException("Um usuário com esse e-mail já existe em nossa base de dados.");
+            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new UsuarioExistenteException("e-mail");
         }
 
         public Usuario ValidarLogin(string email, string senha)

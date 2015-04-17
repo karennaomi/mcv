@@ -8,7 +8,7 @@ namespace LM.Core.Domain.CustomException
         {
         }
 
-        public UsuarioExistenteException(long cpf) : base(string.Format("O CPF {0} informado já está cadastrado!", cpf))
+        public UsuarioExistenteException(string campo) : base(string.Format("O {0} informado já está cadastrado!", campo))
         {
 
         }
