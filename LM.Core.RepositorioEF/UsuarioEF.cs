@@ -47,9 +47,14 @@ namespace LM.Core.RepositorioEF
             statusUsuarioPontoDemanda.PontoDemandaId = pontoDemandaId;
         }        
 
-        public bool VerificarSeCpfJaExiste(string cpf)
+        public void VerificarSeCpfJaExiste(string cpf)
         {
-            return _contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf);
+            if(_contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf)) throw new ApplicationException("Um usuário com esse cpf já existe em nossa base de dados.");
+        }
+
+        public void VerificarSeEmailJaExiste(string email)
+        {
+            if(_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new ApplicationException("Um usuário com esse e-mail já existe em nossa base de dados.");
         }
 
         public Usuario ValidarLogin(string email, string senha)

@@ -40,6 +40,7 @@ namespace LM.Core.Application
         public Usuario Criar(Usuario usuario)
         {
             _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
+            _repositorio.VerificarSeEmailJaExiste(usuario.Email);
             usuario.Login = usuario.Email;
             if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
             usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
