@@ -1,7 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Data.Entity;
-using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
+using System.Collections.ObjectModel;
 
 namespace LM.Core.RepositorioEF
 {
@@ -27,15 +25,6 @@ namespace LM.Core.RepositorioEF
             _novoPontoDemanda.Endereco.Cidade = _cidadeRepo.Buscar(_novoPontoDemanda.Endereco.Cidade.Nome);
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista>{ new Lista() };
-            if (_novoPontoDemanda.LojasFavoritas != null)
-            {
-                foreach (var loja in _novoPontoDemanda.LojasFavoritas)
-                {
-                    loja.Info.Endereco.Cidade = _cidadeRepo.Buscar(loja.Info.Endereco.Cidade.Nome);
-                }
-                _cidadeRepo.LimparCidadeNovas();
-            }
-            
             _contexto.SaveChanges();
             
             _usuarioRepo.AtualizarStatusCadastro(_usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
@@ -49,17 +38,5 @@ namespace LM.Core.RepositorioEF
             var usuario = _usuarioRepo.Obter(_usuarioId);
             return usuario.Integrante.GrupoDeIntegrantes;
         }
-
-        //private Cidade BuscarCidade(string cidadeNome)
-        //{
-        //    var cidade = _cidadeRepo.Buscar(cidadeNome);
-        //    var cidadeLocal = _contexto.Cidades.Local.SingleOrDefault(c => c.Id == cidade.Id);
-        //    if (cidadeLocal != null)
-        //    {
-        //        return cidadeLocal;
-        //    }
-        //    _contexto.Entry(cidade).State = EntityState.Unchanged;
-        //    return cidade;
-        //}
     }
 }
