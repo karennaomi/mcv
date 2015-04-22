@@ -41,6 +41,20 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void CriaUmUsuarioEValidaLogin()
+        {
+            var app = ObterAppUsuario();
+            using (new TransactionScope())
+            {
+                var usuario = Fakes.Usuario();
+                usuario = app.Criar(usuario);
+                var usuarioValidado = app.ValidarLogin(usuario.Email, "123456");
+                Assert.IsTrue(usuario.Id > 0);
+                Assert.IsNotNull(usuarioValidado);
+            }
+        }
+
+        [Test]
         public void AtualizaStatusCadastro()
         {
             var app = ObterAppUsuario();

@@ -28,7 +28,9 @@ namespace LM.Core.RepositorioEF
 
         public Usuario ObterPorEmail(string email)
         {
-            return _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
+            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
+            if (usuario == null) throw new ApplicationException("Usuário não encontrado, email " + email);
+            return usuario;
         }
 
         public Usuario Criar(Usuario usuario)
@@ -55,13 +57,6 @@ namespace LM.Core.RepositorioEF
         public void VerificarSeEmailJaExiste(string email)
         {
             if (_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new UsuarioExistenteException("Email");
-        }
-
-        public Usuario ValidarLogin(string email, string senha)
-        {
-            var usuario = _contexto.Usuarios.AsNoTracking().FirstOrDefault(u => u.Login == email && u.Senha == senha);
-            if(usuario == null) throw new LoginInvalidoException();
-            return usuario;
         }
 
         public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)

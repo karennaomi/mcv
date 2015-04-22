@@ -19,7 +19,7 @@ namespace LM.Core.Domain
         public string Login { get; set; }
 
         [Required(ErrorMessage = "O campo [Senha] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "A senha deve possuir entre 5-20 caracteres.")]
+        [MinLength(6, ErrorMessage = "A senha deve possuir no mínimo 6 caracteres.")]
         public string Senha { get; set; }
 
         public string Cpf { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using LM.Core.Domain;
+using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 
 namespace LM.Core.Application
@@ -42,6 +43,7 @@ namespace LM.Core.Application
             _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
             _repositorio.VerificarSeEmailJaExiste(usuario.Email);
             usuario.Login = usuario.Email;
+            usuario.Senha = PasswordHash.CreateHash(usuario.Senha); 
             if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
             usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
             {
@@ -68,7 +70,12 @@ namespace LM.Core.Application
 
         public Usuario ValidarLogin(string email, string senha)
         {
-            return _repositorio.ValidarLogin(email, senha);
+            var usuario = _repositorio.ObterPorEmail(email);
+            if (PasswordHash.ValidatePassword(senha, usuario.Senha))
+            {
+                return usuario;
+            }
+            throw new LoginInvalidoException();
         }
 
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)

@@ -50,6 +50,7 @@
     <Compile Include="CompraAtiva.cs" />
     <Compile Include="CompraItem.cs" />
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
+    <Compile Include="PasswordHash.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />
     <Compile Include="CustomException\LoginInvalidoException.cs" />
