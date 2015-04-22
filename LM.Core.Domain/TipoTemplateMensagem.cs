@@ -5,6 +5,7 @@
         Indefinido = 0,
         AtivarCompra = 1,
         FinalizarCompra = 2,
-        PedidoItemCriado = 3
+        PedidoItemCriado = 3,
+        RecuperarSenha = 4
     }
 }

@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilaItemAplicacao.cs" />
+    <Compile Include="RecuperarSenhaAplicacao.cs" />
     <Compile Include="TemplateMensagemAplicacao.cs" />
     <Compile Include="CidadeAplicacao.cs" />
     <Compile Include="CategoriaAplicacao.cs" />

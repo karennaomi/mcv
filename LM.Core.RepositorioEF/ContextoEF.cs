@@ -19,6 +19,8 @@ namespace LM.Core.RepositorioEF
         public DbSet<CompraAtiva> ComprasAtivas { get; set; }
         public DbSet<TemplateMensagem> TemplatesMensagens { get; set; }
         public DbSet<Loja> Lojas { get; set; }
+        public DbSet<RecuperarSenha> RecuperarSenhas { get; set; }
+        public DbSet<FilaItem> FilaItens { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -55,6 +57,11 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new TemplateMensagemEmailConfig());
             modelBuilder.Configurations.Add(new LojaConfig());
             modelBuilder.Configurations.Add(new LojaInfoConfig());
+            modelBuilder.Configurations.Add(new RecuperarSenhaConfig());
+            modelBuilder.Configurations.Add(new FilaItemConfig());
+            modelBuilder.Configurations.Add(new FilaMensagemConfig());
+            modelBuilder.Configurations.Add(new FilaMensagemEmailConfig());
+            modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
         }
     }
 }

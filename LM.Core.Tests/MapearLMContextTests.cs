@@ -138,6 +138,20 @@ namespace LM.Core.Tests
             Assert.IsNotNull(loja.Info);
             Assert.IsNotNull(loja.Info.Endereco);
         }
+
+        [Test]
+        public void MapearRecuperarSenhas()
+        {
+            var recuperarSenha = _contexto.RecuperarSenhas.First();
+            Assert.IsNotNull(recuperarSenha.Usuario);
+        }
+
+        [Test]
+        public void MapearFilaItens()
+        {
+            var filaItem = _contexto.FilaItens.First();
+            Assert.IsTrue(filaItem.Mensagens.Any());
+        }
     }
 }
 

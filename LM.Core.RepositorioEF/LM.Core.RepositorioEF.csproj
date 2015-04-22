@@ -48,12 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilaItemEF.cs" />
     <Compile Include="LojaFavoritaEF.cs" />
     <Compile Include="ComandoAdicionarLojaFavorita.cs" />
     <Compile Include="ComandoCriarItemNaLista.cs" />
     <Compile Include="ComandoCriarCompra.cs" />
     <Compile Include="ComandoCriarPontoDemanda.cs" />
+    <Compile Include="MappingConfiguration\FilaMensagemConfig.cs" />
+    <Compile Include="MappingConfiguration\FilaItemConfig.cs" />
+    <Compile Include="MappingConfiguration\RecuperarSenhaConfig.cs" />
     <Compile Include="MappingConfiguration\LojaConfig.cs" />
+    <Compile Include="RecuperarSenhaEF.cs" />
     <Compile Include="TemplateMensagemEF.cs" />
     <Compile Include="CompraEF.cs" />
     <Compile Include="CompraAtivaEF.cs" />
