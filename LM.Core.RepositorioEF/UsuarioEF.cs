@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.Entity.Core;
+using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System;
@@ -22,14 +23,14 @@ namespace LM.Core.RepositorioEF
         public Usuario Obter(long id)
         {
             var usuario =_contexto.Usuarios.Find(id);
-            if (usuario == null) throw new ApplicationException("Usuário não encontrado, id " + id);
+            if (usuario == null) throw new ObjectNotFoundException("Usuário não encontrado, id " + id);
             return usuario;
         }
 
         public Usuario ObterPorEmail(string email)
         {
             var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
-            if (usuario == null) throw new ApplicationException("Usuário não encontrado, email " + email);
+            if (usuario == null) throw new ObjectNotFoundException("Usuário não encontrado, email " + email);
             return usuario;
         }
 
