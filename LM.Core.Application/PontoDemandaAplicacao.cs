@@ -15,7 +15,7 @@ namespace LM.Core.Application
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
         PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
-        void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
+        Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
     }
 
@@ -69,10 +69,10 @@ namespace LM.Core.Application
             return pontoDemandaId;
         }
 
-        public void AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja)
+        public Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
-            _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemanda, loja);
+            return _repositorio.AdicionarLojaFavorita(usuarioId, pontoDemanda, loja);
         }
 
         public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId)

@@ -36,9 +36,10 @@ namespace LM.Core.RepositorioEF
             return new ComandoCriarPontoDemanda(usuarioId, novoPontoDemanda).Executar();
         }
 
-        public void AdicionarLojaFavorita(long usuarioId, PontoDemanda pontoDemanda, Loja loja)
+        public Loja AdicionarLojaFavorita(long usuarioId, PontoDemanda pontoDemanda, Loja loja)
         {
             new ComandoAdicionarLojaFavorita(_contexto, pontoDemanda, loja).Executar();
+            return loja;
         }
     }
 }

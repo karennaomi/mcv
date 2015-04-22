@@ -59,9 +59,10 @@ namespace LM.Core.Tests
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
-                app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
+                var loja = app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
 
                 var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
+                Assert.IsTrue(loja.Id > 0);
                 Assert.IsTrue(pontoDemandaComLoja.LojasFavoritas.All(l => l.Id > 0));
             }
         }

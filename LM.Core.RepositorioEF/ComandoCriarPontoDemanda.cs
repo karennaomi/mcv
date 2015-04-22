@@ -28,14 +28,8 @@ namespace LM.Core.RepositorioEF
         {
             _novoPontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
             _novoPontoDemanda.Endereco.Cidade = _cidadeRepo.Buscar(_novoPontoDemanda.Endereco.Cidade.Nome);
-            var lojas = new Collection<Loja>();
-            foreach (var lojaFavorita in _novoPontoDemanda.LojasFavoritas)
-            {
-                lojas.Add(_lojaFavoritaRepo.VerificarLojaExistente(lojaFavorita));
-            }
-            _novoPontoDemanda.LojasFavoritas = lojas;
+            LojasFavoritas();
             if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista> { new Lista() };
-            
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             _contexto.SaveChanges();
             
@@ -43,6 +37,17 @@ namespace LM.Core.RepositorioEF
             _contexto.SaveChanges();
 
             return _novoPontoDemanda;
+        }
+
+        private void LojasFavoritas()
+        {
+            if (_novoPontoDemanda.LojasFavoritas == null) return;
+            var lojas = new Collection<Loja>();
+            foreach (var lojaFavorita in _novoPontoDemanda.LojasFavoritas)
+            {
+                lojas.Add(_lojaFavoritaRepo.VerificarLojaExistente(lojaFavorita));
+            }
+            _novoPontoDemanda.LojasFavoritas = lojas;
         }
 
         private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
