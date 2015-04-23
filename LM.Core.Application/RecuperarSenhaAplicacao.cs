@@ -41,13 +41,13 @@ namespace LM.Core.Application
         public bool ValidarToken(Guid token)
         {
             var recuperarSenha = _repositorio.ObterPorToken(token);
-            if (recuperarSenha == null) throw new ObjetoNaoEncontradoException("Token inválido");
+            if (recuperarSenha == null) return false;
             return recuperarSenha.DataInclusao.AddMinutes(ValidadeToken) >= DateTime.Now;
         }
 
         public void TrocarSenha(Guid token, string novaSenha)
         {
-            if(!ValidarToken(token)) throw new ApplicationException("Token expirado.");
+            if(!ValidarToken(token)) throw new ApplicationException("Token está expirado.");
             var recuperarSenha = _repositorio.ObterPorToken(token);
             recuperarSenha.Usuario.Senha = PasswordHash.CreateHash(novaSenha);
             _repositorio.Salvar();

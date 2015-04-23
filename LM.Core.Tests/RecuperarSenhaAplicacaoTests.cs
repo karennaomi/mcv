@@ -48,10 +48,10 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void TokenInvalidoLancaException()
+        public void TokenInvalidoRetornaFalso()
         {
             var mockedApp = GetMockedApp();
-            Assert.Throws<ObjetoNaoEncontradoException>(() => mockedApp.ValidarToken(new Guid("176CA494-E477-410C-967D-B059A49003D9")));
+            Assert.IsFalse(mockedApp.ValidarToken(new Guid("176CA494-E477-410C-967D-B059A49003D9")));
         }
 
         [Test]
