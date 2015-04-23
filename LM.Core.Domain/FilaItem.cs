@@ -14,7 +14,6 @@ namespace LM.Core.Domain
             Origem = "LM.Core";
             OrdemExecucao = 1;
             StatusFila = "A";
-            StatusProcessamento = "A";
         }
 
         public long Id { get; set; }
