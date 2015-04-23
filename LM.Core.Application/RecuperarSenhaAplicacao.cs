@@ -14,8 +14,6 @@ namespace LM.Core.Application
 
     public class RecuperarSenhaAplicacao : IRecuperarSenhaAplicacao
     {
-        private const int ValidadeToken = 30; //minutos
-
         private readonly IRepositorioRecuperarSenha _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
         private readonly ITemplateMensagemAplicacao _appTemplateMensagem;
@@ -41,8 +39,7 @@ namespace LM.Core.Application
         public bool ValidarToken(Guid token)
         {
             var recuperarSenha = _repositorio.ObterPorToken(token);
-            if (recuperarSenha == null) return false;
-            return recuperarSenha.DataInclusao.AddMinutes(ValidadeToken) >= DateTime.Now;
+            return recuperarSenha != null && recuperarSenha.TokenValido();
         }
 
         public void TrocarSenha(Guid token, string novaSenha)
