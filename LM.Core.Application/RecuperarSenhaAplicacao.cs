@@ -33,6 +33,7 @@ namespace LM.Core.Application
             var usuario = _appUsuario.Obter(email);
             var recuperarSenha = new RecuperarSenha {Usuario = new Usuario {Id = usuario.Id}};
             _repositorio.Criar(recuperarSenha);
+            recuperarSenha.Usuario = usuario;
             EnviarEmail(recuperarSenha, trocarSenhaUrl);
             return recuperarSenha;
         }
