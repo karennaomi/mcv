@@ -40,7 +40,7 @@ namespace LM.Core.Domain
         public virtual ICollection<StatusUsuarioPontoDemanda> StatusUsuarioPontoDemanda { get; set; }
         public virtual ICollection<Integrante> MapIntegrantes { get; set; }
 
-        public Integrante Integrante { get { return MapIntegrantes.First(); }}
+        public Integrante Integrante { get { return MapIntegrantes !=null ? MapIntegrantes.First() : null; } }
 
         public string DeviceId { get; set; }
         public string DeviceType { get; set; }
