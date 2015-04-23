@@ -10,6 +10,11 @@ namespace LM.Core.Domain
 
     public abstract class FilaMensagem
     {
+        protected FilaMensagem()
+        {
+            DataInclusao = DateTime.Now;
+        }
+
         public long Id { get; set; }
         public DateTime? DataInclusao { get; set; }
      
