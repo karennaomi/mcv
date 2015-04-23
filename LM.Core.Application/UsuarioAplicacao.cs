@@ -30,12 +30,16 @@ namespace LM.Core.Application
 
         public Usuario Obter(long id)
         {
-            return _repositorio.Obter(id);
+            var usuario = _repositorio.Obter(id);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, id " + id);
+            return usuario;
         }
 
         public Usuario Obter(string email)
         {
-            return _repositorio.ObterPorEmail(email);
+            var usuario = _repositorio.ObterPorEmail(email);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, email " + email);
+            return usuario;
         }
 
         public Usuario Criar(Usuario usuario)
@@ -80,13 +84,15 @@ namespace LM.Core.Application
 
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
-            _repositorio.AtualizarStatusCadastro(usuarioId, statusCadastro, pontoDemandaId);
+            var usuario = Obter(usuarioId);
+            _repositorio.AtualizarStatusCadastro(usuario, statusCadastro, pontoDemandaId);
             _repositorio.Salvar();
         }
 
         public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)
         {
-            _repositorio.AtualizarDeviceInfo(usuarioId, deviceType, deviceId);
+            var usuario = Obter(usuarioId);
+            _repositorio.AtualizarDeviceInfo(usuario, deviceType, deviceId);
             _repositorio.Salvar();
         }
     }

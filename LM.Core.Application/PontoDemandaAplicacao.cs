@@ -39,7 +39,9 @@ namespace LM.Core.Application
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _repositorio.Obter(usuarioId, pontoDemandaId);
+            var pontoDemanda = _repositorio.Obter(usuarioId, pontoDemandaId);
+            if (pontoDemanda == null) throw new ObjetoNaoEncontradoException("Ponto de demanda não encontrado.");
+            return pontoDemanda;
         }
 
         public PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia)
@@ -79,7 +81,7 @@ namespace LM.Core.Application
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
             var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.Idlocalizador == localizadorId);
-            if(loja == null) throw new ApplicationException("Loja não encontrada.");
+            if(loja == null) throw new ObjetoNaoEncontradoException("Loja não encontrada.");
             pontoDemanda.LojasFavoritas.Remove(loja);
             _repositorio.Salvar();
         }

@@ -21,9 +21,7 @@ namespace LM.Core.RepositorioEF
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            var pontoDemanda = _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
-            if(pontoDemanda == null) throw new ApplicationException("Ponto de demanda não encontrado.");
-            return pontoDemanda;
+            return _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
         }
 
         public void Salvar()

@@ -32,8 +32,8 @@ namespace LM.Core.RepositorioEF
             if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista> { new Lista() };
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             _contexto.SaveChanges();
-            
-            _usuarioRepo.AtualizarStatusCadastro(_usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
+
+            _usuarioRepo.AtualizarStatusCadastro(_usuarioRepo.Obter(_usuarioId), StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
             _contexto.SaveChanges();
 
             return _novoPontoDemanda;

@@ -1,15 +1,21 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using LM.Core.Domain.CustomException;
 
 namespace LM.Core.Application
 {
     public interface IRecuperarSenhaAplicacao
     {
-        RecuperarSenha RecuperarSenha(string email);
+        RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl);
+        bool ValidarToken(Guid token);
+        void TrocarSenha(Guid token, string novaSenha);
     }
 
     public class RecuperarSenhaAplicacao : IRecuperarSenhaAplicacao
     {
+        private const int ValidadeToken = 30; //minutos
+
         private readonly IRepositorioRecuperarSenha _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
         private readonly ITemplateMensagemAplicacao _appTemplateMensagem;
@@ -22,19 +28,34 @@ namespace LM.Core.Application
             _filaItemAplicacao = filaItemAplicacao;
         }
 
-        public RecuperarSenha RecuperarSenha(string email)
+        public RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl)
         {
             var usuario = _appUsuario.Obter(email);
             var recuperarSenha = new RecuperarSenha {Usuario = new Usuario {Id = usuario.Id}};
             _repositorio.Criar(recuperarSenha);
-            EnviarEmail(recuperarSenha);
+            EnviarEmail(recuperarSenha, trocarSenhaUrl);
             return recuperarSenha;
         }
 
-        private void EnviarEmail(RecuperarSenha recuperarSenha)
+        public bool ValidarToken(Guid token)
+        {
+            var recuperarSenha = _repositorio.ObterPorToken(token);
+            if (recuperarSenha == null) throw new ObjetoNaoEncontradoException("Token inválido");
+            return recuperarSenha.DataInclusao.AddMinutes(ValidadeToken) >= DateTime.Now;
+        }
+
+        public void TrocarSenha(Guid token, string novaSenha)
+        {
+            if(!ValidarToken(token)) throw new ApplicationException("Token expirado.");
+            var recuperarSenha = _repositorio.ObterPorToken(token);
+            recuperarSenha.Usuario.Senha = PasswordHash.CreateHash(novaSenha);
+            _repositorio.Salvar();
+        }
+
+        private void EnviarEmail(RecuperarSenha recuperarSenha, string trocarSenhaUrl)
         {
             var template = _appTemplateMensagem.ObterPorTipo<TemplateMensagemEmail>(TipoTemplateMensagem.RecuperarSenha);
-            var entity = new { Url = "http://teste.com/recuperarsenha", recuperarSenha.Token, recuperarSenha.Usuario };
+            var entity = new { Url = trocarSenhaUrl, recuperarSenha.Token, recuperarSenha.Usuario };
             var assunto = TemplateProcessor.ProcessTemplate(template.Assunto, entity);
             var corpo = TemplateProcessor.ProcessTemplate(template.Mensagem, entity);
             var filaItem = new FilaItem();

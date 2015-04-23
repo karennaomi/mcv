@@ -22,16 +22,12 @@ namespace LM.Core.RepositorioEF
 
         public Usuario Obter(long id)
         {
-            var usuario =_contexto.Usuarios.Find(id);
-            if (usuario == null) throw new ObjectNotFoundException("Usuário não encontrado, id " + id);
-            return usuario;
+            return _contexto.Usuarios.Find(id);
         }
 
         public Usuario ObterPorEmail(string email)
         {
-            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
-            if (usuario == null) throw new ObjectNotFoundException("Usuário não encontrado, email " + email);
-            return usuario;
+            return _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
         }
 
         public Usuario Criar(Usuario usuario)
@@ -41,9 +37,8 @@ namespace LM.Core.RepositorioEF
             return usuario;
         }
 
-        public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
+        public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
-            var usuario = Obter(usuarioId);
             var statusUsuarioPontoDemanda = (pontoDemandaId.HasValue ? usuario.StatusUsuarioPontoDemanda.SingleOrDefault(s => s.PontoDemandaId == pontoDemandaId) : usuario.StatusUsuarioPontoDemanda.First()) ?? usuario.StatusUsuarioPontoDemanda.First();
             statusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
             statusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
@@ -60,9 +55,8 @@ namespace LM.Core.RepositorioEF
             if (_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new UsuarioExistenteException("Email");
         }
 
-        public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)
+        public void AtualizarDeviceInfo(Usuario usuario, string deviceType, string deviceId)
         {
-            var usuario = Obter(usuarioId);
             usuario.DeviceType = deviceType;
             usuario.DeviceId = deviceId;
         }
