@@ -1,7 +1,9 @@
-﻿using LM.Core.Application;
+﻿using System.Transactions;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
+using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
 
@@ -10,6 +12,18 @@ namespace LM.Core.Tests
     [TestFixture]
     public class IntegranteAplicacaoTests
     {
+        [Test]
+        public void CriarIntegrante()
+        {
+            using (new TransactionScope())
+            {
+                var integrante = Fakes.Integrante(15, "M", 1);
+                var app = new IntegranteAplicacao(new IntegranteEF(), null, new PersonaAplicacao(new PersonaEF()));
+                integrante = app.Criar(integrante);
+                Assert.IsTrue(integrante.Id > 0);
+            }
+        }
+
         [Test]
         public void NaoPodeApagarUmIntegranteQueNaoPertenceAoPonteDemandaEspecificado()
         {
@@ -28,7 +42,7 @@ namespace LM.Core.Tests
 
         private static IIntegranteAplicacao ObterAppIntegrante(IRepositorioIntegrante repo)
         {
-            return new IntegranteAplicacao(repo, ObterAppPontoDemanda());
+            return new IntegranteAplicacao(repo, ObterAppPontoDemanda(), new PersonaAplicacao(new PersonaEF()));
         }
 
         private static Mock<IRepositorioIntegrante> ObterIntegranteRepo()

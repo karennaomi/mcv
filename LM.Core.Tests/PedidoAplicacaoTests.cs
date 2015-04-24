@@ -1,6 +1,7 @@
 ﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using LM.Core.Domain.Servicos;
 using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
@@ -90,7 +91,7 @@ namespace LM.Core.Tests
             return new CompraAtivaAplicacao(repoMock.Object, null);
         }
 
-        private static INotificacaoAplicacao GetAppNotificacao(IRestService restService)
+        private static INotificacaoAplicacao GetAppNotificacao(IServicoRest restService)
         {
             return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
         }
@@ -106,9 +107,9 @@ namespace LM.Core.Tests
             return mockTemplateMensagemApp.Object;
         }
 
-        private static Mock<IRestService> GetMockRestService()
+        private static Mock<IServicoRest> GetMockRestService()
         {
-            return new Mock<IRestService>();
+            return new Mock<IServicoRest>();
         }
     }
 }

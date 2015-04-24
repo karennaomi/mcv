@@ -1,8 +1,9 @@
-﻿using RestSharp;
+﻿using LM.Core.Domain.Servicos;
+using RestSharp;
 
 namespace LM.Core.Application
 {
-    public class RestServiceWithRestSharp : IRestService
+    public class RestServiceWithRestSharp : IServicoRest
     {
         private readonly RestClient _pushServiceClient;
         public RestServiceWithRestSharp(string host)

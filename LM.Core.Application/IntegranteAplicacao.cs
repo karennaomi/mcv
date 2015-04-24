@@ -15,14 +15,17 @@ namespace LM.Core.Application
     {
         private readonly IRepositorioIntegrante _repositorio;
         private readonly IPontoDemandaAplicacao _appPontoDemanda;
-        public IntegranteAplicacao(IRepositorioIntegrante repositorio, IPontoDemandaAplicacao appPontoDemanda)
+        private readonly IPersonaAplicacao _appPersona;
+        public IntegranteAplicacao(IRepositorioIntegrante repositorio, IPontoDemandaAplicacao appPontoDemanda, IPersonaAplicacao appPersona)
         {
             _repositorio = repositorio;
             _appPontoDemanda = appPontoDemanda;
+            _appPersona = appPersona;
         }
 
         public Integrante Criar(Integrante integrante)
         {
+            integrante.Persona = _appPersona.Obter(integrante.ObterIdade(), integrante.Persona.Sexo);
             return _repositorio.Criar(integrante);
         }
 

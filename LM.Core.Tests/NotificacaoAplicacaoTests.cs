@@ -1,10 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using LM.Core.Domain.Servicos;
 using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
+using System.Collections.ObjectModel;
 
 namespace LM.Core.Tests
 {
@@ -41,7 +42,7 @@ namespace LM.Core.Tests
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
-        private static INotificacaoAplicacao GetAppNotificacao(IRestService restService)
+        private static INotificacaoAplicacao GetAppNotificacao(IServicoRest restService)
         {
             return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
         }
@@ -73,9 +74,9 @@ namespace LM.Core.Tests
             return new PontoDemandaAplicacao(mockPontoDemandaRepo.Object);
         }
 
-        private static Mock<IRestService> GetMockRestService()
+        private static Mock<IServicoRest> GetMockRestService()
         {
-            return new Mock<IRestService>();
+            return new Mock<IServicoRest>();
         }
     }
 }

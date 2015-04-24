@@ -47,11 +47,7 @@ namespace LM.Core.Domain
 
         public int ObterIdade()
         {
-            if (!DataNascimento.HasValue) throw new ApplicationException("Data de nascimento inválida");
-            var hoje = DateTime.Today;
-            var idade = hoje.Year - DataNascimento.Value.Year;
-            if (DataNascimento.Value.Date > hoje.Date.AddYears(-idade)) idade--;
-            return idade;
+            return LMHelper.ObterIdade(DataNascimento);
         }
 
         public void DefinirSexo(string persona)

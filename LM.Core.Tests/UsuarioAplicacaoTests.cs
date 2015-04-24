@@ -27,6 +27,19 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void CriacaoDoUsuarioConvidadoDeveDefinirStatusCadastroComoUsuarioConvidado()
+        {
+            var usuario = Fakes.Usuario();
+            usuario.Email = "menina@dsaliberti.com";
+            var app = ObterAppUsuario();
+            using (new TransactionScope())
+            {
+                usuario = app.Criar(usuario);
+                Assert.AreEqual(StatusCadastro.UsuarioConvidado, usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+            }
+        }
+
+        [Test]
         public void CriaUmUsuario()
         {
             var app = ObterAppUsuario();
@@ -138,7 +151,7 @@ namespace LM.Core.Tests
 
         private static void IntegrantePersonaTestes(int idade, string sexo, int idadeInicial, int idadeFinal)
         {
-            var integrante = Fakes.Integrante(idade, sexo);
+            var integrante = Fakes.Integrante(Fakes.Usuario(idade, sexo));
             var usuario = integrante.Usuario;
             usuario.MapIntegrantes = new Collection<Integrante>{ integrante };
             integrante.Usuario = usuario;

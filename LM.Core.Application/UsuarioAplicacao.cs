@@ -49,27 +49,24 @@ namespace LM.Core.Application
             usuario.Login = usuario.Email;
             usuario.Senha = PasswordHash.CreateHash(usuario.Senha); 
             if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
-            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
-            {
-                StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta
-            });
 
-            var integrante = new Integrante(usuario);
-            usuario.MapIntegrantes = new Collection<Integrante> { integrante };
-            usuario.Integrante.Persona = ObterPersonaDoUsuario(usuario);
+            var integrante = _repositorio.UsuarioConvidado(usuario.Email);
+            if (integrante != null)
+            {
+                usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.UsuarioConvidado });
+                integrante.Usuario = usuario;
+            }
+            else
+            {
+                usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta });
+                integrante = new Integrante(usuario);
+                usuario.MapIntegrantes = new Collection<Integrante> { integrante };
+                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo);
+            }
 
             _repositorio.Criar(usuario);
             _repositorio.Salvar();
             return usuario;
-        }
-
-        private Persona ObterPersonaDoUsuario(Usuario usuario)
-        {
-            var personas = _appPersona.Listar().Where(p => p.Perfil != "EMPREGADO");
-            var idadeUsuario = usuario.ObterIdade();
-            var persona = personas.SingleOrDefault(p => p.IdadeInicial <= idadeUsuario && p.IdadeFinal >= idadeUsuario && p.Sexo == usuario.Sexo);
-            if (persona == null) throw new ApplicationException("Não foi possível selecionar uma persona a partir do usuário atual.");
-            return persona;
         }
 
         public Usuario ValidarLogin(string email, string senha)

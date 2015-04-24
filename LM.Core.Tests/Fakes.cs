@@ -62,12 +62,22 @@ namespace LM.Core.Tests
             };
         }
 
+        internal static Integrante Integrante(Usuario ususario)
+        {
+            return new Integrante {Usuario = ususario};
+        }
 
-        internal static Integrante Integrante(int idade, string sexo)
+        internal static Integrante Integrante(int idade, string sexo, int idGrupoIntegrante)
         {
             return new Integrante
             {
-                Usuario = Usuario(idade, sexo)
+                Persona = new Persona {Sexo = sexo },
+                DataNascimento = DateTime.Now.AddYears(-idade),
+                EhUsuarioSistema = false,
+                Nome = "Integrante Joe",
+                Papel = IntegrantePapel.Colaborador,
+                GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = idGrupoIntegrante },
+                Telefone = "989998999"
             };
         }
 

@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using LM.Core.Domain.Servicos;
 using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Transactions;
 
 namespace LM.Core.Tests
@@ -59,7 +60,7 @@ namespace LM.Core.Tests
             return new CompraAtivaAplicacao(new CompraAtivaEF(), appNotificacao);
         }
 
-        private static ICompraAtivaAplicacao GetMockedApp(IRestService restService)
+        private static ICompraAtivaAplicacao GetMockedApp(IServicoRest restService)
         {
             var pontoDemanda = Fakes.PontoDemanda();
             pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante {Usuario = new Usuario {Id = 7}});
@@ -74,14 +75,14 @@ namespace LM.Core.Tests
             return new CompraAtivaAplicacao(mockRepo.Object, GetNotificacaoApp(restService));
         }
         
-        private static INotificacaoAplicacao GetNotificacaoApp(IRestService restService)
+        private static INotificacaoAplicacao GetNotificacaoApp(IServicoRest restService)
         {
             return new NotificacaoAplicacao(restService, new TemplateMensagemAplicacao(new TemplateMensagemEF()));
         }
 
-        private static Mock<IRestService> GetMockRestService()
+        private static Mock<IServicoRest> GetMockRestService()
         {
-            return new Mock<IRestService>();
+            return new Mock<IServicoRest>();
         }
 
         private static IPontoDemandaAplicacao GetPontoDemandaApp()

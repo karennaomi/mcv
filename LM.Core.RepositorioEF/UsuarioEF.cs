@@ -32,9 +32,14 @@ namespace LM.Core.RepositorioEF
 
         public Usuario Criar(Usuario usuario)
         {
-            _contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
+            if (usuario.Integrante != null) _contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
             usuario = _contexto.Usuarios.Add(usuario);
             return usuario;
+        }
+
+        public Integrante UsuarioConvidado(string email)
+        {
+            return _contexto.Integrantes.FirstOrDefault(i => i.EmailConvite == email && i.EhUsuarioConvidado && i.Usuario == null);
         }
 
         public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)

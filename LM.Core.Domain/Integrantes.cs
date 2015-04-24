@@ -46,5 +46,10 @@ namespace LM.Core.Domain
         public virtual Usuario Usuario { get; set; }
         public virtual GrupoDeIntegrantes GrupoDeIntegrantes { get; set; }
         public virtual Persona Persona { get; set; }
+
+        public int ObterIdade()
+        {
+            return LMHelper.ObterIdade(DataNascimento);
+        }
     }
 }

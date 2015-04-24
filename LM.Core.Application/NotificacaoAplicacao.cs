@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
+using LM.Core.Domain.Servicos;
 using Ninject;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LM.Core.Application
@@ -13,9 +14,9 @@ namespace LM.Core.Application
 
     public class NotificacaoAplicacao : INotificacaoAplicacao
     {
-        private readonly IRestService _pushRestService;
+        private readonly IServicoRest _pushRestService;
         private readonly ITemplateMensagemAplicacao _appTemplateMensagem;
-        public NotificacaoAplicacao([Named("PushService")]IRestService pushRestService, ITemplateMensagemAplicacao appTemplateMensagem)
+        public NotificacaoAplicacao([Named("PushService")]IServicoRest pushRestService, ITemplateMensagemAplicacao appTemplateMensagem)
         {
             _pushRestService = pushRestService;
             _appTemplateMensagem = appTemplateMensagem;

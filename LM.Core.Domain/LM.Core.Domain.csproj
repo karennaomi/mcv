@@ -53,6 +53,7 @@
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
     <Compile Include="FilaItem.cs" />
     <Compile Include="FilaMensagem.cs" />
+    <Compile Include="LMHelper.cs" />
     <Compile Include="PasswordHash.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Repositorio\IRepositorioProduto.cs" />
     <Compile Include="Repositorio\IRepositorioUsuario.cs" />
     <Compile Include="Repositorio\IUnitOfWork.cs" />
+    <Compile Include="Servicos\IServicoRest.cs" />
     <Compile Include="StatusCadastro.cs" />
     <Compile Include="StatusCompra.cs" />
     <Compile Include="StatusPedido.cs" />
