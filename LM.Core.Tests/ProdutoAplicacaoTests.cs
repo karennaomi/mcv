@@ -15,5 +15,13 @@ namespace LM.Core.Tests
             var produtos = app.Buscar("arroz");
             Assert.IsTrue(produtos.Any());
         }
+
+        [Test]
+        public void BuscaUmProdutoComEspaco()
+        {
+            var app = new ProdutoAplicacao(new ProdutoEF());
+            var produtos = app.Buscar("carne de ra");
+            Assert.IsTrue(produtos.Any());
+        }
     }
 }

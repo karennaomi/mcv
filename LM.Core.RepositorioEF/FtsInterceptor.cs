@@ -51,7 +51,7 @@ namespace LM.Core.RepositorioEF
                 parameter.DbType = DbType.AnsiStringFixedLength;
                 value = value.Replace(FullTextPrefix, ""); // remove prefix we added n linq query
                 value = value.Substring(1, value.Length - 2); // remove %% escaping by linq translator from string.Contains to sql LIKE
-                parameter.Value = value;
+                parameter.Value = value.Replace(" ", "%");
                 cmd.CommandText = Regex.Replace(text, string.Format(@"\[(\w*)\].\[(\w*)\]\s*LIKE\s*@{0}\s?(?:ESCAPE N?'~')", parameter.ParameterName), string.Format(@"contains([$1].[$2], @{0})", parameter.ParameterName));
                 if (text == cmd.CommandText) throw new Exception("FTS was not replaced on: " + text);
                 text = cmd.CommandText;
