@@ -4,6 +4,7 @@ namespace LM.Core.Domain.Repositorio
 {
     public interface IRepositorioLista
     {
+        Lista ObterListaPorPontoDemanda(long pontoDemandaId);
         ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
         void RemoverItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);

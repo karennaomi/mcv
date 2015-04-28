@@ -18,7 +18,14 @@ namespace LM.Core.RepositorioEF
         {
             _contexto = contexto;
         }
-        
+
+        public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
+        {
+            var lista = _contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
+            if (lista == null) throw new ApplicationException("O ponto de demanda não possui uma lista.");
+            return lista;
+        }
+
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem novoItem)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
@@ -68,13 +75,6 @@ namespace LM.Core.RepositorioEF
             item.DataAlteracao = DateTime.Now;
             _contexto.Entry(item).State = EntityState.Modified;
             _contexto.Entry(item.Periodo).State = EntityState.Unchanged;
-        }
-
-        private Lista ObterListaPorPontoDemanda(long pontoDemandaId)
-        {
-            var lista = _contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
-            if(lista == null) throw new ApplicationException("O ponto de demanda não possui uma lista.");
-            return lista;
         }
 
         private static ListaItem ObterItem(Lista lista, long itemId)

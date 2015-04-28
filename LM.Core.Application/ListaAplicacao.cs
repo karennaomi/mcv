@@ -6,6 +6,7 @@ namespace LM.Core.Application
 {
     public interface IListaAplicacao
     {
+        Lista ObterListaPorPontoDemanda(long pontoDemandaId);
         ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
         void RemoverItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
@@ -21,6 +22,11 @@ namespace LM.Core.Application
         public ListaAplicacao(IRepositorioLista repositorio)
         {
             _repositorio = repositorio;
+        }
+
+        public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
+        {
+            return _repositorio.ObterListaPorPontoDemanda(pontoDemandaId);
         }
 
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
