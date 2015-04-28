@@ -52,6 +52,7 @@ namespace LM.Core.RepositorioEF
 
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
+            if (_contexto.PedidoItens.Any(i => i.PontoDemanda.Id == pontoDemandaId && (i.Produto.Id == item.Produto.Id))) throw new ApplicationException("Este produto já existe na lista.");
             item.PontoDemanda = new PontoDemanda { Id = pontoDemandaId };
             item.Integrante = _contexto.Usuarios.Single(u => u.Id == item.Integrante.Usuario.Id).Integrante;
             _contexto.Entry(item.PontoDemanda).State = EntityState.Unchanged;

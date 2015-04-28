@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.Domain.Servicos;
@@ -35,6 +36,34 @@ namespace LM.Core.Tests
             {
                 item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
                 Assert.IsTrue(item.Id > 0);
+            }
+        }
+
+        [Test]
+        public void NaoPodeAdiconarUmItemRepetidoEmUmPedido()
+        {
+            var pedidoApp = ObterPedidoApp();
+
+            var item1 = new PedidoItem
+            {
+                Quantidade = 5,
+                Produto = new Produto { Id = 23271 },
+                Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
+            };
+
+            var item2 = new PedidoItem
+            {
+                Quantidade = 2,
+                Produto = new Produto { Id = 23271 },
+                Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
+            };
+
+            using (new TransactionScope())
+            {
+                item1 = pedidoApp.AdicionarItem(_pontoDemandaId, item1);
+                Assert.IsTrue(item1.Id > 0);
+                var app2 = ObterPedidoApp();
+                Assert.Throws<ApplicationException>(() => app2.AdicionarItem(_pontoDemandaId, item2));
             }
         }
 
