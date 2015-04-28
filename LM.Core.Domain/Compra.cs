@@ -45,6 +45,8 @@ namespace LM.Core.Domain
             if (PontoDemanda == null || PontoDemanda.Id == 0) throw new ApplicationException("A compra deve possuir ponto de demanda.");
             if (Integrante == null || Integrante.Id == 0) throw new ApplicationException("A compra deve possuir integrante.");
             if (Integrante.Usuario == null || Integrante.Usuario.Id == 0) throw new ApplicationException("O integrante da compra deve possuir um usuário.");
+            if (Itens.Where(i => i.ProdutoId != null).GroupBy(i => i.ProdutoId).Any(g => g.Count() > 1))
+                throw new ApplicationException("Existem itens duplicados na sua compra.");
         }
     }
 }

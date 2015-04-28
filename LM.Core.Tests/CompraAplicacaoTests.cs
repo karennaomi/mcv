@@ -27,6 +27,19 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void NaoPodeCriarCompraComItemDuplicado()
+        {
+            using (new TransactionScope())
+            {
+                var compra = GetCompra();
+                var item = compra.Itens.OfType<ListaCompraItem>().First();
+                compra.Itens.Add(new ListaCompraItem { Item = new ListaItem { Id = item.Id }, ProdutoId = item.ProdutoId, Quantidade = 1, Valor = 1.5M, Status = StatusCompra.NaoEncontrado });
+                var app = GetCompraApp();
+                Assert.Throws<ApplicationException>(() => app.Criar(compra));
+            }
+        }
+
+        [Test]
         public void CriarCompraComItemSubstituto()
         {
             using (new TransactionScope())
@@ -40,7 +53,7 @@ namespace LM.Core.Tests
                 var compraItemOriginal = new ListaCompraItem { Item = new ListaItem { Id = itemOriginal.Id }, ProdutoId = itemOriginal.Produto.Id, Quantidade = 2, Valor = 2.5M };
                 
                 var itemSubstituto = lista.Itens.OrderBy(i => i.Id).Skip(2).First();
-                var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = itemSubstituto.Id }, ProdutoId = itemOriginal.Produto.Id, Quantidade = 1, Valor = 1, };
+                var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = itemSubstituto.Id }, ProdutoId = itemSubstituto.Produto.Id, Quantidade = 1, Valor = 1, };
 
                 compra.AdicionarItemSubstituto(compraItemOriginal, compraItemSubstituto, "teste");
                 var app = GetCompraApp();
