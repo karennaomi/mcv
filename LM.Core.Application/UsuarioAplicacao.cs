@@ -61,7 +61,7 @@ namespace LM.Core.Application
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta });
                 integrante = new Integrante(usuario);
                 usuario.MapIntegrantes = new Collection<Integrante> { integrante };
-                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo);
+                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo, "adulto");
             }
 
             _repositorio.Criar(usuario);

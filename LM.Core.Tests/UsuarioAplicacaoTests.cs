@@ -30,7 +30,7 @@ namespace LM.Core.Tests
         public void CriacaoDoUsuarioConvidadoDeveDefinirStatusCadastroComoUsuarioConvidado()
         {
             var usuario = Fakes.Usuario();
-            usuario.Email = "menina@dsaliberti.com";
+            usuario.Email = "esposa@lista.com";
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {

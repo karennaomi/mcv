@@ -13,7 +13,7 @@ namespace LM.Core.Tests
             {
                 Nome = "John Doe",
                 Email = "john@doe.com",
-                Cpf = "423.817.304-00",
+                Cpf = "632.576.526-58",
                 DataNascimento = DateTime.Now.AddYears(-idade),
                 Senha = "123456",
                 Sexo = sexo,

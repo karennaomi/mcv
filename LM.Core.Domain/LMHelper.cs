@@ -6,7 +6,7 @@ namespace LM.Core.Domain
     {
         public static int ObterIdade(DateTime? dataNascimento)
         {
-            if (!dataNascimento.HasValue) throw new ApplicationException("Data de nascimento inválida");
+            if (!dataNascimento.HasValue || dataNascimento.Value == DateTime.MinValue) return 0;
             var hoje = DateTime.Today;
             var idade = hoje.Year - dataNascimento.Value.Year;
             if (dataNascimento.Value.Date > hoje.Date.AddYears(-idade)) idade--;

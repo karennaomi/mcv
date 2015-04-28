@@ -19,7 +19,7 @@ namespace LM.Core.Tests
             {
                 var integrante = Fakes.Integrante(15, "M", 1);
                 var app = new IntegranteAplicacao(new IntegranteEF(), null, new PersonaAplicacao(new PersonaEF()));
-                integrante = app.Criar(integrante);
+                integrante = app.Criar(integrante, "ADOLESCENTE");
                 Assert.IsTrue(integrante.Id > 0);
             }
         }

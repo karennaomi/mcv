@@ -79,6 +79,7 @@
     <Compile Include="NotificacaoAplicacaoTests.cs" />
     <Compile Include="PedidoAplicacaoTests.cs" />
     <Compile Include="ListaAplicacaoTests.cs" />
+    <Compile Include="PersonaAplicacaoTests.cs" />
     <Compile Include="PersonaTests.cs" />
     <Compile Include="Fakes.cs" />
     <Compile Include="MapearLMContextTests.cs" />

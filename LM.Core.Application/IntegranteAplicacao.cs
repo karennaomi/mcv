@@ -7,7 +7,7 @@ namespace LM.Core.Application
 {
     public interface IIntegranteAplicacao
     {
-        Integrante Criar(Integrante integrante);
+        Integrante Criar(Integrante integrante, string tipoPersona);
         void Apagar(long usuarioId, long pontoDemandaId, long integranteId);
     }
 
@@ -23,9 +23,9 @@ namespace LM.Core.Application
             _appPersona = appPersona;
         }
 
-        public Integrante Criar(Integrante integrante)
+        public Integrante Criar(Integrante integrante, string tipoPersona)
         {
-            integrante.Persona = _appPersona.Obter(integrante.ObterIdade(), integrante.Persona.Sexo);
+            integrante.Persona = _appPersona.Obter(integrante.ObterIdade(), integrante.Persona.Sexo, tipoPersona);
             return _repositorio.Criar(integrante);
         }
 
