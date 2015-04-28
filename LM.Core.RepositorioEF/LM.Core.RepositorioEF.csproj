@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FilaItemEF.cs" />
+    <Compile Include="FtsInterceptor.cs" />
     <Compile Include="LojaFavoritaEF.cs" />
     <Compile Include="ComandoAdicionarLojaFavorita.cs" />
     <Compile Include="ComandoCriarItemNaLista.cs" />

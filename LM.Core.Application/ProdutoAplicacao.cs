@@ -8,6 +8,7 @@ namespace LM.Core.Application
     {
         Produto Criar(Produto produto);
         IEnumerable<Produto> ListarPorCategoria(int categoriaId);
+        IEnumerable<Produto> Buscar(string search);
     }
 
     public class ProdutoAplicacao : IProdutoAplicacao
@@ -28,6 +29,11 @@ namespace LM.Core.Application
         public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
         {
             return _repositorio.ListarPorCategoria(categoriaId);
+        }
+
+        public IEnumerable<Produto> Buscar(string search)
+        {
+            return _repositorio.Buscar(search);
         }
     }
 }

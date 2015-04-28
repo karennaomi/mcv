@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF.MappingConfiguration;
 
@@ -25,6 +26,7 @@ namespace LM.Core.RepositorioEF
         public ContextoEF() : base("SOL")
         {
             Database.SetInitializer<ContextoEF>(null);
+            DbInterception.Add(new FtsInterceptor());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
