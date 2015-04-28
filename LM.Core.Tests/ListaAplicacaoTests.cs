@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF;
 using NUnit.Framework;
@@ -20,6 +21,36 @@ namespace LM.Core.Tests
         public void AdiconarUmItemEmUmaLista()
         {
             var listaApp = ObterListaApp();
+            const int produtoId = 23271;
+            var item1 = new ListaItem
+            {
+                QuantidadeDeConsumo = 5,
+                QuantidadeEmEstoque = 3,
+                Periodo = new Periodo { Id = 5 },
+                Produto = new Produto { Id = produtoId }
+            };
+
+            var item2 = new ListaItem
+            {
+                QuantidadeDeConsumo = 2,
+                QuantidadeEmEstoque = 4,
+                Periodo = new Periodo { Id = 2 },
+                Produto = new Produto { Id = produtoId }
+            };
+            
+            using (new TransactionScope())
+            {
+                item1 = listaApp.AdicionarItem(_pontoDemandaId, item1);
+                Assert.IsTrue(item1.Id > 0);
+                var listaApp2 = ObterListaApp();
+                Assert.Throws<ApplicationException>(() => listaApp2.AdicionarItem(_pontoDemandaId, item2));
+            }
+        }
+
+        [Test]
+        public void NaoPodeAdiconarUmItemRepetidoEmUmaLista()
+        {
+            var listaApp = ObterListaApp();
 
             var item = new ListaItem
             {
@@ -28,7 +59,7 @@ namespace LM.Core.Tests
                 Periodo = new Periodo { Id = 5 },
                 Produto = new Produto { Id = 23271 }
             };
-            
+
             using (new TransactionScope())
             {
                 item = listaApp.AdicionarItem(_pontoDemandaId, item);

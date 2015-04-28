@@ -22,6 +22,7 @@ namespace LM.Core.RepositorioEF
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem novoItem)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            if(lista.Itens.Any(i => i.Produto.Id == novoItem.Produto.Id)) throw new ApplicationException("Este produto já existe na lista.");
             return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar();
         }
 

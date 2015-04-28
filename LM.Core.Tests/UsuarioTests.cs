@@ -73,6 +73,7 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        [Ignore]
         public void HashOldPasswords()
         {
             var contexto = new ContextoEF();
