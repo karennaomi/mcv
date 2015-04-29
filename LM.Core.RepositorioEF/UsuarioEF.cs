@@ -22,12 +22,16 @@ namespace LM.Core.RepositorioEF
 
         public Usuario Obter(long id)
         {
-            return _contexto.Usuarios.Find(id);
+            var usuario = _contexto.Usuarios.Find(id);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, id " + id);
+            return usuario;
         }
 
         public Usuario ObterPorEmail(string email)
         {
-            return _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
+            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, email " + email);
+            return usuario;
         }
 
         public Usuario Criar(Usuario usuario)

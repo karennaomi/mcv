@@ -30,16 +30,12 @@ namespace LM.Core.Application
 
         public Usuario Obter(long id)
         {
-            var usuario = _repositorio.Obter(id);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, id " + id);
-            return usuario;
+            return _repositorio.Obter(id);
         }
 
         public Usuario Obter(string email)
         {
-            var usuario = _repositorio.ObterPorEmail(email);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, email " + email);
-            return usuario;
+            return _repositorio.ObterPorEmail(email);
         }
 
         public Usuario Criar(Usuario usuario)
