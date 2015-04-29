@@ -40,7 +40,7 @@ namespace LM.Core.Application
 
         public Usuario Criar(Usuario usuario)
         {
-            _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
+            if (!string.IsNullOrWhiteSpace(usuario.Cpf)) _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
             _repositorio.VerificarSeEmailJaExiste(usuario.Email);
             usuario.Login = usuario.Email;
             usuario.Senha = PasswordHash.CreateHash(usuario.Senha); 
