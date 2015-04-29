@@ -21,7 +21,7 @@ namespace LM.Core.Tests
             {
                 var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
@@ -38,7 +38,7 @@ namespace LM.Core.Tests
             {
                 var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.LojasFavoritas = Fakes.Lojas();
                 pontoDemanda.Id = 0;
@@ -55,7 +55,7 @@ namespace LM.Core.Tests
             {
                 var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -74,7 +74,7 @@ namespace LM.Core.Tests
             {
                 var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -132,7 +132,7 @@ namespace LM.Core.Tests
 
         private static IPontoDemandaAplicacao ObterPontoDemandaAplicacao(PontoDemanda pontoDemanda = null)
         {
-            return new PontoDemandaAplicacao(ObterPontoDemandaRepo(pontoDemanda));
+            return new PontoDemandaAplicacao(ObterPontoDemandaRepo(pontoDemanda), new Mock<IUsuarioAplicacao>().Object);
         }
 
         private static IRepositorioPontoDemanda ObterPontoDemandaRepo(PontoDemanda pontoDemanda)

@@ -17,7 +17,7 @@ namespace LM.Core.Tests
         public void EnviaNotificacao()
         {
             var restService = new RestServiceWithRestSharp("http://localhost:45678");
-            var appPontoDemanda = new PontoDemandaAplicacao(new PontoDemandaEF());
+            var appPontoDemanda = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
             var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()));
             appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario{ Id = 6 }, new PontoDemanda { Id = 17 } , TipoTemplateMensagem.AtivarCompra, "compras");
         }
@@ -71,7 +71,7 @@ namespace LM.Core.Tests
                 } }
             });
 
-            return new PontoDemandaAplicacao(mockPontoDemandaRepo.Object);
+            return new PontoDemandaAplicacao(mockPontoDemandaRepo.Object, new Mock<IUsuarioAplicacao>().Object);
         }
 
         private static Mock<IServicoRest> GetMockRestService()

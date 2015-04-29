@@ -22,9 +22,11 @@ namespace LM.Core.Application
     public class PontoDemandaAplicacao : IPontoDemandaAplicacao
     {
         private readonly IRepositorioPontoDemanda _repositorio;
-        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio)
+        private readonly IUsuarioAplicacao _appUsuario;
+        public PontoDemandaAplicacao(IRepositorioPontoDemanda repositorio, IUsuarioAplicacao appUsuario)
         {
             _repositorio = repositorio;
+            _appUsuario = appUsuario;
         }
 
         public PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda)
@@ -60,6 +62,7 @@ namespace LM.Core.Application
                     break;
             }
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
+            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta);
             _repositorio.Salvar();
             return pontoDemanda;
         }

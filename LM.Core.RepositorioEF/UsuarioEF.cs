@@ -48,6 +48,7 @@ namespace LM.Core.RepositorioEF
 
         public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
+            if (usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk)) return;
             var statusUsuarioPontoDemanda = (pontoDemandaId.HasValue ? usuario.StatusUsuarioPontoDemanda.SingleOrDefault(s => s.PontoDemandaId == pontoDemandaId) : usuario.StatusUsuarioPontoDemanda.First()) ?? usuario.StatusUsuarioPontoDemanda.First();
             statusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
             statusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
