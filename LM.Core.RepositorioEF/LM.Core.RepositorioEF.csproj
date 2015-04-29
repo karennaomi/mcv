@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LegacyTokenEF.cs" />
     <Compile Include="FilaItemEF.cs" />
     <Compile Include="FtsInterceptor.cs" />
     <Compile Include="LojaFavoritaEF.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="ComandoCriarItemNaLista.cs" />
     <Compile Include="ComandoCriarCompra.cs" />
     <Compile Include="ComandoCriarPontoDemanda.cs" />
+    <Compile Include="MappingConfiguration\LegacyTokenConfig.cs" />
     <Compile Include="MappingConfiguration\FilaMensagemConfig.cs" />
     <Compile Include="MappingConfiguration\FilaItemConfig.cs" />
     <Compile Include="MappingConfiguration\RecuperarSenhaConfig.cs" />

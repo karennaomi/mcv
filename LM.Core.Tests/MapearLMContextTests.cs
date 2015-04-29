@@ -152,6 +152,13 @@ namespace LM.Core.Tests
             var filaItem = _contexto.FilaItens.First();
             Assert.IsTrue(filaItem.Mensagens.Any());
         }
+
+        [Test]
+        public void MapearLegacyTokens()
+        {
+            var legacyToken = _contexto.LegacyTokens.First();
+            Assert.IsNotNull(legacyToken);
+        }
     }
 }
 

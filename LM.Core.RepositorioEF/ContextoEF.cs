@@ -22,6 +22,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<Loja> Lojas { get; set; }
         public DbSet<RecuperarSenha> RecuperarSenhas { get; set; }
         public DbSet<FilaItem> FilaItens { get; set; }
+        public DbSet<LegacyToken> LegacyTokens { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -64,6 +65,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new FilaMensagemConfig());
             modelBuilder.Configurations.Add(new FilaMensagemEmailConfig());
             modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
+            modelBuilder.Configurations.Add(new LegacyTokenConfig());
         }
     }
 }

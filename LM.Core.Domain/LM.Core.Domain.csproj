@@ -53,6 +53,7 @@
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
     <Compile Include="FilaItem.cs" />
     <Compile Include="FilaMensagem.cs" />
+    <Compile Include="LegacyToken.cs" />
     <Compile Include="LMHelper.cs" />
     <Compile Include="PasswordHash.cs" />
     <Compile Include="PedidoItem.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecuperarSenha.cs" />
+    <Compile Include="Repositorio\IRepositorioLegacyToken.cs" />
     <Compile Include="Repositorio\IRepositorioFilaItem.cs" />
     <Compile Include="Repositorio\IRepositorioLojaFavorita.cs" />
     <Compile Include="Repositorio\IRepositorioRecuperarSenha.cs" />
