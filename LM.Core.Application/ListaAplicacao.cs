@@ -14,6 +14,7 @@ namespace LM.Core.Application
         void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
+        IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
     }
 
     public class ListaAplicacao : IListaAplicacao
@@ -68,6 +69,11 @@ namespace LM.Core.Application
         {
             _repositorio.AtualizarPeriodoDoItem(pontoDemandaId, itemId, periodoId);
             _repositorio.Salvar();
+        }
+
+        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo)
+        {
+            return _repositorio.BuscarItens(pontoDemandaId, termo);
         }
     }
 }

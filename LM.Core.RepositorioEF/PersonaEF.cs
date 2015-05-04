@@ -15,7 +15,7 @@ namespace LM.Core.RepositorioEF
 
         public IList<Persona> Listar()
         {
-            return _contexto.Personas.AsNoTracking().OrderBy(p => p.Ordem).ToList();
+            return _contexto.Personas.AsNoTracking().ToList();
         }
     }
 }

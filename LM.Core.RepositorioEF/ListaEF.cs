@@ -84,6 +84,13 @@ namespace LM.Core.RepositorioEF
             return item;
         }
 
+        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo)
+        {
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            var searchFts = FtsInterceptor.Fts(termo);
+            return lista.Itens.Where(i => i.Produto.Info.Nome.Contains(searchFts));
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();

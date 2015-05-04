@@ -15,7 +15,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.FaixaEtaria).HasColumnName("TX_FAIXA_ETARIA");
             Property(i => i.IdadeInicial).HasColumnName("VL_IDADE_INI");
             Property(i => i.IdadeFinal).HasColumnName("VL_IDADE_FIM");
-            Property(i => i.Ordem).HasColumnName("VL_ORDEM");
+            Property(i => i.Tipo).HasColumnName("TIPO_PERSONA");
         }
     }
 }

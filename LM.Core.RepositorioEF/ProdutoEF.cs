@@ -34,9 +34,9 @@ namespace LM.Core.RepositorioEF
             return _contexto.Produtos.AsNoTracking().Where(p => p.Categorias.Any(c => c.Id == categoriaId));
         }
 
-        public IEnumerable<Produto> Buscar(string search)
+        public IEnumerable<Produto> Buscar(string termo)
         {
-            var searchFts = FtsInterceptor.Fts(search);
+            var searchFts = FtsInterceptor.Fts(termo);
             return _contexto.Produtos.Where(n => n.Info.Nome.Contains(searchFts));
         }
 

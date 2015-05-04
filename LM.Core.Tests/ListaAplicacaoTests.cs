@@ -131,7 +131,15 @@ namespace LM.Core.Tests
                 Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().Periodo.Id);
             }
         }
-        
+
+        [Test]
+        public void BuscaUmProduto()
+        {
+            var app = ObterListaApp();
+            var itens = app.BuscarItens(_pontoDemandaId, "Bombom");
+            Assert.IsTrue(itens.Any());
+        }
+
         private static IListaAplicacao ObterListaApp()
         {
             return new ListaAplicacao(new ListaEF());

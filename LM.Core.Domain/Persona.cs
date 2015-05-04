@@ -3,6 +3,14 @@ using System;
 
 namespace LM.Core.Domain
 {
+    public enum TipoPersona
+    {
+        NaoReconhecido = 0,
+        Familia = 1,
+        Empregado = 2,
+        Pet = 3
+    }
+
     public class Persona
     {
         public int Id { get; set; }
@@ -11,7 +19,7 @@ namespace LM.Core.Domain
         public string FaixaEtaria { get; set; }
         public int IdadeInicial { get; set; }
         public int IdadeFinal { get; set; }
-        public int Ordem { get; set; }
+        public int Tipo { get; set; }
 
         public string Descricao()
         {
