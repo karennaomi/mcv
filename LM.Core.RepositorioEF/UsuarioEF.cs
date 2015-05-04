@@ -49,10 +49,13 @@ namespace LM.Core.RepositorioEF
         public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
             if (usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk)) return;
-            var statusUsuarioPontoDemanda = (pontoDemandaId.HasValue ? usuario.StatusUsuarioPontoDemanda.SingleOrDefault(s => s.PontoDemandaId == pontoDemandaId) : usuario.StatusUsuarioPontoDemanda.First()) ?? usuario.StatusUsuarioPontoDemanda.First();
-            statusUsuarioPontoDemanda.StatusCadastro = statusCadastro;
-            statusUsuarioPontoDemanda.DataAlteracao = DateTime.Now;
-            statusUsuarioPontoDemanda.PontoDemandaId = pontoDemandaId;
+            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = statusCadastro,
+                DataInclusao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                PontoDemandaId = pontoDemandaId
+            });
         }        
 
         public void VerificarSeCpfJaExiste(string cpf)
