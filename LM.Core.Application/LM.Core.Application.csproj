@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UfAplicacao.cs" />
     <Compile Include="LegacyTokenAplicacao.cs" />
     <Compile Include="FilaItemAplicacao.cs" />
     <Compile Include="RecuperarSenhaAplicacao.cs" />

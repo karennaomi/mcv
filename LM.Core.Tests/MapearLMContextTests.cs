@@ -159,6 +159,13 @@ namespace LM.Core.Tests
             var legacyToken = _contexto.LegacyTokens.First();
             Assert.IsNotNull(legacyToken);
         }
+
+        [Test]
+        public void MapearUfs()
+        {
+            var ufs = _contexto.Ufs;
+            Assert.IsTrue(ufs.Any());
+        }
     }
 }
 

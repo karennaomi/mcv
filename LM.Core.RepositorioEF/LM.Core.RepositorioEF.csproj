@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UfEF.cs" />
     <Compile Include="LegacyTokenEF.cs" />
     <Compile Include="FilaItemEF.cs" />
     <Compile Include="FtsInterceptor.cs" />

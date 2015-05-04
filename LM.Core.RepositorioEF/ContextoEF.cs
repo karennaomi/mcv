@@ -17,6 +17,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<PedidoItem> PedidoItens { get; set; }
         public DbSet<Compra> Compras { get; set; }
         public DbSet<Cidade> Cidades { get; set; }
+        public DbSet<Uf> Ufs { get; set; }
         public DbSet<CompraAtiva> ComprasAtivas { get; set; }
         public DbSet<TemplateMensagem> TemplatesMensagens { get; set; }
         public DbSet<Loja> Lojas { get; set; }

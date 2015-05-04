@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System;
@@ -36,6 +37,11 @@ namespace LM.Core.RepositorioEF
             {
                 return null;
             }
+        }
+
+        public IList<Cidade> Listar(int ufId)
+        {
+            return _contexto.Cidades.AsNoTracking().Where(c => c.Uf.Id == ufId).ToList();
         }
     }
 }

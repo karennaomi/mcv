@@ -73,6 +73,7 @@
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecuperarSenha.cs" />
+    <Compile Include="Repositorio\IRepositorioUf.cs" />
     <Compile Include="Repositorio\IRepositorioLegacyToken.cs" />
     <Compile Include="Repositorio\IRepositorioFilaItem.cs" />
     <Compile Include="Repositorio\IRepositorioLojaFavorita.cs" />
