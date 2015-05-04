@@ -27,7 +27,14 @@ namespace LM.Core.RepositorioEF
         public PontoDemanda Executar()
         {
             _novoPontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
-            _novoPontoDemanda.Endereco.Cidade = _cidadeRepo.Buscar(_novoPontoDemanda.Endereco.Cidade.Nome);
+            if (_novoPontoDemanda.Endereco.Cidade.Id > 0)
+            {
+                _contexto.Entry(_novoPontoDemanda.Endereco.Cidade).State = EntityState.Unchanged;
+            }
+            else
+            {
+                _novoPontoDemanda.Endereco.Cidade = _cidadeRepo.Buscar(_novoPontoDemanda.Endereco.Cidade.Nome);
+            }
             LojasFavoritas();
             if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista> { new Lista() };
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);

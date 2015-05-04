@@ -32,6 +32,24 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void CriarPontoDemandaComIdDeCidade()
+        {
+            using (new TransactionScope())
+            {
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var pontoDemanda = Fakes.PontoDemanda();
+                pontoDemanda.Id = 0;
+                pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
+                app.Criar(usuario.Id, pontoDemanda);
+                var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.IsTrue(pontoDemandaNovo.Listas.Any());
+            }
+        }
+
+        [Test]
         public void CriarPontoDemandaComLojasFavoritas()
         {
             using (new TransactionScope())
