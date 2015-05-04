@@ -4,6 +4,11 @@ namespace LM.Core.Domain
 {
     public class StatusUsuarioPontoDemanda
     {
+        public StatusUsuarioPontoDemanda()
+        {
+            DataInclusao = DataAlteracao = DateTime.Now;
+        }
+
         public long Id { get; set; }
         public virtual Usuario Usuario { get; set; }
         public long? PontoDemandaId { get; set; }

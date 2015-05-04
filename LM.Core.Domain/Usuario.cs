@@ -84,6 +84,11 @@ namespace LM.Core.Domain
             }
         }
 
+        public StatusCadastro StatusAtual()
+        {
+            return StatusUsuarioPontoDemanda.OrderByDescending(s => s.Id).First().StatusCadastro;
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
@@ -93,7 +98,6 @@ namespace LM.Core.Domain
             }
             return results;
         }
-
     }
 }
 
