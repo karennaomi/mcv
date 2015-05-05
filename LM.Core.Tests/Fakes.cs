@@ -9,28 +9,33 @@ namespace LM.Core.Tests
     {
         internal static Usuario Usuario(int idade = 30, string sexo = "M")
         {
-            return new Usuario
+            var usuario = new Usuario
             {
-                Nome = "John Doe",
-                Email = "john@doe.com",
-                Cpf = "632.576.526-58",
-                DataNascimento = DateTime.Now.AddYears(-idade),
                 Senha = "123456",
-                Sexo = sexo,
-                Tipo = TipoUsuario.Administrador
-
+                Tipo = TipoUsuario.Administrador,
+                Integrante = new Integrante
+                {
+                    Nome = "Joe Doe",
+                    Email = "john2@doe.com",
+                    Sexo = "M",
+                    DataNascimento = DateTime.Now.AddYears(-27),
+                    GrupoDeIntegrantes = new GrupoDeIntegrantes()
+                }
             };
+            return usuario;
         }
 
         internal static PontoDemanda PontoDemanda()
         {
+            var integrante = new Integrante {Id = 1234, Nome = "John Armless", Usuario = new Usuario {Id = 6}};
+            integrante.Usuario.Integrante = integrante;
             return new PontoDemanda
             {
                 Id = 666,
                 Tipo = TipoPontoDemanda.Praia,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes
                 {
-                    Integrantes = new List<Integrante>{ new Integrante{ Id = 1234, Usuario = new Usuario { Id = 6}}}
+                    Integrantes = new List<Integrante>{ integrante }
                 },
                 Endereco = Endereco()
             };
@@ -71,10 +76,11 @@ namespace LM.Core.Tests
         {
             return new Integrante
             {
-                Persona = new Persona {Sexo = sexo },
                 DataNascimento = DateTime.Now.AddYears(-idade),
                 EhUsuarioSistema = false,
                 Nome = "Integrante Joe",
+                Sexo = "M", 
+                Email = "joe@blabla.co",
                 Papel = IntegrantePapel.Colaborador,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = idGrupoIntegrante },
                 Telefone = "989998999"

@@ -85,13 +85,11 @@
     <Compile Include="MappingConfiguration\ListaItemConfig.cs" />
     <Compile Include="MappingConfiguration\PedidoItemConfig.cs" />
     <Compile Include="MappingConfiguration\PeriodoConfig.cs" />
-    <Compile Include="MappingConfiguration\PersonaConfig.cs" />
     <Compile Include="MappingConfiguration\PontoDemandaConfig.cs" />
     <Compile Include="MappingConfiguration\ProdutoConfig.cs" />
     <Compile Include="MappingConfiguration\StatusUsuarioPontoDemandaConfig.cs" />
     <Compile Include="MappingConfiguration\UsuarioConfig.cs" />
     <Compile Include="PedidoEF.cs" />
-    <Compile Include="PersonaEF.cs" />
     <Compile Include="PontoDemandaEF.cs" />
     <Compile Include="ProdutoEF.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

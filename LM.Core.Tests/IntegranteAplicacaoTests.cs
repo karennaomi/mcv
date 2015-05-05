@@ -18,7 +18,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var integrante = Fakes.Integrante(15, "M", 1);
-                var app = new IntegranteAplicacao(new IntegranteEF(), null, new PersonaAplicacao(new PersonaEF()));
+                var app = new IntegranteAplicacao(new IntegranteEF(), null);
                 integrante = app.Criar(integrante, "ADOLESCENTE");
                 Assert.IsTrue(integrante.Id > 0);
             }
@@ -42,7 +42,7 @@ namespace LM.Core.Tests
 
         private static IIntegranteAplicacao ObterAppIntegrante(IRepositorioIntegrante repo)
         {
-            return new IntegranteAplicacao(repo, ObterAppPontoDemanda(), new PersonaAplicacao(new PersonaEF()));
+            return new IntegranteAplicacao(repo, ObterAppPontoDemanda());
         }
 
         private static Mock<IRepositorioIntegrante> ObterIntegranteRepo()

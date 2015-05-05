@@ -10,7 +10,6 @@ namespace LM.Core.RepositorioEF
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<PontoDemanda> PontosDemanda { get; set; }
         public DbSet<Integrante> Integrantes { get; set; }
-        public DbSet<Persona> Personas { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Lista> Listas { get; set; }
@@ -38,7 +37,6 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new PontoDemandaConfig());
             modelBuilder.Configurations.Add(new GrupoDeIntegrantesConfig());
             modelBuilder.Configurations.Add(new IntegranteConfig());
-            modelBuilder.Configurations.Add(new PersonaConfig());
             modelBuilder.Configurations.Add(new EnderecoConfig());
             modelBuilder.Configurations.Add(new CidadeConfig());
             modelBuilder.Configurations.Add(new UfConfig());

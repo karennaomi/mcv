@@ -21,7 +21,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var app = new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
+                new UsuarioAplicacao(new UsuarioEF()), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
                 var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha);
                 Assert.IsTrue(recuperarSenha.Id > 0);
                 Assert.IsNotNull(recuperarSenha.Usuario);
@@ -41,7 +41,7 @@ namespace LM.Core.Tests
                 var app2 = GetApp();
                 app2.TrocarSenha(token, "abc123def");
 
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), null);
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Obter(usuarioId);
                 Assert.IsTrue(PasswordHash.ValidatePassword("abc123def", usuario.Senha));
             }
@@ -71,7 +71,7 @@ namespace LM.Core.Tests
         private static IRecuperarSenhaAplicacao GetApp()
         {
             return new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
+                new UsuarioAplicacao(new UsuarioEF()), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
         }
 
         private static IRecuperarSenhaAplicacao GetMockedApp()

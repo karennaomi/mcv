@@ -26,7 +26,8 @@ namespace LM.Core.RepositorioEF
 
         public PontoDemanda Executar()
         {
-            _novoPontoDemanda.GrupoDeIntegrantes = ObterGrupoDeIntegrantesDoUsuario();
+            var usuario = _usuarioRepo.Obter(_usuarioId);
+            _novoPontoDemanda.GrupoDeIntegrantes = usuario.Integrante.GrupoDeIntegrantes;
             if (_novoPontoDemanda.Endereco.Cidade.Id > 0)
             {
                 _contexto.Entry(_novoPontoDemanda.Endereco.Cidade).State = EntityState.Unchanged;
@@ -40,7 +41,7 @@ namespace LM.Core.RepositorioEF
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             _contexto.SaveChanges();
 
-            _usuarioRepo.AtualizarStatusCadastro(_usuarioRepo.Obter(_usuarioId), StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
+            _usuarioRepo.AtualizarStatusCadastro(usuario, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
             _contexto.SaveChanges();
 
             return _novoPontoDemanda;
@@ -55,12 +56,6 @@ namespace LM.Core.RepositorioEF
                 lojas.Add(_lojaFavoritaRepo.VerificarLojaExistente(lojaFavorita));
             }
             _novoPontoDemanda.LojasFavoritas = lojas;
-        }
-
-        private GrupoDeIntegrantes ObterGrupoDeIntegrantesDoUsuario()
-        {
-            var usuario = _usuarioRepo.Obter(_usuarioId);
-            return usuario.Integrante.GrupoDeIntegrantes;
         }
     }
 }

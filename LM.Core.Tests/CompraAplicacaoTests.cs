@@ -153,7 +153,7 @@ namespace LM.Core.Tests
             return new Compra
             {
                 PontoDemanda = new PontoDemanda { Id = pontoDemanda.Id },
-                Integrante = new Integrante { Id = integrante.Id, Usuario = new Usuario { Id = integrante .Usuario.Id} },
+                Integrante = new Integrante { Id = integrante.Id, Usuario = new Usuario { Id = integrante.Usuario.Id} },
                 Itens = new Collection<CompraItem>
                 {
                     new ListaCompraItem { Item = new ListaItem { Id = listaItem.Id }, ProdutoId = listaItem.Produto.Id, Quantidade = 2, Valor = 2.5M, Status = StatusCompra.Comprado },
@@ -169,7 +169,7 @@ namespace LM.Core.Tests
 
         private PontoDemanda GetPontoDemanda()
         {
-            return _contexto.PontosDemanda.First();
+            return _contexto.PontosDemanda.First(p => p.GrupoDeIntegrantes.Integrantes.FirstOrDefault().Usuario != null);
         }
     }
 }

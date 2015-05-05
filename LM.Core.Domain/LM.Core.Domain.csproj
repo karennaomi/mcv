@@ -68,7 +68,6 @@
     <Compile Include="ListaItem.cs" />
     <Compile Include="Loja.cs" />
     <Compile Include="Periodo.cs" />
-    <Compile Include="Persona.cs" />
     <Compile Include="PontoDemanda.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="Repositorio\IRepositorioIntegrante.cs" />
     <Compile Include="Repositorio\IRepositorioLista.cs" />
     <Compile Include="Repositorio\IRepositorioPedido.cs" />
-    <Compile Include="Repositorio\IRepositorioPersona.cs" />
     <Compile Include="Repositorio\IRepositorioPontoDemanda.cs" />
     <Compile Include="Repositorio\IRepositorioProduto.cs" />
     <Compile Include="Repositorio\IRepositorioUsuario.cs" />

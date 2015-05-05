@@ -40,7 +40,7 @@ namespace LM.Core.Application
             var mensagem = _appTemplateMensagem.ObterPorTipo<TemplateMensagemPush>(tipoTemplate).Mensagem;
             foreach (var destinatario in destinatarios)
             {
-                mensagem = TemplateProcessor.ProcessTemplate(mensagem, new {PontoDemanda = pontoDemanda, Remetente = remetente, Destinatario = destinatario});
+                mensagem = TemplateProcessor.ProcessTemplate(mensagem, new {PontoDemanda = pontoDemanda, Remetente = remetente.Integrante, Destinatario = destinatario.Integrante});
                 EnviarNotificacaoPush(destinatario.DeviceType, destinatario.DeviceId, mensagem, action);
             }
         }

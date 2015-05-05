@@ -13,7 +13,7 @@ namespace LM.Core.Application
         PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
-        PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia);
+        PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
         Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
@@ -46,7 +46,7 @@ namespace LM.Core.Application
             return pontoDemanda;
         }
 
-        public PontoDemanda DefinirFrequenciaDeConsumo(long usuarioId, long pontoDemandaId, int frequencia)
+        public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
             switch (frequencia)

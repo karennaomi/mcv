@@ -64,7 +64,6 @@
     <Compile Include="NotificacaoAplicacao.cs" />
     <Compile Include="PedidoAplicacao.cs" />
     <Compile Include="ListaAplicacao.cs" />
-    <Compile Include="PersnonaAplicacao.cs" />
     <Compile Include="IntegranteAplicacao.cs" />
     <Compile Include="PontoDemandaAplicacao.cs" />
     <Compile Include="ProdutoAplicacao.cs" />

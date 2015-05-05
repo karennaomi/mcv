@@ -22,11 +22,9 @@ namespace LM.Core.Application
     public class UsuarioAplicacao : IUsuarioAplicacao
     {
         private readonly IRepositorioUsuario _repositorio;
-        private readonly IPersonaAplicacao _appPersona;
-        public UsuarioAplicacao(IRepositorioUsuario repositorio, IPersonaAplicacao appPersona)
+        public UsuarioAplicacao(IRepositorioUsuario repositorio)
         {
             _repositorio = repositorio;
-            _appPersona = appPersona;
         }
 
         public Usuario Obter(long id)
@@ -34,31 +32,27 @@ namespace LM.Core.Application
             return _repositorio.Obter(id);
         }
 
-        public Usuario Obter(string email)
+        public Usuario Obter(string login)
         {
-            return _repositorio.ObterPorEmail(email);
+            return _repositorio.ObterPorLogin(login);
         }
 
         public Usuario Criar(Usuario usuario)
         {
-            if (!string.IsNullOrWhiteSpace(usuario.Cpf)) _repositorio.VerificarSeCpfJaExiste(usuario.Cpf);
-            _repositorio.VerificarSeEmailJaExiste(usuario.Email);
-            usuario.Login = usuario.Email;
+            if (!string.IsNullOrWhiteSpace(usuario.Integrante.Cpf)) _repositorio.VerificarSeCpfJaExiste(usuario.Integrante.Cpf);
+            _repositorio.VerificarSeEmailJaExiste(usuario.Integrante.Email);
+            usuario.Login = usuario.Integrante.Email;
             usuario.Senha = PasswordHash.CreateHash(usuario.Senha); 
             if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
 
-            var integrante = _repositorio.UsuarioConvidado(usuario.Email);
+            var integrante = _repositorio.UsuarioConvidado(usuario.Integrante.Email);
             if (integrante != null)
             {
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.UsuarioConvidado });
-                integrante.Usuario = usuario;
             }
             else
             {
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta });
-                integrante = new Integrante(usuario);
-                usuario.MapIntegrantes = new Collection<Integrante> { integrante };
-                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo, "familia");
             }
 
             _repositorio.Criar(usuario);
@@ -69,22 +63,22 @@ namespace LM.Core.Application
         public Usuario Atualizar(Usuario usuario)
         {
             var usuarioToUpdate = Obter(usuario.Id);
-            usuarioToUpdate.Nome = usuario.Nome;
-            if (usuarioToUpdate.Email != usuario.Email)
+            usuarioToUpdate.Integrante.Nome = usuario.Integrante.Nome;
+            if (usuarioToUpdate.Integrante.Email != usuario.Integrante.Email)
             {
-                _repositorio.VerificarSeEmailJaExiste(usuario.Email);
-                usuarioToUpdate.Email = usuario.Email;
-                usuarioToUpdate.Login = usuario.Email;
+                _repositorio.VerificarSeEmailJaExiste(usuario.Integrante.Email);
+                usuarioToUpdate.Integrante.Email = usuario.Integrante.Email;
+                usuarioToUpdate.Login = usuario.Integrante.Email;
             }
-            usuarioToUpdate.DataNascimento = usuario.DataNascimento;
-            usuarioToUpdate.Sexo = usuario.Sexo;
+            usuarioToUpdate.Integrante.DataNascimento = usuario.Integrante.DataNascimento;
+            usuarioToUpdate.Integrante.Sexo = usuario.Integrante.Sexo;
             _repositorio.Salvar();
             return usuarioToUpdate;
         }
 
-        public Usuario ValidarLogin(string email, string senha)
+        public Usuario ValidarLogin(string login, string senha)
         {
-            var usuario = _repositorio.ObterPorEmail(email);
+            var usuario = _repositorio.ObterPorLogin(login);
             if (PasswordHash.ValidatePassword(senha, usuario.Senha))
             {
                 return usuario;

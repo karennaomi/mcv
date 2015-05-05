@@ -19,14 +19,14 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
                 var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
-                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusAtual());
                 Assert.IsTrue(pontoDemandaNovo.Listas.Any());
             }
         }
@@ -36,15 +36,15 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
                 app.Criar(usuario.Id, pontoDemanda);
                 var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
-                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemandaNovo.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusAtual());
                 Assert.IsTrue(pontoDemandaNovo.Listas.Any());
             }
         }
@@ -54,14 +54,14 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.LojasFavoritas = Fakes.Lojas();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
-                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
+                Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusAtual());
                 Assert.IsTrue(pontoDemanda.LojasFavoritas.All(l => l.Id > 0));
             }
         }
@@ -71,9 +71,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -90,9 +90,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -125,7 +125,7 @@ namespace LM.Core.Tests
         public void Frequencia1DefineReposicao7Estoque3()
         {
             var app = ObterPontoDemandaAplicacao();
-            var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 1);
+            var pontoDemanda = app.DefinirFrequenciaDeCompra(9999, 999, 1);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(7, pontoDemanda.QuantidadeDiasAlertaReposicao);
         }
@@ -134,7 +134,7 @@ namespace LM.Core.Tests
         public void Frequencia2DefineReposicao14Estoque3()
         {
             var app = ObterPontoDemandaAplicacao();
-            var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 2);
+            var pontoDemanda = app.DefinirFrequenciaDeCompra(9999, 999, 2);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(14, pontoDemanda.QuantidadeDiasAlertaReposicao);
         }
@@ -143,7 +143,7 @@ namespace LM.Core.Tests
         public void Frequencia3DefineReposicao28Estoque3()
         {
             var app = ObterPontoDemandaAplicacao();
-            var pontoDemanda = app.DefinirFrequenciaDeConsumo(9999, 999, 3);
+            var pontoDemanda = app.DefinirFrequenciaDeCompra(9999, 999, 3);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(28, pontoDemanda.QuantidadeDiasAlertaReposicao);
         }

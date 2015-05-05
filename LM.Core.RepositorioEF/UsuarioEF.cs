@@ -27,16 +27,15 @@ namespace LM.Core.RepositorioEF
             return usuario;
         }
 
-        public Usuario ObterPorEmail(string email)
+        public Usuario ObterPorLogin(string login)
         {
-            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Email == email);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, email " + email);
+            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Login == login);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, login " + login);
             return usuario;
         }
 
         public Usuario Criar(Usuario usuario)
         {
-            if (usuario.Integrante != null) _contexto.Entry(usuario.Integrante.Persona).State = EntityState.Unchanged;
             usuario = _contexto.Usuarios.Add(usuario);
             return usuario;
         }
@@ -60,12 +59,12 @@ namespace LM.Core.RepositorioEF
 
         public void VerificarSeCpfJaExiste(string cpf)
         {
-            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Cpf == cpf)) throw new UsuarioExistenteException("Cpf");
+            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Integrante.Cpf == cpf)) throw new UsuarioExistenteException("Cpf");
         }
 
         public void VerificarSeEmailJaExiste(string email)
         {
-            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Email == email)) throw new UsuarioExistenteException("Email");
+            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Integrante.Email == email)) throw new UsuarioExistenteException("Email");
         }
 
         public void AtualizarDeviceInfo(Usuario usuario, string deviceType, string deviceId)

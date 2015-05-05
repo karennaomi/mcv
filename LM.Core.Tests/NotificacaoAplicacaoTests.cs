@@ -17,7 +17,7 @@ namespace LM.Core.Tests
         public void EnviaNotificacao()
         {
             var restService = new RestServiceWithRestSharp("http://localhost:45678");
-            var appPontoDemanda = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF(), new PersonaAplicacao(new PersonaEF())));
+            var appPontoDemanda = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
             var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()));
             appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario{ Id = 6 }, new PontoDemanda { Id = 17 } , TipoTemplateMensagem.AtivarCompra, "compras");
         }
@@ -28,8 +28,10 @@ namespace LM.Core.Tests
             var mockRestService = GetMockRestService();
             var appNotificacao = GetAppNotificacao(mockRestService.Object);
             var pontoDemanda = Fakes.PontoDemanda();
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante{ Usuario = new Usuario { Id = 7 }});
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario { Id = 6 } , pontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
+            var integrante = new Integrante {Usuario = new Usuario {Id = 7}};
+            integrante.Usuario.Integrante = integrante;
+            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante);
+            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario { Id = 6, Integrante = new Integrante{Nome = "John Bililis"}} , pontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
@@ -38,7 +40,7 @@ namespace LM.Core.Tests
         {
             var mockRestService = GetMockRestService();
             var appNotificacao = GetAppNotificacao(mockRestService.Object);
-            appNotificacao.Notificar(new Usuario { Id = 6 }, new Usuario { Id = 7 }, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.PedidoItemCriado, "compras");
+            appNotificacao.Notificar(new Usuario { Id = 6, Integrante = new Integrante { Nome = "John Bililis" } }, new Usuario { Id = 7, Integrante = new Integrante { Nome = "John Bkaasa" } }, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.PedidoItemCriado, "compras");
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
@@ -66,8 +68,8 @@ namespace LM.Core.Tests
                 Nome = "PontoDemandaTeste",
                 GrupoDeIntegrantes = new GrupoDeIntegrantes { Integrantes = new Collection<Integrante>
                 {
-                    new Integrante { Usuario = new Usuario {Id = 6, Nome = "Joe Doe"}},
-                    new Integrante { Usuario = new Usuario {Id = 10, Nome = "John Armless", DeviceType = "apple", DeviceId = "CE3BA6E02D7F4AEDA33DCB31B3F3A9DE"}},
+                    new Integrante { Nome = "Joe Doe", Usuario = new Usuario {Id = 6}},
+                    new Integrante { Nome = "John Armless", Usuario = new Usuario {Id = 10, DeviceType = "apple", DeviceId = "CE3BA6E02D7F4AEDA33DCB31B3F3A9DE"}},
                 } }
             });
 

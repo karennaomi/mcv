@@ -28,7 +28,7 @@ namespace LM.Core.Tests
             var item = new PedidoItem
             {
                 Quantidade = 5,
-                Produto = new Produto { Id = 23271 },
+                Produto = new Produto { Id = 26270 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 }}
             };
 
@@ -47,14 +47,14 @@ namespace LM.Core.Tests
             var item1 = new PedidoItem
             {
                 Quantidade = 5,
-                Produto = new Produto { Id = 23271 },
+                Produto = new Produto { Id = 25861 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
             };
 
             var item2 = new PedidoItem
             {
                 Quantidade = 2,
-                Produto = new Produto { Id = 23271 },
+                Produto = new Produto { Id = 25861 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
             };
 
@@ -115,7 +115,7 @@ namespace LM.Core.Tests
             var repoMock = new Mock<IRepositorioCompraAtiva>();
             repoMock.Setup(r => r.Obter(It.IsAny<long>())).Returns(new CompraAtiva
             {
-                Usuario = new Usuario { Id = 1, Nome = "John" }
+                Usuario = new Usuario { Id = 1, Integrante = new Integrante{Nome = "John"} }
             });
             return new CompraAtivaAplicacao(repoMock.Object, null);
         }

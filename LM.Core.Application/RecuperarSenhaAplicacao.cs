@@ -53,7 +53,7 @@ namespace LM.Core.Application
         private void EnviarEmail(RecuperarSenha recuperarSenha, string trocarSenhaUrl)
         {
             var template = _appTemplateMensagem.ObterPorTipo<TemplateMensagemEmail>(TipoTemplateMensagem.RecuperarSenha);
-            var entity = new { Url = trocarSenhaUrl, recuperarSenha.Token, recuperarSenha.Usuario };
+            var entity = new { Url = trocarSenhaUrl, recuperarSenha.Token, recuperarSenha.Usuario.Integrante };
             var assunto = TemplateProcessor.ProcessTemplate(template.Assunto, entity);
             var corpo = TemplateProcessor.ProcessTemplate(template.Mensagem, entity);
             var filaItem = new FilaItem();
@@ -61,7 +61,7 @@ namespace LM.Core.Application
             {
                 Assunto = assunto,
                 Corpo = corpo,
-                EmailDestinatario = recuperarSenha.Usuario.Email
+                EmailDestinatario = recuperarSenha.Usuario.Integrante.Email
             });
             _filaItemAplicacao.Criar(filaItem);
         }

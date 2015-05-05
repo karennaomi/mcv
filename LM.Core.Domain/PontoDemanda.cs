@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LM.Core.Domain
 {
@@ -23,9 +22,5 @@ namespace LM.Core.Domain
         public virtual GrupoDeIntegrantes GrupoDeIntegrantes { get; set; }
         public virtual ICollection<Lista> Listas { get; set; }
         public virtual ICollection<Loja> LojasFavoritas { get; set; }
-
-        public Usuario Usuario {
-            get { return GrupoDeIntegrantes.Integrantes.Single(i => i.EhUsuarioSistema).Usuario; }
-        }
     }
 }

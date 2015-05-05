@@ -15,7 +15,6 @@ namespace LM.Core.RepositorioEF
         public Integrante Criar(Integrante integrante)
         {
             if (integrante.GrupoDeIntegrantes.Id > 0) _contexto.Entry(integrante.GrupoDeIntegrantes).State = EntityState.Unchanged;
-            _contexto.Entry(integrante.Persona).State = EntityState.Unchanged;
             integrante = _contexto.Integrantes.Add(integrante);
             _contexto.SaveChanges();
             return integrante;

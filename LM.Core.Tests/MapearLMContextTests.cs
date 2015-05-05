@@ -13,10 +13,8 @@ namespace LM.Core.Tests
         [Test]
         public void MapearUsuarios()
         {
-            var usuario = _contexto.Usuarios.First();
+            var usuario = _contexto.Usuarios.OrderBy(u => u.Id).Skip(50).First();
             Assert.IsNotNull(usuario.StatusUsuarioPontoDemanda);
-            Assert.IsNotNull(usuario.MapIntegrantes);
-            Assert.IsTrue(usuario.MapIntegrantes.Any());
             Assert.IsNotNull(usuario.Integrante);
         }
 
@@ -43,17 +41,9 @@ namespace LM.Core.Tests
         [Test]
         public void MapearIntegrante()
         {
-            var integrante = _contexto.Integrantes.First();
+            var integrante = _contexto.Integrantes.First(i => i.Usuario != null);
             Assert.IsNotNull(integrante.GrupoDeIntegrantes);
-            Assert.IsNotNull(integrante.Persona);
             Assert.IsNotNull(integrante.Usuario);
-        }
-
-        [Test]
-        public void MapearPersona()
-        {
-            var persona = _contexto.Personas.First();
-            Assert.IsNotNull(persona);
         }
 
         [Test]

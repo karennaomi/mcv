@@ -22,8 +22,6 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasRequired(d => d.GrupoDeIntegrantes).WithMany().Map(m => m.MapKey("ID_GRUPO_INTEGRANTE"));
             HasMany(d => d.Listas).WithRequired(l => l.PontoDemanda).Map(m => m.MapKey("ID_PONTO_REAL_DEMANDA"));
             HasMany(d => d.LojasFavoritas).WithMany().Map(m => m.ToTable("TB_Ponto_Real_Demanda_Loja").MapLeftKey("ID_PONTO_REAL_DEMANDA").MapRightKey("ID_LOJA"));
-
-            Ignore(d => d.Usuario);
         }
     }
 }
