@@ -13,6 +13,7 @@ namespace LM.Core.Application
         Usuario Obter(long id);
         Usuario Obter(string email);
         Usuario Criar(Usuario usuario);
+        Usuario Atualizar(Usuario usuario);
         Usuario ValidarLogin(string email, string senha);
         void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null);
         void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId);
@@ -57,12 +58,28 @@ namespace LM.Core.Application
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta });
                 integrante = new Integrante(usuario);
                 usuario.MapIntegrantes = new Collection<Integrante> { integrante };
-                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo, "adulto");
+                usuario.Integrante.Persona = _appPersona.Obter(usuario.ObterIdade(), usuario.Sexo, "familia");
             }
 
             _repositorio.Criar(usuario);
             _repositorio.Salvar();
             return usuario;
+        }
+
+        public Usuario Atualizar(Usuario usuario)
+        {
+            var usuarioToUpdate = Obter(usuario.Id);
+            usuarioToUpdate.Nome = usuario.Nome;
+            if (usuarioToUpdate.Email != usuario.Email)
+            {
+                _repositorio.VerificarSeEmailJaExiste(usuario.Email);
+                usuarioToUpdate.Email = usuario.Email;
+                usuarioToUpdate.Login = usuario.Email;
+            }
+            usuarioToUpdate.DataNascimento = usuario.DataNascimento;
+            usuarioToUpdate.Sexo = usuario.Sexo;
+            _repositorio.Salvar();
+            return usuarioToUpdate;
         }
 
         public Usuario ValidarLogin(string email, string senha)

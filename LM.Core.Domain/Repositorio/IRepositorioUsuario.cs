@@ -12,6 +12,5 @@ namespace LM.Core.Domain.Repositorio
         void VerificarSeEmailJaExiste(string email);
         void AtualizarDeviceInfo(Usuario usuario, string deviceType, string deviceId);
         void Salvar();
-
     }
 }
