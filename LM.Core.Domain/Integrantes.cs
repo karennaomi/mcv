@@ -24,7 +24,7 @@ namespace LM.Core.Domain
         public Integrante()
         {
             Ativo = true;
-            DataInclusao = DateTime.Now;
+            DataInclusao = DataAlteracao = DateTime.Now;
             EhUsuarioSistema = true;
             Papel = IntegrantePapel.Administrador;
         }
