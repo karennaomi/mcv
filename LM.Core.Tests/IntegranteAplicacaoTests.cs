@@ -1,4 +1,5 @@
-﻿using System.Transactions;
+﻿using System.Data.Entity.Validation;
+using System.Transactions;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
@@ -19,7 +20,27 @@ namespace LM.Core.Tests
             {
                 var integrante = Fakes.Integrante(15, "M", 1);
                 var app = new IntegranteAplicacao(new IntegranteEF(), null);
-                integrante = app.Criar(integrante, "ADOLESCENTE");
+                integrante = app.Criar(integrante);
+                Assert.IsTrue(integrante.Id > 0);
+            }
+        }
+
+        [Test]
+        public void CriarIntegrantePet()
+        {
+            using (new TransactionScope())
+            {
+                var integrante = new Integrante { Nome = "Bidu", Tipo = TipoIntegrante.Pet, GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = 1 }, };
+                var app = new IntegranteAplicacao(new IntegranteEF(), null);
+                try
+                {
+                    integrante = app.Criar(integrante);
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    throw ex;
+                }
+                
                 Assert.IsTrue(integrante.Id > 0);
             }
         }
