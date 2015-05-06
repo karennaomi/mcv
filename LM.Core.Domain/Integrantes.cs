@@ -27,6 +27,7 @@ namespace LM.Core.Domain
             DataInclusao = DataAlteracao = DateTime.Now;
             EhUsuarioSistema = true;
             Papel = IntegrantePapel.Administrador;
+            Tipo = TipoIntegrante.Familia;
         }
 
         public long Id { get; set; }
