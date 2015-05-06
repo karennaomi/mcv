@@ -60,6 +60,8 @@ namespace LM.Core.Application
                 case 3:
                     pontoDemanda.QuantidadeDiasAlertaReposicao = 28;
                     break;
+                default:
+                    throw new ApplicationException("Frequência inválida");
             }
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta);
