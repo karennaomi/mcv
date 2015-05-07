@@ -82,7 +82,7 @@ namespace LM.Core.Tests
                 Sexo = "M", 
                 Email = "joe@blabla.co",
                 Papel = IntegrantePapel.Colaborador,
-                GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = idGrupoIntegrante },
+                GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = idGrupoIntegrante, PontosDemanda = new List<PontoDemanda> { PontoDemanda() } },
                 Telefone = "989998999"
             };
         }

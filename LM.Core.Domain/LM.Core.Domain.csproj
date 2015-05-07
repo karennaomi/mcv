@@ -59,7 +59,7 @@
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />
     <Compile Include="CustomException\LoginInvalidoException.cs" />
-    <Compile Include="CustomException\UsuarioExistenteException.cs" />
+    <Compile Include="CustomException\IntegranteExistenteException.cs" />
     <Compile Include="Endereco.cs" />
     <Compile Include="GrupoDeIntegrantes.cs" />
     <Compile Include="Imagem.cs" />

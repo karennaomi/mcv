@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System.Linq;
+using LM.Core.Domain;
+using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Data.Entity;
 
@@ -10,6 +12,13 @@ namespace LM.Core.RepositorioEF
         public IntegranteEF()
         {
             _contexto = new ContextoEF();
+        }
+
+        public Integrante Obter(long id)
+        {
+            var integrante = _contexto.Integrantes.Find(id);
+            if (integrante == null) throw new ObjetoNaoEncontradoException("Integrante não encontrado, id " + id);
+            return integrante;
         }
 
         public Integrante Criar(Integrante integrante)
@@ -25,6 +34,21 @@ namespace LM.Core.RepositorioEF
             var integrante = _contexto.Integrantes.Find(id);
             _contexto.Entry(integrante).State = EntityState.Deleted;
             _contexto.Integrantes.Remove(integrante);
+            _contexto.SaveChanges();
+        }
+
+        public void VerificarSeCpfJaExiste(string cpf)
+        {
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf");
+        }
+
+        public void VerificarSeEmailJaExiste(string email)
+        {
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email)) throw new IntegranteExistenteException("Email");
+        }
+
+        public void Salvar()
+        {
             _contexto.SaveChanges();
         }
     }

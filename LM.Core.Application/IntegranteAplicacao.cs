@@ -7,18 +7,25 @@ namespace LM.Core.Application
 {
     public interface IIntegranteAplicacao
     {
+        Integrante Obter(long id);
         Integrante Criar(Integrante integrante);
-        void Apagar(long usuarioId, long pontoDemandaId, long integranteId);
+        Integrante Atualizar(Integrante integrante);
+        void Apagar(long pontoDemandaId, long integranteId);
+        void VerificarSeCpfJaExiste(string cpf);
+        void VerificarSeEmailJaExiste(string email);
     }
 
     public class IntegranteAplicacao : IIntegranteAplicacao
     {
         private readonly IRepositorioIntegrante _repositorio;
-        private readonly IPontoDemandaAplicacao _appPontoDemanda;
-        public IntegranteAplicacao(IRepositorioIntegrante repositorio, IPontoDemandaAplicacao appPontoDemanda)
+        public IntegranteAplicacao(IRepositorioIntegrante repositorio)
         {
             _repositorio = repositorio;
-            _appPontoDemanda = appPontoDemanda;
+        }
+
+        public Integrante Obter(long id)
+        {
+            return _repositorio.Obter(id);
         }
 
         public Integrante Criar(Integrante integrante)
@@ -26,11 +33,30 @@ namespace LM.Core.Application
             return _repositorio.Criar(integrante);
         }
 
-        public void Apagar(long usuarioId, long pontoDemandaId, long integranteId)
+        public Integrante Atualizar(Integrante integrante)
         {
-            var pontoDemanda = _appPontoDemanda.Obter(usuarioId, pontoDemandaId);
-            if (pontoDemanda.GrupoDeIntegrantes.Integrantes.All(i => i.Id != integranteId)) throw new IntegranteNaoPertenceAPontoDemandaException();
+            var integranteToUpdate = Obter(integrante.Id);
+            if (integranteToUpdate.Email != integrante.Email) VerificarSeEmailJaExiste(integrante.Email);
+            integranteToUpdate.Atualizar(integrante);
+            _repositorio.Salvar();
+            return integranteToUpdate;
+        }
+
+        public void Apagar(long pontoDemandaId, long integranteId)
+        {
+            var integrante = Obter(integranteId);
+            if (integrante.GrupoDeIntegrantes.PontosDemanda.All(p => p.Id != pontoDemandaId)) throw new IntegranteNaoPertenceAPontoDemandaException();
             _repositorio.Apagar(integranteId);
+        }
+
+        public void VerificarSeCpfJaExiste(string cpf)
+        {
+            _repositorio.VerificarSeCpfJaExiste(cpf);
+        }
+
+        public void VerificarSeEmailJaExiste(string email)
+        {
+            _repositorio.VerificarSeEmailJaExiste(email);
         }
     }
 }

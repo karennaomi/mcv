@@ -63,15 +63,8 @@ namespace LM.Core.Application
         public Usuario Atualizar(Usuario usuario)
         {
             var usuarioToUpdate = Obter(usuario.Id);
-            usuarioToUpdate.Integrante.Nome = usuario.Integrante.Nome;
-            if (usuarioToUpdate.Integrante.Email != usuario.Integrante.Email)
-            {
-                _repositorio.VerificarSeEmailJaExiste(usuario.Integrante.Email);
-                usuarioToUpdate.Integrante.Email = usuario.Integrante.Email;
-                usuarioToUpdate.Login = usuario.Integrante.Email;
-            }
-            usuarioToUpdate.Integrante.DataNascimento = usuario.Integrante.DataNascimento;
-            usuarioToUpdate.Integrante.Sexo = usuario.Integrante.Sexo;
+            if (usuarioToUpdate.Integrante.Email != usuario.Integrante.Email) _repositorio.VerificarSeEmailJaExiste(usuario.Integrante.Email);
+            usuarioToUpdate.Integrante.Atualizar(usuario.Integrante);
             _repositorio.Salvar();
             return usuarioToUpdate;
         }

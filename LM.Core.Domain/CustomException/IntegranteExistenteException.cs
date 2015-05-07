@@ -2,12 +2,12 @@
 
 namespace LM.Core.Domain.CustomException
 {
-    public class UsuarioExistenteException : ApplicationException
+    public class IntegranteExistenteException : ApplicationException
     {
         public string Campo { get; set; }
-        public UsuarioExistenteException() { }
+        public IntegranteExistenteException() { }
 
-        public UsuarioExistenteException(string campo)
+        public IntegranteExistenteException(string campo)
             : base(string.Format("O {0} informado já está cadastrado!", campo))
         {
             Campo = campo;

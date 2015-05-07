@@ -1,9 +1,7 @@
-﻿using System.Data.Entity.Core;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System;
-using System.Data.Entity;
 using System.Linq;
 
 namespace LM.Core.RepositorioEF
@@ -57,20 +55,20 @@ namespace LM.Core.RepositorioEF
             });
         }        
 
-        public void VerificarSeCpfJaExiste(string cpf)
-        {
-            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Integrante.Cpf == cpf)) throw new UsuarioExistenteException("Cpf");
-        }
-
-        public void VerificarSeEmailJaExiste(string email)
-        {
-            if (_contexto.Usuarios.AsNoTracking().Any(u => u.Integrante.Email == email)) throw new UsuarioExistenteException("Email");
-        }
-
         public void AtualizarDeviceInfo(Usuario usuario, string deviceType, string deviceId)
         {
             usuario.DeviceType = deviceType;
             usuario.DeviceId = deviceId;
+        }
+
+        public void VerificarSeCpfJaExiste(string cpf)
+        {
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf");
+        }
+
+        public void VerificarSeEmailJaExiste(string email)
+        {
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email)) throw new IntegranteExistenteException("Email");
         }
 
         public void Salvar()

@@ -19,9 +19,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
+                var appUsuario = GetAppUsuario();
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
@@ -36,9 +36,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
+                var appUsuario = GetAppUsuario();
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
@@ -54,9 +54,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
+                var appUsuario = GetAppUsuario();
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.LojasFavoritas = Fakes.Lojas();
                 pontoDemanda.Id = 0;
@@ -71,9 +71,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
+                var appUsuario = GetAppUsuario();
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -90,9 +90,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF());
+                var appUsuario = GetAppUsuario();
                 var usuario = appUsuario.Criar(Fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), new UsuarioAplicacao(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
                 var pontoDemanda = Fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -146,6 +146,12 @@ namespace LM.Core.Tests
             var pontoDemanda = app.DefinirFrequenciaDeCompra(9999, 999, 3);
             Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
             Assert.AreEqual(28, pontoDemanda.QuantidadeDiasAlertaReposicao);
+        }
+
+        private static IUsuarioAplicacao GetAppUsuario()
+        {
+            return new UsuarioAplicacao(new UsuarioEF());
+            
         }
 
         private static IPontoDemandaAplicacao ObterPontoDemandaAplicacao(PontoDemanda pontoDemanda = null)

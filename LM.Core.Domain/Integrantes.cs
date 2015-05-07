@@ -84,5 +84,14 @@ namespace LM.Core.Domain
                 yield return new ValidationResult("O sexo selecionado é inválido: " + Sexo, new[] { "Sexo" });
             }
         }
+
+        public void Atualizar(Integrante integrante)
+        {
+            Usuario.Login = integrante.Email;
+            Email = integrante.Email;
+            Nome = integrante.Nome;
+            DataNascimento = integrante.DataNascimento;
+            Sexo = integrante.Sexo;
+        }
     }
 }
