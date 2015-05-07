@@ -5,7 +5,7 @@ namespace LM.Core.Application
 {
     public interface ITemplateMensagemAplicacao
     {
-        T ObterPorTipo<T>(TipoTemplateMensagem tipo) where T : TemplateMensagem;
+        TemplateMensagem ObterPorTipoTemplate(TipoTemplateMensagem tipo);
     }
 
     public class TemplateMensagemAplicacao : ITemplateMensagemAplicacao
@@ -16,9 +16,9 @@ namespace LM.Core.Application
             _repositorio = repositorio;
         }
 
-        public T ObterPorTipo<T>(TipoTemplateMensagem tipo) where T : TemplateMensagem
+        public TemplateMensagem ObterPorTipoTemplate(TipoTemplateMensagem tipo)
         {
-            return _repositorio.ObterPorTipo<T>(tipo);
+            return _repositorio.ObterPorTipoTemplate(tipo);
         }
     }
 }

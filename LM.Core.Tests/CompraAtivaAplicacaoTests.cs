@@ -82,7 +82,7 @@ namespace LM.Core.Tests
         
         private static INotificacaoAplicacao GetNotificacaoApp(IServicoRest restService)
         {
-            return new NotificacaoAplicacao(restService, new TemplateMensagemAplicacao(new TemplateMensagemEF()));
+            return new NotificacaoAplicacao(restService, new TemplateMensagemAplicacao(new TemplateMensagemEF()), null);
         }
 
         private static Mock<IServicoRest> GetMockRestService()

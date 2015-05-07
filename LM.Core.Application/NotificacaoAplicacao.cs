@@ -8,40 +8,55 @@ namespace LM.Core.Application
 {
     public interface INotificacaoAplicacao
     {
-        void NotificarIntegrantesDoPontoDamanda(Usuario remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, string action);
-        void Notificar(Usuario remetente, Usuario destinatario, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, string action);
+        void NotificarIntegrantesDoPontoDamanda(Integrante remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams);
+        void Notificar(Integrante remetente, Integrante destinatario, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams);
     }
 
     public class NotificacaoAplicacao : INotificacaoAplicacao
     {
         private readonly IServicoRest _pushRestService;
         private readonly ITemplateMensagemAplicacao _appTemplateMensagem;
-        public NotificacaoAplicacao([Named("PushService")]IServicoRest pushRestService, ITemplateMensagemAplicacao appTemplateMensagem)
+        private readonly IFilaItemAplicacao _filaItemAplicacao;
+        public NotificacaoAplicacao([Named("PushService")]IServicoRest pushRestService, ITemplateMensagemAplicacao appTemplateMensagem, IFilaItemAplicacao filaItemAplicacao)
         {
             _pushRestService = pushRestService;
             _appTemplateMensagem = appTemplateMensagem;
+            _filaItemAplicacao = filaItemAplicacao;
         }
 
-        public void Notificar(Usuario remetente, Usuario destinatario, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, string action)
+        public void Notificar(Integrante remetente, Integrante destinatario, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams)
         {
-            var destinatarios = new List<Usuario> { destinatario };
-            CriarMensagemEEnviar(remetente, pontoDemanda, tipoTemplate, action, destinatarios);
+            var destinatarios = new List<Integrante> { destinatario };
+            CriarMensagemEEnviar(remetente, pontoDemanda, tipoTemplate, extraParams, destinatarios);
         }
-        
-        public void NotificarIntegrantesDoPontoDamanda(Usuario remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, string action)
+
+        public void NotificarIntegrantesDoPontoDamanda(Integrante remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams)
         {
             var integrantesComUsuario = pontoDemanda.GrupoDeIntegrantes.Integrantes.Where(i => i.Usuario != null).ToList();
-            var destinatarios = integrantesComUsuario.Where(i => i.Usuario.Id != remetente.Id).Select(i => i.Usuario);
-            CriarMensagemEEnviar(remetente, pontoDemanda, tipoTemplate, action, destinatarios);
+            var destinatarios = integrantesComUsuario.Where(i => i.Id != remetente.Id);
+            CriarMensagemEEnviar(remetente, pontoDemanda, tipoTemplate, extraParams, destinatarios);
         }
 
-        private void CriarMensagemEEnviar(Usuario remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, string action, IEnumerable<Usuario> destinatarios)
+        private void CriarMensagemEEnviar(Integrante remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams, IEnumerable<Integrante> destinatarios)
         {
-            var mensagem = _appTemplateMensagem.ObterPorTipo<TemplateMensagemPush>(tipoTemplate).Mensagem;
+            var templateMensagem = _appTemplateMensagem.ObterPorTipoTemplate(tipoTemplate);
             foreach (var destinatario in destinatarios)
             {
-                mensagem = TemplateProcessor.ProcessTemplate(mensagem, new {PontoDemanda = pontoDemanda, Remetente = remetente.Integrante, Destinatario = destinatario.Integrante});
-                EnviarNotificacaoPush(destinatario.DeviceType, destinatario.DeviceId, mensagem, action);
+                var entity = new { PontoDemanda = pontoDemanda, Remetente = remetente, Destinatario = destinatario, Extra = extraParams };
+                if(templateMensagem is TemplateMensagemPush)
+                {
+                    var templateMensagemPush = templateMensagem as TemplateMensagemPush;
+                    var mensagem = TemplateProcessor.ProcessTemplate(templateMensagemPush.Mensagem, entity);
+                    var action = extraParams.GetType().GetProperty("Action").GetValue(extraParams).ToString();
+                    EnviarNotificacaoPush(destinatario.Usuario.DeviceType, destinatario.Usuario.DeviceId, mensagem, action);
+                } 
+                else if (templateMensagem is TemplateMensagemEmail)
+                {
+                    var templateMensagemEmail = templateMensagem as TemplateMensagemEmail;
+                    var assunto = TemplateProcessor.ProcessTemplate(templateMensagemEmail.Assunto, entity);
+                    var corpo = TemplateProcessor.ProcessTemplate(templateMensagemEmail.Mensagem, entity);
+                    EnviarEmail(assunto, corpo, entity.Destinatario.Email);
+                }
             }
         }
 
@@ -55,6 +70,18 @@ namespace LM.Core.Application
                 Action = action
             };
             _pushRestService.Post("sendpushmessage", content);
+        }
+
+        private void EnviarEmail(string assunto, string corpo, string emailDestinatario)
+        {
+            var filaItem = new FilaItem();
+            filaItem.AdicionarMensagem(new FilaMensagemEmail
+            {
+                Assunto = assunto,
+                Corpo = corpo,
+                EmailDestinatario = emailDestinatario
+            });
+            _filaItemAplicacao.Criar(filaItem);
         }
     }
 }

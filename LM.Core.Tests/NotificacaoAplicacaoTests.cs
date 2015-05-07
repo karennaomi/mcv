@@ -17,8 +17,8 @@ namespace LM.Core.Tests
         public void EnviaNotificacao()
         {
             var restService = new RestServiceWithRestSharp("http://localhost:45678");
-            var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()));
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario{ Id = 6 }, new PontoDemanda { Id = 17 } , TipoTemplateMensagem.AtivarCompra, "compras");
+            var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()), GetFilaItemAplicacao());
+            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Integrante { Id = 6, Usuario = new Usuario{Id=6}}, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.AtivarCompra, new { Action = "compras" });
         }
 
         [Test]
@@ -27,10 +27,7 @@ namespace LM.Core.Tests
             var mockRestService = GetMockRestService();
             var appNotificacao = GetAppNotificacao(mockRestService.Object);
             var pontoDemanda = Fakes.PontoDemanda();
-            var integrante = new Integrante {Usuario = new Usuario {Id = 7}};
-            integrante.Usuario.Integrante = integrante;
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante);
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Usuario { Id = 6, Integrante = new Integrante{Nome = "John Bililis"}} , pontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
+            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Integrante { Id = 6, Nome = "John Bililis", Usuario = new Usuario {Id = 444}}, pontoDemanda, TipoTemplateMensagem.AtivarCompra, new { Action = "compras" });
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
@@ -39,40 +36,30 @@ namespace LM.Core.Tests
         {
             var mockRestService = GetMockRestService();
             var appNotificacao = GetAppNotificacao(mockRestService.Object);
-            appNotificacao.Notificar(new Usuario { Id = 6, Integrante = new Integrante { Nome = "John Bililis" } }, new Usuario { Id = 7, Integrante = new Integrante { Nome = "John Bkaasa" } }, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.PedidoItemCriado, "compras");
+            appNotificacao.Notificar(new Integrante { Id = 6, Nome = "John Bililis", Usuario = new Usuario { Id = 6 } }, new Integrante { Nome = "John Bkaasa", Usuario = new Usuario { Id = 7 } }, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.PedidoItemCriado, new { Action = "compras" });
             mockRestService.Verify(r => r.Post("sendpushmessage", It.IsAny<object>()), Times.Once);
         }
 
         private static INotificacaoAplicacao GetAppNotificacao(IServicoRest restService)
         {
-            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
+            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp(), GetFilaItemAplicacao());
         }
 
         private static ITemplateMensagemAplicacao GetTemplateMensagemApp()
         {
             var mockTemplateMensagemApp = new Mock<ITemplateMensagemAplicacao>();
-            mockTemplateMensagemApp.Setup(t => t.ObterPorTipo<TemplateMensagemPush>(It.IsAny<TipoTemplateMensagem>()))
+            mockTemplateMensagemApp.Setup(t => t.ObterPorTipoTemplate(It.IsAny<TipoTemplateMensagem>()))
                 .Returns(new TemplateMensagemPush
                 {
-                    Mensagem = "{PontoDemanda.Nome} {Remetente.Nome} {Destinatario.Nome}"
+                    Mensagem = "{PontoDemanda.Nome} {Remetente.Integrante.Nome} {Destinatario.Integrante.Nome}"
                 });
             return mockTemplateMensagemApp.Object;
         }
 
-        private static IPontoDemandaAplicacao GetPontoDemandaApp()
+        private static IFilaItemAplicacao GetFilaItemAplicacao()
         {
-            var mockPontoDemandaRepo = new Mock<IRepositorioPontoDemanda>();
-            mockPontoDemandaRepo.Setup(p => p.Obter(6, It.IsAny<long>())).Returns(new PontoDemanda
-            {
-                Nome = "PontoDemandaTeste",
-                GrupoDeIntegrantes = new GrupoDeIntegrantes { Integrantes = new Collection<Integrante>
-                {
-                    new Integrante { Nome = "Joe Doe", Usuario = new Usuario {Id = 6}},
-                    new Integrante { Nome = "John Armless", Usuario = new Usuario {Id = 10, DeviceType = "apple", DeviceId = "CE3BA6E02D7F4AEDA33DCB31B3F3A9DE"}},
-                } }
-            });
-
-            return new PontoDemandaAplicacao(mockPontoDemandaRepo.Object, new Mock<IUsuarioAplicacao>().Object);
+            var mockFilaItemApp = new Mock<IFilaItemAplicacao>();
+            return mockFilaItemApp.Object;
         }
 
         private static Mock<IServicoRest> GetMockRestService()

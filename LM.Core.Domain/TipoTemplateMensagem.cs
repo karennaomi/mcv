@@ -6,6 +6,7 @@
         AtivarCompra = 1,
         FinalizarCompra = 2,
         PedidoItemCriado = 3,
-        RecuperarSenha = 4
+        RecuperarSenha = 4,
+        ConviteIntegrante = 5
     }
 }

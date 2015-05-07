@@ -16,14 +16,13 @@ namespace LM.Core.Application
     {
         private readonly IRepositorioRecuperarSenha _repositorio;
         private readonly IUsuarioAplicacao _appUsuario;
-        private readonly ITemplateMensagemAplicacao _appTemplateMensagem;
-        private readonly IFilaItemAplicacao _filaItemAplicacao;
-        public RecuperarSenhaAplicacao(IRepositorioRecuperarSenha repositorio, IUsuarioAplicacao appUsuario, ITemplateMensagemAplicacao appTemplateMensagem, IFilaItemAplicacao filaItemAplicacao)
+        private readonly INotificacaoAplicacao _appNotificacao;
+
+        public RecuperarSenhaAplicacao(IRepositorioRecuperarSenha repositorio, IUsuarioAplicacao appUsuario, INotificacaoAplicacao appNotificacao)
         {
             _repositorio = repositorio;
             _appUsuario = appUsuario;
-            _appTemplateMensagem = appTemplateMensagem;
-            _filaItemAplicacao = filaItemAplicacao;
+            _appNotificacao = appNotificacao;
         }
 
         public RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl)
@@ -52,18 +51,8 @@ namespace LM.Core.Application
 
         private void EnviarEmail(RecuperarSenha recuperarSenha, string trocarSenhaUrl)
         {
-            var template = _appTemplateMensagem.ObterPorTipo<TemplateMensagemEmail>(TipoTemplateMensagem.RecuperarSenha);
-            var entity = new { Url = trocarSenhaUrl, recuperarSenha.Token, recuperarSenha.Usuario.Integrante };
-            var assunto = TemplateProcessor.ProcessTemplate(template.Assunto, entity);
-            var corpo = TemplateProcessor.ProcessTemplate(template.Mensagem, entity);
-            var filaItem = new FilaItem();
-            filaItem.AdicionarMensagem(new FilaMensagemEmail
-            {
-                Assunto = assunto,
-                Corpo = corpo,
-                EmailDestinatario = recuperarSenha.Usuario.Integrante.Email
-            });
-            _filaItemAplicacao.Criar(filaItem);
+            var extraParams = new { Url = trocarSenhaUrl, recuperarSenha.Token };
+            _appNotificacao.Notificar(null, recuperarSenha.Usuario.Integrante, null, TipoTemplateMensagem.RecuperarSenha, extraParams);
         }
     }
 }

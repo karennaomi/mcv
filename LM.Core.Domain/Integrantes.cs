@@ -78,8 +78,7 @@ namespace LM.Core.Domain
             {
                 yield return new ValidationResult("O campo [Sexo] é de preenchimento obrigatório!", new[] { "Sexo" });
             }
-
-            if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
+            else if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
             {
                 yield return new ValidationResult("O sexo selecionado é inválido: " + Sexo, new[] { "Sexo" });
             }

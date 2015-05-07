@@ -21,7 +21,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var app = new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF()), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
+                new UsuarioAplicacao(new UsuarioEF()), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
                 var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha);
                 Assert.IsTrue(recuperarSenha.Id > 0);
                 Assert.IsNotNull(recuperarSenha.Usuario);
@@ -71,7 +71,7 @@ namespace LM.Core.Tests
         private static IRecuperarSenhaAplicacao GetApp()
         {
             return new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF()), new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF()));
+                new UsuarioAplicacao(new UsuarioEF()), new NotificacaoAplicacao(null,new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
         }
 
         private static IRecuperarSenhaAplicacao GetMockedApp()
@@ -80,7 +80,7 @@ namespace LM.Core.Tests
             repoMock.Setup(r => r.ObterPorToken(new Guid("176CA494-E477-410C-967D-B059A49003D9"))).Returns((RecuperarSenha)null);
             repoMock.Setup(r => r.ObterPorToken(new Guid("176CA494-E477-410C-967D-B059A49003B4"))).Returns(new RecuperarSenha { DataInclusao = DateTime.Now.AddHours(-1), Token = new Guid("176CA494-E477-410C-967D-B059A49003B4") });
             repoMock.Setup(r => r.ObterPorToken(new Guid("176CA494-E477-410C-967D-B059A49003C3"))).Returns(new RecuperarSenha { DataInclusao = DateTime.Now.AddMinutes(-10), Token = new Guid("176CA494-E477-410C-967D-B059A49003C3") });
-            return new RecuperarSenhaAplicacao(repoMock.Object, null, null, null);
+            return new RecuperarSenhaAplicacao(repoMock.Object, null, null);
         }
     }
 }

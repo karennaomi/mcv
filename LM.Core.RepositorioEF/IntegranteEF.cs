@@ -29,9 +29,8 @@ namespace LM.Core.RepositorioEF
             return integrante;
         }
 
-        public void Apagar(long id)
+        public void Apagar(Integrante integrante)
         {
-            var integrante = _contexto.Integrantes.Find(id);
             _contexto.Entry(integrante).State = EntityState.Deleted;
             _contexto.Integrantes.Remove(integrante);
             _contexto.SaveChanges();

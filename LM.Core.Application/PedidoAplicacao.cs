@@ -58,7 +58,7 @@ namespace LM.Core.Application
             var compraAtiva = _appCompraAtiva.Obter(pontoDemandaId);
             if (compraAtiva != null)
             {
-                _appNotificacao.Notificar(item.Integrante.Usuario, compraAtiva.Usuario, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, "pedidos");
+                _appNotificacao.Notificar(item.Integrante, compraAtiva.Usuario.Integrante, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, new {Action = "pedidos"});
             }
             return item;
         }

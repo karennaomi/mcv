@@ -12,9 +12,9 @@ namespace LM.Core.RepositorioEF
             _contexto = new ContextoEF();
         }
 
-        public T ObterPorTipo<T>(TipoTemplateMensagem tipo) where T : TemplateMensagem
+        public TemplateMensagem ObterPorTipoTemplate(TipoTemplateMensagem tipo)
         {
-            return _contexto.TemplatesMensagens.AsNoTracking().OfType<T>().FirstOrDefault(t => t.Tipo == tipo);
+            return _contexto.TemplatesMensagens.AsNoTracking().FirstOrDefault(t => t.Tipo == tipo);
         }
     }
 }

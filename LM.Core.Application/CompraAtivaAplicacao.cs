@@ -28,14 +28,14 @@ namespace LM.Core.Application
         public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
             var compraAtiva = _compraAtivaRepo.AtivarCompra(usuarioId, pontoDemandaId);
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario, compraAtiva.PontoDemanda, TipoTemplateMensagem.AtivarCompra, "compras");
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, TipoTemplateMensagem.AtivarCompra, new { Action = "compras" });
             return compraAtiva;
         }
 
         public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)
         {
             var compraAtiva = _compraAtivaRepo.FinalizarCompra(usuarioId, pontoDemandaId);
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario, compraAtiva.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, "compras");
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, new { Action = "compras" });
             return compraAtiva;
         }
     }

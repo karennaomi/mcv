@@ -113,22 +113,25 @@ namespace LM.Core.Tests
         private static ICompraAtivaAplicacao GetCompraAtivaApp()
         {
             var repoMock = new Mock<IRepositorioCompraAtiva>();
+            var usuario = new Usuario {Id = 1};
+            var integrante = new Integrante { Nome = "John", Usuario = usuario};
+            usuario.Integrante = integrante;
             repoMock.Setup(r => r.Obter(It.IsAny<long>())).Returns(new CompraAtiva
             {
-                Usuario = new Usuario { Id = 1, Integrante = new Integrante{Nome = "John"} }
+                Usuario = usuario
             });
             return new CompraAtivaAplicacao(repoMock.Object, null);
         }
 
         private static INotificacaoAplicacao GetAppNotificacao(IServicoRest restService)
         {
-            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp());
+            return new NotificacaoAplicacao(restService, GetTemplateMensagemApp(), null);
         }
 
         private static ITemplateMensagemAplicacao GetTemplateMensagemApp()
         {
             var mockTemplateMensagemApp = new Mock<ITemplateMensagemAplicacao>();
-            mockTemplateMensagemApp.Setup(t => t.ObterPorTipo<TemplateMensagemPush>(It.IsAny<TipoTemplateMensagem>()))
+            mockTemplateMensagemApp.Setup(t => t.ObterPorTipoTemplate(It.IsAny<TipoTemplateMensagem>()))
                 .Returns(new TemplateMensagemPush
                 {
                     Mensagem = "{PontoDemanda.Nome} {Remetente.Nome} {Destinatario.Nome}"
