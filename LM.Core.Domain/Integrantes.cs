@@ -87,7 +87,10 @@ namespace LM.Core.Domain
 
         public void Atualizar(Integrante integrante)
         {
-            Usuario.Login = integrante.Email;
+            if (Usuario != null)
+            {
+                Usuario.Login = integrante.Email;
+            }
             Email = integrante.Email;
             Nome = integrante.Nome;
             DataNascimento = integrante.DataNascimento;
