@@ -96,5 +96,10 @@ namespace LM.Core.Domain
             DataNascimento = integrante.DataNascimento;
             Sexo = integrante.Sexo;
         }
+
+        public bool PodeSerConvidado()
+        {
+            return !string.IsNullOrWhiteSpace(Email) && ObterIdade() >= 13;
+        }
     }
 }
