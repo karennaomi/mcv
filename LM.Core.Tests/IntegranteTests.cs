@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace LM.Core.Tests
 {
@@ -32,6 +33,30 @@ namespace LM.Core.Tests
             var integrante = Fakes.Integrante(18, "M", 1);
             integrante.Email = null;
             Assert.IsFalse(integrante.PodeSerConvidado());
+        }
+
+        [Test]
+        public void IntegranteSemDataDeConvitePodeSerConvidado()
+        {
+            var integrante = Fakes.Integrante(18, "M", 1);
+            integrante.DataConvite = null;
+            Assert.IsTrue(integrante.PodeSerConvidado());
+        }
+
+        [Test]
+        public void IntegranteComDataDeConviteMenorQue1DiaNaoPodeSerConvidado()
+        {
+            var integrante = Fakes.Integrante(18, "M", 1);
+            integrante.DataConvite = DateTime.Now.AddMinutes(-60);
+            Assert.IsFalse(integrante.PodeSerConvidado());
+        }
+
+        [Test]
+        public void IntegranteComDataDeConviteMaiorQue1DiaPodeSerConvidado()
+        {
+            var integrante = Fakes.Integrante(18, "M", 1);
+            integrante.DataConvite = DateTime.Now.AddHours(-25);
+            Assert.IsTrue(integrante.PodeSerConvidado());
         }
     }
 }
