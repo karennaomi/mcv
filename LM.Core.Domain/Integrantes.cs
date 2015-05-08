@@ -97,7 +97,7 @@ namespace LM.Core.Domain
 
         public bool PodeSerConvidado()
         {
-            return !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= 13;
+            return Usuario == null && !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= 13;
         }
 
         private bool ValidarDataConvite()

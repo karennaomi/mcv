@@ -1,4 +1,5 @@
 ﻿using System;
+using LM.Core.Domain;
 using NUnit.Framework;
 
 namespace LM.Core.Tests
@@ -57,6 +58,14 @@ namespace LM.Core.Tests
             var integrante = Fakes.Integrante(18, "M", 1);
             integrante.DataConvite = DateTime.Now.AddHours(-25);
             Assert.IsTrue(integrante.PodeSerConvidado());
+        }
+
+        [Test]
+        public void IntegranteComUsuarioNaoPodeSerConvidado()
+        {
+            var integrante = Fakes.Integrante(18, "M", 1);
+            integrante.Usuario = new Usuario {Id = 1};
+            Assert.IsFalse(integrante.PodeSerConvidado());
         }
     }
 }
