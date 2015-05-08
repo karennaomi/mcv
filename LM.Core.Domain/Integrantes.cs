@@ -39,7 +39,6 @@ namespace LM.Core.Domain
         [DisplayName("Data de Nascimento")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DataNascimento { get; set; }
-        public string EmailConvite { get; set; }
         public bool EhUsuarioSistema { get; set; }
         public bool EhUsuarioConvidado { get; set; }
         public DateTime? DataConvite { get; set; }

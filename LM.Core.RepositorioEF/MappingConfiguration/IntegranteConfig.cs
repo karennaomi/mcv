@@ -13,7 +13,6 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.Papel).HasColumnName("ID_INTEGRANTE_PAPEL");
             Property(i => i.Nome).HasColumnName("NM_INTEGRANTE");
             Property(i => i.DataNascimento).HasColumnName("DT_NASCIMENTO").IsOptional();
-            Property(i => i.EmailConvite).HasColumnName("TX_EMAIL_CONVITE");
             Property(i => i.EhUsuarioSistema).HasColumnName("FL_USUARIO_SISTEMA");
             Property(i => i.EhUsuarioConvidado).HasColumnName("FL_USUARIO_CONVIDADO");
             Property(i => i.DataConvite).HasColumnName("DT_CONVITE").IsOptional();

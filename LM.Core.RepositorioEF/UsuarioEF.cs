@@ -40,7 +40,7 @@ namespace LM.Core.RepositorioEF
 
         public Integrante UsuarioConvidado(string email)
         {
-            return _contexto.Integrantes.FirstOrDefault(i => i.EmailConvite == email && i.EhUsuarioConvidado && i.Usuario == null);
+            return _contexto.Integrantes.FirstOrDefault(i => i.Email == email && i.EhUsuarioConvidado && i.Usuario == null);
         }
 
         public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)
