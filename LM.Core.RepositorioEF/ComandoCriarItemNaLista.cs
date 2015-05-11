@@ -1,7 +1,6 @@
-﻿using System;
-using System.CodeDom;
+﻿using LM.Core.Domain;
+using System;
 using System.Data.Entity;
-using LM.Core.Domain;
 
 namespace LM.Core.RepositorioEF
 {

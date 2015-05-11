@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 
@@ -53,6 +51,7 @@ namespace LM.Core.RepositorioEF
             var lojas = new Collection<Loja>();
             foreach (var lojaFavorita in _novoPontoDemanda.LojasFavoritas)
             {
+                lojaFavorita.Info.Endereco.Cidade = _cidadeRepo.Buscar(lojaFavorita.Info.Endereco.Cidade.Nome);
                 lojas.Add(_lojaFavoritaRepo.VerificarLojaExistente(lojaFavorita));
             }
             _novoPontoDemanda.LojasFavoritas = lojas;

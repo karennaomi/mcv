@@ -1,5 +1,4 @@
-﻿using System;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 using System.Linq;

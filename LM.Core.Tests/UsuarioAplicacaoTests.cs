@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Data.Entity.Validation;
 using LM.Core.Application;
 using LM.Core.Domain;
-using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
-using Moq;
 using NUnit.Framework;
 using System.Linq;
 using System.Transactions;
@@ -14,10 +12,17 @@ namespace LM.Core.Tests
     [TestFixture]
     public class UsuarioAplicacaoTests
     {
+        private Fakes _fakes;
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            _fakes = new Fakes();
+        }
+
         [Test]
         public void CriacaoDoUsuarioDeveDefinirStatusCadastroComoEtapaDeInformacoesPessoaisCompleta()
         {
-            var usuario = Fakes.Usuario();
+            var usuario = _fakes.Usuario();
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {
@@ -29,13 +34,20 @@ namespace LM.Core.Tests
         [Test]
         public void CriacaoDoUsuarioConvidadoDeveDefinirStatusCadastroComoUsuarioConvidado()
         {
-            var usuario = Fakes.Usuario();
+            var usuario = _fakes.Usuario();
             usuario.Integrante.Email = "esposa@lista.com";
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {
-                usuario = app.Criar(usuario);
-                Assert.AreEqual(StatusCadastro.UsuarioConvidado, usuario.StatusAtual());
+                try
+                {
+                    usuario = app.Criar(usuario);
+                    Assert.AreEqual(StatusCadastro.UsuarioConvidado, usuario.StatusAtual());
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -45,7 +57,7 @@ namespace LM.Core.Tests
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {
-                var usuario = app.Criar(Fakes.Usuario());
+                var usuario = app.Criar(_fakes.Usuario());
                 Assert.IsTrue(usuario.Id > 0);
                 Assert.IsTrue(usuario.Integrante.Id > 0);
                 Assert.IsTrue(usuario.Integrante.GrupoDeIntegrantes.Id > 0);
@@ -58,7 +70,7 @@ namespace LM.Core.Tests
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {
-                var usuario = Fakes.Usuario();
+                var usuario = _fakes.Usuario();
                 usuario = app.Criar(usuario);
                 var usuarioValidado = app.ValidarLogin(usuario.Login, "123456");
                 Assert.IsTrue(usuario.Id > 0);
@@ -72,7 +84,7 @@ namespace LM.Core.Tests
             var app = ObterAppUsuario();
             using (new TransactionScope())
             {
-                var usuario = app.Criar(Fakes.Usuario());
+                var usuario = app.Criar(_fakes.Usuario());
                 app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
                 usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusAtual());
@@ -86,7 +98,7 @@ namespace LM.Core.Tests
             var pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
             using (new TransactionScope())
             {
-                var usuario = app.Criar(Fakes.Usuario());
+                var usuario = app.Criar(_fakes.Usuario());
                 app.AtualizarStatusCadastro(usuario.Id, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, pontoDemandaId);
                 usuario = app.Obter(usuario.Id);
                 Assert.AreEqual(StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta, usuario.StatusAtual());

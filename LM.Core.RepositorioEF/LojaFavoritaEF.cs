@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Linq;
 

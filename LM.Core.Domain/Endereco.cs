@@ -11,7 +11,7 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
-        public string Descricao { get; set; }
+        public string Logradouro { get; set; }
         public int? Numero { get; set; }
         public string Complemento { get; set; }
         public string Alias { get; set; }
@@ -26,7 +26,7 @@ namespace LM.Core.Domain
 
         public override string ToString()
         {
-            var sb = new StringBuilder(Descricao);
+            var sb = new StringBuilder(Logradouro);
             Adicionar(sb, Numero);
             Adicionar(sb, Bairro);
             Adicionar(sb, Cep);

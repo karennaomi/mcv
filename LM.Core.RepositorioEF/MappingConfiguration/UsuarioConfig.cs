@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using System.Data.Entity.ModelConfiguration;
 
 namespace LM.Core.RepositorioEF.MappingConfiguration

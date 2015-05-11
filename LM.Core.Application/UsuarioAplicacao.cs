@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
+using System.Collections.Generic;
 
 namespace LM.Core.Application
 {
@@ -48,6 +45,8 @@ namespace LM.Core.Application
             var integrante = _repositorio.UsuarioConvidado(usuario.Integrante.Email);
             if (integrante != null)
             {
+                integrante.EhUsuarioConvidado = false;
+                usuario.Integrante = integrante;
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.UsuarioConvidado });
             }
             else

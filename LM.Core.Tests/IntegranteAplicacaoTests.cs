@@ -9,19 +9,26 @@ using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace LM.Core.Tests
 {
     [TestFixture]
     public class IntegranteAplicacaoTests
     {
+        private Fakes _fakes;
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            _fakes = new Fakes();
+        }
+
         [Test]
         public void CriarIntegrante()
         {
+            
             using (new TransactionScope())
             {
-                var integrante = Fakes.Integrante(15, "M", 1);
+                var integrante = _fakes.Integrante();
                 integrante.GrupoDeIntegrantes.PontosDemanda = null;
                 var app = new IntegranteAplicacao(new IntegranteEF(), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
                 integrante = app.Criar(integrante);
@@ -34,7 +41,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var integrante = new Integrante { Nome = "Bidu", Tipo = TipoIntegrante.Pet, GrupoDeIntegrantes = new GrupoDeIntegrantes { Id = 1 }, };
+                var integrante = _fakes.Integrante();
+                integrante.Nome = "Bidu";
+                integrante.Tipo = TipoIntegrante.Pet;
                 var app = new IntegranteAplicacao(new IntegranteEF(), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
                 try
                 {
@@ -54,7 +63,7 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var integrante = Fakes.Integrante(15, "M", 1);
+                var integrante = _fakes.Integrante();
                 integrante.Id = 9;
                 var app = new IntegranteAplicacao(new IntegranteEF(), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
                 integrante = app.Atualizar(17, integrante);
@@ -67,7 +76,7 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var integrante = Fakes.Integrante(15, "M", 1);
+                var integrante = _fakes.Integrante();
                 integrante.Id = 9;
                 integrante.Email = "johndoe@mail.com";
                 var app = new IntegranteAplicacao(new IntegranteEF(), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
@@ -80,7 +89,7 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var integrante = Fakes.Integrante(15, "M", 1);
+                var integrante = _fakes.Integrante();
                 integrante.Id = 9;
                 integrante.Email = "johndoe@mail.com";
                 var app = new IntegranteAplicacao(new IntegranteEF(), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
@@ -91,14 +100,15 @@ namespace LM.Core.Tests
         [Test]
         public void NaoPodeApagarUmIntegranteQueNaoPertenceAoPonteDemandaEspecificado()
         {
-            var app = ObterAppIntegrante(ObterIntegranteRepo(Fakes.Integrante(15, "M", 1)).Object);
+            var integrante = _fakes.Integrante();
+            var app = ObterAppIntegrante(ObterIntegranteRepo(integrante).Object);
             Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Apagar(9999, 123));
         }
 
         [Test]
         public void PodeApagarUmIntegranteQuePertenceAoPonteDemandaEspecificado()
         {
-            var integrante = Fakes.Integrante(15, "M", 1);
+            var integrante = _fakes.Integrante();
             var repoMock = ObterIntegranteRepo(integrante);
             var app = ObterAppIntegrante(repoMock.Object);
             app.Apagar(666, 1234);
@@ -122,8 +132,9 @@ namespace LM.Core.Tests
             return new IntegranteAplicacao(repo, new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
         }
 
-        private static Mock<IRepositorioIntegrante> ObterIntegranteRepo(Integrante integrante)
+        private Mock<IRepositorioIntegrante> ObterIntegranteRepo(Integrante integrante)
         {
+            integrante.GrupoDeIntegrantes.PontosDemanda.Add(_fakes.PontoDemanda());
             var repoMock = new Mock<IRepositorioIntegrante>();
             repoMock.Setup(r => r.Obter(It.IsAny<long>())).Returns(integrante);
             repoMock.Setup(r => r.Criar(It.IsAny<Integrante>())).Returns<Integrante>(x => x);

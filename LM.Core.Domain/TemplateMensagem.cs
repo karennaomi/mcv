@@ -1,5 +1,4 @@
-﻿using System;
-namespace LM.Core.Domain
+﻿namespace LM.Core.Domain
 {
     public abstract class TemplateMensagem
     {

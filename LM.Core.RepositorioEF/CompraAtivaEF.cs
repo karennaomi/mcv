@@ -16,22 +16,27 @@ namespace LM.Core.RepositorioEF
 
         public CompraAtiva Obter(long pontoDemandaId)
         {
-            return _contexto.ComprasAtivas.Include("Usuario").Include("PontoDemanda.GrupoDeIntegrantes.Integrantes").FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && !c.FimCompra.HasValue);
+            return _contexto.ComprasAtivas.FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && !c.FimCompra.HasValue);
         }
 
         public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
-            var compraAtiva = new CompraAtiva
-            {
-                PontoDemanda = new PontoDemanda {Id = pontoDemandaId},
-                Usuario = new Usuario {Id = usuarioId},
-                InicioCompra = DateTime.Now
-            };
-            _contexto.Entry(compraAtiva.PontoDemanda).State= EntityState.Unchanged;
+            var compraAtiva = _contexto.ComprasAtivas.Create();
+            compraAtiva.InicioCompra = DateTime.Now;
+
+            var pontoDemanda = _contexto.PontosDemanda.Create();
+            pontoDemanda.Id = pontoDemandaId;
+            compraAtiva.PontoDemanda = pontoDemanda;
+
+            var usuario = _contexto.Usuarios.Create();
+            usuario.Id = usuarioId;
+            compraAtiva.Usuario = usuario;
+
             _contexto.Entry(compraAtiva.Usuario).State = EntityState.Unchanged;
+            _contexto.Entry(compraAtiva.PontoDemanda).State = EntityState.Unchanged;
             _contexto.ComprasAtivas.Add(compraAtiva);
             _contexto.SaveChanges();
-            return Obter(pontoDemandaId);
+            return compraAtiva;
         }
 
         public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)

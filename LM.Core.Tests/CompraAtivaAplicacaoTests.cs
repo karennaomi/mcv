@@ -14,8 +14,16 @@ namespace LM.Core.Tests
     [TestFixture]
     public class CompraAtivaAplicacaoTests
     {
-        private const int UsuarioId = 3;
+        private const int UsuarioId = 6;
         private const int PontoDemandaId = 1;
+
+        private Fakes _fakes;
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            _fakes = new Fakes();
+        }
+
         [Test]
         public void CriaUmaCompraAtiva()
         {
@@ -23,7 +31,7 @@ namespace LM.Core.Tests
             {
                 var mockRestService = GetMockRestService();
                 var appNotificacao = GetNotificacaoApp(mockRestService.Object);
-                var compraAtiva = GetApp(appNotificacao).AtivarCompra(UsuarioId, PontoDemandaId);
+                var compraAtiva = GetApp(appNotificacao).AtivarCompra(10755, PontoDemandaId);
                 Assert.IsTrue(compraAtiva.Id > 0);
             }
         }
@@ -35,8 +43,8 @@ namespace LM.Core.Tests
             {
                 var mockRestService = GetMockRestService();
                 var appNotificacao = GetNotificacaoApp(mockRestService.Object);
-                var compraAtiva = GetApp(appNotificacao).AtivarCompra(UsuarioId, PontoDemandaId);
-                compraAtiva = GetApp(appNotificacao).FinalizarCompra(UsuarioId, PontoDemandaId);
+                var compraAtiva = GetApp(appNotificacao).AtivarCompra(10755, PontoDemandaId);
+                compraAtiva = GetApp(appNotificacao).FinalizarCompra(10755, PontoDemandaId);
                 Assert.IsNotNull(compraAtiva.FimCompra);
             }
         }
@@ -60,16 +68,26 @@ namespace LM.Core.Tests
             return new CompraAtivaAplicacao(new CompraAtivaEF(), appNotificacao);
         }
 
-        private static ICompraAtivaAplicacao GetMockedApp(IServicoRest restService)
+        private ICompraAtivaAplicacao GetMockedApp(IServicoRest restService)
         {
-            var pontoDemanda = Fakes.PontoDemanda();
-            var integrante1 = new Integrante {Nome = "Joe Doe", Usuario = new Usuario {Id = 7}};
-            integrante1.Usuario.Integrante = integrante1;
+            var pontoDemanda = _fakes.PontoDemanda();
+            var integrante0 = _fakes.Integrante();
+            integrante0.Id = 106;
+            integrante0.Usuario = new Usuario { Id = 6, Integrante = integrante0 };
+            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante0);
+
+            var integrante1 = _fakes.Integrante();
+            integrante0.Id = 107;
+            integrante1.Nome = "Joe Doe 1";
+            integrante1.Usuario = new Usuario {Id = 7, Integrante = integrante1};
             pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante1);
 
-            var integrante2 = new Integrante { Nome = "Joe Doe 2", Usuario = new Usuario { Id = 9 } };
-            integrante2.Usuario.Integrante = integrante2;
+            var integrante2 = _fakes.Integrante();
+            integrante0.Id = 109;
+            integrante2.Nome = "Joe Doe 2";
+            integrante2.Usuario = new Usuario { Id = 9, Integrante = integrante1 };
             pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante2);
+            
             var mockRepo = new Mock<IRepositorioCompraAtiva>();
             mockRepo.Setup(r => r.AtivarCompra(It.IsAny<long>(), It.IsAny<long>())).Returns(new CompraAtiva
             {
@@ -88,18 +106,6 @@ namespace LM.Core.Tests
         private static Mock<IServicoRest> GetMockRestService()
         {
             return new Mock<IServicoRest>();
-        }
-
-        private static IPontoDemandaAplicacao GetPontoDemandaApp()
-        {
-            var pontoDemanda = Fakes.PontoDemanda();
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Clear();
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante { Nome = "Joe Doe", Usuario = new Usuario { Id = 1, DeviceId = "hb7b328723u", DeviceType = "google" } });
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante { Nome = "Billy the Kid", Usuario = new Usuario { Id = 2, DeviceId = "sk98023ndds", DeviceType = "apple" } });
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(new Integrante { Nome = "Tripa Seca", Usuario = new Usuario { Id = UsuarioId, DeviceId = "sfnjk823jkj", DeviceType = "google" } });
-            var mockApp = new Mock<IPontoDemandaAplicacao>();
-            mockApp.Setup(a => a.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(pontoDemanda);
-            return mockApp.Object;
         }
     }
 }

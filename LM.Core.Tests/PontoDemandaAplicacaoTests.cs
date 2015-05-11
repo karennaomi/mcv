@@ -14,15 +14,22 @@ namespace LM.Core.Tests
     [TestFixture]
     public class PontoDemandaAplicacaoTests
     {
+        private Fakes _fakes;
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            _fakes = new Fakes();
+        }
+
         [Test]
         public void CriarPontoDemanda()
         {
             using (new TransactionScope())
             {
                 var appUsuario = GetAppUsuario();
-                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario());
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
-                var pontoDemanda = Fakes.PontoDemanda();
+                var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
                 var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
@@ -37,9 +44,9 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = GetAppUsuario();
-                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario());
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
-                var pontoDemanda = Fakes.PontoDemanda();
+                var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
                 app.Criar(usuario.Id, pontoDemanda);
@@ -55,10 +62,10 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = GetAppUsuario();
-                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario());
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
-                var pontoDemanda = Fakes.PontoDemanda();
-                pontoDemanda.LojasFavoritas = Fakes.Lojas();
+                var pontoDemanda = _fakes.PontoDemanda();
+                pontoDemanda.LojasFavoritas = new List<Loja> { _fakes.Loja(), _fakes.Loja(), _fakes.Loja() };
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
                 Assert.AreEqual(StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == usuario.Id).Usuario.StatusAtual());
@@ -72,12 +79,12 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = GetAppUsuario();
-                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario());
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
-                var pontoDemanda = Fakes.PontoDemanda();
+                var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
-                var loja = app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
+                var loja = app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, _fakes.Loja());
 
                 var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
                 Assert.IsTrue(loja.Id > 0);
@@ -91,12 +98,12 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = GetAppUsuario();
-                var usuario = appUsuario.Criar(Fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario());
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), GetAppUsuario());
-                var pontoDemanda = Fakes.PontoDemanda();
+                var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
-                app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, Fakes.Lojas().First());
+                app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, _fakes.Loja());
                 
                 var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
                 app.RemoverLojaFavorita(usuario.Id, pontoDemandaComLoja.Id, pontoDemandaComLoja.LojasFavoritas.First().Idlocalizador);
@@ -154,15 +161,15 @@ namespace LM.Core.Tests
             
         }
 
-        private static IPontoDemandaAplicacao ObterPontoDemandaAplicacao(PontoDemanda pontoDemanda = null)
+        private IPontoDemandaAplicacao ObterPontoDemandaAplicacao(PontoDemanda pontoDemanda = null)
         {
             return new PontoDemandaAplicacao(ObterPontoDemandaRepo(pontoDemanda), new Mock<IUsuarioAplicacao>().Object);
         }
 
-        private static IRepositorioPontoDemanda ObterPontoDemandaRepo(PontoDemanda pontoDemanda)
+        private IRepositorioPontoDemanda ObterPontoDemandaRepo(PontoDemanda pontoDemanda)
         {
             var repoMock = new Mock<IRepositorioPontoDemanda>();
-            repoMock.Setup(r => r.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(Fakes.PontoDemanda());
+            repoMock.Setup(r => r.Obter(It.IsAny<long>(), It.IsAny<long>())).Returns(_fakes.PontoDemanda());
 
             repoMock.Setup(r => r.Criar(9999, pontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 1; return x; });
             repoMock.Setup(r => r.Listar(It.IsAny<long>())).Returns(new List<PontoDemanda>

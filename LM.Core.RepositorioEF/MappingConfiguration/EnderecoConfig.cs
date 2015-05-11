@@ -10,7 +10,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             ToTable("TB_ENDERECO");
             HasKey(e => e.Id);
             Property(e => e.Id).HasColumnName("ID_ENDERECO");
-            Property(e => e.Descricao).HasColumnName("NM_ENDERECO");
+            Property(e => e.Logradouro).HasColumnName("NM_ENDERECO");
             Property(e => e.Numero).HasColumnName("NR_ENDERECO").IsOptional();
             Property(e => e.Complemento).HasColumnName("NM_ENDERECO_COMPLEMENTO");
             Property(e => e.Alias).HasColumnName("TX_ENDERECO_ALIAS");
