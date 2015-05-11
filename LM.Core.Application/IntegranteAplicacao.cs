@@ -34,7 +34,7 @@ namespace LM.Core.Application
 
         public Integrante Criar(Integrante integrante)
         {
-            _repositorio.VerificarSeEmailJaExiste(integrante.Email);
+            if (!string.IsNullOrWhiteSpace(integrante.Email)) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             return _repositorio.Criar(integrante);
         }
 
