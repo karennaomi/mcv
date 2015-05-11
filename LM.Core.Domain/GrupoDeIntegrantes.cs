@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace LM.Core.Domain
 {
@@ -12,5 +13,10 @@ namespace LM.Core.Domain
         public string Nome { get; set; }
         public virtual ICollection<Integrante> Integrantes { get; set; }
         public virtual ICollection<PontoDemanda> PontosDemanda { get; set; }
+
+        public IEnumerable<Integrante> IntegrantesAtivos()
+        {
+            return Integrantes.Where(i => i.Ativo);
+        }
     }
 }
