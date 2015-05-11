@@ -18,6 +18,7 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
         public TipoPontoDemanda? Tipo { get; set; }
 
+        public virtual Usuario UsuarioCriador { get; set; }
         public virtual Endereco Endereco { get; set; }
         public virtual GrupoDeIntegrantes GrupoDeIntegrantes { get; set; }
         public virtual ICollection<Lista> Listas { get; set; }

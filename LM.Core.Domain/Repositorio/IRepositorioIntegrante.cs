@@ -5,7 +5,6 @@ namespace LM.Core.Domain.Repositorio
     {
         Integrante Obter(long id);
         Integrante Criar(Integrante integrante);
-        void Apagar(Integrante integrante);
         void VerificarSeCpfJaExiste(string cpf);
         void VerificarSeEmailJaExiste(string email);
         void Salvar();

@@ -29,13 +29,6 @@ namespace LM.Core.RepositorioEF
             return integrante;
         }
 
-        public void Apagar(Integrante integrante)
-        {
-            _contexto.Entry(integrante).State = EntityState.Deleted;
-            _contexto.Integrantes.Remove(integrante);
-            _contexto.SaveChanges();
-        }
-
         public void VerificarSeCpfJaExiste(string cpf)
         {
             if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf");

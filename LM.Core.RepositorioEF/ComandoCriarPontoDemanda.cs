@@ -25,6 +25,7 @@ namespace LM.Core.RepositorioEF
         public PontoDemanda Executar()
         {
             var usuario = _usuarioRepo.Obter(_usuarioId);
+            _novoPontoDemanda.UsuarioCriador = usuario;
             _novoPontoDemanda.GrupoDeIntegrantes = usuario.Integrante.GrupoDeIntegrantes;
             if (_novoPontoDemanda.Endereco.Cidade.Id > 0)
             {

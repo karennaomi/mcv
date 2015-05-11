@@ -18,16 +18,11 @@ namespace LM.Core.Domain
         [Required(ErrorMessage = "O campo [Senha] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         [MinLength(6, ErrorMessage = "A senha deve possuir no mínimo 6 caracteres.")]
         public string Senha { get; set; }
-
-        public TipoUsuario Tipo { get; set; }
         public bool Ativo { get; set; }
-
         public virtual ICollection<StatusUsuarioPontoDemanda> StatusUsuarioPontoDemanda { get; set; }
         public virtual Integrante Integrante { get; set; }
-
         public string DeviceId { get; set; }
         public string DeviceType { get; set; }
-
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
 

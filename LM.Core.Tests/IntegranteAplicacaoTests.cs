@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Transactions;
 using LM.Core.Application;
@@ -98,21 +99,43 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void NaoPodeApagarUmIntegranteQueNaoPertenceAoPonteDemandaEspecificado()
+        public void NaoPodeDesativarUmIntegranteQueNaoPertenceAoPonteDemandaEspecificado()
         {
             var integrante = _fakes.Integrante();
             var app = ObterAppIntegrante(ObterIntegranteRepo(integrante).Object);
-            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Apagar(9999, 123));
+            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Desativar(9999, 6, 123));
         }
 
         [Test]
-        public void PodeApagarUmIntegranteQuePertenceAoPonteDemandaEspecificado()
+        public void PodeDesativarUmIntegranteQuePertenceAoPonteDemandaEspecificado()
         {
             var integrante = _fakes.Integrante();
+            integrante.Usuario = new Usuario { Id = 5 };
             var repoMock = ObterIntegranteRepo(integrante);
             var app = ObterAppIntegrante(repoMock.Object);
-            app.Apagar(666, 1234);
-            repoMock.Verify(r => r.Apagar(integrante), Times.Once);
+            Assert.IsTrue(integrante.Ativo);
+            app.Desativar(666, 6, 1234);
+            Assert.IsFalse(integrante.Ativo);
+        }
+
+        [Test]
+        public void NaoPodeSeDesativar()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Usuario = new Usuario {Id = 6};
+            var app = ObterAppIntegrante(ObterIntegranteRepo(integrante).Object);
+            var ex = Assert.Throws<ApplicationException>(() => app.Desativar(666, 6, 123));
+            Assert.AreEqual("Não pode desativar integrante.", ex.Message);
+        }
+
+        [Test]
+        public void NaoPodeDesativarOCriadorDoPonto()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Usuario = new Usuario { Id = 7 };
+            var app = ObterAppIntegrante(ObterIntegranteRepo(integrante).Object);
+            var ex = Assert.Throws<ApplicationException>(() => app.Desativar(666, 6, 7));
+            Assert.AreEqual("Não pode excluir o criador da casa.", ex.Message);
         }
 
         [Test]

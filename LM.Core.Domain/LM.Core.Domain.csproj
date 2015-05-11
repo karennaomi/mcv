@@ -100,7 +100,6 @@
     <Compile Include="StatusUsuarioPontoDemanda.cs" />
     <Compile Include="TipoTemplateMensagem.cs" />
     <Compile Include="TemplateMensagem.cs" />
-    <Compile Include="TipoUsuario.cs" />
     <Compile Include="TipoPontoDemanda.cs" />
     <Compile Include="UF.cs" />
     <Compile Include="Usuario.cs" />

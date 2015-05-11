@@ -12,7 +12,6 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(u => u.Id).HasColumnName("ID_USUARIO");
             Property(u => u.Login).HasColumnName("TX_LOGIN");
             Property(u => u.Senha).HasColumnName("TX_SENHA");
-            Property(u => u.Tipo).HasColumnName("ID_TIPO_USUARIO");
             Property(i => i.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(i => i.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
             Property(u => u.DeviceId).HasColumnName("TX_DeviceId");

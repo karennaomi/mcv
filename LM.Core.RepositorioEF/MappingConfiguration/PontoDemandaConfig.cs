@@ -18,6 +18,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(d => d.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
             Property(d => d.Tipo).HasColumnName("ID_TIPO_PONTO_REAL_DEMANDA").IsOptional();
 
+            HasRequired(u => u.UsuarioCriador).WithMany().Map(m => m.MapKey("ID_USUARIO_CRIADOR"));
             HasRequired(d => d.Endereco).WithMany().Map(m => m.MapKey("ID_ENDERECO"));
             HasRequired(d => d.GrupoDeIntegrantes).WithMany().Map(m => m.MapKey("ID_GRUPO_INTEGRANTE"));
             HasMany(d => d.Listas).WithRequired(l => l.PontoDemanda).Map(m => m.MapKey("ID_PONTO_REAL_DEMANDA"));

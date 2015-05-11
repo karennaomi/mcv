@@ -11,10 +11,8 @@ namespace LM.Core.Application
         Integrante Obter(long pontoDemandaId, long id);
         Integrante Criar(Integrante integrante);
         Integrante Atualizar(long pontoDemandaId, Integrante integrante);
-        void Apagar(long pontoDemandaId, long integranteId);
+        void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
         void Convidar(long pontoDemandaId, long usuarioId, long id);
-        void VerificarSeCpfJaExiste(string cpf);
-        void VerificarSeEmailJaExiste(string email);
     }
 
     public class IntegranteAplicacao : IIntegranteAplicacao
@@ -36,22 +34,29 @@ namespace LM.Core.Application
 
         public Integrante Criar(Integrante integrante)
         {
+            _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             return _repositorio.Criar(integrante);
         }
 
         public Integrante Atualizar(long pontoDemandaId, Integrante integrante)
         {
             var integranteToUpdate = Obter(pontoDemandaId, integrante.Id);
-            if (integranteToUpdate.Email != integrante.Email) VerificarSeEmailJaExiste(integrante.Email);
+            if (integranteToUpdate.Email != integrante.Email) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             integranteToUpdate.Atualizar(integrante);
             _repositorio.Salvar();
             return integranteToUpdate;
         }
 
-        public void Apagar(long pontoDemandaId, long integranteId)
+        public void Desativar(long pontoDemandaId, long usuarioId, long integranteId)
         {
             var integrante = Obter(pontoDemandaId, integranteId);
-            _repositorio.Apagar(integrante);
+            if(integrante.Usuario != null)
+            { 
+                if (integrante.Usuario.Id == usuarioId) throw new ApplicationException("Não pode desativar integrante.");
+                if (integrante.GrupoDeIntegrantes.PontosDemanda.Single(p => p.Id == pontoDemandaId).UsuarioCriador.Id == integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o criador da casa.");
+            }
+            integrante.Ativo = false;
+            _repositorio.Salvar();
         }
 
         public void Convidar(long pontoDemandaId, long usuarioId, long id)
@@ -63,16 +68,6 @@ namespace LM.Core.Application
             var integrante = convidado.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario != null && i.Usuario.Id == usuarioId);
             _appNotificacao.Notificar(integrante, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, null);
             _repositorio.Salvar();
-        }
-
-        public void VerificarSeCpfJaExiste(string cpf)
-        {
-            _repositorio.VerificarSeCpfJaExiste(cpf);
-        }
-
-        public void VerificarSeEmailJaExiste(string email)
-        {
-            _repositorio.VerificarSeEmailJaExiste(email);
         }
     }
 }

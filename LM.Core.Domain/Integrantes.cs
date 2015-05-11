@@ -5,12 +5,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LM.Core.Domain
 {
-    public enum IntegrantePapel : long
-    {
-        Administrador = 1,
-        Colaborador = 2
-    }
-
     public enum TipoIntegrante
     {
         NaoReconhecido = 0,
@@ -26,7 +20,6 @@ namespace LM.Core.Domain
             Ativo = true;
             DataInclusao = DataAlteracao = DateTime.Now;
             EhUsuarioSistema = true;
-            Papel = IntegrantePapel.Administrador;
             Tipo = TipoIntegrante.Familia;
         }
 
@@ -46,9 +39,7 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
         public bool Ativo { get; set; }
         public string Telefone { get; set; }
-        public int? Ddd { get; set; }
         public string Sexo { get; set; }
-        public IntegrantePapel Papel { get; set; }
         public TipoIntegrante Tipo { get; set; }
 
         public virtual Usuario Usuario { get; set; }

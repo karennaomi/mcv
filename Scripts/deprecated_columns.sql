@@ -1,0 +1,10 @@
+-- Propriedades obsoletas
+--alter table tb_usuario drop column NM_USUARIO
+--alter table tb_usuario drop column TX_EMAIL
+--alter table tb_usuario drop column DT_NASCIMENTO
+--alter table tb_usuario drop column TX_SEXO
+--alter table tb_usuario drop column NR_CPF
+--alter table tb_usuario drop column ID_TIPO_USUARIO
+--alter table tb_integrante drop column TX_EMAIL_CONVITE
+--alter table tb_integrante drop column NR_DDD
+--alter table tb_integrante drop column ID_INTEGRANTE_PAPEL

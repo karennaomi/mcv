@@ -12,9 +12,7 @@ namespace LM.Core.Tests
             {
                 Login = "joe123@doe.com",
                 Senha = "123456",
-                Tipo = TipoUsuario.Administrador,
                 Integrante = Integrante()
-
             };
         }
 
@@ -27,7 +25,6 @@ namespace LM.Core.Tests
                 Nome = "Joe Doe",
                 Sexo = "M",
                 Email = "joe123@doe.com",
-                Papel = IntegrantePapel.Administrador,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes {Id = 1, PontosDemanda = new Collection<PontoDemanda>(), Integrantes = new Collection<Integrante>()},
                 Telefone = "989998999"
             };
@@ -37,12 +34,15 @@ namespace LM.Core.Tests
 
         internal PontoDemanda PontoDemanda()
         {
+            var usuario = Usuario();
+            usuario.Id = 7;
             return new PontoDemanda
             {
                 Id = 666,
                 Tipo = TipoPontoDemanda.Praia,
                 GrupoDeIntegrantes = new GrupoDeIntegrantes {Id = 1, Integrantes = new Collection<Integrante>()},
-                Endereco = Endereco()
+                Endereco = Endereco(),
+                UsuarioCriador = usuario
             };
         }
 
