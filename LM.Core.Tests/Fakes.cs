@@ -21,7 +21,6 @@ namespace LM.Core.Tests
             var integrante = new Integrante
             {
                 DataNascimento = DateTime.Now.AddYears(-18),
-                EhUsuarioSistema = false,
                 Nome = "Joe Doe",
                 Sexo = "M",
                 Email = "joe123@doe.com",

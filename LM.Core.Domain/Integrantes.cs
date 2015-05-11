@@ -19,7 +19,6 @@ namespace LM.Core.Domain
         {
             Ativo = true;
             DataInclusao = DataAlteracao = DateTime.Now;
-            EhUsuarioSistema = true;
             Tipo = TipoIntegrante.Familia;
         }
 
@@ -32,7 +31,6 @@ namespace LM.Core.Domain
         [DisplayName("Data de Nascimento")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DataNascimento { get; set; }
-        public bool EhUsuarioSistema { get; set; }
         public bool EhUsuarioConvidado { get; set; }
         public DateTime? DataConvite { get; set; }
         public DateTime? DataInclusao { get; set; }
@@ -48,6 +46,11 @@ namespace LM.Core.Domain
         public int ObterIdade()
         {
             return LMHelper.ObterIdade(DataNascimento);
+        }
+
+        public bool EhUsuarioDoSistema()
+        {
+            return Usuario != null;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
