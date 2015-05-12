@@ -57,16 +57,6 @@ namespace LM.Core.Domain
         {
             if (Tipo == TipoIntegrante.Pet) yield break;
             
-            if (string.IsNullOrWhiteSpace(Email))
-            {
-                yield return new ValidationResult("O campo [Email] é de preenchimento obrigatório!", new[] { "Email" });
-            }
-
-            if (!DataNascimento.HasValue)
-            {
-                yield return new ValidationResult("O campo [Data de Nascimento] é de preenchimento obrigatório!", new[] { "DataNascimento" });
-            }
-
             if (string.IsNullOrWhiteSpace(Sexo))
             {
                 yield return new ValidationResult("O campo [Sexo] é de preenchimento obrigatório!", new[] { "Sexo" });

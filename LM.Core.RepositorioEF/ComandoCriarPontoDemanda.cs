@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using System.Diagnostics.Eventing.Reader;
+using LM.Core.Domain;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 
@@ -40,10 +42,24 @@ namespace LM.Core.RepositorioEF
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             _contexto.SaveChanges();
 
-            _usuarioRepo.AtualizarStatusCadastro(usuario, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, _novoPontoDemanda.Id);
+            AtualizaStatusUsuario(usuario);
             _contexto.SaveChanges();
 
             return _novoPontoDemanda;
+        }
+
+        private void AtualizaStatusUsuario(Usuario usuario)
+        {
+            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>();
+            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, 
+                DataInclusao = DateTime.Now, 
+                DataAlteracao = DateTime.Now, 
+                PontoDemandaId = _novoPontoDemanda.Id, 
+                Usuario = usuario
+            });
+                
         }
 
         private void LojasFavoritas()

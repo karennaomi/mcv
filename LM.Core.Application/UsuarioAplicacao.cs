@@ -1,4 +1,7 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
@@ -81,14 +84,23 @@ namespace LM.Core.Application
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
         {
             var usuario = Obter(usuarioId);
-            _repositorio.AtualizarStatusCadastro(usuario, statusCadastro, pontoDemandaId);
+            if (usuario.StatusUsuarioPontoDemanda != null && usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk)) return;
+            if (usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda=new Collection<StatusUsuarioPontoDemanda>();
+            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = statusCadastro,
+                DataInclusao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                PontoDemandaId = pontoDemandaId
+            });
             _repositorio.Salvar();
         }
 
         public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)
         {
             var usuario = Obter(usuarioId);
-            _repositorio.AtualizarDeviceInfo(usuario, deviceType, deviceId);
+            usuario.DeviceType = deviceType;
+            usuario.DeviceId = deviceId;
             _repositorio.Salvar();
         }
     }

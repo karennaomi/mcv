@@ -43,24 +43,6 @@ namespace LM.Core.RepositorioEF
             return _contexto.Integrantes.FirstOrDefault(i => i.Email == email && i.EhUsuarioConvidado && i.Usuario == null);
         }
 
-        public void AtualizarStatusCadastro(Usuario usuario, StatusCadastro statusCadastro, long? pontoDemandaId = null)
-        {
-            if (usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk)) return;
-            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
-            {
-                StatusCadastro = statusCadastro,
-                DataInclusao = DateTime.Now,
-                DataAlteracao = DateTime.Now,
-                PontoDemandaId = pontoDemandaId
-            });
-        }        
-
-        public void AtualizarDeviceInfo(Usuario usuario, string deviceType, string deviceId)
-        {
-            usuario.DeviceType = deviceType;
-            usuario.DeviceId = deviceId;
-        }
-
         public void VerificarSeCpfJaExiste(string cpf)
         {
             if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf");
