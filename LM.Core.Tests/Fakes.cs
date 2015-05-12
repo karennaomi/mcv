@@ -76,5 +76,27 @@ namespace LM.Core.Tests
                 }
             };
         }
+
+        internal CompraAtiva CompraAtiva()
+        {
+            var compraAtiva = new CompraAtiva {Usuario = Usuario(), PontoDemanda = PontoDemanda()};
+            return compraAtiva;
+        }
+
+        internal TemplateMensagem TemplateMensagemPush()
+        {
+            return new TemplateMensagemPush
+            {
+                Mensagem = "Lorem ipsum dolor sit amet"
+            };
+        }
+
+        internal TemplateMensagem TemplateMensagemEmail()
+        {
+            return new TemplateMensagemEmail
+            {
+                Mensagem = "Lorem ipsum dolor sit amet"
+            };
+        }
     }
 }

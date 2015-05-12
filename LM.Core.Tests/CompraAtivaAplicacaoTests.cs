@@ -6,7 +6,6 @@ using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Linq;
 using System.Transactions;
 
 namespace LM.Core.Tests
@@ -14,14 +13,13 @@ namespace LM.Core.Tests
     [TestFixture]
     public class CompraAtivaAplicacaoTests
     {
-        private const int UsuarioId = 6;
-        private const int PontoDemandaId = 1;
-
         private Fakes _fakes;
+        private MockCompraAtivaRepo _mockRepo;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
+            _mockRepo = new MockCompraAtivaRepo();
         }
 
         [Test]
@@ -29,9 +27,7 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var mockRestService = GetMockRestService();
-                var appNotificacao = GetNotificacaoApp(mockRestService.Object);
-                var compraAtiva = GetApp(appNotificacao).AtivarCompra(10755, PontoDemandaId);
+                var compraAtiva = ObterAppCompraAtiva(new CompraAtivaEF(), new Mock<IServicoRest>().Object).AtivarCompra(3, 1);
                 Assert.IsTrue(compraAtiva.Id > 0);
             }
         }
@@ -39,73 +35,51 @@ namespace LM.Core.Tests
         [Test]
         public void FinalizaUmaCompraAtiva()
         {
-            using (new TransactionScope())
-            {
-                var mockRestService = GetMockRestService();
-                var appNotificacao = GetNotificacaoApp(mockRestService.Object);
-                var compraAtiva = GetApp(appNotificacao).AtivarCompra(10755, PontoDemandaId);
-                compraAtiva = GetApp(appNotificacao).FinalizarCompra(10755, PontoDemandaId);
-                Assert.IsNotNull(compraAtiva.FimCompra);
-            }
+            _mockRepo.CompraAtiva = _fakes.CompraAtiva();
+            var compraAtiva = ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), new Mock<IServicoRest>().Object).FinalizarCompra(1, 100);
+            Assert.IsNotNull(compraAtiva.FimCompra);
+        }
+
+        [Test]
+        public void NaoPodeCriarUmaCompraAtivaSeJaExistirUmaNoPontoDeDemanda()
+        {
+            _mockRepo.CompraAtiva = _fakes.CompraAtiva();
+            var ex = Assert.Throws<ApplicationException>(() => ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), new Mock<IServicoRest>().Object).AtivarCompra(1, 100));
+            Assert.AreEqual("Já existe uma compra ativa neste ponto de demanda.", ex.Message);
         }
 
         [Test]
         public void AtivarCompraNotificaUsuarios()
         {
-            var mockRestService = GetMockRestService();
-            GetMockedApp(mockRestService.Object).AtivarCompra(UsuarioId, PontoDemandaId);
-            mockRestService.Verify(v => v.Post(It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(2));
-        }
-
-        [Test]
-        public void LancaExcecaoQuandoNaoExisteCompraAtivaETentaFinalizar()
-        {
-            Assert.Throws<ApplicationException>(() => GetMockedApp(GetMockRestService().Object).FinalizarCompra(UsuarioId, 666));
-        }
-
-        private static ICompraAtivaAplicacao GetApp(INotificacaoAplicacao appNotificacao)
-        {
-            return new CompraAtivaAplicacao(new CompraAtivaEF(), appNotificacao);
-        }
-
-        private ICompraAtivaAplicacao GetMockedApp(IServicoRest restService)
-        {
-            var pontoDemanda = _fakes.PontoDemanda();
-            var integrante0 = _fakes.Integrante();
-            integrante0.Id = 106;
-            integrante0.Usuario = new Usuario { Id = 6, Integrante = integrante0 };
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante0);
-
-            var integrante1 = _fakes.Integrante();
-            integrante0.Id = 107;
-            integrante1.Nome = "Joe Doe 1";
-            integrante1.Usuario = new Usuario {Id = 7, Integrante = integrante1};
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante1);
-
-            var integrante2 = _fakes.Integrante();
-            integrante0.Id = 109;
-            integrante2.Nome = "Joe Doe 2";
-            integrante2.Usuario = new Usuario { Id = 9, Integrante = integrante1 };
-            pontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante2);
+            var servicoRestMock = new Mock<IServicoRest>();
+            var compraAtiva = _fakes.CompraAtiva();
             
-            var mockRepo = new Mock<IRepositorioCompraAtiva>();
-            mockRepo.Setup(r => r.AtivarCompra(It.IsAny<long>(), It.IsAny<long>())).Returns(new CompraAtiva
-            {
-                PontoDemanda = pontoDemanda,
-                Usuario = pontoDemanda.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario.Id == 6).Usuario
-            });
-            mockRepo.Setup(r => r.FinalizarCompra(It.IsAny<long>(), It.IsAny<long>())).Throws<ApplicationException>();
-            return new CompraAtivaAplicacao(mockRepo.Object, GetNotificacaoApp(restService));
-        }
-        
-        private static INotificacaoAplicacao GetNotificacaoApp(IServicoRest restService)
-        {
-            return new NotificacaoAplicacao(restService, new TemplateMensagemAplicacao(new TemplateMensagemEF()), null);
+            var integrante0 = _fakes.Integrante();
+            integrante0.Id = 200;
+            integrante0.Usuario = new Usuario { Id = 1 };
+            compraAtiva.Usuario.Integrante = integrante0;
+            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante0);
+            
+            var integrante1 = _fakes.Integrante();
+            integrante1.Id = 201;
+            integrante1.Usuario = new Usuario { Id = 2 };
+            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante1);
+            
+            var integrante2 = _fakes.Integrante();
+            integrante2.Id = 202;
+            integrante2.Usuario = new Usuario { Id = 3 };
+            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante2);
+            
+            _mockRepo.CompraAtiva = compraAtiva;
+            ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), servicoRestMock.Object).AtivarCompra(1, 101);
+            servicoRestMock.Verify(v => v.Post(It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(2));
         }
 
-        private static Mock<IServicoRest> GetMockRestService()
+        private static ICompraAtivaAplicacao ObterAppCompraAtiva(IRepositorioCompraAtiva compraAtivaRepo, IServicoRest servicoRest)
         {
-            return new Mock<IServicoRest>();
+            var mockTemplateMensagemRepo = new MockTemplateMessageRepo {Tipo = "push"};
+            var notificacaoApp = new NotificacaoAplicacao(servicoRest, new TemplateMensagemAplicacao(mockTemplateMensagemRepo.GetMockedRepo()), new Mock<IFilaItemAplicacao>().Object);
+            return new CompraAtivaAplicacao(compraAtivaRepo, notificacaoApp);
         }
     }
 }

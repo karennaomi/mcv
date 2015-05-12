@@ -78,6 +78,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CompraAplicacaoTests.cs" />
+    <Compile Include="CompraAtivaTests.cs" />
     <Compile Include="CompraAtivaAplicacaoTests.cs" />
     <Compile Include="GoogleMapsGeocodeTests.cs" />
     <Compile Include="IntegranteTests.cs" />

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using Moq;
+using System.Collections.Generic;
 
 namespace LM.Core.Tests
 {
@@ -32,15 +29,15 @@ namespace LM.Core.Tests
 
         public IRepositorioPontoDemanda GetMockedRepo()
         {
-            var repoMock = new Mock<IRepositorioPontoDemanda>();
-            repoMock.Setup(r => r.Obter(1, 100)).Returns(PontoDemanda);
+            var mock = new Mock<IRepositorioPontoDemanda>();
+            mock.Setup(m => m.Obter(1, 100)).Returns(PontoDemanda);
 
-            repoMock.Setup(r => r.Criar(1, PontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 100; return x; });
-            repoMock.Setup(r => r.Listar(1)).Returns(new List<PontoDemanda>
+            mock.Setup(m => m.Criar(1, PontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 100; return x; });
+            mock.Setup(m => m.Listar(1)).Returns(new List<PontoDemanda>
                 {
                     new PontoDemanda { Id = 100 }, new PontoDemanda { Id = 101 }
                 });
-            return repoMock.Object;
+            return mock.Object;
         }
     }
 
@@ -51,12 +48,51 @@ namespace LM.Core.Tests
 
         public IRepositorioIntegrante GetMockedRepo()
         {
-            var repoMock = new Mock<IRepositorioIntegrante>();
-            repoMock.Setup(r => r.Obter(200)).Returns(Integrante);
-            repoMock.Setup(r => r.Obter(201)).Returns(Convidado);
-            repoMock.Setup(r => r.Criar(Integrante)).Returns<Integrante>(x => x);
-            repoMock.Setup(r => r.VerificarSeEmailJaExiste("email@existente.com")).Throws<IntegranteExistenteException>();
-            return repoMock.Object;
+            var mock = new Mock<IRepositorioIntegrante>();
+            mock.Setup(m => m.Obter(200)).Returns(Integrante);
+            mock.Setup(m => m.Obter(201)).Returns(Convidado);
+            mock.Setup(m => m.Criar(Integrante)).Returns<Integrante>(x => x);
+            mock.Setup(m => m.VerificarSeEmailJaExiste("email@existente.com")).Throws<IntegranteExistenteException>();
+            return mock.Object;
+        }
+    }
+
+    public class MockCompraAtivaRepo
+    {
+        public CompraAtiva CompraAtiva { private get; set; }
+
+        public IRepositorioCompraAtiva GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioCompraAtiva>();
+            mock.Setup(m => m.AtivarCompra(1, 100)).Returns(CompraAtiva);
+            mock.Setup(m => m.Obter(100)).Returns(CompraAtiva);
+            mock.Setup(m => m.AtivarCompra(1, 101)).Returns(CompraAtiva);
+            mock.Setup(m => m.Obter(101)).Returns((CompraAtiva)null);
+            return mock.Object;
+        }
+    }
+
+    public class MockTemplateMessageRepo
+    {
+        public string Tipo { private get; set; }
+
+        public IRepositorioTemplateMensagem GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioTemplateMensagem>();
+            mock.Setup(m => m.ObterPorTipoTemplate(TipoTemplateMensagem.AtivarCompra)).Returns(GetTemplateMensagem());
+            return mock.Object;
+        }
+
+        private TemplateMensagem GetTemplateMensagem()
+        {
+            var fakes = new Fakes();
+            switch (Tipo)
+            {
+                case "push":return fakes.TemplateMensagemPush();
+                case "email": return fakes.TemplateMensagemEmail();
+                default: return null;
+            }
         }
     }
 }
+

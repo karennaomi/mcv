@@ -39,18 +39,9 @@ namespace LM.Core.RepositorioEF
             return compraAtiva;
         }
 
-        public CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId)
+        public void Salvar()
         {
-            var compraAtiva = Obter(usuarioId, pontoDemandaId);
-            if (compraAtiva == null) throw new ApplicationException("Nenhuma compra ativa para o ponto de demanda especificado.");
-            compraAtiva.FimCompra = DateTime.Now;
             _contexto.SaveChanges();
-            return compraAtiva;
-        }
-
-        private CompraAtiva Obter(long usuarioId, long pontoDemandaId)
-        {
-            return _contexto.ComprasAtivas.FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && c.Usuario.Id == usuarioId && c.FimCompra == null);
         }
     }
 }
