@@ -77,6 +77,8 @@ namespace LM.Core.Domain
             Nome = integrante.Nome;
             DataNascimento = integrante.DataNascimento;
             Sexo = integrante.Sexo;
+            Telefone = integrante.Telefone;
+            Cpf = integrante.Cpf;
         }
 
         public bool PodeSerConvidado()

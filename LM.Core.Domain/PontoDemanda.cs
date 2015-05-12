@@ -13,7 +13,6 @@ namespace LM.Core.Domain
         public string Nome { get; set; }
         public short? QuantidadeDiasAlertaReposicao { get; set; }
         public short? QuantidadeDiasCoberturaEstoque { get; set; }
-        public decimal? FatorZNivelServico { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public TipoPontoDemanda? Tipo { get; set; }

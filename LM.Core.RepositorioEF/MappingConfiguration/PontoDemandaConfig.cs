@@ -13,7 +13,6 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(d => d.Nome).HasColumnName("NM_PONTO_REAL_DEMANDA");
             Property(d => d.QuantidadeDiasAlertaReposicao).HasColumnName("QT_DIAS_ALERTA_REPOSICAO").IsOptional();
             Property(d => d.QuantidadeDiasCoberturaEstoque).HasColumnName("QT_DIAS_COBERTURA_ESTOQUE").IsOptional();
-            Property(d => d.FatorZNivelServico).HasColumnName("VL_FATOR_Z_NIVEL_SERVICO").IsOptional();
             Property(d => d.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(d => d.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
             Property(d => d.Tipo).HasColumnName("ID_TIPO_PONTO_REAL_DEMANDA").IsOptional();

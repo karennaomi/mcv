@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using LM.Core.Domain;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
@@ -13,6 +16,67 @@ namespace LM.Core.Tests
         public void Init()
         {
             _fakes = new Fakes();
+        }
+
+        [Test]
+        public void ValidarNomeObrigatorio()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Nome = null;
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(integrante, new ValidationContext(integrante), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O campo [Nome] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Nome", error.MemberNames.ElementAt(0));
+        }
+
+        [Test]
+        public void ValidarSexoObrigatorioEmNaoPet()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Sexo = null;
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(integrante, new ValidationContext(integrante), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O campo [Sexo] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Sexo", error.MemberNames.ElementAt(0));
+        }
+
+        [Test]
+        public void ValidarSexoCharEmNaoPet()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Sexo = "g";
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(integrante, new ValidationContext(integrante), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O sexo selecionado é inválido: g", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Sexo", error.MemberNames.ElementAt(0));
+        }
+
+        [Test]
+        public void IntegranteComUsuarioEhUsuarioDoSistema()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Usuario = _fakes.Usuario();
+            Assert.IsTrue(integrante.EhUsuarioDoSistema());
+        }
+
+        [Test]
+        public void IntegranteSemsuarioNaoEhUsuarioDoSistema()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Usuario = null;
+            Assert.IsFalse(integrante.EhUsuarioDoSistema());
         }
 
         [Test]

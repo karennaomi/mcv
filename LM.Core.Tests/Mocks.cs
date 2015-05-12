@@ -43,4 +43,20 @@ namespace LM.Core.Tests
             return repoMock.Object;
         }
     }
+
+    public class MockIntegranteRepo
+    {
+        public Integrante Integrante { get; set; }
+        public Integrante Convidado { get; set; }
+
+        public IRepositorioIntegrante GetMockedRepo()
+        {
+            var repoMock = new Mock<IRepositorioIntegrante>();
+            repoMock.Setup(r => r.Obter(200)).Returns(Integrante);
+            repoMock.Setup(r => r.Obter(201)).Returns(Convidado);
+            repoMock.Setup(r => r.Criar(Integrante)).Returns<Integrante>(x => x);
+            repoMock.Setup(r => r.VerificarSeEmailJaExiste("email@existente.com")).Throws<IntegranteExistenteException>();
+            return repoMock.Object;
+        }
+    }
 }
