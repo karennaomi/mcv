@@ -17,12 +17,12 @@ namespace LM.Core.Tests
     public class UsuarioAplicacaoTests
     {
         private Fakes _fakes;
-        private MockRepo _mockRepo;
+        private MockUsuarioRepo _mockRepo;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
-            _mockRepo = new MockRepo();
+            _mockRepo = new MockUsuarioRepo();
         }
 
         [Test]
@@ -173,22 +173,6 @@ namespace LM.Core.Tests
         private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo)
         {
             return new UsuarioAplicacao(usuarioRepo);
-        }
-
-        private class MockRepo
-        {
-            public Integrante Integrante { private get; set; }
-            public Usuario Usuario { private get; set; }
-            
-            public IRepositorioUsuario GetMockedRepo()
-            {
-                var mock = new Mock<IRepositorioUsuario>();
-                mock.Setup(m => m.UsuarioConvidado("integrante@convidado.com")).Returns(Integrante);
-                mock.Setup(m => m.ObterPorLogin("usuario@login.com")).Returns(Usuario);
-                mock.Setup(m => m.Obter(1)).Returns(Usuario);
-                mock.Setup(m => m.VerificarSeEmailJaExiste("email@existente.com")).Throws<IntegranteExistenteException>();
-                return mock.Object;
-            }   
         }
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="GoogleMapsGeocodeTests.cs" />
     <Compile Include="IntegranteTests.cs" />
     <Compile Include="LMHelperTests.cs" />
+    <Compile Include="Mocks.cs" />
     <Compile Include="NotificacaoAplicacaoTests.cs" />
     <Compile Include="PedidoAplicacaoTests.cs" />
     <Compile Include="ListaAplicacaoTests.cs" />

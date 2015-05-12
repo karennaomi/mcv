@@ -1,4 +1,5 @@
 ﻿using LM.Core.Domain;
+using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace LM.Core.RepositorioEF
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            return _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
+            var pontoDemanda = _contexto.PontosDemanda.SingleOrDefault(d => d.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && d.Id == pontoDemandaId);
+            if (pontoDemanda == null) throw new ObjetoNaoEncontradoException("Ponto de demanda não encontrado.");
+            return pontoDemanda;
         }
 
         public void Salvar()

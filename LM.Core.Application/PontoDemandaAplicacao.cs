@@ -40,9 +40,7 @@ namespace LM.Core.Application
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            var pontoDemanda = _repositorio.Obter(usuarioId, pontoDemandaId);
-            if (pontoDemanda == null) throw new ObjetoNaoEncontradoException("Ponto de demanda não encontrado.");
-            return pontoDemanda;
+            return _repositorio.Obter(usuarioId, pontoDemandaId);
         }
 
         public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia)

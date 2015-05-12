@@ -41,25 +41,7 @@ namespace LM.Core.RepositorioEF
             if (_novoPontoDemanda.Listas == null) _novoPontoDemanda.Listas = new Collection<Lista> { new Lista() };
             _novoPontoDemanda = _contexto.PontosDemanda.Add(_novoPontoDemanda);
             _contexto.SaveChanges();
-
-            AtualizaStatusUsuario(usuario);
-            _contexto.SaveChanges();
-
             return _novoPontoDemanda;
-        }
-
-        private void AtualizaStatusUsuario(Usuario usuario)
-        {
-            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>();
-            usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
-            {
-                StatusCadastro = StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, 
-                DataInclusao = DateTime.Now, 
-                DataAlteracao = DateTime.Now, 
-                PontoDemandaId = _novoPontoDemanda.Id, 
-                Usuario = usuario
-            });
-                
         }
 
         private void LojasFavoritas()
