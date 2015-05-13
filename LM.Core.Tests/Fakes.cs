@@ -76,7 +76,7 @@ namespace LM.Core.Tests
                 Info = new LojaInfo
                 {
                     RazaoSocial = "TESTE SA" + _lojaId,
-                    Endereco = Endereco()
+                    Endereco = new Endereco { Alias = "Teste " + _lojaId, Logradouro = "teste " + _lojaId, Latitude = -23.5238023M, Longitude = -46.644144M }
                 }
             };
         }

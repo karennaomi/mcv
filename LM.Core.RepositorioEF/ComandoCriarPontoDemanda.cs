@@ -50,7 +50,7 @@ namespace LM.Core.RepositorioEF
             var lojas = new Collection<Loja>();
             foreach (var lojaFavorita in _novoPontoDemanda.LojasFavoritas)
             {
-                lojaFavorita.Info.Endereco.Cidade = _cidadeRepo.Buscar(lojaFavorita.Info.Endereco.Cidade.Nome);
+                lojaFavorita.Info.Endereco.Cidade = lojaFavorita.Info.Endereco.Cidade == null ? null : _cidadeRepo.Buscar(lojaFavorita.Info.Endereco.Cidade.Nome);
                 lojas.Add(_lojaFavoritaRepo.VerificarLojaExistente(lojaFavorita));
             }
             _novoPontoDemanda.LojasFavoritas = lojas;
