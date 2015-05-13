@@ -3,7 +3,7 @@ using System;
 
 namespace LM.Core.Domain
 {
-    public class ListaItem
+    public class ListaItem : IItem
     {
         public ListaItem()
         {
@@ -21,8 +21,18 @@ namespace LM.Core.Domain
         public decimal? QuantidadeDeSugestaoDeCompra { get; set; }
         public string Status { get; set; }
         public decimal? ValorMedioDeConsumoPorIntegrante { get; set; }
-        
         public virtual Lista Lista { get; set; }
         public virtual Periodo Periodo { get; set; }
+
+
+        public PontoDemanda ObterPontoDemanda()
+        {
+            return Lista.PontoDemanda;
+        }
+
+        public decimal ObterQuantidade()
+        {
+            return QuantidadeDeConsumo ?? 0;
+        }
     }
 }

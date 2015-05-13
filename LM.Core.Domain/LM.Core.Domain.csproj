@@ -57,6 +57,7 @@
     <Compile Include="FilaItem.cs" />
     <Compile Include="FilaMensagem.cs" />
     <Compile Include="GoogleMapsGeocode.cs" />
+    <Compile Include="IItem.cs" />
     <Compile Include="LegacyToken.cs" />
     <Compile Include="LMHelper.cs" />
     <Compile Include="PasswordHash.cs" />
