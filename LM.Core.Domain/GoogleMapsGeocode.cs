@@ -48,8 +48,7 @@ namespace LM.Core.Domain
         {
             var componentValue = GetComponentShortNameValue(result, "street_number");
             int addressNumber;
-            if(int.TryParse(componentValue, out addressNumber)) return addressNumber;
-            throw new ApplicationException("O número da rua é inválido: " + componentValue);
+            return int.TryParse(componentValue, out addressNumber) ? addressNumber : 0;
         }
 
         private static string GetComponentShortNameValue(GoogleMapsGeocodeResult result, string componentName)
