@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.Domain.Servicos;
+using System;
+using System.Collections.Generic;
 
 namespace LM.Core.Application
 {
@@ -13,7 +12,7 @@ namespace LM.Core.Application
 
     public interface IEnderecoAplicacao : ICepAplicacao
     {
-        void PreencherLatitudeLongitude(Endereco endereco);
+        IList<Endereco> Listar(string logradouro, string numero);
         Endereco BuscarPorPonto(decimal lat, decimal lng);
     }
 
@@ -25,6 +24,7 @@ namespace LM.Core.Application
         {
             _servicosDeCep = servicosDeCep;
             _servicoRest = servicoRest;
+            if (_servicoRest.Host == null) _servicoRest.Host = new Uri("http://maps.googleapis.com/maps/api/geocode/");
         }
 
         public Endereco BuscarPorCep(string cep)
@@ -34,7 +34,6 @@ namespace LM.Core.Application
                 try
                 {
                     var endereco = servicoDeCep.BuscarPorCep(cep);
-                    PreencherLatitudeLongitude(endereco);
                     return endereco;
 
                 }
@@ -46,18 +45,15 @@ namespace LM.Core.Application
             throw new ApplicationException("Não foi possível localizar um endereço por cep.");
         }
 
-        public void PreencherLatitudeLongitude(Endereco endereco)
+        public IList<Endereco> Listar(string logradouro, string numero)
         {
-            if (string.IsNullOrWhiteSpace(endereco.Logradouro) || !endereco.Numero.HasValue) return;
-            _servicoRest.Host = new Uri("http://maps.googleapis.com/maps/api/geocode/");
-            var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?address={0}+{1}&sensor=false", endereco.Logradouro, endereco.Numero));
-            endereco.Latitude = enderecoGoogle.Results.First().Geometry.Location.Lat;
-            endereco.Longitude = enderecoGoogle.Results.First().Geometry.Location.Lng;
+            if (string.IsNullOrWhiteSpace(logradouro) || string.IsNullOrWhiteSpace(numero)) return null;
+            var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?address={0}+{1}&sensor=false", logradouro, numero));
+            return enderecoGoogle.ListarEnderecos();
         }
 
         public Endereco BuscarPorPonto(decimal lat, decimal lng)
         {
-            _servicoRest.Host = new Uri("http://maps.googleapis.com/maps/api/geocode/");
             var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?latlng={0},{1}&sensor=false", lat, lng));
             return enderecoGoogle.ObterEndereco();
         }

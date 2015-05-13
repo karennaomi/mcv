@@ -16,21 +16,32 @@ namespace LM.Core.Domain
         {
             var firstResult = Results.FirstOrDefault();
             if(firstResult == null) throw new ApplicationException("Não foi localizado nenhum endereço.");
+            return CreateEndereco(firstResult);
+        }
+
+        public IList<Endereco> ListarEnderecos()
+        {
+            var lista = new List<Endereco>();
+            Results.ToList().ForEach(r => lista.Add(CreateEndereco(r)));
+            return lista;
+        }
+
+        private static Endereco CreateEndereco(GoogleMapsGeocodeResult result)
+        {
             return new Endereco
             {
-                Logradouro = GetComponentShortNameValue(firstResult, "route"),
-                Numero = GetNumber(firstResult),
-                Bairro = GetComponentShortNameValue(firstResult, "neighborhood"),
-                Cep = GetComponentShortNameValue(firstResult, "postal_code"),
+                Logradouro = GetComponentShortNameValue(result, "route"),
+                Numero = GetNumber(result),
+                Bairro = GetComponentShortNameValue(result, "neighborhood"),
+                Cep = GetComponentShortNameValue(result, "postal_code"),
                 Cidade = new Cidade
                 {
-                    Nome = GetComponentShortNameValue(firstResult, "administrative_area_level_2"),
-                    Uf = new Uf { Sigla = GetComponentShortNameValue(firstResult, "administrative_area_level_1"), }
+                    Nome = GetComponentShortNameValue(result, "administrative_area_level_2"),
+                    Uf = new Uf { Sigla = GetComponentShortNameValue(result, "administrative_area_level_1"), }
                 },
-                Latitude = firstResult.Geometry.Location.Lat,
-                Longitude = firstResult.Geometry.Location.Lng,
+                Latitude = result.Geometry.Location.Lat,
+                Longitude = result.Geometry.Location.Lng,
             };
-
         }
 
         private static int GetNumber(GoogleMapsGeocodeResult result)

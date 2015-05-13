@@ -13,7 +13,7 @@ namespace LM.Core.Application
         }
         public Endereco BuscarPorCep(string cep)
         {
-            _servicoRest.Host = new Uri("http://viacep.com.br/ws/");
+            if (_servicoRest.Host == null) _servicoRest.Host = new Uri("http://viacep.com.br/ws/");
             var enderecoPostmon = _servicoRest.Get<EnderecoViaCep>(string.Format("/{0}/json/", cep));
             return enderecoPostmon.ObterEndereco();
         }
