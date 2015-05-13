@@ -55,8 +55,7 @@ namespace LM.Core.Domain
         private static string GetComponentShortNameValue(GoogleMapsGeocodeResult result, string componentName)
         {
             var addressComponent = result.AddressComponents.SingleOrDefault(c => c.Types.Any(t => t == componentName));
-            if (addressComponent == null) throw new ApplicationException("Não achou o componente do endereço");
-            return addressComponent.ShortName;
+            return addressComponent == null ? "" : addressComponent.ShortName;
         }
     }
 
