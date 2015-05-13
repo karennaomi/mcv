@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LM.Core.Domain.CustomException;
 using Newtonsoft.Json;
 
 namespace LM.Core.Domain
@@ -15,7 +16,7 @@ namespace LM.Core.Domain
         public Endereco ObterEndereco()
         {
             var firstResult = Results.FirstOrDefault();
-            if(firstResult == null) throw new ApplicationException("Não foi localizado nenhum endereço.");
+            if(firstResult == null) throw new ObjetoNaoEncontradoException("Não foi localizado nenhum endereço.");
             return CreateEndereco(firstResult);
         }
 
