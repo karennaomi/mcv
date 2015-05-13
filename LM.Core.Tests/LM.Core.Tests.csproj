@@ -80,6 +80,7 @@
     <Compile Include="CompraAplicacaoTests.cs" />
     <Compile Include="CompraAtivaTests.cs" />
     <Compile Include="CompraAtivaAplicacaoTests.cs" />
+    <Compile Include="CompraTests.cs" />
     <Compile Include="GoogleMapsGeocodeTests.cs" />
     <Compile Include="IntegranteTests.cs" />
     <Compile Include="LMHelperTests.cs" />

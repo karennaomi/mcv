@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using LM.Core.Domain;
 using System;
 
@@ -96,6 +97,59 @@ namespace LM.Core.Tests
             return new TemplateMensagemEmail
             {
                 Mensagem = "Lorem ipsum dolor sit amet"
+            };
+        }
+
+        internal Produto Produto()
+        {
+            return new Produto(2)
+            {
+                Info = new ProdutoInfo { Nome = "Macarrão Tabajara" },
+                Ean = "ajsh278aska"
+            };
+        }
+
+        internal ListaItem ListaItem()
+        {
+            return new ListaItem {Produto = Produto()};
+        }
+
+        internal ListaCompraItem ListaCompraItem()
+        {
+            return new ListaCompraItem
+            {
+                Item = ListaItem(),
+                Quantidade = 3,
+                Valor = 4.5M,
+                Status = StatusCompra.Comprado
+            };
+        }
+
+        internal Compra CompraNotSoFake()
+        {
+            var agora = DateTime.Now;
+            //Esses valores precisam ser valores válidos na base para simular uma compra
+            const int pontoDemandaId = 1;
+            const int integranteId = 1;
+            const int usuarioId = 3;
+            const int lojaId = 1;
+            var listaItemIds = new[] { new[] { 1, 27395 } };
+            var pedidoItemIds = new[] { new[] { 10187, 23271 }, new[] { 10188, 102 } };
+            
+            return new Compra
+            {
+                PontoDemanda = new PontoDemanda { Id = pontoDemandaId },
+                Integrante = new Integrante { Id = integranteId, Usuario = new Usuario { Id = usuarioId } },
+                Itens = new Collection<CompraItem>
+                {
+                    new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[0][0] }, ProdutoId = listaItemIds[0][1], Quantidade = 2, Valor = 2.5M, Status = StatusCompra.Comprado },
+                    new PedidoCompraItem { Item = new PedidoItem{ Id = pedidoItemIds[0][0] }, ProdutoId = pedidoItemIds[0][1], Quantidade = 1, Valor = 1.25M, Status = StatusCompra.NaoEncontrado},
+                    new PedidoCompraItem { Item = new PedidoItem{ Id = pedidoItemIds[1][0] }, ProdutoId = pedidoItemIds[1][1], Quantidade = 3, Valor = 2.75M, Status = StatusCompra.Comprado}
+                },
+                DataInicioCompra = agora.AddHours(-1.5),
+                DataCapturaPrimeiroItemCompra = agora.AddHours(-1.5),
+                DataFimCompra = agora,
+                LojaId = lojaId
             };
         }
     }
