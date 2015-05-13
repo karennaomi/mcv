@@ -8,7 +8,7 @@ namespace LM.Core.Domain
     public class GoogleMapsGeocode
     {
         [JsonProperty("results")]
-        public IList<GoogleMapsGeocodeResult> Results { get; set; }
+        public List<GoogleMapsGeocodeResult> Results { get; set; }
         [JsonProperty("status")]
         public string Status { get; set; }
 
@@ -19,7 +19,7 @@ namespace LM.Core.Domain
             return CreateEndereco(firstResult);
         }
 
-        public IList<Endereco> ListarEnderecos()
+        public List<Endereco> ListarEnderecos()
         {
             var lista = new List<Endereco>();
             Results.ToList().ForEach(r => lista.Add(CreateEndereco(r)));
@@ -63,7 +63,7 @@ namespace LM.Core.Domain
     public class GoogleMapsGeocodeResult
     {
         [JsonProperty("address_components")]
-        public IList<GoogleMapsGeocodeAddressComponent> AddressComponents { get; set; }
+        public List<GoogleMapsGeocodeAddressComponent> AddressComponents { get; set; }
         [JsonProperty("formatted_address")]
         public string FormattedAddress { get; set; }
         [JsonProperty("geometry")]
@@ -79,7 +79,7 @@ namespace LM.Core.Domain
         [JsonProperty("short_name")]
         public string ShortName { get; set; }
         [JsonProperty("types")]
-        public IList<string> Types { get; set; }
+        public List<string> Types { get; set; }
     }
 
     public class GoogleMapsGeocodeGeometry
