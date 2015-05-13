@@ -1,7 +1,9 @@
 ﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
+using LM.Core.Domain.Servicos;
 using LM.Core.RepositorioEF;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
 using System.Transactions;
@@ -12,10 +14,12 @@ namespace LM.Core.Tests
     public class CompraAplicacaoTests
     {
         private Fakes _fakes;
+        private MockCompraRepo _mockRepo;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
+            _mockRepo = new MockCompraRepo();
         }
 
         [Test]
@@ -69,9 +73,31 @@ namespace LM.Core.Tests
             }
         }
 
-        private static CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo)
+        [Test]
+        public void ListaSugestaoDeCompra()
         {
-            return new CompraAplicacao(compraRepo);
+            var app = ObterAppCompra(_mockRepo.GetMockedRepo());
+            var listaSugestao = app.ListarSugestao(100).ToList();
+            Assert.AreEqual(2, listaSugestao.OfType<ListaItem>().Count());
+            Assert.AreEqual(1, listaSugestao.OfType<PedidoItem>().Count());
+        }
+
+        private CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo)
+        {
+            return new CompraAplicacao(compraRepo,  ObterAppPedido(), ObterAppLista());
+        }
+
+        private ListaAplicacao ObterAppLista()
+        {
+            var mockRepo = new MockListaRepo {Lista = _fakes.Lista()};
+            return new ListaAplicacao(mockRepo.GetMockedRepo());
+        }
+
+        private PedidoAplicacao ObterAppPedido()
+        {
+            var notificacaoApp = new NotificacaoAplicacao(new Mock<IServicoRest>().Object, new Mock<ITemplateMensagemAplicacao>().Object, new Mock<IFilaItemAplicacao>().Object);
+            var mockRepo = new MockPedidoRepo {PedidoItens = _fakes.PedidoItens()};
+            return new PedidoAplicacao(mockRepo.GetMockedRepo(), new CompraAtivaAplicacao(new MockCompraAtivaRepo().GetMockedRepo(), notificacaoApp), notificacaoApp);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace LM.Core.Domain
     {
         public PedidoItem()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DataAlteracao = Data = DateTime.Now;
             Status = StatusPedido.Pendente;
         }
         
@@ -27,7 +27,7 @@ namespace LM.Core.Domain
             return PontoDemanda;
         }
 
-        public decimal ObterQuantidade()
+        public decimal ObterQuantidadeParaCompra()
         {
             return Quantidade;
         }

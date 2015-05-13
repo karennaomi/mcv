@@ -94,5 +94,38 @@ namespace LM.Core.Tests
             }
         }
     }
+
+    public class MockListaRepo
+    {
+        public Lista Lista { private get; set; }
+
+        public IRepositorioLista GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioLista>();
+            mock.Setup(m => m.ObterListaPorPontoDemanda(100)).Returns(Lista);
+            return mock.Object;
+        }
+    }
+    
+    public class MockPedidoRepo
+    {
+        public IEnumerable<PedidoItem> PedidoItens { private get; set; }
+
+        public IRepositorioPedido GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioPedido>();
+            mock.Setup(m => m.ListarItens(100)).Returns(PedidoItens);
+            return mock.Object;
+        }
+    }
+
+    public class MockCompraRepo
+    {
+        public IRepositorioCompra GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioCompra>();
+            return mock.Object;
+        }
+    }
 }
 

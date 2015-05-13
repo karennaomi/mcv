@@ -9,6 +9,6 @@ namespace LM.Core.Domain
         DateTime? DataAlteracao { get; set; }
         Produto Produto { get; set; }
         PontoDemanda ObterPontoDemanda();
-        decimal ObterQuantidade();
+        decimal ObterQuantidadeParaCompra();
     }
 }

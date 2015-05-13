@@ -21,6 +21,7 @@ namespace LM.Core.Domain
         public decimal? QuantidadeDeSugestaoDeCompra { get; set; }
         public string Status { get; set; }
         public decimal? ValorMedioDeConsumoPorIntegrante { get; set; }
+        public bool EhSugestaoDeCompra { get; set; }
         public virtual Lista Lista { get; set; }
         public virtual Periodo Periodo { get; set; }
 
@@ -30,9 +31,9 @@ namespace LM.Core.Domain
             return Lista.PontoDemanda;
         }
 
-        public decimal ObterQuantidade()
+        public decimal ObterQuantidadeParaCompra()
         {
-            return QuantidadeDeConsumo ?? 0;
+            return QuantidadeDeSugestaoDeCompra ?? 0;
         }
     }
 }

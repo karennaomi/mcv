@@ -18,6 +18,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.ValorMedioDeConsumoPorIntegrante).HasColumnName("VL_CONSUMO_MEDIO_INTEGRANTE").IsOptional();
             Property(i => i.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(i => i.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
+            Property(i => i.EhSugestaoDeCompra).HasColumnName("FL_ALERTA_SUGESTAO_COMPRA");
 
             HasRequired(i => i.Produto).WithMany().Map(m => m.MapKey("ID_PRODUTO"));
             HasRequired(i => i.Periodo).WithMany().Map(m => m.MapKey("ID_PERIODO_CONSUMO"));

@@ -25,6 +25,7 @@ namespace LM.Core.RepositorioEF
             _novoItem.DataAlteracao = DateTime.Now;
             _novoItem.Status = "I";
             _lista.Itens.Add(_novoItem);
+            _contexto.SaveChanges();
             return _novoItem;
         }
 

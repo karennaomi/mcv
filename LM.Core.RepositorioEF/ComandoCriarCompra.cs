@@ -62,7 +62,8 @@ namespace LM.Core.RepositorioEF
                 compraItemNovo.Item.QuantidadeDeConsumo = compraItemNovo.Quantidade;
                 compraItemNovo.Item.QuantidadeEmEstoque = compraItemNovo.Quantidade;
                 compraItemNovo.Item.Status = "A";
-                compraItemNovo.Item = listaRepo.AdicionarItem(_novaCompra.PontoDemanda.Id, compraItemNovo.Item);
+                var lista = listaRepo.ObterListaPorPontoDemanda(_novaCompra.PontoDemanda.Id);
+                compraItemNovo.Item = listaRepo.AdicionarItem(lista, compraItemNovo.Item);
             }
         }
 

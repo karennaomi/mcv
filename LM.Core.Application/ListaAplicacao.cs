@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using System.Linq;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
@@ -10,6 +12,7 @@ namespace LM.Core.Application
         ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
         void RemoverItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
+        IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
         void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
@@ -27,53 +30,83 @@ namespace LM.Core.Application
 
         public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
         {
-            return _repositorio.ObterListaPorPontoDemanda(pontoDemandaId);
+            var lista = _repositorio.ObterListaPorPontoDemanda(pontoDemandaId);
+            if (lista == null) throw new ApplicationException("O ponto de demanda não possui uma lista.");
+            return lista;
         }
 
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
-            item = _repositorio.AdicionarItem(pontoDemandaId, item);
-            _repositorio.Salvar();
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            if (lista.Itens.Any(i => i.Produto.Id == item.Produto.Id)) throw new ApplicationException("Este produto já existe na lista.");
+            _repositorio.AdicionarItem(lista, item);
             return item;
         }
 
         public void RemoverItem(long pontoDemandaId, long itemId)
         {
-            _repositorio.RemoverItem(pontoDemandaId, itemId);
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            var item = ObterItem(lista, itemId);
+            item.DataAlteracao = DateTime.Now;
+            lista.Itens.Remove(item);
+            _repositorio.RemoverItem(item);
             _repositorio.Salvar();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            return _repositorio.ListarSecoes(pontoDemandaId);
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            return lista.Itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
+        }
+
+        public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
+        {
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            return lista.Itens;
         }
 
         public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarItensPorCategoria(pontoDemandaId, categoriaId);
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            return lista.Itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId));
         }
 
         public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarEstoqueDoItem(pontoDemandaId, itemId, quantidade);
+            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            item.QuantidadeEmEstoque = quantidade;
+            item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
 
         public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarConsumoDoItem(pontoDemandaId, itemId, quantidade);
+            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            item.QuantidadeDeConsumo = quantidade;
+            item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
 
         public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
         {
-            _repositorio.AtualizarPeriodoDoItem(pontoDemandaId, itemId, periodoId);
+            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            item.Periodo = new Periodo { Id = periodoId };
+            item.DataAlteracao = DateTime.Now;
+            _repositorio.AtualizarPeriodoDoItem(item);
             _repositorio.Salvar();
         }
 
         public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo)
         {
-            return _repositorio.BuscarItens(pontoDemandaId, termo);
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            return _repositorio.BuscarItens(lista, termo);
+        }
+
+        private static ListaItem ObterItem(Lista lista, long itemId)
+        {
+            var item = lista.Itens.SingleOrDefault(i => i.Id == itemId);
+            if (lista == null) throw new ApplicationException("A lista não possui o item informado.");
+            return item;
         }
     }
 }

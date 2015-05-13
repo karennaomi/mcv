@@ -1,7 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using LM.Core.Domain;
 using System;
+using NUnit.Framework;
 
 namespace LM.Core.Tests
 {
@@ -100,18 +103,24 @@ namespace LM.Core.Tests
             };
         }
 
-        internal Produto Produto()
+        internal Produto Produto(string categoria)
         {
-            return new Produto(2)
+            return new Produto
             {
                 Info = new ProdutoInfo { Nome = "Macarrão Tabajara" },
-                Ean = "ajsh278aska"
+                Ean = "ajsh278aska",
+                Categorias = new Collection<Categoria> { new Categoria { CategoriaPai = new Categoria {Nome = categoria} }}
             };
         }
 
-        internal ListaItem ListaItem()
+        internal ListaItem ListaItem(bool ehSugestaoDeCompra = false, string categoria = "")
         {
-            return new ListaItem {Produto = Produto()};
+            return new ListaItem { Produto = Produto(categoria), EhSugestaoDeCompra = ehSugestaoDeCompra };
+        }
+
+        internal PedidoItem PedidoItem(StatusPedido status = StatusPedido.Comprado, string categoria = "")
+        {
+            return new PedidoItem { Produto = Produto(categoria), Status = status };
         }
 
         internal ListaCompraItem ListaCompraItem()
@@ -151,6 +160,24 @@ namespace LM.Core.Tests
                 DataFimCompra = agora,
                 LojaId = lojaId
             };
+        }
+
+        internal Lista Lista()
+        {
+            return new Lista
+            {
+                PontoDemanda = PontoDemanda(),
+                Nome = "Lista de teste",
+                Itens = new Collection<ListaItem>
+                {
+                    ListaItem(true, "B"), ListaItem(true, "A"), ListaItem(),
+                }
+            };
+        }
+
+        internal IEnumerable<PedidoItem> PedidoItens()
+        {
+            return new List<PedidoItem> { PedidoItem(StatusPedido.Pendente, "C"), PedidoItem() };
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using System.Runtime.InteropServices;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LM.Core.Application
 {
@@ -29,27 +32,37 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarItensPorCategoria(pontoDemandaId, categoriaId);
+            var itens = _repositorio.ListarItens(pontoDemandaId);
+            return itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId) && i.Status != StatusPedido.ExcluidoPeloUsuario);
         }
 
         public IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status)
         {
-            return _repositorio.ListarItensPorStatus(pontoDemandaId, status);
+            var itens = _repositorio.ListarItens(pontoDemandaId);
+            return itens.Where(i => i.Status == status);
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status)
         {
-            return _repositorio.ListarSecoes(pontoDemandaId, status);
+            var itens = _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status == status);
+            return itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
         }
 
         public void RemoverItem(long pontoDemandaId, long itemId)
         {
-            _repositorio.RemoverItem(pontoDemandaId, itemId);
+            var itens = _repositorio.ListarItens(pontoDemandaId);
+            var item = ObterItem(itens, itemId);
+            item.Status = StatusPedido.ExcluidoPeloUsuario;
+            item.DataAlteracao = DateTime.Now;
+            _repositorio.Salvar();
         }
 
         public void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            _repositorio.AtualizarQuantidadeDoItem(pontoDemandaId, itemId, quantidade);
+            var item = ObterItem(_repositorio.ListarItens(pontoDemandaId), itemId);
+            item.Quantidade = quantidade;
+            item.DataAlteracao = DateTime.Now;
+            _repositorio.Salvar();
         }
 
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
@@ -60,6 +73,13 @@ namespace LM.Core.Application
             {
                 _appNotificacao.Notificar(item.Integrante, compraAtiva.Usuario.Integrante, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, new {Action = "pedidos"});
             }
+            return item;
+        }
+
+        private static PedidoItem ObterItem(IEnumerable<PedidoItem> itens, long id)
+        {
+            var item = itens.SingleOrDefault(i => i.Id == id);
+            if (item == null) throw new ApplicationException("O pedido não possui o item informado.");
             return item;
         }
     }
