@@ -27,19 +27,19 @@ namespace LM.Core.Domain
         public override string ToString()
         {
             var sb = new StringBuilder(Logradouro);
-            Adicionar(sb, Numero);
-            Adicionar(sb, Bairro);
+            if(!string.IsNullOrWhiteSpace(Logradouro)) Adicionar(sb, Numero, ", ");
+            Adicionar(sb, Bairro, " - ");
             if (Cidade == null) return sb.ToString();
-            Adicionar(sb, Cidade.Nome);
-            if (Cidade.Uf != null) Adicionar(sb, Cidade.Uf.Sigla);
+            Adicionar(sb, Cidade.Nome, " ");
+            if (Cidade.Uf != null) Adicionar(sb, Cidade.Uf.Sigla, " - ");
             return sb.ToString();
         }
 
-        private static void Adicionar(StringBuilder sb, object conteudo)
+        private static void Adicionar(StringBuilder sb, object conteudo, string separador)
         {
             if(conteudo == null) return;
             if (string.IsNullOrWhiteSpace(conteudo.ToString())) return;
-            sb.Append(" - ");
+            if (sb.Length != 0) sb.Append(separador);
             sb.Append(conteudo);
         }
     }

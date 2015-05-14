@@ -53,7 +53,7 @@ namespace LM.Core.Tests
         {
             return new Endereco
             {
-                Cidade = new Cidade {Nome = "São Paulo"},
+                Cidade = new Cidade {Nome = "São Paulo", Uf = new Uf{Sigla = "SP"}},
                 Alias = "Casa de sap",
                 Logradouro = "Rua dos bobos",
                 Numero = 0,
