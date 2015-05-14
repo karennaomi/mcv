@@ -14,8 +14,9 @@ namespace LM.Core.Application
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
-        void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarItem(long pontoDemandaId, long itemId, decimal consumo, decimal estoque, int periodoId);
         void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
         IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
     }
@@ -53,28 +54,29 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public IList<Categoria> ListarSecoes(long pontoDemandaId)
-        {
-            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
-        }
-
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
             return lista.Itens;
         }
 
-        public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
+        public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId));
+            return ListarItens(pontoDemandaId).Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
         }
 
-        public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
+        public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
+        {
+            return ListarItens(pontoDemandaId).Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId));
+        }
+
+        public void AtualizarItem(long pontoDemandaId, long itemId, decimal consumo, decimal estoque, int periodoId)
         {
             var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
-            item.QuantidadeEmEstoque = quantidade;
+            item.QuantidadeDeConsumo = consumo;
+            item.QuantidadeEmEstoque = estoque;
+            item.Periodo = new Periodo { Id = periodoId };
+            _repositorio.AtualizarPeriodoDoItem(item);
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
@@ -83,6 +85,14 @@ namespace LM.Core.Application
         {
             var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
             item.QuantidadeDeConsumo = quantidade;
+            item.DataAlteracao = DateTime.Now;
+            _repositorio.Salvar();
+        }
+
+        public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
+        {
+            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            item.QuantidadeEmEstoque = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
