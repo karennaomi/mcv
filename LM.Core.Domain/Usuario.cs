@@ -29,7 +29,7 @@ namespace LM.Core.Domain
 
         public StatusCadastro StatusAtual()
         {
-            return StatusUsuarioPontoDemanda.OrderByDescending(s => s.DataInclusao).First().StatusCadastro;
+            return StatusUsuarioPontoDemanda.OrderByDescending(s => s.Id).First().StatusCadastro;
         }
     }
 }
