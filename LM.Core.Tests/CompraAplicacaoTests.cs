@@ -62,7 +62,9 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
-                compra.Itens.Add(_fakes.ListaCompraItem());
+                var item = _fakes.ListaCompraItem();
+                item.Item.Produto.Categorias.First().Id = 2;
+                compra.Itens.Add(item);
 
                 var app = ObterAppCompra(new CompraEF());
                 compra = app.Criar(compra);

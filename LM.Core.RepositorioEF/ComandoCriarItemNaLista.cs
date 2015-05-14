@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Linq;
+using LM.Core.Domain;
 using System;
 using System.Data.Entity;
 
@@ -23,7 +24,6 @@ namespace LM.Core.RepositorioEF
             _contexto.Entry(_novoItem.Periodo).State = EntityState.Unchanged;
             _novoItem.DataInclusao = DateTime.Now;
             _novoItem.DataAlteracao = DateTime.Now;
-            _novoItem.Status = "I";
             _lista.Itens.Add(_novoItem);
             _contexto.SaveChanges();
             return _novoItem;
@@ -38,6 +38,8 @@ namespace LM.Core.RepositorioEF
             }
             else
             {
+                var produtoLocal = _contexto.Produtos.Local.SingleOrDefault(p => p.Id == produto.Id);
+                if (produtoLocal != null) return produtoLocal;
                 _contexto.Entry(produto).State = EntityState.Unchanged;
             }
             return produto;

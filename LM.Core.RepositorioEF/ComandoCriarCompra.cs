@@ -61,7 +61,6 @@ namespace LM.Core.RepositorioEF
                 compraItemNovo.Item.Periodo = new Periodo {Id = 12 /* Eventual */};
                 compraItemNovo.Item.QuantidadeDeConsumo = compraItemNovo.Quantidade;
                 compraItemNovo.Item.QuantidadeEmEstoque = compraItemNovo.Quantidade;
-                compraItemNovo.Item.Status = "A";
                 var lista = listaRepo.ObterListaPorPontoDemanda(_novaCompra.PontoDemanda.Id);
                 compraItemNovo.Item = listaRepo.AdicionarItem(lista, compraItemNovo.Item);
             }
