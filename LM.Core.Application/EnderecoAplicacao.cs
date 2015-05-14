@@ -12,7 +12,7 @@ namespace LM.Core.Application
 
     public interface IEnderecoAplicacao : ICepAplicacao
     {
-        IList<Endereco> Listar(string logradouro, string numero);
+        IList<Endereco> Listar(string endereco);
         Endereco BuscarPorPonto(decimal lat, decimal lng);
     }
 
@@ -45,10 +45,9 @@ namespace LM.Core.Application
             throw new ApplicationException("Não foi possível localizar um endereço por cep.");
         }
 
-        public IList<Endereco> Listar(string logradouro, string numero)
+        public IList<Endereco> Listar(string endereco)
         {
-            if (string.IsNullOrWhiteSpace(logradouro) || string.IsNullOrWhiteSpace(numero)) return null;
-            var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?address={0}+{1}&sensor=false", logradouro, numero));
+            var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?address={0}&sensor=false", endereco));
             return enderecoGoogle.ListarEnderecos();
         }
 
