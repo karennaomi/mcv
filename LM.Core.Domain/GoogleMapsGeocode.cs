@@ -13,13 +13,6 @@ namespace LM.Core.Domain
         [JsonProperty("status")]
         public string Status { get; set; }
 
-        public Endereco ObterEndereco()
-        {
-            var firstResult = Results.FirstOrDefault();
-            if(firstResult == null) throw new ObjetoNaoEncontradoException("Não foi localizado nenhum endereço.");
-            return CreateEndereco(firstResult);
-        }
-
         public List<Endereco> ListarEnderecos()
         {
             var lista = new List<Endereco>();

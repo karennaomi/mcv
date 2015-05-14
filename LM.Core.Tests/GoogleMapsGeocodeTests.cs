@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Linq;
+using LM.Core.Domain;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace LM.Core.Tests
         public void ObterEndereco()
         {
             var result = JsonConvert.DeserializeObject<GoogleMapsGeocode>(Result());
-            var endereco = result.ObterEndereco();
+            var endereco = result.ListarEnderecos().First();
             Assert.AreEqual("Av. Interlagos", endereco.Logradouro);
             Assert.AreEqual(100, endereco.Numero);
             Assert.AreEqual("Jardim Umuarama", endereco.Bairro);
