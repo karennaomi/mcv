@@ -8,6 +8,7 @@ namespace LM.Core.Application
 {
     public interface ICompraAplicacao
     {
+        IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<IItem> ListarSugestao(long pontoDemandaId);
         Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
@@ -30,6 +31,11 @@ namespace LM.Core.Application
             IEnumerable<IItem> pedidos = _appPedido.ListarItensPorStatus(pontoDemandaId, StatusPedido.Pendente);
             IEnumerable<IItem> itens = _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra);
             return pedidos.Union(itens).OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome);
+        }
+
+        public IList<Categoria> ListarSecoes(long pontoDemandaId)
+        {
+            return ListarSugestao(pontoDemandaId).Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
         }
 
         public Compra Obter(long pontoDemandaId, long id)
