@@ -1,8 +1,6 @@
-﻿using System.Data.Entity.ModelConfiguration.Conventions;
-using LM.Core.Application;
+﻿using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Servicos;
-using LM.Core.RepositorioEF;
 using Moq;
 using NUnit.Framework;
 
@@ -16,15 +14,6 @@ namespace LM.Core.Tests
         public void Init()
         {
             _fakes = new Fakes();
-        }
-
-        [Test]
-        [Ignore]
-        public void EnviaNotificacao()
-        {
-            var restService = new RestServiceWithRestSharp("http://localhost:45678");
-            var appNotificacao = new NotificacaoAplicacao(restService,  new TemplateMensagemAplicacao(new TemplateMensagemEF()), GetFilaItemAplicacao());
-            appNotificacao.NotificarIntegrantesDoPontoDamanda(new Integrante { Id = 6, Usuario = new Usuario{Id=6}}, new PontoDemanda { Id = 17 }, TipoTemplateMensagem.AtivarCompra, new { Action = "compras" });
         }
 
         [Test]
