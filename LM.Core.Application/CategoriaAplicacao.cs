@@ -6,6 +6,7 @@ namespace LM.Core.Application
 {
     public interface ICategoriaAplicacao
     {
+        IList<Categoria> Secoes();
         IList<Categoria> Listar(int secaoId);
     }
 
@@ -15,6 +16,11 @@ namespace LM.Core.Application
         public CategoriaAplicacao(IRepositorioCategoria repositorio)
         {
             _repositorio = repositorio;
+        }
+
+        public IList<Categoria> Secoes()
+        {
+            return _repositorio.Secoes();
         }
 
         public IList<Categoria> Listar(int secaoId)

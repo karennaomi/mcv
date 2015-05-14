@@ -13,9 +13,14 @@ namespace LM.Core.RepositorioEF
             _contexto = new ContextoEF();
         }
 
+        public IList<Categoria> Secoes()
+        {
+            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id == c.Id && c.Ativo).OrderBy(c => c.Nome).ToList();
+        }
+
         public IList<Categoria> Listar(int secaoId)
         {
-            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id == secaoId).OrderBy(c => c.Nome).ToList();
+            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id == secaoId && c.Ativo && c.CategoriaPai.Ativo).OrderBy(c => c.Nome).ToList();
         }
     }
 }
