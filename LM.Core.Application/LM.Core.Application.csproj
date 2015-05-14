@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AplicacaoExtensions.cs" />
     <Compile Include="EnderecoAplicacao.cs" />
     <Compile Include="EnderecoPostmonService.cs" />
     <Compile Include="EnderecoViaCepService.cs" />

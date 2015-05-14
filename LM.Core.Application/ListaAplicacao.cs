@@ -60,7 +60,7 @@ namespace LM.Core.Application
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            return ListarItens(pontoDemandaId).Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
+            return ListarItens(pontoDemandaId).ListarSecoes();
         }
 
         public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)

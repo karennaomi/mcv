@@ -35,7 +35,9 @@ namespace LM.Core.Application
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            return ListarSugestao(pontoDemandaId).Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
+            var secoes = _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra).ListarSecoes();
+            secoes.Insert(0, new Categoria { Id = 0, Nome = "PEDIDO" });
+            return secoes;
         }
 
         public Compra Obter(long pontoDemandaId, long id)
