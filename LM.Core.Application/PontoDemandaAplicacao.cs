@@ -30,7 +30,9 @@ namespace LM.Core.Application
 
         public PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda)
         {
-            return _repositorio.Criar(usuarioId, pontoDemanda);
+            pontoDemanda = _repositorio.Criar(usuarioId, pontoDemanda);
+            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
+            return pontoDemanda;
         }
 
         public IList<PontoDemanda> Listar(long usuarioId)
@@ -61,7 +63,7 @@ namespace LM.Core.Application
                     throw new ApplicationException("Frequência inválida");
             }
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
-            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta);
+            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta, pontoDemandaId);
             _repositorio.Salvar();
             return pontoDemanda;
         }
