@@ -22,7 +22,7 @@ namespace LM.Core.RepositorioEF
         internal void Executar()
         {
             if (_pontoDemanda.LojasFavoritas == null) _pontoDemanda.LojasFavoritas = new Collection<Loja>();
-            _novaLoja.Info.Endereco.Cidade = _cidadeRepo.Buscar(_novaLoja.Info.Endereco.Cidade.Nome);
+            _novaLoja.Info.Endereco.Cidade = _novaLoja.Info.Endereco.Cidade == null ? null : _cidadeRepo.Buscar(_novaLoja.Info.Endereco.Cidade.Nome);
             _pontoDemanda.LojasFavoritas.Add(_lojaFavoritaRepo.VerificarLojaExistente(_novaLoja));
             _contexto.SaveChanges();
         }
