@@ -72,14 +72,14 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var itens = listaApp.ListarItensPorCategoria(_pontoDemandaId, 13000).ToList();
+            var itens = listaApp.ListarItens(_pontoDemandaId).ToList();
             var idItem = itens.First().Id;
             var totalDeItems = itens.Count();
             
             using (new TransactionScope())
             {
-                listaApp.RemoverItem(_pontoDemandaId, idItem);
-                Assert.IsTrue(listaApp.ListarItensPorCategoria(_pontoDemandaId, 13000).Count() == totalDeItems - 1);
+                listaApp.DesativarItem(_pontoDemandaId, idItem);
+                Assert.IsTrue(listaApp.ListarItens(_pontoDemandaId).Count() == totalDeItems - 1);
             }
 
         }

@@ -28,11 +28,6 @@ namespace LM.Core.RepositorioEF
             return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar();
         }
 
-        public void RemoverItem(ListaItem item)
-        {
-            _contexto.Entry(item).State = EntityState.Deleted;
-        }
-
         public void AtualizarPeriodoDoItem(ListaItem item)
         {
             _contexto.Entry(item).State = EntityState.Modified;

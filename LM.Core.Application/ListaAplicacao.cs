@@ -10,7 +10,7 @@ namespace LM.Core.Application
     {
         Lista ObterListaPorPontoDemanda(long pontoDemandaId);
         ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
-        void RemoverItem(long pontoDemandaId, long itemId);
+        void DesativarItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
@@ -39,25 +39,23 @@ namespace LM.Core.Application
         public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            if (lista.Itens.Any(i => i.Produto.Id == item.Produto.Id)) throw new ApplicationException("Este produto já existe na lista.");
+            if (lista.Itens.Any(i => i.Produto.Id == item.Produto.Id && i.Status == "A")) throw new ApplicationException("Este produto já existe na lista.");
             _repositorio.AdicionarItem(lista, item);
             return item;
         }
 
-        public void RemoverItem(long pontoDemandaId, long itemId)
+        public void DesativarItem(long pontoDemandaId, long itemId)
         {
-            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            var item = ObterItem(lista, itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             item.DataAlteracao = DateTime.Now;
-            lista.Itens.Remove(item);
-            _repositorio.RemoverItem(item);
+            item.Status = "I";
             _repositorio.Salvar();
         }
 
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens;
+            return lista.Itens.Where(i => i.Status == "A");
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
@@ -72,7 +70,7 @@ namespace LM.Core.Application
 
         public void AtualizarItem(long pontoDemandaId, long itemId, decimal consumo, decimal estoque, int periodoId)
         {
-            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             item.QuantidadeDeConsumo = consumo;
             item.QuantidadeEmEstoque = estoque;
             item.Periodo = new Periodo { Id = periodoId };
@@ -83,7 +81,7 @@ namespace LM.Core.Application
 
         public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             item.QuantidadeDeConsumo = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
@@ -91,7 +89,7 @@ namespace LM.Core.Application
 
         public void AtualizarEstoqueDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
-            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             item.QuantidadeEmEstoque = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
@@ -99,7 +97,7 @@ namespace LM.Core.Application
 
         public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
         {
-            var item = ObterItem(ObterListaPorPontoDemanda(pontoDemandaId), itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             item.Periodo = new Periodo { Id = periodoId };
             item.DataAlteracao = DateTime.Now;
             _repositorio.AtualizarPeriodoDoItem(item);
@@ -112,10 +110,10 @@ namespace LM.Core.Application
             return _repositorio.BuscarItens(lista, termo);
         }
 
-        private static ListaItem ObterItem(Lista lista, long itemId)
+        private ListaItem ObterItem(long pontoDemandaId, long itemId)
         {
-            var item = lista.Itens.SingleOrDefault(i => i.Id == itemId);
-            if (lista == null) throw new ApplicationException("A lista não possui o item informado.");
+            var item = ListarItens(pontoDemandaId).SingleOrDefault(i => i.Id == itemId);
+            if (item == null) throw new ApplicationException("A lista não possui o item informado.");
             return item;
         }
     }

@@ -8,6 +8,7 @@ namespace LM.Core.Domain
         public ListaItem()
         {
             DataInclusao = DataAlteracao = DateTime.Now;
+            Status = "A";
         }
 
         public long Id { get; set; }
