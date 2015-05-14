@@ -68,11 +68,9 @@ namespace LM.Core.Application
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
             item = _repositorio.AdicionarItem(pontoDemandaId, item);
+            if (!_appCompraAtiva.ExisteCompraAtiva(pontoDemandaId)) return item;
             var compraAtiva = _appCompraAtiva.Obter(pontoDemandaId);
-            if (compraAtiva != null)
-            {
-                _appNotificacao.Notificar(item.Integrante, compraAtiva.Usuario.Integrante, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, new {Action = "pedidos"});
-            }
+            _appNotificacao.Notificar(item.Integrante, compraAtiva.Usuario.Integrante, item.PontoDemanda, TipoTemplateMensagem.PedidoItemCriado, new {Action = "pedidos"});
             return item;
         }
 

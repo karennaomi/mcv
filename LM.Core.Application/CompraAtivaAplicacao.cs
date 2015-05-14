@@ -8,6 +8,7 @@ namespace LM.Core.Application
     public interface ICompraAtivaAplicacao
     {
         CompraAtiva Obter(long pontoDemandaId);
+        bool ExisteCompraAtiva(long pontoDemandaId);
         CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
         CompraAtiva FinalizarCompra(long usuarioId, long pontoDemandaId);
     }
@@ -44,6 +45,12 @@ namespace LM.Core.Application
             _repositorio.Salvar();
             _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, new { Action = "compras" });
             return compraAtiva;
+        }
+
+
+        public bool ExisteCompraAtiva(long pontoDemandaId)
+        {
+            return _repositorio.Obter(pontoDemandaId) != null;
         }
     }
 }
