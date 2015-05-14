@@ -29,7 +29,6 @@ namespace LM.Core.Domain
             var sb = new StringBuilder(Logradouro);
             Adicionar(sb, Numero);
             Adicionar(sb, Bairro);
-            Adicionar(sb, Cep);
             if (Cidade == null) return sb.ToString();
             Adicionar(sb, Cidade.Nome);
             if (Cidade.Uf != null) Adicionar(sb, Cidade.Uf.Sigla);
