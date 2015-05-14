@@ -21,7 +21,7 @@ namespace LM.Core.Domain
         public int Id { get; set; }
         [Required(ErrorMessage = "O codigo EAN do produto é obrigatório.")]
         public string Ean { get; set; }
-        public bool? Ativo { get; set; }
+        public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public virtual ProdutoInfo Info { get; set; }

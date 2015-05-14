@@ -11,7 +11,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasKey(p => p.Id);
             Property(p => p.Id).HasColumnName("ID_PRODUTO");
             Property(p => p.Ean).HasColumnName("CD_PRODUTO_EAN");
-            Property(p => p.Ativo).HasColumnName("FL_PRODUTO_ATIVO").IsOptional();
+            Property(p => p.Ativo).HasColumnName("FL_PRODUTO_ATIVO");
             Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 

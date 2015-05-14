@@ -31,13 +31,13 @@ namespace LM.Core.RepositorioEF
 
         public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
         {
-            return _contexto.Produtos.AsNoTracking().Where(p => p.Categorias.Any(c => c.Id == categoriaId));
+            return _contexto.Produtos.AsNoTracking().Where(p => p.Categorias.Any(c => c.Id == categoriaId) && p.Ativo);
         }
 
         public IEnumerable<Produto> Buscar(string termo)
         {
             var searchFts = FtsInterceptor.Fts(termo);
-            return _contexto.Produtos.Where(n => n.Info.Nome.Contains(searchFts));
+            return _contexto.Produtos.Where(p => p.Info.Nome.Contains(searchFts) && p.Ativo);
         }
 
         public void Salvar()
