@@ -34,15 +34,17 @@ namespace LM.Core.RepositorioEF
             if (produto.Id == 0)
             {
                 var produtoRepo = new ProdutoEF(_contexto);
-                produto = produtoRepo.Criar(produto);
+                return produtoRepo.Criar(produto);
             }
             else
             {
                 var produtoLocal = _contexto.Produtos.Local.SingleOrDefault(p => p.Id == produto.Id);
                 if (produtoLocal != null) return produtoLocal;
-                _contexto.Entry(produto).State = EntityState.Unchanged;
+                var produtoToAdd = _contexto.Produtos.Create();
+                produtoToAdd.Id = produto.Id;
+                _contexto.Entry(produtoToAdd).State = EntityState.Unchanged;
+                return produtoToAdd;
             }
-            return produto;
         }
     }
 }
