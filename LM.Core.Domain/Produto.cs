@@ -35,7 +35,7 @@ namespace LM.Core.Domain
 
         public Imagem ImagemPrincipal()
         {
-            return Imagens.Any() ? Imagens.First() : new Imagem();
+            return Imagens != null && Imagens.Any() ? Imagens.First() : new Imagem();
         }
     }
 
