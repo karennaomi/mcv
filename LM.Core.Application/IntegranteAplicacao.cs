@@ -10,7 +10,7 @@ namespace LM.Core.Application
     {
         Integrante Obter(long pontoDemandaId, long id);
         Integrante Criar(Integrante integrante);
-        Integrante Atualizar(long pontoDemandaId, Integrante integrante);
+        Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante);
         void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
         void Convidar(long pontoDemandaId, long usuarioId, long id);
     }
@@ -38,10 +38,10 @@ namespace LM.Core.Application
             return _repositorio.Criar(integrante);
         }
 
-        public Integrante Atualizar(long pontoDemandaId, Integrante integrante)
+        public Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante)
         {
             var integranteToUpdate = Obter(pontoDemandaId, integrante.Id);
-            if (integranteToUpdate.EhUsuarioDoSistema()) throw new ApplicationException("Não pode atualizar um usuário do sistema.");
+            if (usuarioId != integranteToUpdate.Usuario.Id && integranteToUpdate.EhUsuarioDoSistema()) throw new ApplicationException("Não pode atualizar um usuário do sistema.");
             if (!string.IsNullOrWhiteSpace(integrante.Email) && integranteToUpdate.Email != integrante.Email) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             integranteToUpdate.Atualizar(integrante);
             _repositorio.Salvar();

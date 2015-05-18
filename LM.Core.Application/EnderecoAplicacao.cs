@@ -2,6 +2,7 @@
 using LM.Core.Domain.Servicos;
 using System;
 using System.Collections.Generic;
+using Ninject;
 
 namespace LM.Core.Application
 {
@@ -20,7 +21,7 @@ namespace LM.Core.Application
     {
         private readonly IServicoRest _servicoRest;
         private readonly IList<ICepAplicacao> _servicosDeCep;
-        public EnderecoAplicacao(IList<ICepAplicacao> servicosDeCep, IServicoRest servicoRest)
+        public EnderecoAplicacao(IList<ICepAplicacao> servicosDeCep, [Named("GoogleGeocodeService")]IServicoRest servicoRest)
         {
             _servicosDeCep = servicosDeCep;
             _servicoRest = servicoRest;

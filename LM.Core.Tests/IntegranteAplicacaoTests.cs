@@ -58,6 +58,7 @@ namespace LM.Core.Tests
         public void AtualizarIntegrante()
         {
             var integranteParaAtualizar = SetIntegranteInMockRepo(_fakes.Integrante());
+            integranteParaAtualizar.Usuario = new Usuario { Id = 1 };
             _mockRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
 
@@ -71,13 +72,13 @@ namespace LM.Core.Tests
             integrante.Telefone = "2165498754";
             integrante.Sexo = "f";
 
-            app.Atualizar(100, integrante);
-            Assert.AreEqual("Nome Atualizado", integranteParaAtualizar.Nome);
-            Assert.AreEqual("email@atualizado.com", integranteParaAtualizar.Email);
-            Assert.AreEqual(dataNascimento, integranteParaAtualizar.DataNascimento);
-            Assert.AreEqual("12345678901", integranteParaAtualizar.Cpf);
-            Assert.AreEqual("2165498754", integranteParaAtualizar.Telefone);
-            Assert.AreEqual("f", integranteParaAtualizar.Sexo);
+            var integranteAtualizado = app.Atualizar(100, 1, integrante);
+            Assert.AreEqual("Nome Atualizado", integranteAtualizado.Nome);
+            Assert.AreEqual("email@atualizado.com", integranteAtualizado.Email);
+            Assert.AreEqual(dataNascimento, integranteAtualizado.DataNascimento);
+            Assert.AreEqual("12345678901", integranteAtualizado.Cpf);
+            Assert.AreEqual("2165498754", integranteAtualizado.Telefone);
+            Assert.AreEqual("f", integranteAtualizado.Sexo);
         }
 
         [Test]
@@ -87,9 +88,10 @@ namespace LM.Core.Tests
             _mockRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             var integrante = _fakes.Integrante();
+            integrante.Usuario = new Usuario { Id = 1 };
             integrante.Id = 200;
             integrante.Email = "email@existente.com";
-            Assert.Throws<IntegranteExistenteException>(() => app.Atualizar(100, integrante));
+            Assert.Throws<IntegranteExistenteException>(() => app.Atualizar(100, 1, integrante));
         }
 
         [Test]
@@ -98,7 +100,39 @@ namespace LM.Core.Tests
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
             _mockRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
-            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Atualizar(9999, integrante));
+            Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Atualizar(9999, 1, integrante));
+        }
+
+        [Test]
+        public void NãoPodeAtualizarIntegranteQueEhUsuarioDoSistema()
+        {
+            var integranteParaAtualizar = _fakes.Integrante();
+            integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
+            integranteParaAtualizar.Usuario = new Usuario { Id = 2 };
+            _mockRepo.Integrante = integranteParaAtualizar;
+            var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
+            
+            var integrante = _fakes.Integrante();
+            integrante.Id = 200;
+            integrante.Nome = "Nome Atualizado";
+            var ex = Assert.Throws<ApplicationException>(() => app.Atualizar(100, 1, integrante));
+            Assert.AreEqual("Não pode atualizar um usuário do sistema.", ex.Message);
+        }
+
+        [Test]
+        public void PodeAtualizarIntegranteQueEhUsuarioDoSistemaSeForEleMesmo()
+        {
+            var integranteParaAtualizar = _fakes.Integrante();
+            integranteParaAtualizar.Usuario = new Usuario { Id = 1 };
+            integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
+            _mockRepo.Integrante = integranteParaAtualizar;
+
+            var integrante = _fakes.Integrante();
+            integrante.Id = 200;
+            integrante.Nome = "Nome Atualizado";
+            var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
+            var integranteAtualizado = app.Atualizar(100, 1, integrante);
+            Assert.AreEqual("Nome Atualizado", integranteAtualizado.Nome);
         }
 
         [Test]
@@ -148,9 +182,9 @@ namespace LM.Core.Tests
         public void ConvidarIntegrante()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
-            integrante.Usuario = new Usuario { Id = 1 };
             _mockRepo.Integrante = integrante;
             var convidado = SetIntegranteInMockRepo(_fakes.Integrante());
+            convidado.Usuario = null;
             convidado.Id = 201;
             convidado.GrupoDeIntegrantes.Integrantes.Add(integrante);
             _mockRepo.Convidado = convidado;
@@ -162,6 +196,7 @@ namespace LM.Core.Tests
         private Integrante SetIntegranteInMockRepo(Integrante integrante)
         {
             integrante.Id = 200;
+            integrante.Usuario = new Usuario { Id = 1 };
             var pontoDemanda = _fakes.PontoDemanda();
             pontoDemanda.Id = 100;
             integrante.GrupoDeIntegrantes.PontosDemanda.Add(pontoDemanda);

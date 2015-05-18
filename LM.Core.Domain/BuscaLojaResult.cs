@@ -5,6 +5,7 @@ namespace LM.Core.Domain
     public class BuscaLojaResult
     {
         public IList<Loja> Lojas { get; set; } 
-        public string NextPageToken { get; set; } 
+        public string NextPageToken { get; set; }
+        public Endereco EnderecoLocal { get; set; }
     }
 }
