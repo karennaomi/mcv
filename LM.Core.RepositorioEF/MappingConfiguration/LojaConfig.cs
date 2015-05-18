@@ -11,8 +11,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasKey(l => l.Id);
             Property(l => l.Id).HasColumnName("ID_LOJA");
             Property(l => l.Nome).HasColumnName("NM_LOJA");
-            Property(l => l.Idlocalizador).HasColumnName("ID_LOJA_LOCALIZADOR");
-            Property(l => l.OrigemLocalizador).HasColumnName("TX_ORIGEM");
+            Property(l => l.LocalizadorId).HasColumnName("ID_LOJA_LOCALIZADOR");
+            Property(l => l.LocalizadorOrigem).HasColumnName("TX_ORIGEM");
             Property(l => l.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(l => l.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 

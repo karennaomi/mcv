@@ -71,8 +71,8 @@ namespace LM.Core.Tests
             return new Loja
             {
                 Nome = "Loja Teste " + _lojaId,
-                Idlocalizador = "saqk8912q45214_" + _lojaId,
-                OrigemLocalizador = "google",
+                LocalizadorId = "saqk8912q45214_" + _lojaId,
+                LocalizadorOrigem = "google",
                 Info = new LojaInfo
                 {
                     RazaoSocial = "TESTE SA" + _lojaId,

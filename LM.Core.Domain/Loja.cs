@@ -11,8 +11,8 @@ namespace LM.Core.Domain
 
         public int Id { get; set; }
         public string Nome { get; set; }
-        public string Idlocalizador { get; set; }
-        public string OrigemLocalizador { get; set; }
+        public string LocalizadorId { get; set; }
+        public string LocalizadorOrigem { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
 

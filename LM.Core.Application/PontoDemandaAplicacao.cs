@@ -84,7 +84,7 @@ namespace LM.Core.Application
         public void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
-            var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.Idlocalizador == localizadorId);
+            var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.LocalizadorId == localizadorId);
             if(loja == null) throw new ObjetoNaoEncontradoException("Loja não encontrada.");
             pontoDemanda.LojasFavoritas.Remove(loja);
             _repositorio.Salvar();

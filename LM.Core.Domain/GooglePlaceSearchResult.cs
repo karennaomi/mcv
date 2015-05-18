@@ -23,8 +23,8 @@ namespace LM.Core.Domain
         {
             return new Loja
             {
-                Idlocalizador = PlaceId,
-                OrigemLocalizador = "google",
+                LocalizadorId = PlaceId,
+                LocalizadorOrigem = "google",
                 Nome = Name,
                 Info = new LojaInfo
                 {

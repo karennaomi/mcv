@@ -14,7 +14,7 @@ namespace LM.Core.RepositorioEF
 
         public Loja VerificarLojaExistente(Loja loja)
         {
-            var lojaExistente = _contexto.Lojas.SingleOrDefault(l => l.Idlocalizador == loja.Idlocalizador);
+            var lojaExistente = _contexto.Lojas.SingleOrDefault(l => l.LocalizadorId == loja.LocalizadorId);
             return lojaExistente ?? loja;
         }
     }
