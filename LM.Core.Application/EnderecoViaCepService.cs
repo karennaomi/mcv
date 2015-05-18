@@ -10,10 +10,10 @@ namespace LM.Core.Application
         public EnderecoViaCepService(IServicoRest servicoRest)
         {
             _servicoRest = servicoRest;
+            if (_servicoRest.Host == null) _servicoRest.Host = new Uri("http://viacep.com.br/ws/");
         }
         public Endereco BuscarPorCep(string cep)
         {
-            if (_servicoRest.Host == null) _servicoRest.Host = new Uri("http://viacep.com.br/ws/");
             var enderecoPostmon = _servicoRest.Get<EnderecoViaCep>(string.Format("/{0}/json/", cep));
             return enderecoPostmon.ObterEndereco();
         }

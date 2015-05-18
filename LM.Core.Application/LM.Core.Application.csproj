@@ -56,6 +56,7 @@
     <Compile Include="EnderecoAplicacao.cs" />
     <Compile Include="EnderecoPostmonService.cs" />
     <Compile Include="EnderecoViaCepService.cs" />
+    <Compile Include="GooglePlaceService.cs" />
     <Compile Include="UfAplicacao.cs" />
     <Compile Include="LegacyTokenAplicacao.cs" />
     <Compile Include="FilaItemAplicacao.cs" />
