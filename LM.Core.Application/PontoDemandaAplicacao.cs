@@ -10,6 +10,7 @@ namespace LM.Core.Application
     public interface IPontoDemandaAplicacao
     {
         PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda);
+        PontoDemanda Atualizar(long usuarioId, PontoDemanda pontoDemanda);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
         PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia);
@@ -33,6 +34,11 @@ namespace LM.Core.Application
             pontoDemanda = _repositorio.Criar(usuarioId, pontoDemanda);
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, pontoDemanda.Id);
             return pontoDemanda;
+        }
+
+        public PontoDemanda Atualizar(long usuarioId, PontoDemanda pontoDemanda)
+        {
+            return _repositorio.Atualizar(usuarioId, pontoDemanda);
         }
 
         public IList<PontoDemanda> Listar(long usuarioId)

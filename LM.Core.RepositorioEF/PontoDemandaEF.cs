@@ -36,6 +36,12 @@ namespace LM.Core.RepositorioEF
             return new ComandoCriarPontoDemanda(usuarioId, novoPontoDemanda).Executar();
         }
 
+        public PontoDemanda Atualizar(long usuarioId, PontoDemanda pontoDemanda)
+        {
+            var pontoDemandaToUpdate = Obter(usuarioId, pontoDemanda.Id);
+            return new ComandoAtualizarPontoDemanda(_contexto, pontoDemandaToUpdate, pontoDemanda).Executar();
+        }
+
         public Loja AdicionarLojaFavorita(long usuarioId, PontoDemanda pontoDemanda, Loja loja)
         {
             new ComandoAdicionarLojaFavorita(_contexto, pontoDemanda, loja).Executar();

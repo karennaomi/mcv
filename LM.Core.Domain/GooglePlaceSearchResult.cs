@@ -10,14 +10,8 @@ namespace LM.Core.Domain
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("icon")]
-        public string Icon { get; set; }
-
-        [JsonProperty("vicinity")]
-        public string Vicinity { get; set; }
-
-        [JsonProperty("website")]
-        public string Website { get; set; }
+        [JsonProperty("formatted_phone_number")]
+        public string FormattedPhoneNumber { get; set; }
 
         public Loja CreateLoja()
         {
@@ -26,6 +20,7 @@ namespace LM.Core.Domain
                 LocalizadorId = PlaceId,
                 LocalizadorOrigem = "google",
                 Nome = Name,
+                Telefone = FormattedPhoneNumber,
                 Info = new LojaInfo
                 {
                     Endereco = CreateEndereco()

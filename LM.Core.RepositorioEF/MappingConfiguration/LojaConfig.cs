@@ -15,6 +15,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(l => l.LocalizadorOrigem).HasColumnName("TX_ORIGEM");
             Property(l => l.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(l => l.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
+            Ignore(l => l.Telefone);
 
             HasRequired(p => p.Info).WithRequiredPrincipal();
         }

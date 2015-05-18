@@ -81,6 +81,23 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void AtualizarPontoDemanda()
+        {
+            using (new TransactionScope())
+            {
+                var pontoDemanda0 = new ContextoEF().PontosDemanda.First();
+                var usuarioId = pontoDemanda0.GrupoDeIntegrantes.Integrantes.First().Usuario.Id;
+
+
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var pontoDemanda = new PontoDemanda{ Id = pontoDemanda0.Id, Nome = "Nome Alterado", Endereco = _fakes.Endereco()};
+                var pontoDemandaAtualizado = app.Atualizar(usuarioId, pontoDemanda);
+                Assert.AreEqual("Nome Alterado", pontoDemandaAtualizado.Nome);
+                Assert.AreEqual(_fakes.Endereco().Logradouro, pontoDemandaAtualizado.Endereco.Logradouro);
+            }
+        }
+
+        [Test]
         public void Frequencia1DefineReposicao7Estoque3()
         {
             _mockRepo.PontoDemanda = _fakes.PontoDemanda();
