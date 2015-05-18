@@ -8,6 +8,7 @@ namespace LM.Core.Domain
         public PontoDemanda()
         {
             DataInclusao = DataAlteracao = DateTime.Now;
+            Ativo = true;
         }
         public long Id { get; set; }
         public string Nome { get; set; }
@@ -16,6 +17,7 @@ namespace LM.Core.Domain
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public TipoPontoDemanda? Tipo { get; set; }
+        public bool Ativo { get; set; }
 
         public virtual Usuario UsuarioCriador { get; set; }
         public virtual Endereco Endereco { get; set; }

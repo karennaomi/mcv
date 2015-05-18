@@ -11,6 +11,7 @@ namespace LM.Core.Application
     {
         PontoDemanda Criar(long usuarioId, PontoDemanda pontoDemanda);
         PontoDemanda Atualizar(long usuarioId, PontoDemanda pontoDemanda);
+        void Desativar(long usuarioId, long pontoDemandaId);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
         PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia);
@@ -49,6 +50,14 @@ namespace LM.Core.Application
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
             return _repositorio.Obter(usuarioId, pontoDemandaId);
+        }
+
+        public void Desativar(long usuarioId, long pontoDemandaId)
+        {
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
+            pontoDemanda.Ativo = false;
+            pontoDemanda.DataAlteracao = DateTime.Now;
+            _repositorio.Salvar();
         }
 
         public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia)
