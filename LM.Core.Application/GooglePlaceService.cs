@@ -7,7 +7,7 @@ namespace LM.Core.Application
 {
     public interface IPlacesService
     {
-        BuscaLojaResult BuscarLojas(decimal lat, decimal lng, string nextPageToken, int radius = 1000);
+        BuscaLojaResult BuscarLojas(string lat, string lng, string nextPageToken, int radius = 1000);
         Loja BuscarDetalheLoja(string localizadorId);
     }
 
@@ -22,7 +22,7 @@ namespace LM.Core.Application
             _key = key;
         }
 
-        public BuscaLojaResult BuscarLojas(decimal lat, decimal lng, string nextPageToken = "", int radius = 1000)
+        public BuscaLojaResult BuscarLojas(string lat, string lng, string nextPageToken = "", int radius = 1000)
         {
             var endPoint = string.Format("/search/json?location={0},{1}&radius={2}&key={3}&sensor=false&rank_by=distance&types=grocery_or_supermarket", lat, lng, radius, _key);
             if (!string.IsNullOrEmpty(nextPageToken)) endPoint += string.Format("&next_page_token={0}", nextPageToken);

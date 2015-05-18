@@ -1,16 +1,10 @@
-﻿using System;
-
-namespace LM.Core.Domain.CustomException
+﻿namespace LM.Core.Domain.CustomException
 {
-    public class IntegranteExistenteException : ApplicationException
+    public class IntegranteExistenteException : PropertyException
     {
-        public string Campo { get; set; }
-        public IntegranteExistenteException() { }
-
-        public IntegranteExistenteException(string campo)
-            : base(string.Format("O {0} informado já está cadastrado!", campo))
+        public IntegranteExistenteException() : base("", "") { }
+        public IntegranteExistenteException(string campo) : base(string.Format("O {0} informado já está cadastrado!", campo), campo)
         {
-            Campo = campo;
         }
     }
 }

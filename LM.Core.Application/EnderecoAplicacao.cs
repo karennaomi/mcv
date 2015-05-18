@@ -13,7 +13,7 @@ namespace LM.Core.Application
     public interface IEnderecoAplicacao : ICepAplicacao
     {
         IList<Endereco> BuscarPorEndereco(string endereco);
-        IList<Endereco> BuscarPorPonto(decimal lat, decimal lng);
+        IList<Endereco> BuscarPorPonto(string lat, string lng);
     }
 
     public class EnderecoAplicacao : IEnderecoAplicacao
@@ -51,7 +51,7 @@ namespace LM.Core.Application
             return enderecoGoogle.ListarEnderecos();
         }
 
-        public IList<Endereco> BuscarPorPonto(decimal lat, decimal lng)
+        public IList<Endereco> BuscarPorPonto(string lat, string lng)
         {
             var enderecoGoogle = _servicoRest.Get<GoogleMapsGeocode>(string.Format("/json?latlng={0},{1}&sensor=false", lat, lng));
             return enderecoGoogle.ListarEnderecos();

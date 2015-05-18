@@ -53,6 +53,7 @@
     <Compile Include="CompraItem.cs" />
     <Compile Include="CustomException\ObjetoNaoEncontradoException.cs" />
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
+    <Compile Include="CustomException\PropertyException.cs" />
     <Compile Include="EnderecoViaCep.cs" />
     <Compile Include="EnderecoPostmon.cs" />
     <Compile Include="FilaItem.cs" />
