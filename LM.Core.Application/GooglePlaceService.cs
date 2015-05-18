@@ -1,6 +1,7 @@
 ﻿using LM.Core.Domain;
 using LM.Core.Domain.Servicos;
 using System;
+using Ninject;
 
 namespace LM.Core.Application
 {
@@ -14,7 +15,7 @@ namespace LM.Core.Application
     {
         private readonly string _key;
         private readonly IServicoRest _servicoRest;
-        public GooglePlaceService(IServicoRest restService, string key)
+        public GooglePlaceService([Named("GooglePlaceService")]IServicoRest restService, string key)
         {
             _servicoRest = restService;
             if (_servicoRest.Host == null) _servicoRest.Host = new Uri("https://maps.googleapis.com/maps/api/place/");
