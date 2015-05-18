@@ -4,12 +4,12 @@ using System;
 
 namespace LM.Core.Application
 {
-    public interface IPlacesServices
+    public interface IPlacesService
     {
         BuscaLojaResult BuscarLojas(decimal lat, decimal lng, string nextPageToken, int radius = 1000);
     }
 
-    public class GooglePlaceService : IPlacesServices
+    public class GooglePlaceService : IPlacesService
     {
         private readonly string _key;
         private readonly IServicoRest _servicoRest;

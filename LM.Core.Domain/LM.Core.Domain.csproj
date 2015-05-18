@@ -58,7 +58,9 @@
     <Compile Include="FilaItem.cs" />
     <Compile Include="FilaMensagem.cs" />
     <Compile Include="GoogleMapsGeocode.cs" />
+    <Compile Include="GooglePlaceDetail.cs" />
     <Compile Include="GooglePlaceSearch.cs" />
+    <Compile Include="GooglePlaceSearchResult.cs" />
     <Compile Include="GoogleResult.cs" />
     <Compile Include="IItem.cs" />
     <Compile Include="LegacyToken.cs" />
