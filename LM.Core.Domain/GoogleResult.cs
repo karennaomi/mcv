@@ -45,6 +45,7 @@ namespace LM.Core.Domain
 
         private string GetComponentShortNameValue(string componentName)
         {
+            if (AddressComponents == null) return "";
             var addressComponent = AddressComponents.SingleOrDefault(c => c.Types.Any(t => t == componentName));
             return addressComponent == null ? "" : addressComponent.ShortName;
         }
