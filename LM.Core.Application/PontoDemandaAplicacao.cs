@@ -64,6 +64,7 @@ namespace LM.Core.Application
             }
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta, pontoDemandaId);
+            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.UsuarioOk, pontoDemandaId);
             _repositorio.Salvar();
             return pontoDemanda;
         }
