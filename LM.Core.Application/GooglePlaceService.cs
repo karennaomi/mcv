@@ -7,6 +7,7 @@ namespace LM.Core.Application
     public interface IPlacesService
     {
         BuscaLojaResult BuscarLojas(decimal lat, decimal lng, string nextPageToken, int radius = 1000);
+        Loja BuscarDetalheLoja(string localizadorId);
     }
 
     public class GooglePlaceService : IPlacesService
