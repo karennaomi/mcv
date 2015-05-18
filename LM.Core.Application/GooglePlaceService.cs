@@ -31,7 +31,7 @@ namespace LM.Core.Application
             if (!string.IsNullOrEmpty(nextPageToken)) endPoint += string.Format("&next_page_token={0}", nextPageToken);
             var search = _servicoRest.Get<GooglePlaceSearch>(endPoint);
             var lojaResult = search.ObterLojasResult();
-            lojaResult.EnderecoLocal = _appEndereco.BuscarPorPonto(lat, lng).First();
+            lojaResult.EnderecoLocal = _appEndereco.BuscarPorPonto(lat, lng).FirstOrDefault();
             return lojaResult;
         }
 
