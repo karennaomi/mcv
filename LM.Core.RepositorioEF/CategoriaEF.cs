@@ -20,7 +20,7 @@ namespace LM.Core.RepositorioEF
 
         public IList<Categoria> Listar(int secaoId)
         {
-            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id == secaoId && c.Ativo && c.CategoriaPai.Ativo).OrderBy(c => c.Nome).ToList();
+            return _contexto.Categorias.AsNoTracking().Where(c => c.CategoriaPai.Id != c.Id && c.CategoriaPai.Id == secaoId && c.Ativo && c.CategoriaPai.Ativo).OrderBy(c => c.Nome).ToList();
         }
     }
 }
