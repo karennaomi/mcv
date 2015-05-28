@@ -11,6 +11,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasKey(g => g.Id);
             Property(g => g.Id).HasColumnName("ID_IMAGEM");
             Property(g => g.Path).HasColumnName("TX_URL_IMAGEM");
+            Property(g => g.Interface).HasColumnName("ID_IMAGEM_INTERFACE");
+            Property(g => g.Resolucao).HasColumnName("ID_IMAGEM_RESOLUCAO");
         }
     }
 }

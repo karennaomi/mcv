@@ -1,5 +1,5 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 namespace LM.Core.Domain
 {
     public class Categoria
@@ -9,6 +9,7 @@ namespace LM.Core.Domain
         public string Cor { get; set; }
         public bool Ativo { get; set; }
         public virtual Categoria CategoriaPai { get; set; }
+        public virtual ICollection<Imagem> Imagens { get; set; }
         public virtual ICollection<Categoria> SubCategorias { get; set; }
     }
 }
