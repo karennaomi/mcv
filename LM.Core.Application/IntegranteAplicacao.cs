@@ -43,7 +43,7 @@ namespace LM.Core.Application
         public Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante)
         {
             var integranteToUpdate = Obter(pontoDemandaId, integrante.Id);
-            if (usuarioId != integranteToUpdate.Usuario.Id && integranteToUpdate.EhUsuarioDoSistema()) throw new ApplicationException("Não pode atualizar um usuário do sistema.");
+            if (integranteToUpdate.EhUsuarioDoSistema() && usuarioId != integranteToUpdate.Usuario.Id) throw new ApplicationException("Não pode atualizar um usuário do sistema.");
             if (!string.IsNullOrWhiteSpace(integrante.Email) && integranteToUpdate.Email != integrante.Email) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             integranteToUpdate.Atualizar(integrante);
             _repositorio.Salvar();

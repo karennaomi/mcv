@@ -135,6 +135,22 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void PodeAtualizarIntegranteQueNaoEhUsuarioDoSistema()
+        {
+            var integranteParaAtualizar = _fakes.Integrante();
+            integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
+            integranteParaAtualizar.Usuario = null;
+            _mockRepo.Integrante = integranteParaAtualizar;
+
+            var integrante = _fakes.Integrante();
+            integrante.Id = 200;
+            integrante.Nome = "Nome Atualizado";
+            var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
+            var integranteAtualizado = app.Atualizar(100, 1, integrante);
+            Assert.AreEqual("Nome Atualizado", integranteAtualizado.Nome);
+        }
+
+        [Test]
         public void NaoPodeDesativarUmIntegranteQueNaoPertenceAoPontoDeDemanda()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
