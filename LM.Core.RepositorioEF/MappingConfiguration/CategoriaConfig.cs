@@ -14,6 +14,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(g => g.Cor).HasColumnName("NM_HEXA_COR");
             Property(g => g.Ativo).HasColumnName("FL_CATEGORIA_ATIVA");
 
+            HasMany(g => g.Imagens).WithMany().Map(m => m.MapLeftKey("ID_CATEGORIA").MapRightKey("ID_IMAGEM").ToTable("TB_Categoria_Imagem"));
             HasMany(g => g.SubCategorias).WithOptional(i => i.CategoriaPai).Map(m => m.MapKey("ID_CATEGORIA_PAI"));
         }
     }

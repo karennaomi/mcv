@@ -52,6 +52,7 @@ namespace LM.Core.Tests
         public void MapearCategorias()
         {
             var secao = _contexto.Categorias.Single(c => c.Nome == "LIMPEZA");
+            Assert.IsTrue(secao.Imagens.Any());
             Assert.IsTrue(secao.SubCategorias.Any());
         }
 
