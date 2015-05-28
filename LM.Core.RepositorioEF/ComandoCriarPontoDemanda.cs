@@ -28,7 +28,9 @@ namespace LM.Core.RepositorioEF
         {
             var usuario = _usuarioRepo.Obter(_usuarioId);
             _novoPontoDemanda.UsuarioCriador = usuario;
-            _novoPontoDemanda.GrupoDeIntegrantes = usuario.Integrante.GrupoDeIntegrantes;
+            _novoPontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { 
+                new GrupoDeIntegrantes { Integrante = usuario.Integrante, Papel = PapelIntegrante.Administrador }
+            };
             if (_novoPontoDemanda.Endereco.Cidade.Id > 0)
             {
                 _contexto.Entry(_novoPontoDemanda.Endereco.Cidade).State = EntityState.Unchanged;

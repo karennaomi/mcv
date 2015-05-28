@@ -105,6 +105,7 @@
     <Compile Include="StatusCompra.cs" />
     <Compile Include="StatusPedido.cs" />
     <Compile Include="StatusUsuarioPontoDemanda.cs" />
+    <Compile Include="PapelIntegrante.cs" />
     <Compile Include="TipoTemplateMensagem.cs" />
     <Compile Include="TemplateMensagem.cs" />
     <Compile Include="TipoPontoDemanda.cs" />

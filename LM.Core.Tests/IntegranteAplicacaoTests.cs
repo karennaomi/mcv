@@ -29,9 +29,8 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var integrante = _fakes.Integrante();
-                integrante.GrupoDeIntegrantes.PontosDemanda = null;
                 var app = ObterAppIntegrante(new IntegranteEF());
-                integrante = app.Criar(integrante);
+                integrante = app.Criar(1, integrante);
                 Assert.IsTrue(integrante.Id > 0);
             }
         }
@@ -49,7 +48,7 @@ namespace LM.Core.Tests
                 integrante.Email = null;
                 integrante.Telefone = null;
                 var app = ObterAppIntegrante(new IntegranteEF());
-                integrante = app.Criar(integrante);
+                integrante = app.Criar(1, integrante);
                 Assert.IsTrue(integrante.Id > 0);
             }
         }
@@ -186,7 +185,7 @@ namespace LM.Core.Tests
             var convidado = SetIntegranteInMockRepo(_fakes.Integrante());
             convidado.Usuario = null;
             convidado.Id = 201;
-            convidado.GrupoDeIntegrantes.Integrantes.Add(integrante);
+            convidado.GruposDeIntegrantes = integrante.GruposDeIntegrantes;
             _mockRepo.Convidado = convidado;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             app.Convidar(100, 1, 201);
@@ -199,7 +198,7 @@ namespace LM.Core.Tests
             integrante.Usuario = new Usuario { Id = 1 };
             var pontoDemanda = _fakes.PontoDemanda();
             pontoDemanda.Id = 100;
-            integrante.GrupoDeIntegrantes.PontosDemanda.Add(pontoDemanda);
+            integrante.GruposDeIntegrantes.Add(new GrupoDeIntegrantes { PontoDemanda = pontoDemanda, Integrante = integrante});
             return integrante;
         }
 

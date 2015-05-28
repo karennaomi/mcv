@@ -16,12 +16,12 @@ namespace LM.Core.RepositorioEF
 
         public IList<PontoDemanda> Listar(long usuarioId)
         {
-            return _contexto.PontosDemanda.AsNoTracking().Where(p => p.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && p.Ativo).ToList();
+            return _contexto.PontosDemanda.AsNoTracking().Where(p => p.GruposDeIntegrantes.Any(g => g.Integrante.Usuario.Id == usuarioId) && p.Ativo).ToList();
         }
 
         public PontoDemanda Obter(long usuarioId, long pontoDemandaId)
         {
-            var pontoDemanda = _contexto.PontosDemanda.SingleOrDefault(p => p.GrupoDeIntegrantes.Integrantes.Any(i => i.Usuario.Id == usuarioId) && p.Id == pontoDemandaId && p.Ativo);
+            var pontoDemanda = _contexto.PontosDemanda.SingleOrDefault(p => p.GruposDeIntegrantes.Any(g => g.Integrante.Usuario.Id == usuarioId) && p.Id == pontoDemandaId && p.Ativo);
             if (pontoDemanda == null) throw new ObjetoNaoEncontradoException("Ponto de demanda não encontrado.");
             return pontoDemanda;
         }

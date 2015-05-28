@@ -41,7 +41,7 @@ namespace LM.Core.Domain
         public TipoIntegrante Tipo { get; set; }
 
         public virtual Usuario Usuario { get; set; }
-        public virtual GrupoDeIntegrantes GrupoDeIntegrantes { get; set; }
+        public virtual ICollection<GrupoDeIntegrantes> GruposDeIntegrantes { get; set; }
 
         public int ObterIdade()
         {

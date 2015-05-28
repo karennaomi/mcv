@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System.Collections.ObjectModel;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.Domain.Servicos;
@@ -53,22 +54,24 @@ namespace LM.Core.Tests
         {
             var servicoRestMock = new Mock<IServicoRest>();
             var compraAtiva = _fakes.CompraAtiva();
+
+            compraAtiva.PontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes>();
             
             var integrante0 = _fakes.Integrante();
             integrante0.Id = 200;
             integrante0.Usuario = new Usuario { Id = 1 };
             compraAtiva.Usuario.Integrante = integrante0;
-            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante0);
+            compraAtiva.PontoDemanda.GruposDeIntegrantes.Add(new GrupoDeIntegrantes { Integrante = integrante0});
             
             var integrante1 = _fakes.Integrante();
             integrante1.Id = 201;
             integrante1.Usuario = new Usuario { Id = 2 };
-            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante1);
+            compraAtiva.PontoDemanda.GruposDeIntegrantes.Add(new GrupoDeIntegrantes { Integrante = integrante1 });
             
             var integrante2 = _fakes.Integrante();
             integrante2.Id = 202;
             integrante2.Usuario = new Usuario { Id = 3 };
-            compraAtiva.PontoDemanda.GrupoDeIntegrantes.Integrantes.Add(integrante2);
+            compraAtiva.PontoDemanda.GruposDeIntegrantes.Add(new GrupoDeIntegrantes { Integrante = integrante2 });
             
             _mockRepo.CompraAtiva = compraAtiva;
             ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), servicoRestMock.Object).AtivarCompra(1, 101);

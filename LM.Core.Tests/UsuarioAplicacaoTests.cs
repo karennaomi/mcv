@@ -38,7 +38,6 @@ namespace LM.Core.Tests
                     usuario = app.Criar(usuario);
                     Assert.IsTrue(usuario.Id > 0);
                     Assert.IsTrue(usuario.Integrante.Id > 0);
-                    Assert.IsTrue(usuario.Integrante.GrupoDeIntegrantes.Id > 0);
                 }
                 catch (DbEntityValidationException ex)
                 {

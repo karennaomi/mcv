@@ -23,8 +23,11 @@ namespace LM.Core.RepositorioEF
 
         public Integrante Criar(Integrante integrante)
         {
-            if (integrante.GrupoDeIntegrantes.Id > 0) _contexto.Entry(integrante.GrupoDeIntegrantes).State = EntityState.Unchanged;
             integrante = _contexto.Integrantes.Add(integrante);
+            foreach (var grupoDeIntegrantes in integrante.GruposDeIntegrantes)
+            {
+                _contexto.Entry(grupoDeIntegrantes.PontoDemanda).State = EntityState.Unchanged;
+            }
             _contexto.SaveChanges();
             return integrante;
         }

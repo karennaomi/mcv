@@ -22,10 +22,11 @@ namespace LM.Core.Tests
         public void MapearPontosDemanda()
         {
             var pontoDemanda = _contexto.PontosDemanda.First();
-            Assert.IsNotNull(pontoDemanda.GrupoDeIntegrantes);
             Assert.IsNotNull(pontoDemanda.Endereco);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade.Uf);
+            Assert.IsTrue(pontoDemanda.GruposDeIntegrantes.Any());
+            Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First().Integrante);
             Assert.IsTrue(pontoDemanda.Listas.Any());
         }
 
@@ -42,7 +43,8 @@ namespace LM.Core.Tests
         public void MapearIntegrante()
         {
             var integrante = _contexto.Integrantes.First(i => i.Usuario != null);
-            Assert.IsNotNull(integrante.GrupoDeIntegrantes);
+            Assert.IsNotNull(integrante.GruposDeIntegrantes);
+            Assert.IsNotNull(integrante.GruposDeIntegrantes.First().PontoDemanda);
             Assert.IsNotNull(integrante.Usuario);
         }
 

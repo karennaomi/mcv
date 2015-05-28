@@ -32,7 +32,7 @@ namespace LM.Core.Application
 
         public void NotificarIntegrantesDoPontoDamanda(Integrante remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams)
         {
-            var integrantesComUsuario = pontoDemanda.GrupoDeIntegrantes.Integrantes.Where(i => i.Usuario != null).ToList();
+            var integrantesComUsuario = pontoDemanda.GruposDeIntegrantes.Where(g => g.Integrante.Usuario != null).Select(g=> g.Integrante).ToList();
             var destinatarios = integrantesComUsuario.Where(i => i.Id != remetente.Id);
             CriarMensagemEEnviar(remetente, pontoDemanda, tipoTemplate, extraParams, destinatarios);
         }

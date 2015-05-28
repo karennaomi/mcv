@@ -28,10 +28,9 @@ namespace LM.Core.Tests
                 Nome = "Joe Doe",
                 Sexo = "M",
                 Email = "joe123@doe.com",
-                GrupoDeIntegrantes = new GrupoDeIntegrantes {Id = 1, PontosDemanda = new Collection<PontoDemanda>(), Integrantes = new Collection<Integrante>()},
-                Telefone = "989998999"
+                Telefone = "989998999",
+                GruposDeIntegrantes = new Collection<GrupoDeIntegrantes>()
             };
-            integrante.GrupoDeIntegrantes.Integrantes.Add(integrante);
             return integrante;
         }
 
@@ -43,7 +42,6 @@ namespace LM.Core.Tests
             {
                 Id = 666,
                 Tipo = TipoPontoDemanda.Praia,
-                GrupoDeIntegrantes = new GrupoDeIntegrantes {Id = 1, Integrantes = new Collection<Integrante>()},
                 Endereco = Endereco(),
                 UsuarioCriador = usuario
             };
@@ -83,7 +81,9 @@ namespace LM.Core.Tests
 
         internal CompraAtiva CompraAtiva()
         {
-            var compraAtiva = new CompraAtiva {Usuario = Usuario(), PontoDemanda = PontoDemanda()};
+            var pontoDemanda = PontoDemanda();
+            pontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes{ PontoDemanda = pontoDemanda, Integrante = Integrante()}};
+            var compraAtiva = new CompraAtiva {Usuario = Usuario(), PontoDemanda = pontoDemanda};
             return compraAtiva;
         }
 

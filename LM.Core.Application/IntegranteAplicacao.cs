@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -9,7 +10,7 @@ namespace LM.Core.Application
     public interface IIntegranteAplicacao
     {
         Integrante Obter(long pontoDemandaId, long id);
-        Integrante Criar(Integrante integrante);
+        Integrante Criar(long pontoDemandaId, Integrante integrante);
         Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante);
         void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
         void Convidar(long pontoDemandaId, long usuarioId, long id);
@@ -28,13 +29,14 @@ namespace LM.Core.Application
         public Integrante Obter(long pontoDemandaId, long id)
         {
             var integrante = _repositorio.Obter(id);
-            if (integrante.GrupoDeIntegrantes.PontosDemanda.All(p => p.Id != pontoDemandaId)) throw new IntegranteNaoPertenceAPontoDemandaException();
+            if (integrante.GruposDeIntegrantes.All(g => g.PontoDemanda.Id != pontoDemandaId)) throw new IntegranteNaoPertenceAPontoDemandaException();
             return integrante;
         }
 
-        public Integrante Criar(Integrante integrante)
+        public Integrante Criar(long pontoDemandaId, Integrante integrante)
         {
             if (!string.IsNullOrWhiteSpace(integrante.Email)) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
+            integrante.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes { PontoDemanda = new PontoDemanda { Id = pontoDemandaId } } };
             return _repositorio.Criar(integrante);
         }
 
@@ -54,7 +56,7 @@ namespace LM.Core.Application
             if(integrante.Usuario != null)
             { 
                 if (integrante.Usuario.Id == usuarioId) throw new ApplicationException("Não pode desativar integrante.");
-                if (integrante.GrupoDeIntegrantes.PontosDemanda.Single(p => p.Id == pontoDemandaId).UsuarioCriador.Id == integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o criador da casa.");
+                if (integrante.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda.UsuarioCriador.Id == integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o criador da casa.");
             }
             integrante.Ativo = false;
             _repositorio.Salvar();
@@ -65,8 +67,8 @@ namespace LM.Core.Application
             var convidado = Obter(pontoDemandaId, id);
             if (!convidado.PodeSerConvidado()) throw new ApplicationException("Este integrante não pode ser convidado.");
             convidado.DataConvite = DateTime.Now;
-            var pontoDemanda = convidado.GrupoDeIntegrantes.PontosDemanda.Single(p => p.Id == pontoDemandaId);
-            var integrante = convidado.GrupoDeIntegrantes.Integrantes.Single(i => i.Usuario != null && i.Usuario.Id == usuarioId);
+            var pontoDemanda = convidado.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda;
+            var integrante = convidado.GruposDeIntegrantes.Single(g => g.Integrante.Usuario != null && g.Integrante.Usuario.Id == usuarioId).Integrante;
             _appNotificacao.Notificar(integrante, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, null);
             _repositorio.Salvar();
         }

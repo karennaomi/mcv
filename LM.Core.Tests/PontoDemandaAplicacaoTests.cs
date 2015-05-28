@@ -86,8 +86,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var pontoDemanda0 = new ContextoEF().PontosDemanda.First();
-                var usuarioId = pontoDemanda0.GrupoDeIntegrantes.Integrantes.First().Usuario.Id;
-
+                var usuarioId = pontoDemanda0.GruposDeIntegrantes.First().Integrante.Usuario.Id;
 
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
                 var pontoDemanda = new PontoDemanda{ Id = pontoDemanda0.Id, Nome = "Nome Alterado", Endereco = _fakes.Endereco()};

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
+﻿
 namespace LM.Core.Domain
 {
     public class GrupoDeIntegrantes
@@ -11,12 +9,8 @@ namespace LM.Core.Domain
         }
         public long Id { get; set; }
         public string Nome { get; set; }
-        public virtual ICollection<Integrante> Integrantes { get; set; }
-        public virtual ICollection<PontoDemanda> PontosDemanda { get; set; }
-
-        public IEnumerable<Integrante> IntegrantesAtivos()
-        {
-            return Integrantes.Where(i => i.Ativo);
-        }
+        public PapelIntegrante Papel { get; set; }
+        public virtual Integrante Integrante { get; set; }
+        public virtual PontoDemanda PontoDemanda { get; set; }
     }
 }
