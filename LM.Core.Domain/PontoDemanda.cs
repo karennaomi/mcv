@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LM.Core.Domain
 {
@@ -24,5 +25,10 @@ namespace LM.Core.Domain
         public virtual ICollection<GrupoDeIntegrantes> GruposDeIntegrantes { get; set; }
         public virtual ICollection<Lista> Listas { get; set; }
         public virtual ICollection<Loja> LojasFavoritas { get; set; }
+
+        public IList<Integrante> IntegrantesAtivos()
+        {
+            return GruposDeIntegrantes.Where(g => g.Integrante.Ativo).Select(g => g.Integrante).ToList();
+        }
     }
 }
