@@ -115,7 +115,13 @@ namespace LM.Core.Tests
 
         internal ListaItem ListaItem(bool ehSugestaoDeCompra = false, string categoria = "")
         {
-            return new ListaItem { Produto = Produto(categoria), EhSugestaoDeCompra = ehSugestaoDeCompra };
+            return new ListaItem
+            {
+                Produto = Produto(categoria), 
+                EhSugestaoDeCompra = ehSugestaoDeCompra,
+                QuantidadeDeConsumo = 5,
+                QuantidadeEmEstoque = 3
+            };
         }
 
         internal PedidoItem PedidoItem(StatusPedido status = StatusPedido.Comprado, string categoria = "")

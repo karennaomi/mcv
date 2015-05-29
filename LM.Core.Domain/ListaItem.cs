@@ -41,6 +41,7 @@ namespace LM.Core.Domain
         public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!QuantidadeDeConsumo.HasValue || QuantidadeDeConsumo <= 0) yield return new ValidationResult("Quantidade consumida deve ser maior que zero.", new[] { "QuantidadeDeConsumo" });
+            if (!QuantidadeEmEstoque.HasValue || QuantidadeEmEstoque < 0) yield return new ValidationResult("Quantidade em estoque deve ser maior ou igual a zero.", new[] { "QuantidadeEmEstoque" });
         }
     }
 }
