@@ -54,6 +54,7 @@ namespace LM.Core.Application
 
         public void Desativar(long usuarioId, long pontoDemandaId)
         {
+            if(Listar(usuarioId).Count == 1) throw new ApplicationException("Não pode desativar o único ponto de demanda existente.");
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
             pontoDemanda.Ativo = false;
             pontoDemanda.DataAlteracao = DateTime.Now;

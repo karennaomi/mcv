@@ -26,17 +26,19 @@ namespace LM.Core.Tests
     public class MockPontoDemandaRepo
     {
         public PontoDemanda PontoDemanda { private get; set; }
+        public IList<PontoDemanda> PontoDemandaLista { private get; set; }
 
         public IRepositorioPontoDemanda GetMockedRepo()
         {
             var mock = new Mock<IRepositorioPontoDemanda>();
-            mock.Setup(m => m.Obter(1, 100)).Returns(PontoDemanda);
+            mock.Setup(m => m.Obter(It.IsAny<long>(), 100)).Returns(PontoDemanda);
 
             mock.Setup(m => m.Criar(1, PontoDemanda)).Returns<PontoDemanda>(x => { x.Id = 100; return x; });
             mock.Setup(m => m.Listar(1)).Returns(new List<PontoDemanda>
                 {
                     new PontoDemanda { Id = 100 }, new PontoDemanda { Id = 101 }
                 });
+            mock.Setup(m => m.Listar(2)).Returns(PontoDemandaLista);
             return mock.Object;
         }
     }
