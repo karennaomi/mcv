@@ -20,12 +20,13 @@ namespace LM.Core.Domain
 
         public Endereco CreateEndereco()
         {
+            var cep = GetComponentShortNameValue("postal_code");
             return new Endereco
             {
                 Logradouro = GetComponentShortNameValue("route"),
                 Numero = GetNumber(),
                 Bairro = GetComponentShortNameValue("neighborhood"),
-                Cep = GetComponentShortNameValue("postal_code"),
+                Cep = cep.Length == 5 ? cep + "-000" : cep,
                 Cidade = new Cidade
                 {
                     Nome = GetComponentShortNameValue("administrative_area_level_2"),
