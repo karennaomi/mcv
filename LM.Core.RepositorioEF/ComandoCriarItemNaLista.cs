@@ -21,7 +21,14 @@ namespace LM.Core.RepositorioEF
         public ListaItem Executar()
         {
             _novoItem.Produto = ChecarProduto(_novoItem.Produto);
-            _contexto.Entry(_novoItem.Periodo).State = EntityState.Unchanged;
+            if (_contexto.Set<Periodo>().Local.All(p => p.Id != _novoItem.Periodo.Id))
+            {
+                _contexto.Entry(_novoItem.Periodo).State = EntityState.Unchanged;
+            }
+            else
+            {
+                _novoItem.Periodo = _contexto.Set<Periodo>().Local.Single(p => p.Id == _novoItem.Periodo.Id);
+            }
             _novoItem.DataInclusao = DateTime.Now;
             _novoItem.DataAlteracao = DateTime.Now;
             _lista.Itens.Add(_novoItem);
