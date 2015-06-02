@@ -28,17 +28,9 @@ namespace LM.Core.RepositorioEF
             return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar();
         }
 
-        public void AtualizarPeriodoDoItem(ListaItem item)
+        public void AtualizarPeriodoDoItem(ListaItem item, int periodoId)
         {
-            _contexto.Entry(item).State = EntityState.Modified;
-            if (_contexto.Set<Periodo>().Local.All(p => p.Id != item.Periodo.Id))
-            {
-                _contexto.Entry(item.Periodo).State = EntityState.Unchanged;
-            }
-            else
-            {
-                item.Periodo = _contexto.Set<Periodo>().Local.Single(p => p.Id == item.Periodo.Id);
-            }
+            item.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == periodoId);
         }
 
         public IEnumerable<ListaItem> BuscarItens(Lista lista, string termo)
