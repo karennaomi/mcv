@@ -43,10 +43,11 @@ namespace LM.Core.Tests
         public void MapearIntegrante()
         {
             var integrante = _contexto.Integrantes.First(i => i.Usuario != null);
-            Assert.IsNotNull(integrante.GruposDeIntegrantes);
+            Assert.IsTrue(integrante.GruposDeIntegrantes.Any());
             Assert.IsNotNull(integrante.GruposDeIntegrantes.First().PontoDemanda);
             Assert.IsNotNull(integrante.Usuario);
         }
+
 
         [Test]
         public void MapearCategorias()

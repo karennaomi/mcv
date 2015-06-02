@@ -132,6 +132,23 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void AtualizarUmItemDeUmaLista()
+        {
+            var listaApp = ObterListaApp();
+
+            var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+            using (new TransactionScope())
+            {
+                listaApp.AtualizarItem(_pontoDemandaId, item.Id, 5, 3, 2, true);
+                var updatedItem = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+                Assert.AreEqual(5, updatedItem.QuantidadeDeConsumo);
+                Assert.AreEqual(3, updatedItem.QuantidadeEmEstoque);
+                Assert.AreEqual(2, updatedItem.Periodo.Id);
+                Assert.IsTrue(updatedItem.EhEssencial);
+            }
+        }
+
+        [Test]
         [Ignore("Existe algum bug na hora de usar o full text search")]
         public void BuscaUmItemDaLista()
         {

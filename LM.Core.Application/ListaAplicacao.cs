@@ -74,7 +74,7 @@ namespace LM.Core.Application
             var item = ObterItem(pontoDemandaId, itemId);
             item.QuantidadeDeConsumo = consumo;
             item.QuantidadeEmEstoque = estoque;
-            item.Periodo = new Periodo { Id = periodoId };
+            if(item.Periodo.Id != periodoId) item.Periodo = new Periodo { Id = periodoId };
             item.EhEssencial = ehEssencial;
             _repositorio.AtualizarPeriodoDoItem(item);
             item.DataAlteracao = DateTime.Now;
@@ -100,6 +100,7 @@ namespace LM.Core.Application
         public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
         {
             var item = ObterItem(pontoDemandaId, itemId);
+            if (item.Periodo.Id == periodoId) return;
             item.Periodo = new Periodo { Id = periodoId };
             item.DataAlteracao = DateTime.Now;
             _repositorio.AtualizarPeriodoDoItem(item);
