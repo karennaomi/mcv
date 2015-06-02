@@ -20,7 +20,7 @@ namespace LM.Core.RepositorioEF
 
         public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
         {
-            return _contexto.Listas.FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
+            return _contexto.Listas.Include("Itens.Periodo").FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
         }
 
         public ListaItem AdicionarItem(Lista lista, ListaItem novoItem)

@@ -59,6 +59,14 @@ namespace LM.Core.Tests
             AssertValidation(item, "Quantidade em estoque deve ser maior ou igual a zero.", "QuantidadeEmEstoque");
         }
 
+        [Test]
+        public void NaoValidaItemComPeriodoIgualANull()
+        {
+            var item = _fakes.ListaItem();
+            item.Periodo = null;
+            AssertValidation(item, "O período de consumo deve ser informado.", "Periodo");
+        }
+
         private static void AssertValidation(ListaItem item, string message, string property)
         {
             var validationResults = new List<ValidationResult>();

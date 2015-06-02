@@ -16,7 +16,7 @@ namespace LM.Core.Tests
             Assert.AreEqual("Av. Interlagos", endereco.Logradouro);
             Assert.AreEqual(100, endereco.Numero);
             Assert.AreEqual("Jardim Umuarama", endereco.Bairro);
-            Assert.AreEqual("04660", endereco.Cep);
+            Assert.AreEqual("04660-000", endereco.Cep);
             Assert.AreEqual("São Paulo", endereco.Cidade.Nome);
             Assert.AreEqual("SP", endereco.Cidade.Uf.Sigla);
             Assert.AreEqual(-23.6542054, endereco.Latitude);

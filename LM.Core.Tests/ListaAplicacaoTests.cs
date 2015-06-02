@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Validation;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF;
@@ -109,12 +110,10 @@ namespace LM.Core.Tests
         [Test]
         public void AtualizarConsumoDeUmItemDeUmaLista()
         {
-            var listaApp = ObterListaApp();
-
-            var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
             using (new TransactionScope())
             {
-                listaApp.AtualizarConsumoDoItem(_pontoDemandaId, item.Id, 5);
+                var listaApp = ObterListaApp();
+                listaApp.AtualizarConsumoDoItem(_pontoDemandaId, 186, 5);
                 Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeDeConsumo);
             }
         }

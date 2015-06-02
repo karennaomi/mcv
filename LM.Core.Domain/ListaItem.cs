@@ -42,6 +42,7 @@ namespace LM.Core.Domain
         {
             if (!QuantidadeDeConsumo.HasValue || QuantidadeDeConsumo <= 0) yield return new ValidationResult("Quantidade consumida deve ser maior que zero.", new[] { "QuantidadeDeConsumo" });
             if (!QuantidadeEmEstoque.HasValue || QuantidadeEmEstoque < 0) yield return new ValidationResult("Quantidade em estoque deve ser maior ou igual a zero.", new[] { "QuantidadeEmEstoque" });
+            if (Periodo == null) yield return new ValidationResult("O período de consumo deve ser informado.", new[] { "Periodo" });
         }
     }
 }

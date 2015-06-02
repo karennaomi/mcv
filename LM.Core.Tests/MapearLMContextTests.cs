@@ -33,7 +33,7 @@ namespace LM.Core.Tests
         [Test]
         public void MapearPontoDemandaLojasFavoritas()
         {
-            var pontoDemanda = _contexto.PontosDemanda.Find(4);
+            var pontoDemanda = _contexto.PontosDemanda.Find(20908);
             Assert.IsTrue(pontoDemanda.LojasFavoritas.Any());
             Assert.IsNotNull(pontoDemanda.LojasFavoritas.First().Info.Endereco);
         }

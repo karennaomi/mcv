@@ -120,7 +120,8 @@ namespace LM.Core.Tests
                 Produto = Produto(categoria), 
                 EhSugestaoDeCompra = ehSugestaoDeCompra,
                 QuantidadeDeConsumo = 5,
-                QuantidadeEmEstoque = 3
+                QuantidadeEmEstoque = 3,
+                Periodo = new Periodo { Id = 1 }
             };
         }
 
@@ -147,7 +148,7 @@ namespace LM.Core.Tests
             const int pontoDemandaId = 1;
             const int integranteId = 1;
             const int usuarioId = 3;
-            const int lojaId = 1;
+            const int lojaId = 3620;
             var listaItemIds = new[] { new[] { 1, 27395 } };
             var pedidoItemIds = new[] { new[] { 10187, 23271 }, new[] { 10188, 102 } };
             
