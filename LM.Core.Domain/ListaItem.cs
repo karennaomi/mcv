@@ -24,9 +24,9 @@ namespace LM.Core.Domain
         public string Status { get; set; }
         public decimal? ValorMedioDeConsumoPorIntegrante { get; set; }
         public bool EhSugestaoDeCompra { get; set; }
+        public bool EhEssencial { get; set; }
         public virtual Lista Lista { get; set; }
         public virtual Periodo Periodo { get; set; }
-
 
         public PontoDemanda ObterPontoDemanda()
         {
