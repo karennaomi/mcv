@@ -56,7 +56,7 @@ namespace LM.Core.Application
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens.Where(i => i.Status == "A");
+            return lista.Itens.Where(i => i.Status == "A").OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome).ThenBy(i => i.Produto.Categorias.First().Nome);
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Validation;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.RepositorioEF;
@@ -154,6 +153,15 @@ namespace LM.Core.Tests
         {
             var app = ObterListaApp();
             var itens = app.BuscarItens(_pontoDemandaId, "Bombom");
+            Assert.IsTrue(itens.Any());
+        }
+
+        [Test]
+        public void ListarItens()
+        {
+            var listaApp = ObterListaApp();
+
+            var itens = listaApp.ListarItens(_pontoDemandaId);
             Assert.IsTrue(itens.Any());
         }
 
