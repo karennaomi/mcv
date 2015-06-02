@@ -31,7 +31,14 @@ namespace LM.Core.RepositorioEF
         public void AtualizarPeriodoDoItem(ListaItem item)
         {
             _contexto.Entry(item).State = EntityState.Modified;
-            _contexto.Entry(item.Periodo).State = EntityState.Unchanged;
+            if (_contexto.Set<Periodo>().Local.All(p => p.Id != item.Periodo.Id))
+            {
+                _contexto.Entry(item.Periodo).State = EntityState.Unchanged;
+            }
+            else
+            {
+                item.Periodo = _contexto.Set<Periodo>().Local.Single(p => p.Id == item.Periodo.Id);
+            }
         }
 
         public IEnumerable<ListaItem> BuscarItens(Lista lista, string termo)
