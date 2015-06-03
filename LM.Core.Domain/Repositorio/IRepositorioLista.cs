@@ -8,6 +8,7 @@ namespace LM.Core.Domain.Repositorio
         ListaItem AdicionarItem(Lista lista, ListaItem item);
         void AtualizarPeriodoDoItem(ListaItem item, int periodoId);
         IEnumerable<ListaItem> BuscarItens(Lista lista, string termo);
+        void LancarEstoque(long pontoDemandaId, long integranteId, int? produtoId, decimal? quantidade);
         void Salvar();
     }
 }

@@ -43,5 +43,11 @@ namespace LM.Core.RepositorioEF
         {
             _contexto.SaveChanges();
         }
+
+        public void LancarEstoque(long pontoDemandaId, long integranteId, int? produtoId, decimal? quantidade)
+        {
+            var lancamentoEstoque = new LancamentoEstoque(_contexto);
+            lancamentoEstoque.Lancar(pontoDemandaId, 5, produtoId, quantidade, integranteId);
+        }
     }
 }

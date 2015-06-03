@@ -28,28 +28,12 @@ namespace LM.Core.RepositorioEF
 
         private void ChecarIntegrante()
         {
-            var integranteLocal = _contexto.Integrantes.Local.SingleOrDefault(i => i.Id == _novaCompra.Integrante.Id);
-            if (integranteLocal != null)
-            {
-                _novaCompra.Integrante = integranteLocal;
-            }
-            else
-            {
-                _contexto.Entry(_novaCompra.Integrante).State = EntityState.Unchanged;
-            }
+            _novaCompra.Integrante = _contexto.Integrantes.Single(i => i.Id == _novaCompra.Integrante.Id);
         }
 
         private void ChecarPontoDemanda()
         {
-            var pontoDemandaLocal = _contexto.PontosDemanda.Local.SingleOrDefault(p => p.Id == _novaCompra.PontoDemanda.Id);
-            if (pontoDemandaLocal != null)
-            {
-                _novaCompra.PontoDemanda = pontoDemandaLocal;
-            }
-            else
-            {
-                _contexto.Entry(_novaCompra.PontoDemanda).State = EntityState.Unchanged;
-            }
+            _novaCompra.PontoDemanda = _contexto.PontosDemanda.Single(p => p.Id == _novaCompra.PontoDemanda.Id);
         }
 
         private void ChecarItensNovos()
@@ -68,20 +52,13 @@ namespace LM.Core.RepositorioEF
 
         private void ChecarItens()
         {
-            var listaLocal = _contexto.Listas.Local.SingleOrDefault(l => l.PontoDemanda.Id == _novaCompra.PontoDemanda.Id);
+            var listaItens = _contexto.Listas.Single(l => l.PontoDemanda.Id == _novaCompra.PontoDemanda.Id).Itens;
             foreach (var compraItem in _novaCompra.Itens)
             {
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
-                    if (listaLocal != null && listaCompraItem.Item.Id > 0)
-                    {
-                        listaCompraItem.Item = listaLocal.Itens.Single(i => i.Id == listaCompraItem.Item.Id);
-                    }
-                    else if(listaCompraItem.Item.Id > 0)
-                    {
-                        _contexto.Entry(listaCompraItem.Item).State = EntityState.Unchanged;
-                    }
+                    listaCompraItem.Item = listaItens.Single(i => i.Id == listaCompraItem.Item.Id);
                 }
                 else if (compraItem is PedidoCompraItem)
                 {

@@ -31,15 +31,10 @@ namespace LM.Core.RepositorioEF
 
         private void LancarEstoque(Compra compra)
         {
+            var lancamentoEstoque = new LancamentoEstoque(_contexto);
             foreach (var compraItem in compra.Itens)
             {
-                var pontoDemandaIdParam = new SqlParameter("@IDPReD", compra.PontoDemanda.Id);
-                var origemParam = new SqlParameter("@IDOrigemLancamentoEstoque", 1);
-                var produtoIdParam = new SqlParameter("@IDProduto", compraItem.ProdutoId);
-                var quantidadeParam = new SqlParameter("@QtLancada", compraItem.Quantidade);
-                var integranteIdParam = new SqlParameter("@IDIntegrante", compra.Integrante.Id);
-                _contexto.Database.ExecuteSqlCommand("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
-                    produtoIdParam, quantidadeParam, integranteIdParam);
+                lancamentoEstoque.Lancar(compra.PontoDemanda.Id, 1, compraItem.ProdutoId, compraItem.Quantidade, compra.Integrante.Id);
             }
         }
 

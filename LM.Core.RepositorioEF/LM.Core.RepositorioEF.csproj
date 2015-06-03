@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComandoAtualizarPontoDemanda.cs" />
+    <Compile Include="LancamentoEstoque.cs" />
     <Compile Include="UfEF.cs" />
     <Compile Include="LegacyTokenEF.cs" />
     <Compile Include="FilaItemEF.cs" />

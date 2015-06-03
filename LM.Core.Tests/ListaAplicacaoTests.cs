@@ -11,10 +11,12 @@ namespace LM.Core.Tests
     [TestFixture]
     public class ListaAplicacaoTests
     {
-        private static long _pontoDemandaId;
+        private static long _pontoDemandaId, _integranteId;
         public ListaAplicacaoTests()
         {
-            _pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
+            var pontoDemanda = new ContextoEF().PontosDemanda.First();
+            _pontoDemandaId = pontoDemanda.Id;
+            _integranteId = pontoDemanda.GruposDeIntegrantes.First().Integrante.Id;
         }
         
         [Test]
@@ -101,7 +103,7 @@ namespace LM.Core.Tests
             var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
             using (new TransactionScope())
             {
-                listaApp.AtualizarEstoqueDoItem(_pontoDemandaId, item.Id, 12);
+                listaApp.AtualizarEstoqueDoItem(_pontoDemandaId, _integranteId, item.Id, 12);
                 Assert.AreEqual(12, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeEmEstoque);    
             }
         }
@@ -136,9 +138,17 @@ namespace LM.Core.Tests
             var listaApp = ObterListaApp();
 
             var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+            var itemToUpdate = new ListaItem
+            {
+                Id = item.Id,
+                QuantidadeDeConsumo = 5,
+                QuantidadeEmEstoque = 3,
+                Periodo = new Periodo { Id = 2 },
+                EhEssencial = true
+            };
             using (new TransactionScope())
             {
-                listaApp.AtualizarItem(_pontoDemandaId, item.Id, 5, 3, 2, true);
+                listaApp.AtualizarItem(_pontoDemandaId, _integranteId, itemToUpdate);
                 var updatedItem = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
                 Assert.AreEqual(5, updatedItem.QuantidadeDeConsumo);
                 Assert.AreEqual(3, updatedItem.QuantidadeEmEstoque);
