@@ -67,6 +67,7 @@ namespace LM.Core.Application
             var convidado = Obter(pontoDemandaId, id);
             if (!convidado.PodeSerConvidado()) throw new ApplicationException("Este integrante não pode ser convidado.");
             convidado.DataConvite = DateTime.Now;
+            convidado.EhUsuarioConvidado = true;
             var pontoDemanda = convidado.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda;
             var remetente = pontoDemanda.GruposDeIntegrantes.Single(g => g.Integrante.Usuario != null && g.Integrante.Usuario.Id == usuarioId).Integrante;
             _appNotificacao.Notificar(remetente, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, null);

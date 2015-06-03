@@ -206,6 +206,7 @@ namespace LM.Core.Tests
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             app.Convidar(100, 1, 201);
             Assert.IsTrue(convidado.DataConvite.Value.Date == DateTime.Now.Date);
+            Assert.IsTrue(convidado.EhUsuarioConvidado);
         }
 
         private Integrante SetIntegranteInMockRepo(Integrante integrante)
@@ -215,6 +216,7 @@ namespace LM.Core.Tests
             var pontoDemanda = _fakes.PontoDemanda();
             pontoDemanda.Id = 100;
             integrante.GruposDeIntegrantes.Add(new GrupoDeIntegrantes { PontoDemanda = pontoDemanda, Integrante = integrante});
+            pontoDemanda.GruposDeIntegrantes = integrante.GruposDeIntegrantes;
             return integrante;
         }
 
