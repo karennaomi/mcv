@@ -25,20 +25,38 @@ namespace LM.Core.RepositorioEF
             Salvar();
             PreencherProdutoId(compra.Itens); //Campo desnecessário no modelo, mas quem fez não sabe dizer onde é usado ou mudar para usar o produto associado ao item se necessário
             PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
-            /*
-                INSERT INTO dbo.TB_FILA ( ID_TIPO_OPERACAO, ID_TIPO_SERVICO,  FL_STATUS_PROCESSAMENTO , TX_FILA_ORIGEM , DT_INC) VALUES ( 2 , 2 , 'A' , 'CADASTRO DO PRODUTO' , GETDATE())
-	            SELECT @ID_FILA = SCOPE_IDENTITY()
-            	INSERT INTO dbo.TB_FILA_PRODUTO(ID_FILA, CD_PRODUTO_EAN, TX_DESCRICAO_PRODUTO) VALUES (@ID_FILA, @EAN, @NomeProduto)
-            */
+            LancarEstoque(compra);
             return compra;
+        }
+
+        private void LancarEstoque(Compra compra)
+        {
+            foreach (var compraItem in compra.Itens)
+            {
+                var pontoDemandaIdParam = new SqlParameter("@IDPReD", compra.PontoDemanda.Id);
+                var origemParam = new SqlParameter("@IDOrigemLancamentoEstoque", 1);
+                var produtoIdParam = new SqlParameter("@IDProduto", compraItem.ProdutoId);
+                var quantidadeParam = new SqlParameter("@QtLancada", compraItem.Quantidade);
+                var integranteIdParam = new SqlParameter("@IDIntegrante", compra.Integrante.Id);
+                _contexto.Database.ExecuteSqlCommand("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
+                    produtoIdParam, quantidadeParam, integranteIdParam);
+            }
         }
 
         private void PreencherProdutoId(IEnumerable<CompraItem> itens)
         {
             foreach (var compraItem in itens.Where(i => i.ProdutoId  == null || i.ProdutoId == 0))
             {
-                var produtoId = compraItem is ListaCompraItem ? ((ListaCompraItem) compraItem).Item.Produto.Id : ((PedidoCompraItem) compraItem).Item.Produto.Id;
-                _contexto.Database.ExecuteSqlCommand("UPDATE [dbo].[TB_Compra_Item] SET ID_PRODUTO = @produtoId WHERE ID_COMPRA_ITEM = @id", new SqlParameter("@produtoId", produtoId), new SqlParameter("@id", compraItem.Id));
+                var produto = compraItem is ListaCompraItem ? ((ListaCompraItem) compraItem).Item.Produto : ((PedidoCompraItem) compraItem).Item.Produto;
+                var produtoIdParam = new SqlParameter("@produtoId", produto.Id);
+                var compraItemIdParam = new SqlParameter("@id", compraItem.Id);
+                _contexto.Database.ExecuteSqlCommand("UPDATE [dbo].[TB_Compra_Item] SET ID_PRODUTO = @produtoId WHERE ID_COMPRA_ITEM = @id", produtoIdParam, compraItemIdParam);
+
+                var eanParam = new SqlParameter("@EAN", produto.Ean);
+                var produtoNomeParam = new SqlParameter("@NomeProduto", produto.Nome());
+                _contexto.Database.ExecuteSqlCommand("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
+
+                compraItem.ProdutoId = produto.Id;
             }
         }
 
@@ -46,7 +64,9 @@ namespace LM.Core.RepositorioEF
         {
             foreach (var compraItem in itens)
             {
-                _contexto.Database.ExecuteSqlCommand("INSERT INTO [dbo].[TB_Compra_Item_Pedido] VALUES(@compraItemId, @pedidoItem)", new SqlParameter("@compraItemId", compraItem.Id), new SqlParameter("@pedidoItem", compraItem.Item.Id));
+                var compraItemIdParam = new SqlParameter("@compraItemId", compraItem.Id);
+                var itemIdParam = new SqlParameter("@pedidoItem", compraItem.Item.Id);
+                _contexto.Database.ExecuteSqlCommand("INSERT INTO [dbo].[TB_Compra_Item_Pedido] VALUES(@compraItemId, @pedidoItem)", compraItemIdParam, itemIdParam);
             }
         }
 
