@@ -56,7 +56,7 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void CriacaoDoUsuarioConvidadoDeveDefinirStatusCadastroComoUsuarioConvidado()
+        public void CriacaoDoUsuarioConvidadoDeveDefinirStatusCadastroComoOk()
         {
             var usuario = _fakes.Usuario();
             usuario.Integrante.Email = "integrante@convidado.com";
@@ -65,7 +65,7 @@ namespace LM.Core.Tests
             _mockRepo.Integrante = integranteConvidado;
             var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
             usuario = app.Criar(usuario);
-            Assert.AreEqual(StatusCadastro.UsuarioConvidado, usuario.StatusAtual());
+            Assert.IsTrue(usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk));
             Assert.IsFalse(usuario.Integrante.EhUsuarioConvidado);
             Assert.AreSame(integranteConvidado, usuario.Integrante);
         }

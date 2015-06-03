@@ -51,6 +51,7 @@ namespace LM.Core.Application
                 integrante.EhUsuarioConvidado = false;
                 usuario.Integrante = integrante;
                 usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.UsuarioConvidado });
+                usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda { StatusCadastro = StatusCadastro.UsuarioOk });
             }
             else
             {
