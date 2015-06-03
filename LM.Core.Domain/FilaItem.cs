@@ -8,7 +8,7 @@ namespace LM.Core.Domain
     {
         public FilaItem()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
             TipoOperacaoId = 1; //MENSAGEM
             TipoServicoId = 1; //EXEC
             Origem = "LM.Core";

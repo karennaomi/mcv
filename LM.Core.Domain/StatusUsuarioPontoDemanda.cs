@@ -6,7 +6,7 @@ namespace LM.Core.Domain
     {
         public StatusUsuarioPontoDemanda()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
         }
 
         public long Id { get; set; }

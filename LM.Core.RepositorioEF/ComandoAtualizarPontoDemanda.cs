@@ -1,6 +1,5 @@
 ﻿using System;
 using LM.Core.Domain;
-using System.Collections.ObjectModel;
 using System.Data.Entity;
 
 namespace LM.Core.RepositorioEF

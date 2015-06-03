@@ -10,7 +10,7 @@ namespace LM.Core.Domain
         public Usuario()
         {
             Ativo = true;
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
         }
 
         public long Id { get; set; }

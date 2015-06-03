@@ -95,10 +95,9 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        [Ignore("Não tem dado na base para testar o mapeamento")]
         public void MapearCompraItemSubstituto()
         {
-            var compra = _contexto.Compras.First(c => c.Id == 10251);
+            var compra = _contexto.Compras.First(c => c.Id == 20585);
             Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
         }
 

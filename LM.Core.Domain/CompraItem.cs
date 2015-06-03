@@ -9,7 +9,6 @@ namespace LM.Core.Domain
             var agora = DateTime.Now;
             DataCompra = agora;
             DataInclusao = agora;
-            DataAlteracao = agora;
         }
 
         public long Id { get; set; }

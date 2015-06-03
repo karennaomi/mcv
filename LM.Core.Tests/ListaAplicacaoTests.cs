@@ -158,7 +158,7 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        [Ignore("Existe algum bug na hora de usar o full text search")]
+        [Ignore("Esta muito lento precisa rever este metodo")]
         public void BuscaUmItemDaLista()
         {
             var app = ObterListaApp();

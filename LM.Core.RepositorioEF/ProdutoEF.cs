@@ -37,7 +37,7 @@ namespace LM.Core.RepositorioEF
         public IEnumerable<Produto> Buscar(string termo)
         {
             var searchFts = FtsInterceptor.Fts(termo);
-            return _contexto.Produtos.Where(p => p.Info.Nome.Contains(searchFts) && p.Ativo);
+            return _contexto.Produtos.AsNoTracking().Where(p => p.Ean.Contains(searchFts) || p.Info.Nome.Contains(searchFts) || p.Info.Marca.Contains(searchFts) && p.Ativo);
         }
 
         public void Salvar()

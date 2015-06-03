@@ -6,7 +6,7 @@ namespace LM.Core.Domain
     {
         public Loja()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
         }
 
         public int Id { get; set; }
@@ -24,7 +24,7 @@ namespace LM.Core.Domain
     {
         public LojaInfo()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
         }
 
         public int Id { get; set; }

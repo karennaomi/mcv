@@ -8,7 +8,7 @@ namespace LM.Core.Domain
     {
         public Compra()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
         }
 
         public long Id { get; set; }

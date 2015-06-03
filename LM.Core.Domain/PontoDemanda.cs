@@ -8,7 +8,7 @@ namespace LM.Core.Domain
     {
         public PontoDemanda()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
             Ativo = true;
         }
         public long Id { get; set; }

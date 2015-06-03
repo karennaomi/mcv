@@ -13,7 +13,7 @@ namespace LM.Core.Domain
 
         public Produto(int categoriaId)
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
             Ativo = true;
             if(categoriaId > 0) Categorias = new Collection<Categoria> {new Categoria {Id = categoriaId}};
         }

@@ -35,8 +35,9 @@ namespace LM.Core.RepositorioEF
 
         public IEnumerable<ListaItem> BuscarItens(Lista lista, string termo)
         {
-            var searchFts = FtsInterceptor.Fts(termo);
-            return lista.Itens.Where(i => i.Produto.Info.Nome.Contains(searchFts));
+            var produtoEF = new ProdutoEF(_contexto);
+            var produtosIds = produtoEF.Buscar(termo).Select(p => p.Id);
+            return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id));
         }
 
         public void Salvar()

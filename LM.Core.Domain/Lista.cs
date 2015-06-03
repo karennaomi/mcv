@@ -7,7 +7,7 @@ namespace LM.Core.Domain
     {
         public Lista()
         {
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
             Nome = "Lista Gerada";
             Status = "A";
         }

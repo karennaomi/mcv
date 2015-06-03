@@ -6,7 +6,7 @@ namespace LM.Core.Domain
     {
         public PedidoItem()
         {
-            DataInclusao = DataAlteracao = Data = DateTime.Now;
+            DataInclusao = Data = DateTime.Now;
             Status = StatusPedido.Pendente;
         }
         

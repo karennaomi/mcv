@@ -18,7 +18,7 @@ namespace LM.Core.Domain
         public Integrante()
         {
             Ativo = true;
-            DataInclusao = DataAlteracao = DateTime.Now;
+            DataInclusao = DateTime.Now;
             Tipo = TipoIntegrante.Familia;
         }
 
