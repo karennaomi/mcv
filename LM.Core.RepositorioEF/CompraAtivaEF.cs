@@ -13,6 +13,10 @@ namespace LM.Core.RepositorioEF
         {
             _contexto = new ContextoEF();
         }
+        public CompraAtivaEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
+        }
 
         public CompraAtiva Obter(long pontoDemandaId)
         {
@@ -37,6 +41,13 @@ namespace LM.Core.RepositorioEF
             _contexto.ComprasAtivas.Add(compraAtiva);
             _contexto.SaveChanges();
             return compraAtiva;
+        }
+
+        public void FinalizarCompraAtiva(long usuarioId, long pontoDemandaId)
+        {
+            var compraAtiva = _contexto.ComprasAtivas.FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && c.Usuario.Id == usuarioId && c.FimCompra == null);
+            if(compraAtiva == null) throw new ApplicationException("Não existe uma compra ativa.");
+            compraAtiva.FimCompra = DateTime.Now;
         }
 
         public void Salvar()

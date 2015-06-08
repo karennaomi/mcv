@@ -28,10 +28,18 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
+                AtivarCompra(compra);
                 var app = ObterAppCompra(new CompraEF());
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
+                Assert.IsFalse(new CompraAtivaAplicacao(new CompraAtivaEF(), null).ExisteCompraAtiva(compra.PontoDemanda.Id));
             }
+        }
+
+        private static void AtivarCompra(Compra compra)
+        {
+            var repo = new CompraAtivaEF();
+            repo.AtivarCompra(compra.Integrante.Usuario.Id, compra.PontoDemanda.Id);
         }
 
         [Test]
@@ -40,7 +48,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
-
+                AtivarCompra(compra);
                 var listaItemIds = new[] { new[] { 2, 27397 }, new[] { 3, 27399 } };
                 var compraItemOriginal = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[0][0] }, ProdutoId = listaItemIds[0][1], Quantidade = 2, Valor = 2.5M };
                 var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[1][0] }, ProdutoId = listaItemIds[1][1], Quantidade = 1, Valor = 1, };
@@ -62,6 +70,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
+                AtivarCompra(compra);
                 var item = _fakes.ListaCompraItem();
                 item.Item.Produto.Categorias.First().Id = 2;
                 compra.Itens.Add(item);
@@ -86,7 +95,7 @@ namespace LM.Core.Tests
 
         private CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo)
         {
-            return new CompraAplicacao(compraRepo,  ObterAppPedido(), ObterAppLista());
+            return new CompraAplicacao(compraRepo,  ObterAppPedido(), ObterAppLista(), new Mock<INotificacaoAplicacao>().Object);
         }
 
         private ListaAplicacao ObterAppLista()

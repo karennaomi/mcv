@@ -1,6 +1,5 @@
 ﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,11 +19,13 @@ namespace LM.Core.Application
         private readonly IRepositorioCompra _compraRepo;
         private readonly IPedidoAplicacao _appPedido;
         private readonly IListaAplicacao _appLista;
-        public CompraAplicacao(IRepositorioCompra compraRepo, IPedidoAplicacao appPedido, IListaAplicacao appLista)
+        private readonly INotificacaoAplicacao _appNotificacao;
+        public CompraAplicacao(IRepositorioCompra compraRepo, IPedidoAplicacao appPedido, IListaAplicacao appLista, INotificacaoAplicacao appNotificacao)
         {
             _compraRepo = compraRepo;
             _appPedido = appPedido;
             _appLista = appLista;
+            _appNotificacao = appNotificacao;
         }
 
         public IEnumerable<IItem> ListarSugestao(long pontoDemandaId)
@@ -55,7 +56,9 @@ namespace LM.Core.Application
         public Compra Criar(Compra compra)
         {
             compra.Validar();
-            return _compraRepo.Criar(compra);
+            compra = _compraRepo.Criar(compra);
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compra.Integrante, compra.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, new { Action = "compras" });
+            return compra;
         }
 
         

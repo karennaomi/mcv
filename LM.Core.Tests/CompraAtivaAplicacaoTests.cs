@@ -37,7 +37,7 @@ namespace LM.Core.Tests
         public void FinalizaUmaCompraAtiva()
         {
             _mockRepo.CompraAtiva = _fakes.CompraAtiva();
-            var compraAtiva = ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), new Mock<IServicoRest>().Object).FinalizarCompra(1, 100);
+            var compraAtiva = ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), new Mock<IServicoRest>().Object).DesativarCompra(1, 100);
             Assert.IsNotNull(compraAtiva.FimCompra);
         }
 

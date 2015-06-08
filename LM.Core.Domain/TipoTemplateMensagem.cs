@@ -4,9 +4,10 @@
     {
         Indefinido = 0,
         AtivarCompra = 1,
-        FinalizarCompra = 2,
+        DesativarCompra = 2,
         PedidoItemCriado = 3,
         RecuperarSenha = 4,
-        ConviteIntegrante = 5
+        ConviteIntegrante = 5,
+        FinalizarCompra = 6
     }
 }

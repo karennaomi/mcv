@@ -4,6 +4,7 @@
     {
         CompraAtiva Obter(long pontoDemandaId);
         CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
+        void FinalizarCompraAtiva(long usuarioId, long pontoDemandaId);
         void Salvar();
     }
 }
