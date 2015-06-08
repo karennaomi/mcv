@@ -22,7 +22,17 @@ namespace LM.Core.RepositorioEF
 
         public PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item)
         {
-            if (_contexto.PedidoItens.Any(i => i.PontoDemanda.Id == pontoDemandaId && (i.Produto.Id == item.Produto.Id))) throw new ApplicationException("Este produto já existe na lista.");
+            if (_contexto.PedidoItens.Any(i => i.PontoDemanda.Id == pontoDemandaId && i.Status == StatusPedido.Pendente && (i.Produto.Id == item.Produto.Id))) throw new ApplicationException("Este produto já existe na lista.");
+            var itemDesativado = _contexto.PedidoItens.SingleOrDefault(i => i.PontoDemanda.Id == pontoDemandaId && i.Status == StatusPedido.ExcluidoPeloUsuario && (i.Produto.Id == item.Produto.Id));
+            if (itemDesativado != null)
+            {
+                itemDesativado.Quantidade = item.Quantidade;
+                itemDesativado.Status = StatusPedido.Pendente;
+                itemDesativado.DataAlteracao = DateTime.Now;
+                _contexto.SaveChanges();
+                return itemDesativado;
+            }
+            
             item.PontoDemanda = new PontoDemanda { Id = pontoDemandaId };
             item.Integrante = _contexto.Usuarios.Single(u => u.Id == item.Integrante.Usuario.Id).Integrante;
             _contexto.Entry(item.PontoDemanda).State = EntityState.Unchanged;
@@ -30,6 +40,8 @@ namespace LM.Core.RepositorioEF
             _contexto.PedidoItens.Add(item);
             _contexto.SaveChanges();
             return item;
+            
+            
         }
 
         public void Salvar()
