@@ -10,7 +10,8 @@ namespace LM.Core.Application
         CompraAtiva Obter(long pontoDemandaId);
         bool ExisteCompraAtiva(long pontoDemandaId);
         CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId);
-        CompraAtiva DesativarCompra(long usuarioId, long pontoDemandaId);
+        CompraAtiva DesativarCompra(long pontoDemandaId);
+        CompraAtiva FinalizarCompra(long pontoDemandaId);
     }
 
     public class CompraAtivaAplicacao : ICompraAtivaAplicacao
@@ -38,15 +39,24 @@ namespace LM.Core.Application
             return compraAtiva;
         }
 
-        public CompraAtiva DesativarCompra(long usuarioId, long pontoDemandaId)
+        public CompraAtiva DesativarCompra(long pontoDemandaId)
+        {
+            return DefinarDataFimCompraAtiva(pontoDemandaId, TipoTemplateMensagem.DesativarCompra);
+        }
+
+        public CompraAtiva FinalizarCompra(long pontoDemandaId)
+        {
+            return DefinarDataFimCompraAtiva(pontoDemandaId, TipoTemplateMensagem.FinalizarCompra);
+        }
+
+        private CompraAtiva DefinarDataFimCompraAtiva(long pontoDemandaId, TipoTemplateMensagem template)
         {
             var compraAtiva = Obter(pontoDemandaId);
             compraAtiva.FimCompra = DateTime.Now;
             _repositorio.Salvar();
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, TipoTemplateMensagem.DesativarCompra, new { Action = "compras" });
+            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, template, new { Action = "compras" });
             return compraAtiva;
         }
-
 
         public bool ExisteCompraAtiva(long pontoDemandaId)
         {

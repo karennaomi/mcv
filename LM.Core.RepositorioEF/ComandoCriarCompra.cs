@@ -7,12 +7,11 @@ namespace LM.Core.RepositorioEF
     public class ComandoCriarCompra
     {
         private readonly ContextoEF _contexto;
-        private readonly CompraAtivaEF _compraAtivaRepo;
         private Compra _novaCompra;
         public ComandoCriarCompra(ContextoEF contexto, Compra novaCompra)
         {
             _contexto = contexto;
-            _compraAtivaRepo = new CompraAtivaEF(contexto);
+            
             _novaCompra = novaCompra;
         }
 
@@ -25,8 +24,6 @@ namespace LM.Core.RepositorioEF
             ChecarPontoDemanda();
             
             _novaCompra = _contexto.Compras.Add(_novaCompra);
-
-            _compraAtivaRepo.FinalizarCompraAtiva(_novaCompra.Integrante.Usuario.Id, _novaCompra.PontoDemanda.Id);
 
             return _novaCompra;
         }

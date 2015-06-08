@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace LM.Core.Domain
 {
@@ -64,6 +65,13 @@ namespace LM.Core.Domain
             else if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
             {
                 yield return new ValidationResult("O sexo selecionado é inválido: " + Sexo, new[] { "Sexo" });
+            }
+
+            if (!string.IsNullOrWhiteSpace(Email))
+            {
+                var regex = new Regex("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
+                if (!regex.IsMatch(Email))
+                    yield return new ValidationResult("O e-mail informado é inválido: " + Email, new[] {"Email"});
             }
         }
 

@@ -64,6 +64,21 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void ValidarEmail()
+        {
+            var integrante = _fakes.Integrante();
+            integrante.Email = "g@g";
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(integrante, new ValidationContext(integrante), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O e-mail informado é inválido: g@g", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Email", error.MemberNames.ElementAt(0));
+        }
+
+        [Test]
         public void IntegranteComUsuarioEhUsuarioDoSistema()
         {
             var integrante = _fakes.Integrante();

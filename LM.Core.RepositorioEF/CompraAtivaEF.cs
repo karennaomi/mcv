@@ -43,13 +43,6 @@ namespace LM.Core.RepositorioEF
             return compraAtiva;
         }
 
-        public void FinalizarCompraAtiva(long usuarioId, long pontoDemandaId)
-        {
-            var compraAtiva = _contexto.ComprasAtivas.FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && c.Usuario.Id == usuarioId && c.FimCompra == null);
-            if(compraAtiva == null) throw new ApplicationException("Não existe uma compra ativa.");
-            compraAtiva.FimCompra = DateTime.Now;
-        }
-
         public void Salvar()
         {
             _contexto.SaveChanges();

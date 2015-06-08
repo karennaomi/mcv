@@ -21,15 +21,10 @@ namespace LM.Core.RepositorioEF
 
         public Compra Criar(Compra compra)
         {
-            compra = new ComandoCriarCompra(_contexto, compra).Executar();
-            Salvar();
-            PreencherProdutoId(compra.Itens); //Campo desnecessário no modelo, mas quem fez não sabe dizer onde é usado ou mudar para usar o produto associado ao item se necessário
-            PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
-            LancarEstoque(compra);
-            return compra;
+            return new ComandoCriarCompra(_contexto, compra).Executar();
         }
 
-        private void LancarEstoque(Compra compra)
+        public void LancarEstoque(Compra compra)
         {
             var lancamentoEstoque = new LancamentoEstoque(_contexto);
             foreach (var compraItem in compra.Itens)
@@ -38,7 +33,7 @@ namespace LM.Core.RepositorioEF
             }
         }
 
-        private void PreencherProdutoId(IEnumerable<CompraItem> itens)
+        public void PreencherProdutoId(IEnumerable<CompraItem> itens)
         {
             foreach (var compraItem in itens.Where(i => i.ProdutoId  == null || i.ProdutoId == 0))
             {
@@ -55,7 +50,7 @@ namespace LM.Core.RepositorioEF
             }
         }
 
-        private void PreencheTabelaRelacionamentoCompraPedido(IEnumerable<PedidoCompraItem> itens)
+        public void PreencheTabelaRelacionamentoCompraPedido(IEnumerable<PedidoCompraItem> itens)
         {
             foreach (var compraItem in itens)
             {

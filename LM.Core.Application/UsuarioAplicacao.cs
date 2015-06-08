@@ -100,6 +100,7 @@ namespace LM.Core.Application
         public void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId)
         {
             var usuario = Obter(usuarioId);
+            //TODO: anular todos os devices ids que existir igual ao enviado
             usuario.DeviceType = deviceType;
             usuario.DeviceId = deviceId;
             _repositorio.Salvar();

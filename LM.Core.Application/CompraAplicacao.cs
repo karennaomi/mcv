@@ -19,13 +19,13 @@ namespace LM.Core.Application
         private readonly IRepositorioCompra _compraRepo;
         private readonly IPedidoAplicacao _appPedido;
         private readonly IListaAplicacao _appLista;
-        private readonly INotificacaoAplicacao _appNotificacao;
-        public CompraAplicacao(IRepositorioCompra compraRepo, IPedidoAplicacao appPedido, IListaAplicacao appLista, INotificacaoAplicacao appNotificacao)
+        private readonly ICompraAtivaAplicacao _appCompraAtiva;
+        public CompraAplicacao(IRepositorioCompra compraRepo, IPedidoAplicacao appPedido, IListaAplicacao appLista, ICompraAtivaAplicacao appCompraAtiva)
         {
             _compraRepo = compraRepo;
             _appPedido = appPedido;
             _appLista = appLista;
-            _appNotificacao = appNotificacao;
+            _appCompraAtiva = appCompraAtiva;
         }
 
         public IEnumerable<IItem> ListarSugestao(long pontoDemandaId)
@@ -57,10 +57,38 @@ namespace LM.Core.Application
         {
             compra.Validar();
             compra = _compraRepo.Criar(compra);
-            _appNotificacao.NotificarIntegrantesDoPontoDamanda(compra.Integrante, compra.PontoDemanda, TipoTemplateMensagem.FinalizarCompra, new { Action = "compras" });
+            _appCompraAtiva.FinalizarCompra(compra.PontoDemanda.Id);
+            AtualizarStatusItensPedido(compra.Itens.OfType<PedidoCompraItem>());
+            _compraRepo.PreencherProdutoId(compra.Itens); //Campo desnecessário no modelo, mas quem fez não sabe dizer onde é usado ou mudar para usar o produto associado ao item se necessário
+            _compraRepo.LancarEstoque(compra);
+            _compraRepo.Salvar();
+            _compraRepo.PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
             return compra;
         }
 
-        
+        private static void AtualizarStatusItensPedido(IEnumerable<PedidoCompraItem> itens)
+        {
+            foreach (var pedidoCompraItem in itens)
+            {
+                pedidoCompraItem.Item.Status = GetStatus(pedidoCompraItem.Status);
+            }
+        }
+
+        private static StatusPedido GetStatus(StatusCompra statusCompra)
+        {
+            switch (statusCompra)
+            {
+                case StatusCompra.ItemAComprar:
+                case StatusCompra.NaoEncontrado:
+                    return StatusPedido.Pendente;
+                case StatusCompra.Comprado:
+                    return StatusPedido.Comprado;
+                case StatusCompra.AgoraNao:
+                    return StatusPedido.Rejeitado;
+                case StatusCompra.ItemSubstituido:
+                    return StatusPedido.Substituido;
+                default: return StatusPedido.Pendente;
+            }
+        }
     }
 }
