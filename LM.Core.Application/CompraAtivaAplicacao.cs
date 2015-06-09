@@ -26,15 +26,14 @@ namespace LM.Core.Application
 
         public CompraAtiva Obter(long pontoDemandaId)
         {
-            var compraAtiva = _repositorio.Obter(pontoDemandaId);
-            if (compraAtiva == null) throw new ObjetoNaoEncontradoException("Nenhuma compra ativa para o ponto de demanda especificado.");
-            return compraAtiva;
+            return _repositorio.Obter(pontoDemandaId);
         }
 
         public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
         {
-            if (_repositorio.Obter(pontoDemandaId) != null) throw new ApplicationException("Já existe uma compra ativa neste ponto de demanda.");
-            var compraAtiva = _repositorio.AtivarCompra(usuarioId, pontoDemandaId);
+            var compraAtiva = _repositorio.Obter(pontoDemandaId);
+            if (compraAtiva != null) return compraAtiva;
+            compraAtiva = _repositorio.AtivarCompra(usuarioId, pontoDemandaId);
             _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, TipoTemplateMensagem.AtivarCompra, new { Action = "compras" });
             return compraAtiva;
         }

@@ -42,14 +42,6 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void NaoPodeCriarUmaCompraAtivaSeJaExistirUmaNoPontoDeDemanda()
-        {
-            _mockRepo.CompraAtiva = _fakes.CompraAtiva();
-            var ex = Assert.Throws<ApplicationException>(() => ObterAppCompraAtiva(_mockRepo.GetMockedRepo(), new Mock<IServicoRest>().Object).AtivarCompra(1, 100));
-            Assert.AreEqual("Já existe uma compra ativa neste ponto de demanda.", ex.Message);
-        }
-
-        [Test]
         public void AtivarCompraNotificaUsuarios()
         {
             var servicoRestMock = new Mock<IServicoRest>();
