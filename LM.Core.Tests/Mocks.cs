@@ -126,6 +126,7 @@ namespace LM.Core.Tests
         public IRepositorioCompra GetMockedRepo()
         {
             var mock = new Mock<IRepositorioCompra>();
+            mock.Setup(m => m.Criar(It.IsAny<Compra>())).Returns<Compra>(x => x);
             return mock.Object;
         }
     }

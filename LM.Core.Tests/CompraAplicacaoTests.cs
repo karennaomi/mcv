@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System.CodeDom;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.Domain.Servicos;
@@ -43,13 +44,14 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
-                AtivarCompra(compra, new CompraAtivaEF());
+                var compraAtivaRepo = new CompraAtivaEF();
+                AtivarCompra(compra, compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
                 var listaItemIds = new[] { new[] { 2, 27397 }, new[] { 3, 27399 } };
                 var compraItemOriginal = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[0][0] }, ProdutoId = listaItemIds[0][1], Quantidade = 2, Valor = 2.5M };
                 var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[1][0] }, ProdutoId = listaItemIds[1][1], Quantidade = 1, Valor = 1, };
 
                 compra.AdicionarItemSubstituto(compraItemOriginal, compraItemSubstituto, "teste");
-                var app = ObterAppCompra(new CompraEF(), new CompraAtivaEF());
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
                 Assert.AreEqual(5, compra.Itens.Count);
@@ -65,18 +67,42 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var compra = _fakes.CompraNotSoFake();
-                AtivarCompra(compra, new CompraAtivaEF());
+                var compraAtivaRepo = new CompraAtivaEF();
+                AtivarCompra(compra, compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
+                
                 var item = _fakes.ListaCompraItem();
                 item.Item.Produto.Categorias.First().Id = 2;
                 compra.Itens.Add(item);
 
-                var app = ObterAppCompra(new CompraEF(), new CompraAtivaEF());
                 compra = app.Criar(compra);
                 
                 Assert.IsTrue(compra.Id > 0);
                 Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Id == 12));
                 Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Count() == 2);
             }
+        }
+
+        [Test]
+        public void CriarCompraDefinePedidosComStatusCorretos()
+        {
+            var compra = _fakes.CompraNotSoFake();
+            compra.PontoDemanda.Id = 100;
+            compra.Itens.Clear();
+            compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.AgoraNao, Item = new PedidoItem { Id = 1 }, ProdutoId = 1, Quantidade = 1, Valor = 1.25M });
+            compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.Comprado, Item = new PedidoItem { Id = 2 }, ProdutoId = 2, Quantidade = 1, Valor = 1.25M });
+            compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.ItemAComprar, Item = new PedidoItem { Id = 3 }, ProdutoId = 3, Quantidade = 1, Valor = 1.25M });
+            compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.ItemSubstituido, Item = new PedidoItem { Id = 4 }, ProdutoId = 4, Quantidade = 1, Valor = 1.25M });
+            compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.NaoEncontrado, Item = new PedidoItem { Id = 5 }, ProdutoId = 5, Quantidade = 1, Valor = 1.25M });
+
+            var mockCompraAtivaRepo = new MockCompraAtivaRepo {CompraAtiva = _fakes.CompraAtiva()};
+            var app = ObterAppCompra(_mockRepo.GetMockedRepo(), mockCompraAtivaRepo.GetMockedRepo());
+            compra = app.Criar(compra);
+            Assert.AreEqual(StatusPedido.Rejeitado, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 1).Item.Status);
+            Assert.AreEqual(StatusPedido.Comprado, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 2).Item.Status);
+            Assert.AreEqual(StatusPedido.Pendente, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 3).Item.Status);
+            Assert.AreEqual(StatusPedido.Substituido, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 4).Item.Status);
+            Assert.AreEqual(StatusPedido.Pendente, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 5).Item.Status);
         }
 
         private static void AtivarCompra(Compra compra, IRepositorioCompraAtiva repo)
