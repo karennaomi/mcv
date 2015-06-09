@@ -18,6 +18,7 @@ namespace LM.Core.Application
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
         Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
+        void RemoverIntegrante(long usuarioId, long pontoDemandaId, long integranteId);
     }
 
     public class PontoDemandaAplicacao : IPontoDemandaAplicacao
@@ -104,6 +105,16 @@ namespace LM.Core.Application
             var loja = pontoDemanda.LojasFavoritas.SingleOrDefault(l => l.LocalizadorId == localizadorId);
             if(loja == null) throw new ObjetoNaoEncontradoException("Loja não encontrada.");
             pontoDemanda.LojasFavoritas.Remove(loja);
+            _repositorio.Salvar();
+        }
+
+        public void RemoverIntegrante(long usuarioId, long pontoDemandaId, long integranteId)
+        {
+            var pontoDemanda = Obter(usuarioId, pontoDemandaId);
+            var grupoIntegrante = pontoDemanda.GruposDeIntegrantes.SingleOrDefault(g => g.Integrante.Id == integranteId);
+            if (grupoIntegrante == null) throw new ObjetoNaoEncontradoException("Integrante não pertence ao ponto de demanda atual.");
+            if(pontoDemanda.UsuarioCriador.Id == grupoIntegrante.Integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o usuario criador do ponto.");
+            pontoDemanda.GruposDeIntegrantes.Remove(grupoIntegrante);
             _repositorio.Salvar();
         }
     }

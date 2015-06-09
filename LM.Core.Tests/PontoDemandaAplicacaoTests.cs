@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Transactions;
@@ -159,7 +160,7 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void RemoverLojaFavoritaNoPontoDemanda()
+        public void RemoverLojaFavoritaDoPontoDemanda()
         {
             using (new TransactionScope())
             {
@@ -177,6 +178,61 @@ namespace LM.Core.Tests
                 var pontoDemandaRemovida = app.Obter(usuario.Id, pontoDemanda.Id);
                 Assert.IsFalse(pontoDemandaRemovida.LojasFavoritas.Any());
             }
+        }
+
+        [Test]
+        public void RemoverIntegranteQueNaoPertenceAoPontoDemandaLancaException()
+        {
+            var pontoDemanda = _fakes.PontoDemanda();
+            pontoDemanda.GruposDeIntegrantes=new Collection<GrupoDeIntegrantes>{new GrupoDeIntegrantes{ Integrante = _fakes.Integrante()}};
+            _mockRepo.PontoDemanda = pontoDemanda;
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            Assert.Throws<ObjetoNaoEncontradoException>(() => app.RemoverIntegrante(1, 100, 255));
+        }
+
+        [Test]
+        public void RemoverIntegranteCriadorDoPontoDemandaLancaException()
+        {
+            var pontoDemanda = _fakes.PontoDemanda();
+            var integrante = _fakes.Integrante();
+            integrante.Id = 200;
+            var usuario = _fakes.Usuario();
+            usuario.Id = 1;
+            usuario.Integrante = integrante;
+            integrante.Usuario = usuario;
+            pontoDemanda.UsuarioCriador = usuario;
+            pontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes { Integrante = integrante } };
+            _mockRepo.PontoDemanda = pontoDemanda;
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            Assert.Throws<ApplicationException>(() => app.RemoverIntegrante(1, 100, 200));
+        }
+
+        [Test]
+        public void RemoverIntegranteDoPontoDemanda()
+        {
+            var pontoDemanda = _fakes.PontoDemanda();
+            
+            var integrante = _fakes.Integrante();
+            integrante.Id = 200;
+            var usuario = _fakes.Usuario();
+            usuario.Id = 1;
+            usuario.Integrante = integrante;
+            integrante.Usuario = usuario;
+
+            var integrante1 = _fakes.Integrante();
+            integrante1.Id = 201;
+            var usuario1 = _fakes.Usuario();
+            usuario1.Id = 2;
+            usuario1.Integrante = integrante1;
+            integrante1.Usuario = usuario1;
+
+            pontoDemanda.UsuarioCriador = usuario;
+            pontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes { Integrante = integrante }, new GrupoDeIntegrantes { Integrante = integrante1 } };
+            _mockRepo.PontoDemanda = pontoDemanda;
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            Assert.AreEqual(2, pontoDemanda.GruposDeIntegrantes.Count);
+            app.RemoverIntegrante(1, 100, 201);
+            Assert.AreEqual(1, pontoDemanda.GruposDeIntegrantes.Count);
         }
 
         [Test]
