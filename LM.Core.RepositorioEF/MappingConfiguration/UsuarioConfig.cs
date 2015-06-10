@@ -19,6 +19,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(u => u.Ativo).HasColumnName("FL_ATIVO");
 
             HasMany(u => u.StatusUsuarioPontoDemanda).WithRequired(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
+            HasMany(u => u.Contratos).WithRequired(s => s.Usuario).Map(m => m.MapKey("ID_USUARIO"));
             HasOptional(u => u.Integrante).WithOptionalPrincipal(i => i.Usuario).Map(m => m.MapKey("ID_USUARIO"));
         }
     }

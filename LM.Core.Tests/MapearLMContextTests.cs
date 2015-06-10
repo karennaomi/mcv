@@ -19,6 +19,13 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void MapearContratoUsuario()
+        {
+            var usuario = _contexto.Usuarios.First();
+            Assert.IsTrue(usuario.Contratos.Any());
+        }
+
+        [Test]
         public void MapearPontosDemanda()
         {
             var pontoDemanda = _contexto.PontosDemanda.First();

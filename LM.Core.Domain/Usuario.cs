@@ -25,6 +25,7 @@ namespace LM.Core.Domain
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public virtual ICollection<StatusUsuarioPontoDemanda> StatusUsuarioPontoDemanda { get; set; }
+        public virtual ICollection<ContratoUsuario> Contratos { get; set; }
         public virtual Integrante Integrante { get; set; }
 
         public StatusCadastro StatusAtual()

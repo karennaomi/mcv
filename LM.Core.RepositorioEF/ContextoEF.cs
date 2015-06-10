@@ -65,6 +65,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new FilaMensagemEmailConfig());
             modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
             modelBuilder.Configurations.Add(new LegacyTokenConfig());
+            modelBuilder.Configurations.Add(new ContratoUsuarioConfig());
         }
     }
 }

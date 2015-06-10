@@ -51,6 +51,7 @@
     <Compile Include="Compra.cs" />
     <Compile Include="CompraAtiva.cs" />
     <Compile Include="CompraItem.cs" />
+    <Compile Include="ContratoUsuario.cs" />
     <Compile Include="CustomException\ObjetoNaoEncontradoException.cs" />
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
     <Compile Include="CustomException\PropertyException.cs" />
