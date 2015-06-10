@@ -132,6 +132,19 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void NaoValidaUmUsuarioDesativado()
+        {
+            var usuarioLogin = _fakes.Usuario();
+            usuarioLogin.Login = "usuario@login.com";
+            usuarioLogin.Senha = "1000:tQGg+TbIlRzwKkuiAH0EvzMCYmY1Y6V2:ZRp/QGdEktD35jvoPTHWEnAom7btjmCV"; //hash de '789456'
+            usuarioLogin.Ativo = false;
+            _mockRepo.Usuario = usuarioLogin;
+            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            var ex = Assert.Throws<LoginInvalidoException>(() => app.ValidarLogin("usuario@login.com", "789456"));
+            Assert.AreEqual("Usuário desativado.", ex.Message);
+        }
+
+        [Test]
         public void AtualizaStatusCadastro()
         {
             var usuario = _fakes.Usuario();

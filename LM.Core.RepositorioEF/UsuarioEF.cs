@@ -27,9 +27,7 @@ namespace LM.Core.RepositorioEF
 
         public Usuario ObterPorLogin(string login)
         {
-            var usuario = _contexto.Usuarios.SingleOrDefault(u => u.Login == login);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, login " + login);
-            return usuario;
+            return _contexto.Usuarios.SingleOrDefault(u => u.Login == login);
         }
 
         public Usuario Criar(Usuario usuario)

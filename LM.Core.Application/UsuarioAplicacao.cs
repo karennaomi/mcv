@@ -34,7 +34,9 @@ namespace LM.Core.Application
 
         public Usuario Obter(string login)
         {
-            return _repositorio.ObterPorLogin(login);
+            var usuario = _repositorio.ObterPorLogin(login);
+            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, login " + login);
+            return usuario;
         }
 
         public Usuario Criar(Usuario usuario)
@@ -74,11 +76,9 @@ namespace LM.Core.Application
 
         public Usuario ValidarLogin(string login, string senha)
         {
-            var usuario = _repositorio.ObterPorLogin(login);
-            if (PasswordHash.ValidatePassword(senha, usuario.Senha))
-            {
-                return usuario;
-            }
+            var usuario = Obter(login);
+            if (!usuario.Ativo) throw new LoginInvalidoException("Usuário desativado.");
+            if (PasswordHash.ValidatePassword(senha, usuario.Senha)) return usuario;
             throw new LoginInvalidoException();
         }
 
