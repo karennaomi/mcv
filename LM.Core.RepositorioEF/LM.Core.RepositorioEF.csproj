@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComandoAtualizarPontoDemanda.cs" />
+    <Compile Include="ContextoCorreiosEF.cs" />
+    <Compile Include="CorreiosEF.cs" />
     <Compile Include="LancamentoEstoque.cs" />
     <Compile Include="MappingConfiguration\ContratoUsuarioConfig.cs" />
     <Compile Include="UfEF.cs" />

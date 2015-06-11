@@ -55,6 +55,7 @@
     <Compile Include="CustomException\ObjetoNaoEncontradoException.cs" />
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
     <Compile Include="CustomException\PropertyException.cs" />
+    <Compile Include="EnderecoCorreios.cs" />
     <Compile Include="EnderecoViaCep.cs" />
     <Compile Include="EnderecoPostmon.cs" />
     <Compile Include="FilaItem.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Produto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecuperarSenha.cs" />
+    <Compile Include="Repositorio\IRepositorioCorreios.cs" />
     <Compile Include="Repositorio\IRepositorioUf.cs" />
     <Compile Include="Repositorio\IRepositorioLegacyToken.cs" />
     <Compile Include="Repositorio\IRepositorioFilaItem.cs" />

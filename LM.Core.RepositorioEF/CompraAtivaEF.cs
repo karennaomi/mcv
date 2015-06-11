@@ -20,7 +20,7 @@ namespace LM.Core.RepositorioEF
 
         public CompraAtiva Obter(long pontoDemandaId)
         {
-            return _contexto.ComprasAtivas.FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && !c.FimCompra.HasValue);
+            return _contexto.ComprasAtivas.Include("Usuario.Integrante").Include("PontoDemanda").FirstOrDefault(c => c.PontoDemanda.Id == pontoDemandaId && !c.FimCompra.HasValue);
         }
 
         public CompraAtiva AtivarCompra(long usuarioId, long pontoDemandaId)
