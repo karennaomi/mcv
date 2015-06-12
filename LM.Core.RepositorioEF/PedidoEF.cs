@@ -32,16 +32,13 @@ namespace LM.Core.RepositorioEF
                 _contexto.SaveChanges();
                 return itemDesativado;
             }
-            
-            item.PontoDemanda = new PontoDemanda { Id = pontoDemandaId };
+
+            item.PontoDemanda = _contexto.PontosDemanda.Single(p => p.Id == pontoDemandaId);
             item.Integrante = _contexto.Usuarios.Single(u => u.Id == item.Integrante.Usuario.Id).Integrante;
-            _contexto.Entry(item.PontoDemanda).State = EntityState.Unchanged;
-            _contexto.Entry(item.Produto).State = EntityState.Unchanged;
+            item.Produto = _contexto.Produtos.Single(p => p.Id == item.Produto.Id);
             _contexto.PedidoItens.Add(item);
             _contexto.SaveChanges();
             return item;
-            
-            
         }
 
         public void Salvar()
