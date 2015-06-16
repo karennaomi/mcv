@@ -11,6 +11,11 @@ namespace LM.Core.RepositorioEF
         {
             Database.SetInitializer<ContextoCorreiosEF>(null);
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EnderecoCorreios>().HasKey(e => e.Cep);
+        }
     }
 }
 

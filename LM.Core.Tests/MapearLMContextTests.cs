@@ -167,6 +167,14 @@ namespace LM.Core.Tests
             var ufs = _contexto.Ufs;
             Assert.IsTrue(ufs.Any());
         }
+
+        [Test]
+        public void MapearCorreiosCep()
+        {
+            var contextoCorreios = new ContextoCorreiosEF();
+            var endereco = contextoCorreios.EnderecosCorreios.First();
+            Assert.IsNotNull(endereco);
+        }
     }
 }
 
