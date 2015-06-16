@@ -1,6 +1,5 @@
 ﻿using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace LM.Core.RepositorioEF
@@ -16,7 +15,7 @@ namespace LM.Core.RepositorioEF
 
         public EnderecoCorreios BuscarPorCep(string cep)
         {
-            return _contexto.Database.SqlQuery<EnderecoCorreios>("SP_BUSCA_CEP @CEP", new SqlParameter("@CEP", cep)).FirstOrDefault();
+            return _contexto.EnderecosCorreios.FirstOrDefault(c => c.Cep == cep.Replace("-", ""));
         }
     }
 }
