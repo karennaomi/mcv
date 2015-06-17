@@ -65,7 +65,7 @@ namespace LM.Core.RepositorioEF
                 else if (compraItem is PedidoCompraItem)
                 {
                     var pedidoCompraItem = compraItem as PedidoCompraItem;
-                    if (pedidoCompraItem.Item.Id > 0) _contexto.Entry(pedidoCompraItem.Item).State = EntityState.Unchanged;
+                    pedidoCompraItem.Item = _contexto.PedidoItens.Single(p => p.Id == pedidoCompraItem.Item.Id);
                 }
             }
         }
