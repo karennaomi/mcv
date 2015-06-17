@@ -20,7 +20,7 @@ namespace LM.Core.Tests
         public void CepValidoRetornaEndereco()
         {
             var app = new EnderecoCorreiosService(new CorreiosEF());
-            Assert.IsNotInstanceOf<Endereco>(app.BuscarPorCep("00000000"));
+            Assert.IsInstanceOf<Endereco>(app.BuscarPorCep("14090-495"));
         }
     }
 }
