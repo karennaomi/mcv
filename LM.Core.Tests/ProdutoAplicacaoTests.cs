@@ -17,6 +17,14 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void BuscaUmProdutoPorParteDoNome()
+        {
+            var app = new ProdutoAplicacao(new ProdutoEF());
+            var produtos = app.Buscar("arro");
+            Assert.IsTrue(produtos.Any());
+        }
+
+        [Test]
         public void BuscaUmProdutoComEspaco()
         {
             var app = new ProdutoAplicacao(new ProdutoEF());
