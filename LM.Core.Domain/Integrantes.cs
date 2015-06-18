@@ -89,13 +89,13 @@ namespace LM.Core.Domain
 
         public bool PodeSerConvidado()
         {
-            return Usuario == null && !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= Constantes.IdadeMinimaCadastro;
+            return Usuario == null && !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= Constantes.Integrante.IdadeMinimaCadastro;
         }
 
         private bool ValidarDataConvite()
         {
             if (!DataConvite.HasValue) return true;
-            return DataConvite.Value < DateTime.Now.AddDays(-Constantes.DiasMinimosParaConvidarNovamente);
+            return DataConvite.Value < DateTime.Now.AddDays(-Constantes.Integrante.DiasMinimosParaConvidarNovamente);
         }
     }
 }

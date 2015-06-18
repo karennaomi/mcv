@@ -15,9 +15,9 @@ namespace LM.Core.Domain
 
         public string ImagemPrincipal(int interfaceId, int resolucaoId = 3)
         {
-            if (Imagens == null) return Constantes.CategoriaImagemPadrao;
+            if (Imagens == null) return Constantes.Categoria.CategoriaImagemPadrao;
             var imagem = Imagens.SingleOrDefault(i => i.Interface == (ImagemInterface)interfaceId && i.Resolucao == (ImagemResolucao)resolucaoId);
-            return imagem == null ? Constantes.CategoriaImagemPadrao : imagem.Path;
+            return imagem == null ? Constantes.Categoria.CategoriaImagemPadrao : imagem.Path;
         }
     }
 }

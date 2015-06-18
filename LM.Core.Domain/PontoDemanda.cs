@@ -10,6 +10,7 @@ namespace LM.Core.Domain
         {
             DataInclusao = DateTime.Now;
             Ativo = true;
+            QuantidadeDiasCoberturaEstoque = Constantes.PontoDemanda.QuantidadeDiasCoberturaEstoque;
         }
         public long Id { get; set; }
         public string Nome { get; set; }

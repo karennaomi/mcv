@@ -17,7 +17,7 @@ namespace LM.Core.Domain
         [Required(ErrorMessage = "O campo Login é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         public string Login { get; set; }
         [Required(ErrorMessage = "O campo Senha é de preenchimento obrigatório!", AllowEmptyStrings = false)]
-        [MinLength(Constantes.TamanhoMinimoSenha, ErrorMessage = "A senha deve possuir no mínimo " + Constantes.TamanhoMinimoSenhaString + " caracteres.")]
+        [MinLength(Constantes.Usuario.TamanhoMinimoSenha, ErrorMessage = "A senha deve possuir no mínimo " + Constantes.Usuario.TamanhoMinimoSenhaString + " caracteres.")]
         public string Senha { get; set; }
         public bool Ativo { get; set; }
         public string DeviceId { get; set; }
@@ -35,9 +35,9 @@ namespace LM.Core.Domain
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Integrante.ObterIdade() < Constantes.IdadeMinimaCadastro)
+            if (Integrante.ObterIdade() < Constantes.Integrante.IdadeMinimaCadastro)
             {
-                yield return new ValidationResult(string.Format("O usuário deve ter {0} anos ou mais.", Constantes.IdadeMinimaCadastro), new[] { "Integrante.DataNascimento" });
+                yield return new ValidationResult(string.Format("O usuário deve ter {0} anos ou mais.", Constantes.Integrante.IdadeMinimaCadastro), new[] { "Integrante.DataNascimento" });
             }
         }
     }
