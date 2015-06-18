@@ -8,7 +8,7 @@ namespace LM.Core.Domain
 {
     public class Produto
     {
-        public Produto() : this(0)
+        public Produto() : this(Constantes.CategoriaPadrao)
         { }
 
         public Produto(int categoriaId)
@@ -20,7 +20,7 @@ namespace LM.Core.Domain
 
         public int Id { get; set; }
         [Required(ErrorMessage = "O codigo EAN do produto é obrigatório.")]
-        [MaxLength(13, ErrorMessage = "O codigo EAN deve ter no máximo 13 caracteres.")]
+        [MaxLength(Constantes.TamanhoMaximoEan, ErrorMessage = "O codigo EAN deve ter no máximo " + Constantes.TamanhoMaximoEanString + " caracteres.")]
         public string Ean { get; set; }
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }

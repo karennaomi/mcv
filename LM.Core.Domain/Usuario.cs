@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LM.Core.Domain
 {
-    public class Usuario
+    public class Usuario : IValidatableObject
     {
         public Usuario()
         {
@@ -14,10 +14,10 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
-        [Required(ErrorMessage = "O campo [Login] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "O campo Login é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         public string Login { get; set; }
-        [Required(ErrorMessage = "O campo [Senha] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
-        [MinLength(6, ErrorMessage = "A senha deve possuir no mínimo 6 caracteres.")]
+        [Required(ErrorMessage = "O campo Senha é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        [MinLength(Constantes.TamanhoMinimoSenha, ErrorMessage = "A senha deve possuir no mínimo " + Constantes.TamanhoMinimoSenhaString + " caracteres.")]
         public string Senha { get; set; }
         public bool Ativo { get; set; }
         public string DeviceId { get; set; }
@@ -31,6 +31,14 @@ namespace LM.Core.Domain
         public StatusCadastro StatusAtual()
         {
             return StatusUsuarioPontoDemanda.OrderByDescending(s => s.Id).First().StatusCadastro;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Integrante.ObterIdade() < Constantes.IdadeMinimaCadastro)
+            {
+                yield return new ValidationResult(string.Format("O usuário deve ter {0} anos ou mais.", Constantes.IdadeMinimaCadastro), new[] { "Integrante.DataNascimento" });
+            }
         }
     }
 }

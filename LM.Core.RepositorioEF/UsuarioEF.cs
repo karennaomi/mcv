@@ -1,7 +1,6 @@
 ﻿using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
-using System;
 using System.Linq;
 
 namespace LM.Core.RepositorioEF

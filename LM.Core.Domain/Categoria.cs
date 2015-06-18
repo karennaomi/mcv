@@ -15,10 +15,9 @@ namespace LM.Core.Domain
 
         public string ImagemPrincipal(int interfaceId, int resolucaoId = 3)
         {
-            const string imagemDefault = "http://www.smvcompany.com.br/imagens-prod/placeholder.png";
-            if (Imagens == null) return imagemDefault;
+            if (Imagens == null) return Constantes.CategoriaImagemPadrao;
             var imagem = Imagens.SingleOrDefault(i => i.Interface == (ImagemInterface)interfaceId && i.Resolucao == (ImagemResolucao)resolucaoId);
-            return imagem == null ? imagemDefault : imagem.Path;
+            return imagem == null ? Constantes.CategoriaImagemPadrao : imagem.Path;
         }
     }
 }

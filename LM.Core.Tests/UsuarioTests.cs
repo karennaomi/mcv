@@ -19,7 +19,7 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void ValidaLoginObrigatorio()
+        public void NaoValidaLoginNulo()
         {
             var usuario = _fakes.Usuario();
             usuario.Login = null;
@@ -28,13 +28,13 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O campo [Login] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual("O campo Login é de preenchimento obrigatório!", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Login", error.MemberNames.ElementAt(0));
         }
 
         [Test]
-        public void ValidaSenhaObrigatorio()
+        public void NaoValidaSenhaNula()
         {
             var usuario = _fakes.Usuario();
             usuario.Senha = null;
@@ -43,16 +43,16 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O campo [Senha] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual("O campo Senha é de preenchimento obrigatório!", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Senha", error.MemberNames.ElementAt(0));
         }
 
         [Test]
-        public void ValidaSenhaTamanhoMinino()
+        public void NaoValidaSenhaComMenosDe6Caracteres()
         {
             var usuario = _fakes.Usuario();
-            usuario.Senha = "123";
+            usuario.Senha = "12345";
             var validationResults = new List<ValidationResult>();
             var result = Validator.TryValidateObject(usuario, new ValidationContext(usuario), validationResults, true);
             Assert.IsFalse(result);
@@ -61,6 +61,21 @@ namespace LM.Core.Tests
             Assert.AreEqual("A senha deve possuir no mínimo 6 caracteres.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Senha", error.MemberNames.ElementAt(0));
+        }
+
+        [Test]
+        public void NaoValidaUsuarioComMenosDe13Anos()
+        {
+            var usuario = _fakes.Usuario();
+            usuario.Integrante.DataNascimento = DateTime.Now.AddYears(-12);
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(usuario, new ValidationContext(usuario), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O usuário deve ter 13 anos ou mais.", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Integrante.DataNascimento", error.MemberNames.ElementAt(0));
         }
 
         [Test]

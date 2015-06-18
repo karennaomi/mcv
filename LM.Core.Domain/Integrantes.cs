@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -25,11 +24,10 @@ namespace LM.Core.Domain
 
         public long Id { get; set; }
         
-        [Required(ErrorMessage = "O campo [Nome] é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "O nome é de preenchimento obrigatório!", AllowEmptyStrings = false)]
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Cpf { get; set; }
-        [DisplayName("Data de Nascimento")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DataNascimento { get; set; }
         public bool EhUsuarioConvidado { get; set; }
@@ -60,7 +58,7 @@ namespace LM.Core.Domain
             
             if (string.IsNullOrWhiteSpace(Sexo))
             {
-                yield return new ValidationResult("O campo [Sexo] é de preenchimento obrigatório!", new[] { "Sexo" });
+                yield return new ValidationResult("O sexo é de preenchimento obrigatório!", new[] { "Sexo" });
             }
             else if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
             {
@@ -91,13 +89,13 @@ namespace LM.Core.Domain
 
         public bool PodeSerConvidado()
         {
-            return Usuario == null && !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= 13;
+            return Usuario == null && !string.IsNullOrWhiteSpace(Email) && ValidarDataConvite() && ObterIdade() >= Constantes.IdadeMinimaCadastro;
         }
 
         private bool ValidarDataConvite()
         {
             if (!DataConvite.HasValue) return true;
-            return DataConvite.Value < DateTime.Now.AddDays(-1);
+            return DataConvite.Value < DateTime.Now.AddDays(-Constantes.DiasMinimosParaConvidarNovamente);
         }
     }
 }
