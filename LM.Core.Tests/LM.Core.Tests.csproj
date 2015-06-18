@@ -94,6 +94,7 @@
     <Compile Include="Fakes.cs" />
     <Compile Include="MapearLMContextTests.cs" />
     <Compile Include="ProdutoAplicacaoTests.cs" />
+    <Compile Include="ProdutoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PontoDemandaAplicacaoTests.cs" />
     <Compile Include="IntegranteAplicacaoTests.cs" />

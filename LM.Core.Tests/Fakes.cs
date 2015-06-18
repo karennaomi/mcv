@@ -103,7 +103,7 @@ namespace LM.Core.Tests
             };
         }
 
-        internal Produto Produto(string categoria)
+        internal Produto Produto(string categoria = "Categoria de teste")
         {
             return new Produto
             {

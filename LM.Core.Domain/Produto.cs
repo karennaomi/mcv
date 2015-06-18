@@ -20,6 +20,7 @@ namespace LM.Core.Domain
 
         public int Id { get; set; }
         [Required(ErrorMessage = "O codigo EAN do produto é obrigatório.")]
+        [MaxLength(13, ErrorMessage = "O codigo EAN deve ter no máximo 13 caracteres.")]
         public string Ean { get; set; }
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
