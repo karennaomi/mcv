@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -31,6 +32,14 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.8")]
-[assembly: AssemblyFileVersion("1.8.8")]
-[assembly: AssemblyInformationalVersion("1.8.8")]
+[assembly: AssemblyVersion(LM.Core.Domain.Properties.Version.CurrentVersion)]
+[assembly: AssemblyFileVersion(LM.Core.Domain.Properties.Version.CurrentVersion)]
+[assembly: AssemblyInformationalVersion(LM.Core.Domain.Properties.Version.CurrentVersion)]
+
+namespace LM.Core.Domain.Properties
+{
+    internal struct Version
+    {
+        public const string CurrentVersion = "1.8.8";
+    }
+}

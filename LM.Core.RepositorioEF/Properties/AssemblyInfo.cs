@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+using LM.Core.RepositorioEF.Properties;
+
 [assembly: AssemblyTitle("LM.Core.RepositorioEF")]
 [assembly: AssemblyDescription("Repositório EntityFramework do projeto Lista Mágica")]
 [assembly: AssemblyConfiguration("")]
@@ -31,6 +33,15 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7.11")]
-[assembly: AssemblyFileVersion("1.7.11")]
-[assembly: AssemblyInformationalVersion("1.7.11")]
+[assembly: AssemblyVersion(Version.CurrentVersion)]
+[assembly: AssemblyFileVersion(Version.CurrentVersion)]
+[assembly: AssemblyInformationalVersion(Version.CurrentVersion)]
+
+namespace LM.Core.RepositorioEF.Properties
+{
+    internal struct Version
+    {
+        public const string CurrentVersion = "1.7.11";
+    }
+}
+

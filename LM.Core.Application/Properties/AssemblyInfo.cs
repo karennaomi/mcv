@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+using LM.Core.Application.Properties;
+
 [assembly: AssemblyTitle("LM.Core.Application")]
 [assembly: AssemblyDescription("Camada de aplicação do projeto Lista Mágica")]
 [assembly: AssemblyConfiguration("")]
@@ -31,6 +33,14 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.14")]
-[assembly: AssemblyFileVersion("1.8.14")]
-[assembly: AssemblyInformationalVersion("1.8.14")]
+[assembly: AssemblyVersion(Version.CurrentVersion)]
+[assembly: AssemblyFileVersion(Version.CurrentVersion)]
+[assembly: AssemblyInformationalVersion(Version.CurrentVersion)]
+
+namespace LM.Core.Application.Properties
+{
+    internal struct Version
+    {
+        public const string CurrentVersion = "1.8.14";
+    }
+}
