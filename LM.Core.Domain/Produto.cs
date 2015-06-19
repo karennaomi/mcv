@@ -8,7 +8,7 @@ namespace LM.Core.Domain
 {
     public class Produto
     {
-        public Produto() : this(Constantes.Categoria.CategoriaPadrao)
+        public Produto() : this(0)
         { }
 
         public Produto(int categoriaId)

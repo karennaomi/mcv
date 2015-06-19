@@ -41,6 +41,6 @@ namespace LM.Core.Application.Properties
 {
     internal struct Version
     {
-        public const string CurrentVersion = "1.8.15";
+        public const string CurrentVersion = "1.8.16";
     }
 }
