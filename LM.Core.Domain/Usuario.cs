@@ -35,7 +35,7 @@ namespace LM.Core.Domain
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Integrante.ObterIdade() < Constantes.Integrante.IdadeMinimaCadastro)
+            if (Integrante != null && Integrante.ObterIdade() < Constantes.Integrante.IdadeMinimaCadastro)
             {
                 yield return new ValidationResult(string.Format("O usuário deve ter {0} anos ou mais.", Constantes.Integrante.IdadeMinimaCadastro), new[] { "Integrante.DataNascimento" });
             }

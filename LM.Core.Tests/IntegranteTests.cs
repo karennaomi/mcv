@@ -28,7 +28,7 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O campo [Nome] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual("O nome é de preenchimento obrigatório!", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Nome", error.MemberNames.ElementAt(0));
         }
@@ -43,7 +43,7 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O campo [Sexo] é de preenchimento obrigatório!", error.ErrorMessage);
+            Assert.AreEqual("O sexo é de preenchimento obrigatório!", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Sexo", error.MemberNames.ElementAt(0));
         }

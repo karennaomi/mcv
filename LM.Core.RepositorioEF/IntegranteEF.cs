@@ -39,7 +39,7 @@ namespace LM.Core.RepositorioEF
 
         public void VerificarSeEmailJaExiste(string email)
         {
-            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email)) throw new IntegranteExistenteException("Email");
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email)) throw new IntegranteExistenteException("E-mail");
         }
 
         public void Salvar()
