@@ -12,8 +12,8 @@ namespace LM.Core.Application
         IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
         IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status);
         IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status);
-        void RemoverItem(long pontoDemandaId, long itemId);
-        void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade);
+        void RemoverItem(long pontoDemandaId, long usuarioId, long itemId);
+        void AtualizarQuantidadeDoItem(long pontoDemandaId, long usuarioId, long itemId, decimal quantidade);
         PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item);
     }
 
@@ -48,18 +48,20 @@ namespace LM.Core.Application
             return itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
         }
 
-        public void RemoverItem(long pontoDemandaId, long itemId)
+        public void RemoverItem(long pontoDemandaId, long usuarioId, long itemId)
         {
             var itens = _repositorio.ListarItens(pontoDemandaId);
             var item = ObterItem(itens, itemId);
+            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode remove-lo.");
             item.Status = StatusPedido.ExcluidoPeloUsuario;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
 
-        public void AtualizarQuantidadeDoItem(long pontoDemandaId, long itemId, decimal quantidade)
+        public void AtualizarQuantidadeDoItem(long pontoDemandaId, long usuarioId, long itemId, decimal quantidade)
         {
             var item = ObterItem(_repositorio.ListarItens(pontoDemandaId), itemId);
+            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode alterá-lo.");
             item.Quantidade = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();

@@ -44,7 +44,7 @@ namespace LM.Core.Application
                 }
             }
             throw new ApplicationException("Não foi possível localizar um endereço por cep.");
-        }
+       }
 
         public IList<Endereco> BuscarPorEndereco(string endereco)
         {

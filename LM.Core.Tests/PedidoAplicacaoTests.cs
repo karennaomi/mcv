@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
@@ -15,15 +16,19 @@ namespace LM.Core.Tests
     public class PedidoAplicacaoTests
     {
         private static long _pontoDemandaId;
+        private Fakes _fakes;
+        private readonly MockPedidoRepo _mockRepo;
         public PedidoAplicacaoTests()
         {
             _pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
+            _fakes = new Fakes();
+            _mockRepo = new MockPedidoRepo();
         }
 
         [Test]
         public void AdiconarUmItemEmUmPedido()
         {
-            var pedidoApp = ObterPedidoApp();
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
 
             var item = new PedidoItem
             {
@@ -42,7 +47,7 @@ namespace LM.Core.Tests
         [Test]
         public void NaoPodeAdiconarUmItemRepetidoEmUmPedido()
         {
-            var pedidoApp = ObterPedidoApp();
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
 
             var item1 = new PedidoItem
             {
@@ -62,7 +67,7 @@ namespace LM.Core.Tests
             {
                 item1 = pedidoApp.AdicionarItem(_pontoDemandaId, item1);
                 Assert.IsTrue(item1.Id > 0);
-                var app2 = ObterPedidoApp();
+                var app2 = ObterPedidoApp(new PedidoEF());
                 Assert.Throws<ApplicationException>(() => app2.AdicionarItem(_pontoDemandaId, item2));
             }
         }
@@ -70,7 +75,7 @@ namespace LM.Core.Tests
         [Test]
         public void RemoverUmItemDeUmPedido()
         {
-            var pedidoApp = ObterPedidoApp();
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
 
             var itens = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000);
             var idItem = itens.First().Id;
@@ -78,7 +83,7 @@ namespace LM.Core.Tests
             
             using (new TransactionScope())
             {
-                pedidoApp.RemoverItem(_pontoDemandaId, idItem);
+                pedidoApp.RemoverItem(_pontoDemandaId, 1, idItem);
                 Assert.IsTrue(pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).Count() == totalDeItems - 1);
             }
         }
@@ -86,7 +91,7 @@ namespace LM.Core.Tests
         [Test]
         public void ListarSecoesDeUmPedido()
         {
-            var pedidoApp = ObterPedidoApp();
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
 
             var secoes = pedidoApp.ListarSecoes(_pontoDemandaId, StatusPedido.Pendente);
             Assert.IsTrue(secoes.All(s => s.SubCategorias.Count > 0));
@@ -95,19 +100,43 @@ namespace LM.Core.Tests
         [Test]
         public void AtualizarQuantidadeDeUmItemDeUmPedido()
         {
-            var pedidoApp = ObterPedidoApp();
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
 
             var item = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First();
             using (new TransactionScope())
             {
-                pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, item.Id, 12);
+                pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, 1, item.Id, 12);
                 Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First().Quantidade);
             }
         }
 
-        private static IPedidoAplicacao ObterPedidoApp()
+        [Test]
+        public void SomenteUsuarioQueCriouOPedidoPodeAlterarQuantidade()
         {
-            return new PedidoAplicacao(new PedidoEF(), GetCompraAtivaApp(), GetAppNotificacao(GetMockRestService().Object));
+            var pedidoItem = _fakes.PedidoItem();
+            pedidoItem.Id = 400;
+            pedidoItem.Integrante = new Integrante{Usuario = new Usuario{ Id = 2 }};
+            _mockRepo.PedidoItens = new List<PedidoItem> {pedidoItem};
+            
+            var appPedido = ObterPedidoApp(_mockRepo.GetMockedRepo());
+            Assert.Throws<ApplicationException>(() => appPedido.AtualizarQuantidadeDoItem(100, 1, 400, 3));
+        }
+
+        [Test]
+        public void SomenteUsuarioQueCriouOPedidoPodeRemover()
+        {
+            var pedidoItem = _fakes.PedidoItem();
+            pedidoItem.Id = 400;
+            pedidoItem.Integrante = new Integrante { Usuario = new Usuario { Id = 2 } };
+            _mockRepo.PedidoItens = new List<PedidoItem> { pedidoItem };
+
+            var appPedido = ObterPedidoApp(_mockRepo.GetMockedRepo());
+            Assert.Throws<ApplicationException>(() => appPedido.RemoverItem(100, 1, 400));
+        }
+
+        private static IPedidoAplicacao ObterPedidoApp(IRepositorioPedido repoPedido)
+        {
+            return new PedidoAplicacao(repoPedido, GetCompraAtivaApp(), GetAppNotificacao(GetMockRestService().Object));
         }
 
         private static ICompraAtivaAplicacao GetCompraAtivaApp()
