@@ -76,10 +76,17 @@ namespace LM.Core.Application
 
         public Usuario ValidarLogin(string login, string senha)
         {
-            var usuario = Obter(login);
-            if (!usuario.Ativo) throw new LoginInvalidoException("Usuário desativado.");
-            if (PasswordHash.ValidatePassword(senha, usuario.Senha)) return usuario;
-            throw new LoginInvalidoException();
+            try
+            {
+                var usuario = Obter(login);
+                if (!usuario.Ativo) throw new LoginInvalidoException("Usuário desativado.");
+                if (PasswordHash.ValidatePassword(senha, usuario.Senha)) return usuario;
+                throw new LoginInvalidoException();
+            }
+            catch (ObjetoNaoEncontradoException)
+            {
+                throw new LoginInvalidoException();
+            }
         }
 
         public void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null)
