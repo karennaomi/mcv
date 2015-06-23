@@ -130,5 +130,17 @@ namespace LM.Core.Tests
             return mock.Object;
         }
     }
+
+    public class MockProdutoRepo
+    {
+        public IEnumerable<Produto> Produtos { private get; set; }
+
+        public IRepositorioProduto GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioProduto>();
+            mock.Setup(m => m.ListarPorCategoria(It.IsAny<int>())).Returns(Produtos);
+            return mock.Object;
+        }
+    }
 }
 

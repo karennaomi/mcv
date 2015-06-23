@@ -40,6 +40,11 @@ namespace LM.Core.Domain
         {
             return Imagens != null && Imagens.Any() ? Imagens.First() : new Imagem();
         }
+
+        public static Func<Produto, bool> ProtectProductPredicate(long usuarioId, long pontoDemandaId)
+        {
+            return (p => ((p.UsuarioId == null || p.UsuarioId == usuarioId) ||((p.PontoDemandaId == null || p.PontoDemandaId == pontoDemandaId))));
+        }
     }
 
     public class ProdutoInfo

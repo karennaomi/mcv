@@ -36,7 +36,7 @@ namespace LM.Core.RepositorioEF
         public IEnumerable<ListaItem> BuscarItens(Lista lista, long usuarioId, long pontoDemandaId, string termo)
         {
             var produtoEF = new ProdutoEF(_contexto);
-            var produtosIds = produtoEF.Buscar(usuarioId, pontoDemandaId, termo).Select(p => p.Id);
+            var produtosIds = produtoEF.Buscar(termo).Where(Produto.ProtectProductPredicate(usuarioId, pontoDemandaId)).Select(p => p.Id);
             return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id));
         }
 

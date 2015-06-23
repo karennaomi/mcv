@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using System.Linq;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
@@ -28,12 +30,12 @@ namespace LM.Core.Application
 
         public IEnumerable<Produto> ListarPorCategoria(long usuarioId, long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarPorCategoria(usuarioId, pontoDemandaId, categoriaId);
+            return _repositorio.ListarPorCategoria(categoriaId).Where(Produto.ProtectProductPredicate(usuarioId, pontoDemandaId));
         }
 
         public IEnumerable<Produto> Buscar(long usuarioId, long pontoDemandaId, string termo)
         {
-            return _repositorio.Buscar(usuarioId, pontoDemandaId, termo);
+            return _repositorio.Buscar(termo).Where(Produto.ProtectProductPredicate(usuarioId, pontoDemandaId));
         }
     }
 }
