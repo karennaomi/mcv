@@ -21,9 +21,11 @@ namespace LM.Core.RepositorioEF
 
         public Produto Criar(Produto produto)
         {
-            foreach (var categoria in produto.Categorias)
+            var categoriasIds = produto.Categorias.Select(c => c.Id);
+            produto.Categorias.Clear();
+            foreach (var categoriaId in categoriasIds)
             {
-                _contexto.Entry(categoria).State = EntityState.Unchanged;
+                produto.Categorias.Add(_contexto.Categorias.Single(c => c.Id == categoriaId));
             }
             produto = _contexto.Produtos.Add(produto);
             return produto;
