@@ -35,10 +35,18 @@ namespace LM.Core.RepositorioEF
 
             item.PontoDemanda = _contexto.PontosDemanda.Single(p => p.Id == pontoDemandaId);
             item.Integrante = _contexto.Usuarios.Single(u => u.Id == item.Integrante.Usuario.Id).Integrante;
-            item.Produto = _contexto.Produtos.Single(p => p.Id == item.Produto.Id);
+            item.Produto = ChecarProduto(item.Produto);
             _contexto.PedidoItens.Add(item);
             _contexto.SaveChanges();
             return item;
+        }
+
+        private Produto ChecarProduto(Produto produto)
+        {
+            if (produto.Id != 0) return _contexto.Produtos.Single(p => p.Id == produto.Id);
+
+            var produtoRepo = new ProdutoEF(_contexto);
+            return produtoRepo.Criar(produto);
         }
 
         public void Salvar()
