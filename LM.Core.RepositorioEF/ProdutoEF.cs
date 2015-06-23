@@ -29,15 +29,15 @@ namespace LM.Core.RepositorioEF
             return produto;
         }
 
-        public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
+        public IEnumerable<Produto> ListarPorCategoria(long usuarioId, int categoriaId)
         {
-            return _contexto.Produtos.AsNoTracking().Where(p => p.Categorias.Any(c => c.Id == categoriaId) && p.Ativo);
+            return _contexto.Produtos.AsNoTracking().Where(p => (p.UsuarioId == null || p.UsuarioId == usuarioId) && p.Categorias.Any(c => c.Id == categoriaId) && p.Ativo);
         }
 
-        public IEnumerable<Produto> Buscar(string termo)
+        public IEnumerable<Produto> Buscar(long usuarioId, string termo)
         {
             var searchFts = FtsInterceptor.Fts(termo);
-            return _contexto.Produtos.AsNoTracking().Where(p => p.Ean.Contains(searchFts) || p.Info.Nome.Contains(searchFts) || p.Info.Marca.Contains(searchFts) && p.Ativo);
+            return _contexto.Produtos.AsNoTracking().Where(p => (p.UsuarioId == null || p.UsuarioId == usuarioId) && p.Ean.Contains(searchFts) || p.Info.Nome.Contains(searchFts) || p.Info.Marca.Contains(searchFts) && p.Ativo);
         }
 
         public void Salvar()

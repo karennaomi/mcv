@@ -25,6 +25,7 @@ namespace LM.Core.Domain
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
+        public long? UsuarioId { get; set; }
         public virtual ProdutoInfo Info { get; set; }
         public virtual ICollection<Imagem> Imagens { get; set; }
         public virtual ICollection<Categoria> Categorias { get; set; }

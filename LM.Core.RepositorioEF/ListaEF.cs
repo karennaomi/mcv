@@ -33,10 +33,10 @@ namespace LM.Core.RepositorioEF
             item.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == periodoId);
         }
 
-        public IEnumerable<ListaItem> BuscarItens(Lista lista, string termo)
+        public IEnumerable<ListaItem> BuscarItens(Lista lista, long usuarioId, string termo)
         {
             var produtoEF = new ProdutoEF(_contexto);
-            var produtosIds = produtoEF.Buscar(termo).Select(p => p.Id);
+            var produtosIds = produtoEF.Buscar(usuarioId, termo).Select(p => p.Id);
             return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id));
         }
 

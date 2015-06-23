@@ -162,7 +162,7 @@ namespace LM.Core.Tests
         public void BuscaUmItemDaLista()
         {
             var app = ObterListaApp();
-            var itens = app.BuscarItens(_pontoDemandaId, "Bombom");
+            var itens = app.BuscarItens(_pontoDemandaId, 1, "Bombom");
             Assert.IsTrue(itens.Any());
         }
 

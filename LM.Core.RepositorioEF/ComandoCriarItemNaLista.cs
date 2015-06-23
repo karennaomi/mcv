@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using LM.Core.Domain;
 using System;
-using System.Data.Entity;
 
 namespace LM.Core.RepositorioEF
 {

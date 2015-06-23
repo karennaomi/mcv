@@ -14,6 +14,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(p => p.Ativo).HasColumnName("FL_PRODUTO_ATIVO");
             Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
+            Property(p => p.UsuarioId).HasColumnName("ID_USUARIO").IsOptional();
 
             HasRequired(p => p.Info).WithRequiredPrincipal();
             HasMany(p => p.Imagens).WithMany().Map(m => m.ToTable("TB_PRODUTO_IMAGEM").MapLeftKey("ID_PRODUTO").MapRightKey("ID_IMAGEM"));

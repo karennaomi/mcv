@@ -7,8 +7,8 @@ namespace LM.Core.Application
     public interface IProdutoAplicacao
     {
         Produto Criar(Produto produto);
-        IEnumerable<Produto> ListarPorCategoria(int categoriaId);
-        IEnumerable<Produto> Buscar(string termo);
+        IEnumerable<Produto> ListarPorCategoria(long usuarioId, int categoriaId);
+        IEnumerable<Produto> Buscar(long usuarioId, string termo);
     }
 
     public class ProdutoAplicacao : IProdutoAplicacao
@@ -26,14 +26,14 @@ namespace LM.Core.Application
             return produto;
         }
 
-        public IEnumerable<Produto> ListarPorCategoria(int categoriaId)
+        public IEnumerable<Produto> ListarPorCategoria(long usuarioId, int categoriaId)
         {
-            return _repositorio.ListarPorCategoria(categoriaId);
+            return _repositorio.ListarPorCategoria(usuarioId, categoriaId);
         }
 
-        public IEnumerable<Produto> Buscar(string termo)
+        public IEnumerable<Produto> Buscar(long usuarioId, string termo)
         {
-            return _repositorio.Buscar(termo);
+            return _repositorio.Buscar(usuarioId, termo);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace LM.Core.Application
         void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade);
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
         void AtualizarEhEssencialDoItem(long pontoDemandaId, long itemId, bool ehEssencial);
-        IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
+        IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, long usuarioId, string termo);
     }
 
     public class ListaAplicacao : IListaAplicacao
@@ -115,10 +115,10 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo)
+        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, long usuarioId, string termo)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return _repositorio.BuscarItens(lista, termo);
+            return _repositorio.BuscarItens(lista, usuarioId, termo);
         }
 
         private ListaItem ObterItem(long pontoDemandaId, long itemId)
