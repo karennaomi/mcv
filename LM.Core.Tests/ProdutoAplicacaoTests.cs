@@ -12,7 +12,7 @@ namespace LM.Core.Tests
         public void BuscaUmProduto()
         {
             var app = new ProdutoAplicacao(new ProdutoEF());
-            var produtos = app.Buscar(1, "arroz");
+            var produtos = app.Buscar(1, 100, "arroz");
             Assert.IsTrue(produtos.Any());
         }
 
@@ -20,7 +20,7 @@ namespace LM.Core.Tests
         public void BuscaUmProdutoPorParteDoNome()
         {
             var app = new ProdutoAplicacao(new ProdutoEF());
-            var produtos = app.Buscar(1, "arro");
+            var produtos = app.Buscar(1, 100, "arro");
             Assert.IsTrue(produtos.Any());
         }
 
@@ -28,7 +28,7 @@ namespace LM.Core.Tests
         public void BuscaUmProdutoComEspaco()
         {
             var app = new ProdutoAplicacao(new ProdutoEF());
-            var produtos = app.Buscar(1, "carne de ra");
+            var produtos = app.Buscar(1, 100, "carne de ra");
             Assert.IsTrue(produtos.Any());
         }
 
@@ -36,7 +36,7 @@ namespace LM.Core.Tests
         public void BuscaUmProdutoPorEan()
         {
             var app = new ProdutoAplicacao(new ProdutoEF());
-            var produtos = app.Buscar(1, "3700123302360");
+            var produtos = app.Buscar(1, 100, "3700123302360");
             Assert.IsTrue(produtos.Any());
         }
     }

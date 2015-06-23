@@ -118,7 +118,7 @@ namespace LM.Core.Application
         public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, long usuarioId, string termo)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return _repositorio.BuscarItens(lista, usuarioId, termo);
+            return _repositorio.BuscarItens(lista, usuarioId, pontoDemandaId, termo);
         }
 
         private ListaItem ObterItem(long pontoDemandaId, long itemId)
