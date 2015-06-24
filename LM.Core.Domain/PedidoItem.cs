@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LM.Core.Domain
 {
-    public class PedidoItem : IItem
+    public class PedidoItem : IItem, IValidatableObject
     {
         public PedidoItem()
         {
@@ -30,6 +31,11 @@ namespace LM.Core.Domain
         public decimal ObterQuantidadeParaCompra()
         {
             return Quantidade;
+        }
+
+        public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Quantidade <= 0) yield return new ValidationResult("Quantidade deve ser maior que zero.", new[] { "QuantidadeDeConsumo" });
         }
     }
 }

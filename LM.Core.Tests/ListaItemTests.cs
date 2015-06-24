@@ -1,11 +1,8 @@
-﻿using System;
+﻿using LM.Core.Domain;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LM.Core.Domain;
-using NUnit.Framework;
 
 namespace LM.Core.Tests
 {

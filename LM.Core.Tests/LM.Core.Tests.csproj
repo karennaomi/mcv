@@ -85,6 +85,7 @@
     <Compile Include="EnderecoTests.cs" />
     <Compile Include="GoogleMapsGeocodeTests.cs" />
     <Compile Include="IntegranteTests.cs" />
+    <Compile Include="PedidoItemTests.cs" />
     <Compile Include="ListaItemTests.cs" />
     <Compile Include="LMHelperTests.cs" />
     <Compile Include="Mocks.cs" />
