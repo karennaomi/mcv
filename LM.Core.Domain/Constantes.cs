@@ -24,7 +24,7 @@ namespace LM.Core.Domain
         public struct Categoria
         {
             public const int CategoriaPadrao = 3;
-            public const string CategoriaImagemPadrao = "http://www.smvcompany.com.br/imagens-prod/placeholder.png";    
+            public const string CategoriaImagemPadrao = "/categorias/placeholder.png";    
         }
         
         public struct PontoDemanda
