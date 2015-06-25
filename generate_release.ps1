@@ -40,7 +40,7 @@ if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d)+') {
 		Write-Host "incorrect bump."
 	}
 
-	TriggerBuild()
+	TriggerBuild
 
 } else {
 	Write-Host "$latestTag is a invalid tag."
