@@ -3,7 +3,8 @@
     public class IntegranteExistenteException : PropertyException
     {
         public IntegranteExistenteException() : base("", "") { }
-        public IntegranteExistenteException(string campo) : base(string.Format("O {0} informado já está cadastrado!", campo), campo)
+        public IntegranteExistenteException(string property, string propertyName)
+            : base(string.Format("O {0} informado já está cadastrado!", propertyName), property)
         {
         }
     }

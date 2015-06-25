@@ -42,12 +42,12 @@ namespace LM.Core.RepositorioEF
 
         public void VerificarSeCpfJaExiste(string cpf)
         {
-            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf");
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Cpf == cpf)) throw new IntegranteExistenteException("Cpf", "Cpf");
         }
 
         public void VerificarSeEmailJaExiste(string email)
         {
-            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email && !i.EhUsuarioConvidado)) throw new IntegranteExistenteException("Email");
+            if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email && !i.EhUsuarioConvidado)) throw new IntegranteExistenteException("Email", "E-mail");
         }
 
         public void Salvar()
