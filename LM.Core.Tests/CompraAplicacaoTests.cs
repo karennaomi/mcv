@@ -46,7 +46,7 @@ namespace LM.Core.Tests
                 var compraAtivaRepo = new CompraAtivaEF();
                 AtivarCompra(compra, compraAtivaRepo);
                 var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
-                var listaItemIds = new[] { new[] { 2, 27397 }, new[] { 3, 27399 } };
+                var listaItemIds = new[] { new[] { 16, 27394 }, new[] { 17, 27398 } };
                 var compraItemOriginal = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[0][0] }, ProdutoId = listaItemIds[0][1], Quantidade = 2, Valor = 2.5M };
                 var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[1][0] }, ProdutoId = listaItemIds[1][1], Quantidade = 1, Valor = 1, };
 

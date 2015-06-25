@@ -14,7 +14,7 @@ namespace LM.Core.Application
         void Desativar(long usuarioId, long pontoDemandaId);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
-        PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia);
+        PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
         Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
@@ -62,23 +62,10 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, int frequencia)
+        public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
-            switch (frequencia)
-            {
-                case 1:
-                    pontoDemanda.QuantidadeDiasAlertaReposicao = 7;
-                    break;
-                case 2:
-                    pontoDemanda.QuantidadeDiasAlertaReposicao = 14;
-                    break;
-                case 3:
-                    pontoDemanda.QuantidadeDiasAlertaReposicao = 28;
-                    break;
-                default:
-                    throw new ApplicationException("Frequência inválida");
-            }
+            pontoDemanda.QuantidadeDiasAlertaReposicao = frequencia;
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta, pontoDemandaId);
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.UsuarioOk, pontoDemandaId);

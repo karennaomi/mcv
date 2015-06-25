@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LM.Core.Domain
 {
-    public class PontoDemanda
+    public class PontoDemanda : IValidatableObject
     {
         public PontoDemanda()
         {
@@ -30,6 +31,14 @@ namespace LM.Core.Domain
         public IList<Integrante> IntegrantesAtivos()
         {
             return GruposDeIntegrantes.Where(g => g.Integrante.Ativo).Select(g => g.Integrante).ToList();
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (QuantidadeDiasAlertaReposicao.HasValue && !new[] {7, 14, 28}.Contains(QuantidadeDiasAlertaReposicao.Value))
+            {
+                yield return new ValidationResult("Frequência inválida.", new[] { "QuantidadeDiasAlertaReposicao" });
+            }
         }
     }
 }

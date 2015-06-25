@@ -99,48 +99,6 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void Frequencia1DefineReposicao7Estoque3()
-        {
-            _mockRepo.PontoDemanda = _fakes.PontoDemanda();
-            var usuario = _fakes.Usuario();
-            usuario.Id = 1;
-            _mockUsuarioRepo.Usuario = usuario;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
-            var pontoDemanda = app.DefinirFrequenciaDeCompra(1, 100, 1);
-            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
-            Assert.AreEqual(7, pontoDemanda.QuantidadeDiasAlertaReposicao);
-            Assert.AreEqual(StatusCadastro.FrequenciaDeCompraCompleta, usuario.StatusAtual());
-        }
-
-        [Test]
-        public void Frequencia2DefineReposicao14Estoque3()
-        {
-            _mockRepo.PontoDemanda = _fakes.PontoDemanda();
-            var usuario = _fakes.Usuario();
-            usuario.Id = 1;
-            _mockUsuarioRepo.Usuario = usuario;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
-            var pontoDemanda = app.DefinirFrequenciaDeCompra(1, 100, 2);
-            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
-            Assert.AreEqual(14, pontoDemanda.QuantidadeDiasAlertaReposicao);
-            Assert.AreEqual(StatusCadastro.FrequenciaDeCompraCompleta, usuario.StatusAtual());
-        }
-
-        [Test]
-        public void Frequencia3DefineReposicao28Estoque3()
-        {
-            _mockRepo.PontoDemanda = _fakes.PontoDemanda();
-            var usuario = _fakes.Usuario();
-            usuario.Id = 1;
-            _mockUsuarioRepo.Usuario = usuario;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
-            var pontoDemanda = app.DefinirFrequenciaDeCompra(1, 100, 3);
-            Assert.AreEqual(3, pontoDemanda.QuantidadeDiasCoberturaEstoque);
-            Assert.AreEqual(28, pontoDemanda.QuantidadeDiasAlertaReposicao);
-            Assert.AreEqual(StatusCadastro.FrequenciaDeCompraCompleta, usuario.StatusAtual());
-        }
-
-        [Test]
         public void AdicionarLojaFavoritaNoPontoDemanda()
         {
             using (new TransactionScope())

@@ -149,7 +149,7 @@ namespace LM.Core.Tests
             const int integranteId = 1;
             const int usuarioId = 3;
             const int lojaId = 3620;
-            var listaItemIds = new[] { new[] { 1, 27395 } };
+            var listaItemIds = new[] { new[] { 15, 27393 } };
             var pedidoItemIds = new[] { new[] { 10187, 23271 }, new[] { 10188, 102 } };
             
             return new Compra
