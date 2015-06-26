@@ -175,6 +175,13 @@ namespace LM.Core.Tests
             var endereco = contextoCorreios.EnderecosCorreios.First();
             Assert.IsNotNull(endereco);
         }
+
+        [Test]
+        public void MapearEmailsCapturados()
+        {
+            var emailsCapturados = _contexto.EmailsCapturados;
+            Assert.IsTrue(emailsCapturados.Any());
+        }
     }
 }
 

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AplicacaoExtensions.cs" />
+    <Compile Include="EmailCapturadoAplicacao.cs" />
     <Compile Include="EnderecoAplicacao.cs" />
     <Compile Include="EnderecoCorreiosService.cs" />
     <Compile Include="EnderecoPostmonService.cs" />
