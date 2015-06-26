@@ -5,9 +5,13 @@ if($latestTag -eq $null) {
 	$latestTag = "v0.0.0"
 }
 
-function CreateTag($tag) {
+function PushTag($tag) {
 	Write-Host ("Creating tag {0}" -f $tag)
 	git tag -a $tag -m $m
+	git push origin $tag
+}
+
+function PushToReleaseBranch() {
 	git checkout $b
 	git rebase master
 	git push origin $b
@@ -15,9 +19,8 @@ function CreateTag($tag) {
 }
 
 function TriggerBuild() {
-	$url="http://ci.smv.br/job/LM_Core/build?token=D10C42FA01A2435EA3BF92D8D2C5C4FB"
+	$url="http://ci.smv.br/job/DEV_LM_Core/build?token=D10C42FA01A2435EA3BF92D8D2C5C4FB"
 	Write-Host ("Triggering build on {0}" -f $url) 
-	
 	(New-Object System.Net.WebClient).DownloadString("$url");
 }
 
@@ -27,18 +30,20 @@ if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d)+') {
 	$minorCurrent = [convert]::ToInt32($matches['minor'])
 	$patchCurrent = [convert]::ToInt32($matches['patch'])
 
-	if($v -eq "major") {
+	if($v -eq "") {
+		PushToReleaseBranch
+	} elseif($v -eq "major") {
 		$majorNumber = $majorCurrent + 1
-		CreateTag "v$majorNumber.0.0"
+		PushTag "v$majorNumber.0.0"
 	} elseif ($v -eq "minor") {
 		$minorNumber = $minorCurrent + 1
-		CreateTag "v$majorCurrent.$minorNumber.0"
+		PushTag "v$majorCurrent.$minorNumber.0"
 	} elseif ($v -eq "patch") {
 		$patchNumber = $patchCurrent + 1
-		CreateTag "v$majorCurrent.$minorCurrent.$patchNumber"
+		PushTag "v$majorCurrent.$minorCurrent.$patchNumber"
 	} else {
-		Write-Host "incorrect bump."
-	}
+		Write-Host "Invalid version: $v"
+	}	
 
 	TriggerBuild
 
