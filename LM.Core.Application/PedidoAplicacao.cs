@@ -9,6 +9,7 @@ namespace LM.Core.Application
 {
     public interface IPedidoAplicacao
     {
+        IEnumerable<PedidoItem> ListarItens(long pontoDemandaId);
         IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
         IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status);
         IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status);
@@ -28,6 +29,11 @@ namespace LM.Core.Application
             _repositorio = repositorio;
             _appCompraAtiva = appCompraAtiva;
             _appNotificacao = appNotificacao;
+        }
+
+        public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
+        {
+            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario);
         }
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
