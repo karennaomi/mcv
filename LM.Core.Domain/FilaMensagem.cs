@@ -17,8 +17,8 @@ namespace LM.Core.Domain
 
         public long Id { get; set; }
         public DateTime? DataInclusao { get; set; }
-     
-        public virtual FilaItem Fila { get; set; }
+
+        public virtual FilaItemMensagem FilaItem { get; set; }
     }
 
     public class FilaMensagemEmail : FilaMensagem

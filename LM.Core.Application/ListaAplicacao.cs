@@ -9,7 +9,7 @@ namespace LM.Core.Application
     public interface IListaAplicacao
     {
         Lista ObterListaPorPontoDemanda(long pontoDemandaId);
-        ListaItem AdicionarItem(long pontoDemandaId, ListaItem item);
+        ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item);
         void DesativarItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
@@ -19,7 +19,7 @@ namespace LM.Core.Application
         void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade);
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
         void AtualizarEhEssencialDoItem(long pontoDemandaId, long itemId, bool ehEssencial);
-        IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, long usuarioId, string termo);
+        IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
     }
 
     public class ListaAplicacao : IListaAplicacao
@@ -37,11 +37,11 @@ namespace LM.Core.Application
             return lista;
         }
 
-        public ListaItem AdicionarItem(long pontoDemandaId, ListaItem item)
+        public ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
             if (lista.Itens.Any(i => i.Produto.Id == item.Produto.Id && i.Status == "A")) throw new ApplicationException("Este produto já existe na lista.");
-            _repositorio.AdicionarItem(lista, item);
+            _repositorio.AdicionarItem(lista, item, usuarioId);
             return item;
         }
 
@@ -115,10 +115,10 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, long usuarioId, string termo)
+        public IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return _repositorio.BuscarItens(lista, usuarioId, pontoDemandaId, termo);
+            return _repositorio.BuscarItens(lista, pontoDemandaId, termo);
         }
 
         private ListaItem ObterItem(long pontoDemandaId, long itemId)

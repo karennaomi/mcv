@@ -74,7 +74,7 @@ namespace LM.Core.Application
 
         private void EnviarEmail(string assunto, string corpo, string emailDestinatario)
         {
-            var filaItem = new FilaItem();
+            var filaItem = new FilaItemMensagem();
             filaItem.AdicionarMensagem(new FilaMensagemEmail
             {
                 Assunto = assunto,

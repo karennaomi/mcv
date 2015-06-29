@@ -23,9 +23,9 @@ namespace LM.Core.RepositorioEF
             return _contexto.Listas.Include("Itens.Periodo").FirstOrDefault(l => l.PontoDemanda.Id == pontoDemandaId);
         }
 
-        public ListaItem AdicionarItem(Lista lista, ListaItem novoItem)
+        public ListaItem AdicionarItem(Lista lista, ListaItem novoItem, long usuarioId)
         {
-            return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar();
+            return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar(usuarioId);
         }
 
         public void AtualizarPeriodoDoItem(ListaItem item, int periodoId)
@@ -33,10 +33,10 @@ namespace LM.Core.RepositorioEF
             item.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == periodoId);
         }
 
-        public IEnumerable<ListaItem> BuscarItens(Lista lista, long usuarioId, long pontoDemandaId, string termo)
+        public IEnumerable<ListaItem> BuscarItens(Lista lista, long pontoDemandaId, string termo)
         {
             var produtoEF = new ProdutoEF(_contexto);
-            var produtosIds = produtoEF.Buscar(termo).Where(Produto.ProtectProductPredicate(usuarioId, pontoDemandaId)).Select(p => p.Id);
+            var produtosIds = produtoEF.Buscar(termo).Where(Produto.ProtectProductPredicate(pontoDemandaId)).Select(p => p.Id);
             return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id));
         }
 

@@ -61,6 +61,7 @@
     <Compile Include="EnderecoViaCep.cs" />
     <Compile Include="EnderecoPostmon.cs" />
     <Compile Include="FilaItem.cs" />
+    <Compile Include="FilaProduto.cs" />
     <Compile Include="FilaMensagem.cs" />
     <Compile Include="GoogleMapsGeocode.cs" />
     <Compile Include="GooglePlaceDetail.cs" />

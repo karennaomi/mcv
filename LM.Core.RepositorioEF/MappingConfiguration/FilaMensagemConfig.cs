@@ -7,15 +7,13 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
     {
         public FilaMensagemConfig()
         {
-            ToTable("TB_Fila_Mensagem");
-            HasKey(g => g.Id);
-            Property(g => g.Id).HasColumnName("ID_FILA_MENSAGEM");
-            Property(g => g.DataInclusao).HasColumnName("DT_INC");
-
-            HasRequired(g => g.Fila).WithMany(i => i.Mensagens).Map(m => m.MapKey("ID_FILA"));
-
             Map<FilaMensagemEmail>(m => m.Requires("ID_TIPO_MENSAGEM").HasValue((int)TipoMensagem.Email));
             Map<FilaMensagemSms>(m => m.Requires("ID_TIPO_MENSAGEM").HasValue((int)TipoMensagem.Sms));
+            
+            ToTable("TB_Fila_Mensagem");
+            HasKey(m => m.Id);
+            Property(m => m.Id).HasColumnName("ID_FILA_MENSAGEM");
+            Property(m => m.DataInclusao).HasColumnName("DT_INC");
         }
     }
 
@@ -23,9 +21,9 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
     {
         public FilaMensagemEmailConfig()
         {
-            Property(g => g.EmailDestinatario).HasColumnName("TX_EMAIL_DESTINO");
-            Property(g => g.Assunto).HasColumnName("TX_ASSUNTO");
-            Property(g => g.Corpo).HasColumnName("TX_CORPO");
+            Property(e => e.EmailDestinatario).HasColumnName("TX_EMAIL_DESTINO");
+            Property(e => e.Assunto).HasColumnName("TX_ASSUNTO");
+            Property(e => e.Corpo).HasColumnName("TX_CORPO");
         }
     }
 
@@ -33,8 +31,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
     {
         public FilaMensagemSmsConfig()
         {
-            Property(g => g.NumeroDestinatario).HasColumnName("TX_NUMERO_DESTINO");
-            Property(g => g.Mensagem).HasColumnName("TX_MENSAGEM_SMS");
+            Property(s => s.NumeroDestinatario).HasColumnName("TX_NUMERO_DESTINO");
+            Property(s => s.Mensagem).HasColumnName("TX_MENSAGEM_SMS");
         }
     }
 }

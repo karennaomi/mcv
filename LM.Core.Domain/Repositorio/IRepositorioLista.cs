@@ -5,9 +5,9 @@ namespace LM.Core.Domain.Repositorio
     public interface IRepositorioLista
     {
         Lista ObterListaPorPontoDemanda(long pontoDemandaId);
-        ListaItem AdicionarItem(Lista lista, ListaItem item);
+        ListaItem AdicionarItem(Lista lista, ListaItem item, long usuarioId);
         void AtualizarPeriodoDoItem(ListaItem item, int periodoId);
-        IEnumerable<ListaItem> BuscarItens(Lista lista, long usuarioId, long pontoDemandaId, string termo);
+        IEnumerable<ListaItem> BuscarItens(Lista lista, long pontoDemandaId, string termo);
         void LancarEstoque(long pontoDemandaId, long integranteId, int? produtoId, decimal? quantidade);
         void Salvar();
     }

@@ -12,15 +12,14 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(p => p.Id).HasColumnName("ID_PRODUTO");
             Property(p => p.Ean).HasColumnName("CD_PRODUTO_EAN");
             Property(p => p.Ativo).HasColumnName("FL_PRODUTO_ATIVO");
+            Property(p => p.Origem).HasColumnName("TX_ORIGEM");
             Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
-            Property(p => p.UsuarioId).HasColumnName("ID_USUARIO").IsOptional();
-            Property(p => p.PontoDemandaId).HasColumnName("ID_PONTO_REAL_DEMANDA").IsOptional();
-
+            
             HasRequired(p => p.Info).WithRequiredPrincipal();
             HasMany(p => p.Imagens).WithMany().Map(m => m.ToTable("TB_PRODUTO_IMAGEM").MapLeftKey("ID_PRODUTO").MapRightKey("ID_IMAGEM"));
             HasMany(p => p.Categorias).WithMany().Map(m => m.ToTable("TB_PRODUTO_CATEGORIA").MapLeftKey("ID_PRODUTO").MapRightKey("ID_CATEGORIA"));
-
+            HasMany(p => p.PontosDemanda).WithMany().Map(m => m.MapLeftKey("ID_PRODUTO").MapRightKey("ID_PONTO_REAL_DEMANDA").ToTable("TB_Produto_Ponto_Real_Demanda"));
         }
     }
 

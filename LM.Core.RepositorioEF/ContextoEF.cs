@@ -63,9 +63,12 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new LojaInfoConfig());
             modelBuilder.Configurations.Add(new RecuperarSenhaConfig());
             modelBuilder.Configurations.Add(new FilaItemConfig());
+            modelBuilder.Configurations.Add(new FilaItemMensagemConfig());
+            modelBuilder.Configurations.Add(new FilaItemProdutoConfig());
             modelBuilder.Configurations.Add(new FilaMensagemConfig());
             modelBuilder.Configurations.Add(new FilaMensagemEmailConfig());
             modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
+            modelBuilder.Configurations.Add(new FilaProdutoConfig());
             modelBuilder.Configurations.Add(new LegacyTokenConfig());
             modelBuilder.Configurations.Add(new ContratoUsuarioConfig());
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());

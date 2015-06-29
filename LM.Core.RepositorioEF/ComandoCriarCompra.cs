@@ -1,5 +1,5 @@
-﻿using LM.Core.Domain;
-using System.Data.Entity;
+﻿using System;
+using LM.Core.Domain;
 using System.Linq;
 
 namespace LM.Core.RepositorioEF
@@ -8,21 +8,19 @@ namespace LM.Core.RepositorioEF
     {
         private readonly ContextoEF _contexto;
         private Compra _novaCompra;
+        private readonly ListaEF _listaRepo;
         public ComandoCriarCompra(ContextoEF contexto, Compra novaCompra)
         {
             _contexto = contexto;
-            
+            _listaRepo = new ListaEF(_contexto);
             _novaCompra = novaCompra;
         }
 
         public Compra Executar()
         {
-            ChecarItensNovos();
-            ChecarItens();
-
             ChecarIntegrante();
             ChecarPontoDemanda();
-            
+            ChecarItens();
             _novaCompra = _contexto.Compras.Add(_novaCompra);
 
             return _novaCompra;
@@ -38,36 +36,55 @@ namespace LM.Core.RepositorioEF
             _novaCompra.PontoDemanda = _contexto.PontosDemanda.Single(p => p.Id == _novaCompra.PontoDemanda.Id);
         }
 
-        private void ChecarItensNovos()
-        {
-            var listaRepo = new ListaEF(_contexto);
-            var compraItensNovos = _novaCompra.Itens.OfType<ListaCompraItem>().Where(i => i.Item.Id == 0).ToList();
-            foreach (var compraItemNovo in compraItensNovos)
-            {
-                compraItemNovo.Item.Periodo = new Periodo {Id = 12 /* Eventual */};
-                compraItemNovo.Item.QuantidadeDeConsumo = compraItemNovo.Quantidade;
-                compraItemNovo.Item.QuantidadeEmEstoque = compraItemNovo.Quantidade;
-                var lista = listaRepo.ObterListaPorPontoDemanda(_novaCompra.PontoDemanda.Id);
-                compraItemNovo.Item = listaRepo.AdicionarItem(lista, compraItemNovo.Item);
-            }
-        }
-
         private void ChecarItens()
         {
-            var listaItens = _contexto.Listas.Single(l => l.PontoDemanda.Id == _novaCompra.PontoDemanda.Id).Itens;
+            var lista = _listaRepo.ObterListaPorPontoDemanda(_novaCompra.PontoDemanda.Id);
+            var listaItens = lista.Itens;
             foreach (var compraItem in _novaCompra.Itens)
             {
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
-                    listaCompraItem.Item = listaItens.Single(i => i.Id == listaCompraItem.Item.Id);
+                    listaCompraItem.Item = listaCompraItem.Item.Id == 0 ? CriarItemNaLista(listaCompraItem, lista) : listaCompraItem.Item = listaItens.Single(i => i.Id == listaCompraItem.Item.Id);
                 }
                 else if (compraItem is PedidoCompraItem)
                 {
                     var pedidoCompraItem = compraItem as PedidoCompraItem;
                     pedidoCompraItem.Item = _contexto.PedidoItens.Single(p => p.Id == pedidoCompraItem.Item.Id);
+                    if (pedidoCompraItem.Status == StatusCompra.Comprado)
+                    {
+                        CriarItemNaLista(pedidoCompraItem, lista);
+                    }
                 }
             }
+        }
+
+        private ListaItem CriarItemNaLista(CompraItem compraItem, Lista lista)
+        {
+            var listaItem = new ListaItem
+            {
+                Periodo = new Periodo {Id = 12 /* Eventual */},
+                QuantidadeDeConsumo = compraItem.Quantidade,
+                QuantidadeEmEstoque = compraItem.Quantidade
+            };
+            var listaCompraItem = compraItem as ListaCompraItem;
+            if (listaCompraItem != null)
+            {
+                listaItem.Produto = listaCompraItem.Item.Produto;
+            }
+            else
+            {
+                var item = compraItem as PedidoCompraItem;
+                if(item != null)
+                {
+                    listaItem.Produto = item.Item.Produto;
+                }
+                else
+                {
+                    throw new ApplicationException("Tipo de compra item inválido.");
+                }
+            }
+            return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
         }
     }
 }

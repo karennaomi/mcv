@@ -11,6 +11,11 @@ namespace LM.Core.RepositorioEF
             _contexto = new ContextoEF();
         }
 
+        public FilaItemEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
+        }
+
         public FilaItem Criar(FilaItem filaItem)
         {
             filaItem = _contexto.FilaItens.Add(filaItem);

@@ -48,6 +48,7 @@
     <Compile Include="LancamentoEstoque.cs" />
     <Compile Include="MappingConfiguration\EmailCapturadoConfig.cs" />
     <Compile Include="MappingConfiguration\ContratoUsuarioConfig.cs" />
+    <Compile Include="MappingConfiguration\FilaProdutoConfig.cs" />
     <Compile Include="UfEF.cs" />
     <Compile Include="LegacyTokenEF.cs" />
     <Compile Include="FilaItemEF.cs" />

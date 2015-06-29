@@ -150,8 +150,11 @@ namespace LM.Core.Tests
         [Test]
         public void MapearFilaItens()
         {
-            var filaItem = _contexto.FilaItens.First();
-            Assert.IsTrue(filaItem.Mensagens.Any());
+            var filaItemMensagem = _contexto.FilaItens.OfType<FilaItemMensagem>().First();
+            Assert.IsTrue(filaItemMensagem.FilaMensagens.Any());
+
+            var filaItemProduto = _contexto.FilaItens.OfType<FilaItemProduto>().First();
+            Assert.IsTrue(filaItemProduto.FilaProdutos.Any());
         }
 
         [Test]

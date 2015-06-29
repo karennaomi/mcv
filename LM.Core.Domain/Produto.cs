@@ -15,6 +15,7 @@ namespace LM.Core.Domain
         {
             DataInclusao = DateTime.Now;
             Ativo = true;
+            Origem = "usuario";
             if(categoriaId > 0) Categorias = new Collection<Categoria> {new Categoria {Id = categoriaId}};
         }
 
@@ -25,11 +26,11 @@ namespace LM.Core.Domain
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        public long? UsuarioId { get; set; }
-        public long? PontoDemandaId { get; set; }
+        public string Origem { get; set; }
         public virtual ProdutoInfo Info { get; set; }
         public virtual ICollection<Imagem> Imagens { get; set; }
         public virtual ICollection<Categoria> Categorias { get; set; }
+        public virtual ICollection<PontoDemanda> PontosDemanda { get; set; }
 
         public string Nome()
         {
@@ -41,9 +42,9 @@ namespace LM.Core.Domain
             return Imagens != null && Imagens.Any() ? Imagens.First() : new Imagem();
         }
 
-        public static Func<Produto, bool> ProtectProductPredicate(long usuarioId, long pontoDemandaId)
+        public static Func<Produto, bool> ProtectProductPredicate(long pontoDemandaId)
         {
-            return (p => ((p.UsuarioId == null || p.UsuarioId == usuarioId) ||((p.PontoDemandaId == null || p.PontoDemandaId == pontoDemandaId))));
+            return (produto => ((!produto.PontosDemanda.Any() || produto.PontosDemanda.Any(pontoDemanda => pontoDemanda.Id == pontoDemandaId))));
         }
     }
 

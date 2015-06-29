@@ -11,12 +11,14 @@ namespace LM.Core.Tests
     [TestFixture]
     public class ListaAplicacaoTests
     {
-        private static long _pontoDemandaId, _integranteId;
+        private static long _pontoDemandaId, _integranteId, _usuarioId;
         public ListaAplicacaoTests()
         {
             var pontoDemanda = new ContextoEF().PontosDemanda.First();
             _pontoDemandaId = pontoDemanda.Id;
-            _integranteId = pontoDemanda.GruposDeIntegrantes.First().Integrante.Id;
+            var integrante = pontoDemanda.GruposDeIntegrantes.First().Integrante;
+            _integranteId = integrante.Id;
+            _usuarioId = integrante.Usuario.Id;
         }
         
         [Test]
@@ -42,10 +44,10 @@ namespace LM.Core.Tests
             
             using (new TransactionScope())
             {
-                item1 = listaApp.AdicionarItem(_pontoDemandaId, item1);
+                item1 = listaApp.AdicionarItem(_usuarioId, _pontoDemandaId, item1);
                 Assert.IsTrue(item1.Id > 0);
                 var listaApp2 = ObterListaApp();
-                Assert.Throws<ApplicationException>(() => listaApp2.AdicionarItem(_pontoDemandaId, item2));
+                Assert.Throws<ApplicationException>(() => listaApp2.AdicionarItem(_usuarioId, _pontoDemandaId, item2));
             }
         }
 
@@ -64,7 +66,7 @@ namespace LM.Core.Tests
 
             using (new TransactionScope())
             {
-                item = listaApp.AdicionarItem(_pontoDemandaId, item);
+                item = listaApp.AdicionarItem(_usuarioId, _pontoDemandaId, item);
                 Assert.IsTrue(item.Id > 0);
             }
         }
@@ -162,7 +164,7 @@ namespace LM.Core.Tests
         public void BuscaUmItemDaLista()
         {
             var app = ObterListaApp();
-            var itens = app.BuscarItens(_pontoDemandaId, 1, "Bombom");
+            var itens = app.BuscarItens(_pontoDemandaId, "Bombom");
             Assert.IsTrue(itens.Any());
         }
 

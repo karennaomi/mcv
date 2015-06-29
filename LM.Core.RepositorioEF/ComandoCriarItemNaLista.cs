@@ -17,9 +17,9 @@ namespace LM.Core.RepositorioEF
             _novoItem = novoItem;
         }
 
-        public ListaItem Executar()
+        public ListaItem Executar(long usuarioId)
         {
-            _novoItem.Produto = ChecarProduto(_novoItem.Produto);
+            _novoItem.Produto = ChecarProduto(_novoItem.Produto, usuarioId);
             _novoItem.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == _novoItem.Periodo.Id);
             _novoItem.DataInclusao = DateTime.Now;
             _lista.Itens.Add(_novoItem);
@@ -27,12 +27,12 @@ namespace LM.Core.RepositorioEF
             return _novoItem;
         }
 
-        private Produto ChecarProduto(Produto produto)
+        private Produto ChecarProduto(Produto produto, long usuarioId)
         {
             if (produto.Id != 0) return _contexto.Produtos.Single(p => p.Id == produto.Id);
 
             var produtoRepo = new ProdutoEF(_contexto);
-            return produtoRepo.Criar(produto);
+            return produtoRepo.Criar(produto, usuarioId);
         }
     }
 }
