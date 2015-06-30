@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario);
+            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario).OrderBySecoes();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
