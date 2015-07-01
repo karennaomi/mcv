@@ -35,7 +35,7 @@ namespace LM.Core.Application
         public Usuario Obter(string login)
         {
             var usuario = _repositorio.ObterPorLogin(login);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, login " + login);
+            if (usuario == null) throw new ObjetoNaoEncontradoException(LMResource.Usuario_NaoEncontrado);
             return usuario;
         }
 
@@ -79,13 +79,13 @@ namespace LM.Core.Application
             try
             {
                 var usuario = Obter(login);
-                if (!usuario.Ativo) throw new LoginInvalidoException("Usuário desativado.");
+                if (!usuario.Ativo) throw new LoginInvalidoException(LMResource.Usuario_LoginDesativado);
                 if (PasswordHash.ValidatePassword(senha, usuario.Senha)) return usuario;
-                throw new LoginInvalidoException();
+                throw new LoginInvalidoException(LMResource.Usuario_LoginInvalido);
             }
             catch (ObjetoNaoEncontradoException)
             {
-                throw new LoginInvalidoException();
+                throw new LoginInvalidoException(LMResource.Usuario_LoginInvalido);
             }
         }
 

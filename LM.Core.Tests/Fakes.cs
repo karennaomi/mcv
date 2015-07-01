@@ -119,8 +119,8 @@ namespace LM.Core.Tests
             {
                 Produto = Produto(categoria), 
                 EhSugestaoDeCompra = ehSugestaoDeCompra,
-                QuantidadeDeConsumo = 5,
-                QuantidadeEmEstoque = 3,
+                QuantidadeConsumo = 5,
+                QuantidadeEstoque = 3,
                 Periodo = new Periodo { Id = 1 }
             };
         }

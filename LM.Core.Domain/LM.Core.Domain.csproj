@@ -53,6 +53,7 @@
     <Compile Include="CompraItem.cs" />
     <Compile Include="Constantes.cs" />
     <Compile Include="ContratoUsuario.cs" />
+    <Compile Include="CustomAttributes.cs" />
     <Compile Include="CustomException\ObjetoNaoEncontradoException.cs" />
     <Compile Include="CustomException\PontoDemandaInvalidoException.cs" />
     <Compile Include="CustomException\PropertyException.cs" />
@@ -71,6 +72,12 @@
     <Compile Include="IItem.cs" />
     <Compile Include="LegacyToken.cs" />
     <Compile Include="LMHelper.cs" />
+    <Compile Include="LMResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LMResource.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="PasswordHash.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />
@@ -121,6 +128,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LMResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LMResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

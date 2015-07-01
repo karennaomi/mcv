@@ -28,16 +28,16 @@ namespace LM.Core.Tests
             const int produtoId = 23271;
             var item1 = new ListaItem
             {
-                QuantidadeDeConsumo = 5,
-                QuantidadeEmEstoque = 3,
+                QuantidadeConsumo = 5,
+                QuantidadeEstoque = 3,
                 Periodo = new Periodo { Id = 5 },
                 Produto = new Produto { Id = produtoId }
             };
 
             var item2 = new ListaItem
             {
-                QuantidadeDeConsumo = 2,
-                QuantidadeEmEstoque = 4,
+                QuantidadeConsumo = 2,
+                QuantidadeEstoque = 4,
                 Periodo = new Periodo { Id = 2 },
                 Produto = new Produto { Id = produtoId }
             };
@@ -58,8 +58,8 @@ namespace LM.Core.Tests
 
             var item = new ListaItem
             {
-                QuantidadeDeConsumo = 5,
-                QuantidadeEmEstoque = 3,
+                QuantidadeConsumo = 5,
+                QuantidadeEstoque = 3,
                 Periodo = new Periodo { Id = 5 },
                 Produto = new Produto { Id = 23271 }
             };
@@ -106,7 +106,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 listaApp.AtualizarEstoqueDoItem(_pontoDemandaId, _integranteId, item.Id, 12);
-                Assert.AreEqual(12, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeEmEstoque);    
+                Assert.AreEqual(12, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeEstoque);    
             }
         }
 
@@ -117,7 +117,7 @@ namespace LM.Core.Tests
             {
                 var listaApp = ObterListaApp();
                 listaApp.AtualizarConsumoDoItem(_pontoDemandaId, 186, 5);
-                Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeDeConsumo);
+                Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeConsumo);
             }
         }
 
@@ -143,8 +143,8 @@ namespace LM.Core.Tests
             var itemToUpdate = new ListaItem
             {
                 Id = item.Id,
-                QuantidadeDeConsumo = 5,
-                QuantidadeEmEstoque = 3,
+                QuantidadeConsumo = 5,
+                QuantidadeEstoque = 3,
                 Periodo = new Periodo { Id = 2 },
                 EhEssencial = true
             };
@@ -152,8 +152,8 @@ namespace LM.Core.Tests
             {
                 listaApp.AtualizarItem(_pontoDemandaId, _integranteId, itemToUpdate);
                 var updatedItem = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
-                Assert.AreEqual(5, updatedItem.QuantidadeDeConsumo);
-                Assert.AreEqual(3, updatedItem.QuantidadeEmEstoque);
+                Assert.AreEqual(5, updatedItem.QuantidadeConsumo);
+                Assert.AreEqual(3, updatedItem.QuantidadeEstoque);
                 Assert.AreEqual(2, updatedItem.Periodo.Id);
                 Assert.IsTrue(updatedItem.EhEssencial);
             }

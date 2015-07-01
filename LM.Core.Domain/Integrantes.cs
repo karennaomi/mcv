@@ -24,11 +24,16 @@ namespace LM.Core.Domain
 
         public long Id { get; set; }
         
-        [Required(ErrorMessage = "O nome é de preenchimento obrigatório!", AllowEmptyStrings = false)]
+        [LMRequired]
+        [LMMaxLength(Constantes.Integrante.TamanhoMaximoNome)]
         public string Nome { get; set; }
+
+        [LMRequired]
+        [LMMaxLength(Constantes.Integrante.TamanhoMaximoEmail)]
+        [LMEmailAttribute]
         public string Email { get; set; }
+
         public string Cpf { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DataNascimento { get; set; }
         public bool EhUsuarioConvidado { get; set; }
         public DateTime? DataConvite { get; set; }
@@ -58,18 +63,18 @@ namespace LM.Core.Domain
             
             if (string.IsNullOrWhiteSpace(Sexo))
             {
-                yield return new ValidationResult("O sexo é de preenchimento obrigatório!", new[] { "Sexo" });
+                yield return new ValidationResult(string.Format(LMResource.Default_Validation_Required, "Sexo"), new[] { "Sexo" });
             }
-            else if (Sexo.ToLower() != "m" && Sexo.ToLower() != "f")
+            else if (!Sexo.Equals(Constantes.Integrante.SexoMasculino, StringComparison.InvariantCultureIgnoreCase) && !Sexo.Equals(Constantes.Integrante.SexoFeminino, StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new ValidationResult("O sexo selecionado é inválido: " + Sexo, new[] { "Sexo" });
+                yield return new ValidationResult(LMResource.DefaultValidation_Selected, new[] { "Sexo" });
             }
 
             if (!string.IsNullOrWhiteSpace(Email))
             {
-                var regex = new Regex("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", RegexOptions.IgnoreCase);
+                var regex = new Regex(Constantes.RegexTemplates.EmailRegex, RegexOptions.IgnoreCase);
                 if (!regex.IsMatch(Email))
-                    yield return new ValidationResult("O e-mail informado é inválido: " + Email, new[] {"Email"});
+                    yield return new ValidationResult(string.Format(LMResource.Default_Validation_RegularExpression, "Email"), new[] {"Email"});
             }
         }
 

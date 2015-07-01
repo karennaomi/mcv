@@ -17,8 +17,8 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
         public virtual Produto Produto { get; set; }
 
-        public decimal? QuantidadeDeConsumo { get; set; }
-        public decimal? QuantidadeEmEstoque { get; set; }
+        public decimal? QuantidadeConsumo { get; set; }
+        public decimal? QuantidadeEstoque { get; set; }
         public decimal? QuantidadeDoEstoqueEstimado { get; set; }
         public decimal? QuantidadeDeSugestaoDeCompra { get; set; }
         public string Status { get; set; }
@@ -40,8 +40,8 @@ namespace LM.Core.Domain
 
         public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!QuantidadeDeConsumo.HasValue || QuantidadeDeConsumo <= 0) yield return new ValidationResult("Quantidade consumida deve ser maior que zero.", new[] { "QuantidadeDeConsumo" });
-            if (!QuantidadeEmEstoque.HasValue || QuantidadeEmEstoque < 0) yield return new ValidationResult("Quantidade em estoque deve ser maior ou igual a zero.", new[] { "QuantidadeEmEstoque" });
+            if (!QuantidadeConsumo.HasValue || QuantidadeConsumo <= 0) yield return new ValidationResult("Quantidade consumida deve ser maior que zero.", new[] { "QuantidadeConsumo" });
+            if (!QuantidadeEstoque.HasValue || QuantidadeEstoque < 0) yield return new ValidationResult("Quantidade em estoque deve ser maior ou igual a zero.", new[] { "QuantidadeEstoque" });
             if (Periodo == null) yield return new ValidationResult("O período de consumo deve ser informado.", new[] { "Periodo" });
         }
     }

@@ -20,7 +20,7 @@ namespace LM.Core.Tests
         public void NaoValidaItemComCosumoIgualAZero()
         {
             var item = _fakes.ListaItem();
-            item.QuantidadeDeConsumo = 0;
+            item.QuantidadeConsumo = 0;
             AssertValidation(item, "Quantidade consumida deve ser maior que zero.", "QuantidadeDeConsumo");
         }
 
@@ -28,7 +28,7 @@ namespace LM.Core.Tests
         public void NaoValidaItemComCosumoMenorQueZero()
         {
             var item = _fakes.ListaItem();
-            item.QuantidadeDeConsumo = -1;
+            item.QuantidadeConsumo = -1;
             AssertValidation(item, "Quantidade consumida deve ser maior que zero.", "QuantidadeDeConsumo");
         }
 
@@ -36,7 +36,7 @@ namespace LM.Core.Tests
         public void NaoValidaItemComCosumoIgualANull()
         {
             var item = _fakes.ListaItem();
-            item.QuantidadeDeConsumo = null;
+            item.QuantidadeConsumo = null;
             AssertValidation(item, "Quantidade consumida deve ser maior que zero.", "QuantidadeDeConsumo");
         }
 
@@ -44,7 +44,7 @@ namespace LM.Core.Tests
         public void NaoValidaItemComEstoqueMenorQueZero()
         {
             var item = _fakes.ListaItem();
-            item.QuantidadeEmEstoque = -1;
+            item.QuantidadeEstoque = -1;
             AssertValidation(item, "Quantidade em estoque deve ser maior ou igual a zero.", "QuantidadeEmEstoque");
         }
 
@@ -52,7 +52,7 @@ namespace LM.Core.Tests
         public void NaoValidaItemComEstoqueIgualANull()
         {
             var item = _fakes.ListaItem();
-            item.QuantidadeEmEstoque = null;
+            item.QuantidadeEstoque = null;
             AssertValidation(item, "Quantidade em estoque deve ser maior ou igual a zero.", "QuantidadeEmEstoque");
         }
 

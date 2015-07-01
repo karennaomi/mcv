@@ -43,7 +43,7 @@ namespace LM.Core.Application
         public Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante)
         {
             var integranteToUpdate = Obter(pontoDemandaId, integrante.Id);
-            if (integranteToUpdate.EhUsuarioDoSistema() && usuarioId != integranteToUpdate.Usuario.Id) throw new ApplicationException("Não pode atualizar um usuário do sistema.");
+            if (integranteToUpdate.EhUsuarioDoSistema() && usuarioId != integranteToUpdate.Usuario.Id) throw new ApplicationException(LMResource.Integrante_NaoPodeAtualizarQuemJaEhUsuario);
             if (!string.IsNullOrWhiteSpace(integrante.Email) && integranteToUpdate.Email != integrante.Email) _repositorio.VerificarSeEmailJaExiste(integrante.Email);
             integranteToUpdate.Atualizar(integrante);
             _repositorio.Salvar();
@@ -55,7 +55,7 @@ namespace LM.Core.Application
             var integrante = Obter(pontoDemandaId, integranteId);
             if(integrante.Usuario != null)
             { 
-                if (integrante.Usuario.Id == usuarioId) throw new ApplicationException("Não pode desativar integrante.");
+                if (integrante.Usuario.Id == usuarioId) throw new ApplicationException(LMResource.Integrante_NaoPodeDesativar);
                 if (integrante.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda.UsuarioCriador.Id == integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o criador da casa.");
             }
             integrante.Ativo = false;
@@ -65,7 +65,7 @@ namespace LM.Core.Application
         public void Convidar(long pontoDemandaId, long usuarioId, long id)
         {
             var convidado = Obter(pontoDemandaId, id);
-            if (!convidado.PodeSerConvidado()) throw new ApplicationException("Este integrante não pode ser convidado.");
+            if (!convidado.PodeSerConvidado()) throw new ApplicationException(LMResource.Integrante_NaoPodeSerConvidado);
             convidado.DataConvite = DateTime.Now;
             convidado.EhUsuarioConvidado = true;
             var pontoDemanda = convidado.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda;

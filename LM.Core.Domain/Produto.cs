@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LM.Core.Domain
@@ -20,9 +19,11 @@ namespace LM.Core.Domain
         }
 
         public int Id { get; set; }
-        [Required(ErrorMessage = "O codigo EAN do produto é obrigatório.")]
-        [MaxLength(Constantes.Produto.TamanhoMaximoEan, ErrorMessage = "O codigo EAN deve ter no máximo " + Constantes.Produto.TamanhoMaximoEanString + " caracteres.")]
+        
+        [LMRequired]
+        [LMMaxLength(Constantes.Produto.TamanhoMaximoEan)]
         public string Ean { get; set; }
+        
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }

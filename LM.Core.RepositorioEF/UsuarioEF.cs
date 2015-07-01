@@ -20,7 +20,7 @@ namespace LM.Core.RepositorioEF
         public Usuario Obter(long id)
         {
             var usuario = _contexto.Usuarios.Find(id);
-            if (usuario == null) throw new ObjetoNaoEncontradoException("Usuário não encontrado, id " + id);
+            if (usuario == null) throw new ObjetoNaoEncontradoException(LMResource.Usuario_NaoEncontrado);
             return usuario;
         }
 

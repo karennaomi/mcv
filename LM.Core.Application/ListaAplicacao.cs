@@ -72,19 +72,19 @@ namespace LM.Core.Application
         public void AtualizarItem(long pontoDemandaId, long integranteId, ListaItem item)
         {
             var itemToUpdate = ObterItem(pontoDemandaId, item.Id);
-            itemToUpdate.QuantidadeDeConsumo = item.QuantidadeDeConsumo;
-            itemToUpdate.QuantidadeEmEstoque = item.QuantidadeEmEstoque;
+            itemToUpdate.QuantidadeConsumo = item.QuantidadeConsumo;
+            itemToUpdate.QuantidadeEstoque = item.QuantidadeEstoque;
             itemToUpdate.EhEssencial = item.EhEssencial;
             _repositorio.AtualizarPeriodoDoItem(itemToUpdate, item.Periodo.Id);
             itemToUpdate.DataAlteracao = DateTime.Now;
-            _repositorio.LancarEstoque(pontoDemandaId, integranteId, itemToUpdate.Produto.Id, itemToUpdate.QuantidadeEmEstoque);
+            _repositorio.LancarEstoque(pontoDemandaId, integranteId, itemToUpdate.Produto.Id, itemToUpdate.QuantidadeEstoque);
             _repositorio.Salvar();
         }
 
         public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
         {
             var item = ObterItem(pontoDemandaId, itemId);
-            item.QuantidadeDeConsumo = quantidade;
+            item.QuantidadeConsumo = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }
@@ -92,7 +92,7 @@ namespace LM.Core.Application
         public void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade)
         {
             var item = ObterItem(pontoDemandaId, itemId);
-            item.QuantidadeEmEstoque = quantidade;
+            item.QuantidadeEstoque = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.LancarEstoque(pontoDemandaId, integranteId, item.Produto.Id, quantidade);
             _repositorio.Salvar();

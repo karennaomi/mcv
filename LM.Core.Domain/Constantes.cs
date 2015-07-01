@@ -3,9 +3,13 @@ namespace LM.Core.Domain
 {
     public class Constantes
     {
+        public struct RegexTemplates
+        {
+            public const string EmailRegex = @"^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})$";
+        }
+
         public struct Usuario
         {
-            public const string TamanhoMinimoSenhaString = "6";
             public const int TamanhoMinimoSenha = 6;
         }
 
@@ -13,11 +17,14 @@ namespace LM.Core.Domain
         {
             public const int IdadeMinimaCadastro = 13;
             public const int DiasMinimosParaConvidarNovamente = 1;
+            public const int TamanhoMaximoNome = 70;
+            public const int TamanhoMaximoEmail = 50;
+            public const string SexoMasculino = "m";
+            public const string SexoFeminino = "f";
         }
 
         public struct Produto
         {
-            public const string TamanhoMaximoEanString = "13";
             public const int TamanhoMaximoEan = 13;
         }
 

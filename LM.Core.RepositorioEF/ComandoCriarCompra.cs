@@ -64,8 +64,8 @@ namespace LM.Core.RepositorioEF
             var listaItem = new ListaItem
             {
                 Periodo = new Periodo {Id = 12 /* Eventual */},
-                QuantidadeDeConsumo = compraItem.Quantidade,
-                QuantidadeEmEstoque = compraItem.Quantidade
+                QuantidadeConsumo = compraItem.Quantidade,
+                QuantidadeEstoque = compraItem.Quantidade
             };
             var listaCompraItem = compraItem as ListaCompraItem;
             if (listaCompraItem != null)
