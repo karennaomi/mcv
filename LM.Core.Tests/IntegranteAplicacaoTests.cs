@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System.Data.Entity.Validation;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -48,7 +49,16 @@ namespace LM.Core.Tests
                 integrante.Email = null;
                 integrante.Telefone = null;
                 var app = ObterAppIntegrante(new IntegranteEF());
-                integrante = app.Criar(1, integrante);
+                try
+                {
+                    integrante = app.Criar(1, integrante);
+
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    
+                    throw ex;
+                }
                 Assert.IsTrue(integrante.Id > 0);
             }
         }

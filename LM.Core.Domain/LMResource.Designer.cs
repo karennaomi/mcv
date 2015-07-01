@@ -142,7 +142,7 @@ namespace LM.Core.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Usuário desativado..
+        ///   Looks up a localized string similar to Usuário desativado..
         /// </summary>
         public static string Usuario_LoginDesativado {
             get {

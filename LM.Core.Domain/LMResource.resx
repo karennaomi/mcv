@@ -139,7 +139,7 @@
     <value>Seu e-mail ou senha não conferem. Tente novamente!</value>
   </data>
   <data name="Usuario_LoginDesativado" xml:space="preserve">
-    <value>"Usuário desativado.</value>
+    <value>Usuário desativado.</value>
   </data>
   <data name="Usuario_Validation_DataNascimento" xml:space="preserve">
     <value>O usuário deve ter {0} anos ou mais.</value>

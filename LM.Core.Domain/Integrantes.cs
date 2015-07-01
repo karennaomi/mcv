@@ -23,14 +23,11 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
-        
+
         [LMRequired]
         [LMMaxLength(Constantes.Integrante.TamanhoMaximoNome)]
         public string Nome { get; set; }
 
-        [LMRequired]
-        [LMMaxLength(Constantes.Integrante.TamanhoMaximoEmail)]
-        [LMEmailAttribute]
         public string Email { get; set; }
 
         public string Cpf { get; set; }
@@ -60,21 +57,26 @@ namespace LM.Core.Domain
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Tipo == TipoIntegrante.Pet) yield break;
-            
+
             if (string.IsNullOrWhiteSpace(Sexo))
             {
                 yield return new ValidationResult(string.Format(LMResource.Default_Validation_Required, "Sexo"), new[] { "Sexo" });
             }
             else if (!Sexo.Equals(Constantes.Integrante.SexoMasculino, StringComparison.InvariantCultureIgnoreCase) && !Sexo.Equals(Constantes.Integrante.SexoFeminino, StringComparison.InvariantCultureIgnoreCase))
             {
-                yield return new ValidationResult(LMResource.DefaultValidation_Selected, new[] { "Sexo" });
+                yield return new ValidationResult(string.Format(LMResource.DefaultValidation_Selected, "Sexo"), new[] { "Sexo" });
             }
 
             if (!string.IsNullOrWhiteSpace(Email))
             {
-                var regex = new Regex(Constantes.RegexTemplates.EmailRegex, RegexOptions.IgnoreCase);
-                if (!regex.IsMatch(Email))
-                    yield return new ValidationResult(string.Format(LMResource.Default_Validation_RegularExpression, "Email"), new[] {"Email"});
+                if (Email.Length > Constantes.Integrante.TamanhoMaximoEmail)
+                {
+                    yield return new ValidationResult(string.Format(LMResource.Default_Validation_MaxLength, "e-mail", Constantes.Integrante.TamanhoMaximoEmail));
+                }
+                if (!new Regex(Constantes.RegexTemplates.EmailRegex, RegexOptions.IgnoreCase).IsMatch(Email))
+                {
+                    yield return new ValidationResult(string.Format(LMResource.Default_Validation_Email, "Email"), new[] { "Email" });
+                }
             }
         }
 

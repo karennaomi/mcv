@@ -25,7 +25,7 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O codigo EAN do produto é obrigatório.", error.ErrorMessage);
+            Assert.AreEqual("O campo Ean é de preenchimento obrigatório.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Ean", error.MemberNames.ElementAt(0));
         }
@@ -40,7 +40,7 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O codigo EAN deve ter no máximo 13 caracteres.", error.ErrorMessage);
+            Assert.AreEqual("O campo Ean deve possuir no máximo 13 caracteres.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Ean", error.MemberNames.ElementAt(0));
         }

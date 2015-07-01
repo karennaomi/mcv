@@ -24,7 +24,7 @@ namespace LM.Core.Tests
         {
             var item = _fakes.PedidoItem();
             item.Quantidade = 0;
-            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeDeConsumo");
+            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeConsumo");
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace LM.Core.Tests
         {
             var item = _fakes.PedidoItem();
             item.Quantidade = -1;
-            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeDeConsumo");
+            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeConsumo");
         }
 
         private static void AssertValidation(PedidoItem item, string message, string property)

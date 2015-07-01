@@ -7,7 +7,7 @@ namespace LM.Core.Domain
     {
         public LMRequiredAttribute()
         {
-            ErrorMessageResourceName = LMResource.Default_Validation_Required;
+            ErrorMessageResourceName = "Default_Validation_Required";
             ErrorMessageResourceType = typeof(LMResource);
             AllowEmptyStrings = false;
         }
@@ -17,7 +17,7 @@ namespace LM.Core.Domain
     {
         public LMMaxLengthAttribute(int length) : base(length)
         {
-            ErrorMessageResourceName = LMResource.Default_Validation_MaxLength;
+            ErrorMessageResourceName = "Default_Validation_MaxLength";
             ErrorMessageResourceType = typeof(LMResource);
         }
     }
@@ -26,7 +26,7 @@ namespace LM.Core.Domain
     {
         public LMMinLengthAttribute(int length) : base(length)
         {
-            ErrorMessageResourceName = LMResource.Default_Validation_MinLength;
+            ErrorMessageResourceName = "Default_Validation_MinLength";
             ErrorMessageResourceType = typeof(LMResource);
         }
     }
@@ -35,7 +35,7 @@ namespace LM.Core.Domain
     {
         public LMEmailAttribute() : base(Constantes.RegexTemplates.EmailRegex)
         {
-            ErrorMessageResourceName = LMResource.Default_Validation_Email;
+            ErrorMessageResourceName = "Default_Validation_Email";
             ErrorMessageResourceType = typeof(LMResource);
         }
     }
