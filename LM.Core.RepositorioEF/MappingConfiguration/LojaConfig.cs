@@ -16,6 +16,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(l => l.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(l => l.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
             Ignore(l => l.Telefone);
+            Ignore(l => l.Proximidade);
 
             HasRequired(p => p.Info).WithRequiredPrincipal();
         }

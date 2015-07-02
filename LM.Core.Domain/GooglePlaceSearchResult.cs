@@ -13,6 +13,9 @@ namespace LM.Core.Domain
         [JsonProperty("formatted_phone_number")]
         public string FormattedPhoneNumber { get; set; }
 
+        [JsonProperty("vicinity")]
+        public string Proximidade { get; set; }
+
         public Loja CreateLoja()
         {
             return new Loja
@@ -21,6 +24,7 @@ namespace LM.Core.Domain
                 LocalizadorOrigem = "google",
                 Nome = Name,
                 Telefone = FormattedPhoneNumber,
+                Proximidade = Proximidade,
                 Info = new LojaInfo
                 {
                     Endereco = CreateEndereco()
