@@ -58,6 +58,7 @@ namespace LM.Core.RepositorioEF
             {
                 FilaProdutos = new Collection<FilaProduto> { new FilaProduto
                 {
+                    ProdutoId = produto.Id,
                     Ean = produto.Ean,
                     Descricao = produto.Nome(),
                     Imagem = produto.ImagemPrincipal().Path

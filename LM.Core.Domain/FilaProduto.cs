@@ -10,6 +10,7 @@ namespace LM.Core.Domain
         }
 
         public long Id { get; set; }
+        public int ProdutoId { get; set; }
         public string Ean { get; set; }
         public string Descricao { get; set; }
         public string Imagem { get; set; }
