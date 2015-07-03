@@ -44,7 +44,7 @@ namespace LM.Core.RepositorioEF
 
         public Loja AdicionarLojaFavorita(long usuarioId, PontoDemanda pontoDemanda, Loja loja)
         {
-            new ComandoAdicionarLojaFavorita(_contexto, pontoDemanda, loja).Executar();
+            loja = new ComandoAdicionarLojaFavorita(_contexto, pontoDemanda, loja).Executar();
             return loja;
         }
     }

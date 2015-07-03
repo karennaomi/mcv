@@ -19,13 +19,14 @@ namespace LM.Core.RepositorioEF
             _cidadeRepo = new CidadeEF(_contexto);
         }
 
-        internal void Executar()
+        internal Loja Executar()
         {
             if (_pontoDemanda.LojasFavoritas == null) _pontoDemanda.LojasFavoritas = new Collection<Loja>();
             _novaLoja.Info.Endereco.Cidade = _novaLoja.Info.Endereco.Cidade == null ? null : _cidadeRepo.Buscar(_novaLoja.Info.Endereco.Cidade.Nome);
             _novaLoja = _lojaFavoritaRepo.VerificarLojaExistente(_novaLoja);
             _pontoDemanda.LojasFavoritas.Add(_novaLoja);
             _contexto.SaveChanges();
+            return _novaLoja;
         }
     }
 }
