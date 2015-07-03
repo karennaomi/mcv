@@ -7,9 +7,9 @@ namespace LM.Core.RepositorioEF
     {
         private readonly ContextoEF _contexto;
         private readonly PontoDemanda _pontoDemanda;
-        private readonly Loja _novaLoja;
         private readonly LojaFavoritaEF _lojaFavoritaRepo;
         private readonly CidadeEF _cidadeRepo;
+        private Loja _novaLoja;
         public ComandoAdicionarLojaFavorita(ContextoEF contexto, PontoDemanda pontoDemanda, Loja loja)
         {
             _contexto = contexto;
@@ -23,7 +23,8 @@ namespace LM.Core.RepositorioEF
         {
             if (_pontoDemanda.LojasFavoritas == null) _pontoDemanda.LojasFavoritas = new Collection<Loja>();
             _novaLoja.Info.Endereco.Cidade = _novaLoja.Info.Endereco.Cidade == null ? null : _cidadeRepo.Buscar(_novaLoja.Info.Endereco.Cidade.Nome);
-            _pontoDemanda.LojasFavoritas.Add(_lojaFavoritaRepo.VerificarLojaExistente(_novaLoja));
+            _novaLoja = _lojaFavoritaRepo.VerificarLojaExistente(_novaLoja);
+            _pontoDemanda.LojasFavoritas.Add(_novaLoja);
             _contexto.SaveChanges();
         }
     }
