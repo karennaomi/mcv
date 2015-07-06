@@ -16,7 +16,7 @@ namespace LM.Core.Domain
         public DateTime? DataAlteracao { get; set; }
         public virtual Produto Produto { get; set; }
 
-        public decimal Quantidade { get; set; }
+        public decimal QuantidadeSugestaoCompra { get; set; }
         public StatusPedido Status { get; set; }
         public DateTime Data { get; set; }
         public virtual PontoDemanda PontoDemanda { get; set; }
@@ -30,12 +30,12 @@ namespace LM.Core.Domain
 
         public decimal ObterQuantidadeParaCompra()
         {
-            return Quantidade;
+            return QuantidadeSugestaoCompra;
         }
 
         public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Quantidade <= 0) yield return new ValidationResult("Quantidade deve ser maior que zero.", new[] { "Quantidade" });
+            if (QuantidadeSugestaoCompra <= 0) yield return new ValidationResult("Quantidade deve ser maior que zero.", new[] { "QuantidadeSugestaoCompra" });
         }
     }
 }

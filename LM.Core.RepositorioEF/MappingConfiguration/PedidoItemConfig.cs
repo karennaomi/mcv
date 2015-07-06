@@ -12,7 +12,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(p => p.Id).HasColumnName("ID_PEDIDO");
             Property(p => p.Status).HasColumnName("ID_STATUS_PEDIDO");
             Property(p => p.Data).HasColumnName("DT_PEDIDO").HasColumnType("smalldatetime");
-            Property(p => p.Quantidade).HasColumnName("QT_SOLICITADA");
+            Property(p => p.QuantidadeSugestaoCompra).HasColumnName("QT_SOLICITADA");
             Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional().HasColumnType("smalldatetime");
             Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional().HasColumnType("smalldatetime");
 

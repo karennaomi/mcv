@@ -63,7 +63,7 @@ namespace LM.Core.Application
         {
             var item = ObterItem(pontoDemandaId, itemId);
             if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode alterá-lo.");
-            item.Quantidade = quantidade;
+            item.QuantidadeSugestaoCompra = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
         }

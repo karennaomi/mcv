@@ -25,7 +25,7 @@ namespace LM.Core.RepositorioEF
             var itemDesativado = _contexto.PedidoItens.SingleOrDefault(i => i.PontoDemanda.Id == pontoDemandaId && i.Status == StatusPedido.ExcluidoPeloUsuario && (i.Produto.Id == item.Produto.Id));
             if (itemDesativado != null)
             {
-                itemDesativado.Quantidade = item.Quantidade;
+                itemDesativado.QuantidadeSugestaoCompra = item.QuantidadeSugestaoCompra;
                 itemDesativado.Status = StatusPedido.Pendente;
                 itemDesativado.DataAlteracao = DateTime.Now;
                 _contexto.SaveChanges();

@@ -23,16 +23,16 @@ namespace LM.Core.Tests
         public void NaoValidaPedidoItemComQuantidadeIgualAZero()
         {
             var item = _fakes.PedidoItem();
-            item.Quantidade = 0;
-            AssertValidation(item, "Quantidade deve ser maior que zero.", "Quantidade");
+            item.QuantidadeSugestaoCompra = 0;
+            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeSugestaoCompra");
         }
 
         [Test]
         public void NaoValidaPedidoItemComQuantidadeMenorQueZero()
         {
             var item = _fakes.PedidoItem();
-            item.Quantidade = -1;
-            AssertValidation(item, "Quantidade deve ser maior que zero.", "Quantidade");
+            item.QuantidadeSugestaoCompra = -1;
+            AssertValidation(item, "Quantidade deve ser maior que zero.", "QuantidadeSugestaoCompra");
         }
 
         private static void AssertValidation(PedidoItem item, string message, string property)

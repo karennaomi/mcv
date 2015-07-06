@@ -32,7 +32,7 @@ namespace LM.Core.Tests
 
             var item = new PedidoItem
             {
-                Quantidade = 5,
+                QuantidadeSugestaoCompra = 5,
                 Produto = new Produto { Id = 26270 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 }}
             };
@@ -51,14 +51,14 @@ namespace LM.Core.Tests
 
             var item1 = new PedidoItem
             {
-                Quantidade = 5,
+                QuantidadeSugestaoCompra = 5,
                 Produto = new Produto { Id = 25861 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
             };
 
             var item2 = new PedidoItem
             {
-                Quantidade = 2,
+                QuantidadeSugestaoCompra = 2,
                 Produto = new Produto { Id = 25861 },
                 Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
             };
@@ -106,7 +106,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id, 12);
-                Assert.AreEqual(12, pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First().Quantidade);
+                Assert.AreEqual(12, pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First().QuantidadeSugestaoCompra);
             }
         }
 
