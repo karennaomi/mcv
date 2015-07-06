@@ -22,9 +22,11 @@ namespace LM.Core.Application
     public class UsuarioAplicacao : IUsuarioAplicacao
     {
         private readonly IRepositorioUsuario _repositorio;
-        public UsuarioAplicacao(IRepositorioUsuario repositorio)
+        private readonly IContratoAplicacao _appContrato;
+        public UsuarioAplicacao(IRepositorioUsuario repositorio, IContratoAplicacao appContrato)
         {
             _repositorio = repositorio;
+            _appContrato = appContrato;
         }
 
         public Usuario Obter(long id)
@@ -44,9 +46,12 @@ namespace LM.Core.Application
             if (!string.IsNullOrWhiteSpace(usuario.Integrante.Cpf)) _repositorio.VerificarSeCpfJaExiste(usuario.Integrante.Cpf);
             _repositorio.VerificarSeEmailJaExiste(usuario.Integrante.Email);
             usuario.Login = usuario.Integrante.Email;
-            usuario.Senha = PasswordHash.CreateHash(usuario.Senha); 
-            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
+            usuario.Senha = PasswordHash.CreateHash(usuario.Senha);
 
+            if (usuario.Contratos == null) usuario.Contratos = new Collection<Contrato>();
+            usuario.Contratos.Add(_appContrato.ObterAtivo());
+            
+            if(usuario.StatusUsuarioPontoDemanda == null) usuario.StatusUsuarioPontoDemanda = new List<StatusUsuarioPontoDemanda>();
             var integrante = _repositorio.UsuarioConvidado(usuario.Integrante.Email);
             if (integrante != null)
             {

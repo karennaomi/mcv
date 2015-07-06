@@ -23,6 +23,18 @@ namespace LM.Core.Tests
         }
     }
 
+    public class MockContratoRepo
+    {
+        public Contrato Contrato { private get; set; }
+
+        public IRepositorioContrato GetMockedRepo()
+        {
+            var mock = new Mock<IRepositorioContrato>();
+            mock.Setup(m => m.ObterAtivo()).Returns(Contrato);
+            return mock.Object;
+        }
+    }
+
     public class MockPontoDemandaRepo
     {
         public PontoDemanda PontoDemanda { private get; set; }

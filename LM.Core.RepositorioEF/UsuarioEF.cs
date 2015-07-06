@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.Entity;
+using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Linq;
@@ -31,6 +32,10 @@ namespace LM.Core.RepositorioEF
 
         public Usuario Criar(Usuario usuario)
         {
+            foreach (var contrato in usuario.Contratos)
+            {
+                _contexto.Entry(contrato).State = EntityState.Unchanged;
+            }
             usuario = _contexto.Usuarios.Add(usuario);
             return usuario;
         }

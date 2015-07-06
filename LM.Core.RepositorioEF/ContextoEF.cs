@@ -24,7 +24,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<FilaItem> FilaItens { get; set; }
         public DbSet<LegacyToken> LegacyTokens { get; set; }
         public DbSet<EmailCapturado> EmailsCapturados { get; set; }
-
+        public DbSet<Contrato> Contratos { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -70,7 +70,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
             modelBuilder.Configurations.Add(new FilaProdutoConfig());
             modelBuilder.Configurations.Add(new LegacyTokenConfig());
-            modelBuilder.Configurations.Add(new ContratoUsuarioConfig());
+            modelBuilder.Configurations.Add(new ContratoConfig());
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());
         }
     }

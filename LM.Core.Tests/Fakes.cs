@@ -186,5 +186,10 @@ namespace LM.Core.Tests
         {
             return new List<PedidoItem> { PedidoItem(StatusPedido.Pendente, "C"), PedidoItem() };
         }
+
+        internal Contrato Contrato()
+        {
+            return new Contrato{ Ativo = true, Conteudo = "Lorem ipsum dolor sit amet"};
+        }
     }
 }

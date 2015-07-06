@@ -20,12 +20,17 @@ namespace LM.Core.Tests
         private Fakes _fakes;
         private MockPontoDemandaRepo _mockRepo;
         private MockUsuarioRepo _mockUsuarioRepo;
+        private MockContratoRepo _mockContratoRepo;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
             _mockRepo = new MockPontoDemandaRepo();
             _mockUsuarioRepo = new MockUsuarioRepo();
+            _mockContratoRepo = new MockContratoRepo
+            {
+                Contrato = _fakes.Contrato()
+            };
         }
 
         [Test]
@@ -33,9 +38,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = ObterAppUsuario(new UsuarioEF());
+                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
                 var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 app.Criar(usuario.Id, pontoDemanda);
@@ -50,9 +55,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = ObterAppUsuario(new UsuarioEF());
+                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
                 var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
@@ -68,9 +73,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = ObterAppUsuario(new UsuarioEF());
+                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
                 var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda.LojasFavoritas = new List<Loja> { _fakes.Loja(), _fakes.Loja(), _fakes.Loja() };
@@ -90,7 +95,7 @@ namespace LM.Core.Tests
                 var pontoDemanda0 = new ContextoEF().PontosDemanda.First();
                 var usuarioId = pontoDemanda0.GruposDeIntegrantes.First().Integrante.Usuario.Id;
 
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = new PontoDemanda{ Id = pontoDemanda0.Id, Nome = "Nome Alterado", Endereco = _fakes.Endereco()};
                 var pontoDemandaAtualizado = app.Atualizar(usuarioId, pontoDemanda);
                 Assert.AreEqual("Nome Alterado", pontoDemandaAtualizado.Nome);
@@ -103,9 +108,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = ObterAppUsuario(new UsuarioEF());
+                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
                 var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -122,9 +127,9 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var appUsuario = ObterAppUsuario(new UsuarioEF());
+                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
                 var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF()));
+                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
                 pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
@@ -144,7 +149,7 @@ namespace LM.Core.Tests
             var pontoDemanda = _fakes.PontoDemanda();
             pontoDemanda.GruposDeIntegrantes=new Collection<GrupoDeIntegrantes>{new GrupoDeIntegrantes{ Integrante = _fakes.Integrante()}};
             _mockRepo.PontoDemanda = pontoDemanda;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.Throws<ObjetoNaoEncontradoException>(() => app.RemoverIntegrante(1, 100, 255));
         }
 
@@ -161,7 +166,7 @@ namespace LM.Core.Tests
             pontoDemanda.UsuarioCriador = usuario;
             pontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes { Integrante = integrante } };
             _mockRepo.PontoDemanda = pontoDemanda;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.Throws<ApplicationException>(() => app.RemoverIntegrante(1, 100, 200));
         }
 
@@ -187,7 +192,7 @@ namespace LM.Core.Tests
             pontoDemanda.UsuarioCriador = usuario;
             pontoDemanda.GruposDeIntegrantes = new Collection<GrupoDeIntegrantes> { new GrupoDeIntegrantes { Integrante = integrante }, new GrupoDeIntegrantes { Integrante = integrante1 } };
             _mockRepo.PontoDemanda = pontoDemanda;
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.AreEqual(2, pontoDemanda.GruposDeIntegrantes.Count);
             app.RemoverIntegrante(1, 100, 201);
             Assert.AreEqual(1, pontoDemanda.GruposDeIntegrantes.Count);
@@ -196,14 +201,14 @@ namespace LM.Core.Tests
         [Test]
         public void PontoDemandaQueNaoPertenceAoUsuarioLancaException()
         {
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.Throws<PontoDemandaInvalidoException>(() => app.VerificarPontoDemanda(1, 666));
         }
 
         [Test]
         public void PontoDemandaQuePertenceAoUsuarioRetornaIdCorreto()
         {
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             var pontoDemandaId = app.VerificarPontoDemanda(1, 101);
             Assert.AreEqual(101, pontoDemandaId);
         }
@@ -213,7 +218,7 @@ namespace LM.Core.Tests
         {
             _mockRepo.PontoDemanda = _fakes.PontoDemanda();
             _mockRepo.PontoDemandaLista = new List<PontoDemanda> {_fakes.PontoDemanda()};
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.Throws<ApplicationException>(() => app.Desativar(2, 100));
         }
 
@@ -227,15 +232,15 @@ namespace LM.Core.Tests
             _mockRepo.PontoDemanda = pontoDemanda1;
             _mockRepo.PontoDemandaLista = new List<PontoDemanda> { pontoDemanda1, pontoDemanda2 };
 
-            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo()));
+            var app = ObterAppPontoDemanda(_mockRepo.GetMockedRepo(), ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()));
             Assert.IsTrue(app.Listar(2).Single(p => p.Id == 100).Ativo);
             app.Desativar(2, 100);
             Assert.IsFalse(app.Listar(2).Single(p => p.Id == 100).Ativo);
         }
 
-        private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo)
+        private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo, IRepositorioContrato contratoRepo)
         {
-            return new UsuarioAplicacao(usuarioRepo);
+            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo));
         }
 
         private IPontoDemandaAplicacao ObterAppPontoDemanda(IRepositorioPontoDemanda pontoDemandaRepo, IUsuarioAplicacao appUsuario)

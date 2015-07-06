@@ -17,12 +17,14 @@ namespace LM.Core.Tests
     public class UsuarioAplicacaoTests
     {
         private Fakes _fakes;
-        private MockUsuarioRepo _mockRepo;
+        private MockUsuarioRepo _mockUsuarioRepo;
+        private MockContratoRepo _mockContratoRepo;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
-            _mockRepo = new MockUsuarioRepo();
+            _mockUsuarioRepo = new MockUsuarioRepo();
+            _mockContratoRepo = new MockContratoRepo();
         }
 
         [Test]
@@ -30,9 +32,9 @@ namespace LM.Core.Tests
         {
             var usuario = _fakes.Usuario();
             usuario.Id = 0;
-            var app = ObterAppUsuario(new UsuarioEF());
-            using (new TransactionScope())
-            {
+            var app = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
+            //using (new TransactionScope())
+            //{
                 try
                 {
                     usuario = app.Criar(usuario);
@@ -43,14 +45,14 @@ namespace LM.Core.Tests
                 {
                     throw ex;
                 }
-            }
+            //}
         }
 
         [Test]
         public void CriacaoDoUsuarioDeveDefinirStatusCadastroComoEtapaDeInformacoesPessoaisCompleta()
         {
             var usuario = _fakes.Usuario();
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             usuario = app.Criar(usuario);
             Assert.AreEqual(StatusCadastro.EtapaDeInformacoesPessoaisCompleta, usuario.StatusUsuarioPontoDemanda.First().StatusCadastro);
         }
@@ -62,8 +64,8 @@ namespace LM.Core.Tests
             usuario.Integrante.Email = "integrante@convidado.com";
 
             var integranteConvidado = _fakes.Integrante();
-            _mockRepo.Integrante = integranteConvidado;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Integrante = integranteConvidado;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             usuario = app.Criar(usuario);
             Assert.IsTrue(usuario.StatusUsuarioPontoDemanda.Any(s => s.StatusCadastro == StatusCadastro.UsuarioOk));
             Assert.IsFalse(usuario.Integrante.EhUsuarioConvidado);
@@ -75,8 +77,8 @@ namespace LM.Core.Tests
         {
             var usuarioParaAtualizar = _fakes.Usuario();
             usuarioParaAtualizar.Id = 1;
-            _mockRepo.Usuario = usuarioParaAtualizar;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuarioParaAtualizar;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             
             var usuario = _fakes.Usuario();
             usuario.Id = 1;
@@ -98,8 +100,8 @@ namespace LM.Core.Tests
         {
             var usuarioParaAtualizar = _fakes.Usuario();
             usuarioParaAtualizar.Id = 1;
-            _mockRepo.Usuario = usuarioParaAtualizar;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuarioParaAtualizar;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
 
             var usuario = _fakes.Usuario();
             usuario.Id = 1;
@@ -114,8 +116,8 @@ namespace LM.Core.Tests
             var usuarioLogin = _fakes.Usuario();
             usuarioLogin.Login = "usuario@login.com";
             usuarioLogin.Senha = "1000:tQGg+TbIlRzwKkuiAH0EvzMCYmY1Y6V2:ZRp/QGdEktD35jvoPTHWEnAom7btjmCV"; //hash de '789456'
-            _mockRepo.Usuario = usuarioLogin;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuarioLogin;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             var usuarioValidado = app.ValidarLogin("usuario@login.com", "789456");
             Assert.IsNotNull(usuarioValidado);
         }
@@ -126,8 +128,8 @@ namespace LM.Core.Tests
             var usuarioLogin = _fakes.Usuario();
             usuarioLogin.Login = "usuario@login.com";
             usuarioLogin.Senha = "1000:tQGg+TbIlRzwKkuiAH0EvzMCYmY1Y6V2:ZRp/QGdEktD35jvoPTHWEnAom7btjmCV"; //hash de '789456'
-            _mockRepo.Usuario = usuarioLogin;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuarioLogin;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             Assert.Throws<LoginInvalidoException>(() => app.ValidarLogin("usuario@login.com", "123456"));
         }
 
@@ -138,8 +140,8 @@ namespace LM.Core.Tests
             usuarioLogin.Login = "usuario@login.com";
             usuarioLogin.Senha = "1000:tQGg+TbIlRzwKkuiAH0EvzMCYmY1Y6V2:ZRp/QGdEktD35jvoPTHWEnAom7btjmCV"; //hash de '789456'
             usuarioLogin.Ativo = false;
-            _mockRepo.Usuario = usuarioLogin;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuarioLogin;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             var ex = Assert.Throws<LoginInvalidoException>(() => app.ValidarLogin("usuario@login.com", "789456"));
             Assert.AreEqual("Usuário desativado.", ex.Message);
         }
@@ -149,8 +151,8 @@ namespace LM.Core.Tests
         {
             var usuario = _fakes.Usuario();
             usuario.Id = 1;
-            _mockRepo.Usuario = usuario;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuario;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             
             app.AtualizarStatusCadastro(1, StatusCadastro.EtapaDoGrupoDeIntegrantesCompleta);
             usuario = app.Obter(1);
@@ -162,8 +164,8 @@ namespace LM.Core.Tests
         {
             var usuario = _fakes.Usuario();
             usuario.Id = 1;
-            _mockRepo.Usuario = usuario;
-            var app = ObterAppUsuario(_mockRepo.GetMockedRepo());
+            _mockUsuarioRepo.Usuario = usuario;
+            var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
 
             app.AtualizarStatusCadastro(1, StatusCadastro.EtapaDeInformacoesDoPontoDeDemandaCompleta, 2);
             usuario = app.Obter(1);
@@ -176,15 +178,15 @@ namespace LM.Core.Tests
         {
             var usuario = _fakes.Usuario();
             usuario.Id = 1;
-            _mockRepo.Usuario = usuario;
-            ObterAppUsuario(_mockRepo.GetMockedRepo()).AtualizarDeviceInfo(1, "google", "nsuiahfui2u2h2u9hf42");
+            _mockUsuarioRepo.Usuario = usuario;
+            ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo()).AtualizarDeviceInfo(1, "google", "nsuiahfui2u2h2u9hf42");
             Assert.AreEqual("google", usuario.DeviceType);
             Assert.AreEqual("nsuiahfui2u2h2u9hf42", usuario.DeviceId);
         }
 
-        private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo)
+        private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo, IRepositorioContrato contratoRepo)
         {
-            return new UsuarioAplicacao(usuarioRepo);
+            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo));
         }
     }
 }
