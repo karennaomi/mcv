@@ -15,7 +15,7 @@ namespace LM.Core.Application
                     .ToList();
         }
 
-        public static IEnumerable<T> OrderBySecoes<T>(this IEnumerable<T> itens) where T : IItem
+        public static IOrderedEnumerable<T> OrderBySecoes<T>(this IEnumerable<T> itens) where T : IItem
         {
             return itens.OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome).ThenBy(i => i.Produto.Categorias.First().Nome);
         }

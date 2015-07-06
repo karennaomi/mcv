@@ -32,7 +32,7 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario).OrderBySecoes();
+            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario).OrderBySecoes().ThenBy(i => i.Status);
         }
 
         public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
