@@ -9,7 +9,6 @@ namespace LM.Core.Application
     {
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<IItem> ListarSugestao(long pontoDemandaId);
-        IEnumerable<IItem> ListarSugestaoPorCategoria(long pontoDemandaI, int categoriaId);
         Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
     }
@@ -35,17 +34,9 @@ namespace LM.Core.Application
             return pedidos.Union(itens).OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome);
         }
 
-        public IEnumerable<IItem> ListarSugestaoPorCategoria(long pontoDemandaId, int categoriaId)
-        {
-            if (categoriaId == 0) return _appPedido.ListarItensPorStatus(pontoDemandaId, StatusPedido.Pendente);
-            return _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra && i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId));
-        }
-
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            var secoes = _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra).ListarSecoes();
-            secoes.Insert(0, new Categoria { Id = 0, Nome = "PEDIDO" });
-            return secoes;
+            return _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra).ListarSecoes();
         }
 
         public Compra Obter(long pontoDemandaId, long id)
