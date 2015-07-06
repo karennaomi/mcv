@@ -102,11 +102,11 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
             using (new TransactionScope())
             {
                 listaApp.AtualizarEstoqueDoItem(_pontoDemandaId, _integranteId, item.Id, 12);
-                Assert.AreEqual(12, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeEstoque);    
+                Assert.AreEqual(12, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().QuantidadeEstoque);    
             }
         }
 
@@ -117,7 +117,7 @@ namespace LM.Core.Tests
             {
                 var listaApp = ObterListaApp();
                 listaApp.AtualizarConsumoDoItem(_pontoDemandaId, 186, 5);
-                Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().QuantidadeConsumo);
+                Assert.AreEqual(5, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().QuantidadeConsumo);
             }
         }
 
@@ -126,11 +126,11 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
             using (new TransactionScope())
             {
                 listaApp.AtualizarPeriodoDoItem(_pontoDemandaId, item.Id, 5);
-                Assert.AreEqual(5, listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First().Periodo.Id);
+                Assert.AreEqual(5, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().Periodo.Id);
             }
         }
 
@@ -139,7 +139,7 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var item = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
             var itemToUpdate = new ListaItem
             {
                 Id = item.Id,
@@ -151,7 +151,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 listaApp.AtualizarItem(_pontoDemandaId, _integranteId, itemToUpdate);
-                var updatedItem = listaApp.ListarItensPorCategoria(_pontoDemandaId, 12000).First();
+                var updatedItem = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
                 Assert.AreEqual(5, updatedItem.QuantidadeConsumo);
                 Assert.AreEqual(3, updatedItem.QuantidadeEstoque);
                 Assert.AreEqual(2, updatedItem.Periodo.Id);

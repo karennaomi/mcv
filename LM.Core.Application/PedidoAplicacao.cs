@@ -9,7 +9,7 @@ namespace LM.Core.Application
     public interface IPedidoAplicacao
     {
         IEnumerable<PedidoItem> ListarItens(long pontoDemandaId);
-        IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
+        IEnumerable<PedidoItem> ListarItensPorSecao(long pontoDemandaId, int secaoId);
         IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status);
         IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status);
         void RemoverItem(long pontoDemandaId, long usuarioId, long itemId);
@@ -32,31 +32,27 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status != StatusPedido.ExcluidoPeloUsuario).OrderBySecoes().ThenBy(i => i.Status);
+            return _repositorio.ListarItens(pontoDemandaId).NaoExluidoPeloUsuario().OrdenadoPorSecao().ThenBy(i => i.Status);
         }
 
-        public IEnumerable<PedidoItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
+        public IEnumerable<PedidoItem> ListarItensPorSecao(long pontoDemandaId, int secaoId)
         {
-            var itens = _repositorio.ListarItens(pontoDemandaId);
-            return itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId) && i.Status != StatusPedido.ExcluidoPeloUsuario);
+            return _repositorio.ListarItens(pontoDemandaId).DaSecao(secaoId).NaoExluidoPeloUsuario();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status)
         {
-            var itens = _repositorio.ListarItens(pontoDemandaId);
-            return itens.Where(i => i.Status == status);
+            return _repositorio.ListarItens(pontoDemandaId).DoStatus(status);
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status)
         {
-            var itens = _repositorio.ListarItens(pontoDemandaId).Where(i => i.Status == status);
-            return itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First()).Distinct().OrderBy(c => c.Nome).ToList();
+            return _repositorio.ListarItens(pontoDemandaId).DoStatus(status).ListarSecoes();
         }
 
         public void RemoverItem(long pontoDemandaId, long usuarioId, long itemId)
         {
-            var itens = _repositorio.ListarItens(pontoDemandaId);
-            var item = ObterItem(itens, itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode remove-lo.");
             item.Status = StatusPedido.ExcluidoPeloUsuario;
             item.DataAlteracao = DateTime.Now;
@@ -65,7 +61,7 @@ namespace LM.Core.Application
 
         public void AtualizarQuantidadeDoItem(long pontoDemandaId, long usuarioId, long itemId, decimal quantidade)
         {
-            var item = ObterItem(_repositorio.ListarItens(pontoDemandaId), itemId);
+            var item = ObterItem(pontoDemandaId, itemId);
             if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode alterá-lo.");
             item.Quantidade = quantidade;
             item.DataAlteracao = DateTime.Now;
@@ -81,8 +77,9 @@ namespace LM.Core.Application
             return item;
         }
 
-        private static PedidoItem ObterItem(IEnumerable<PedidoItem> itens, long id)
+        private PedidoItem ObterItem(long pontoDemandaId, long id)
         {
+            var itens = _repositorio.ListarItens(pontoDemandaId);
             var item = itens.SingleOrDefault(i => i.Id == id);
             if (item == null) throw new ApplicationException("O pedido não possui o item informado.");
             return item;

@@ -45,7 +45,10 @@ namespace LM.Core.Domain
 
         public static Func<Produto, bool> ProtectProductPredicate(long pontoDemandaId)
         {
-            return (produto => ((produto.PontosDemanda == null || !produto.PontosDemanda.Any() || produto.PontosDemanda.Any(pontoDemanda => pontoDemanda.Id == pontoDemandaId))));
+            return
+                (produto =>
+                    ((produto.PontosDemanda == null || !produto.PontosDemanda.Any() ||
+                      produto.PontosDemanda.Any(pontoDemanda => pontoDemanda.Id == pontoDemandaId))));
         }
     }
 

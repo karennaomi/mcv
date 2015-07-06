@@ -40,6 +40,6 @@ namespace LM.Core.Domain.Properties
 {
     internal struct Version
     {
-        public const string CurrentVersion = "1.9.13";
+        public const string CurrentVersion = "1.9.14";
     }
 }

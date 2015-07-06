@@ -77,14 +77,14 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
 
-            var itens = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000);
+            var itens = pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000);
             var item = itens.First();
             var totalDeItems = itens.Count();
             
             using (new TransactionScope())
             {
                 pedidoApp.RemoverItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id);
-                Assert.IsTrue(pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).Count() == totalDeItems - 1);
+                Assert.IsTrue(pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).Count() == totalDeItems - 1);
             }
         }
 
@@ -102,11 +102,11 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
 
-            var item = pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First();
+            var item = pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First();
             using (new TransactionScope())
             {
                 pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id, 12);
-                Assert.AreEqual(12, pedidoApp.ListarItensPorCategoria(_pontoDemandaId, 2000).First().Quantidade);
+                Assert.AreEqual(12, pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First().Quantidade);
             }
         }
 

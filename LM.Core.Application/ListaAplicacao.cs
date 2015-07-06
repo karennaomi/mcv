@@ -13,7 +13,7 @@ namespace LM.Core.Application
         void DesativarItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
-        IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId);
+        IEnumerable<ListaItem> ListarItensPorSecao(long pontoDemandaId, int secaoId);
         void AtualizarItem(long pontoDemandaId, long integranteId, ListaItem item);
         void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
         void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade);
@@ -40,7 +40,7 @@ namespace LM.Core.Application
         public ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            if (lista.Itens.Any(i => i.Produto.Id == item.Produto.Id && i.Status == "A")) throw new ApplicationException("Este produto já existe na lista.");
+            if (lista.JaExisteProdutoNaLista(item)) throw new ApplicationException("Este produto já existe na lista.");
             _repositorio.AdicionarItem(lista, item, usuarioId);
             return item;
         }
@@ -56,7 +56,7 @@ namespace LM.Core.Application
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens.Where(i => i.Status == "A").OrderBySecoes();
+            return lista.Itens.SomenteAtivos().OrdenadoPorSecao();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
@@ -64,9 +64,9 @@ namespace LM.Core.Application
             return ListarItens(pontoDemandaId).ListarSecoes();
         }
 
-        public IEnumerable<ListaItem> ListarItensPorCategoria(long pontoDemandaId, int categoriaId)
+        public IEnumerable<ListaItem> ListarItensPorSecao(long pontoDemandaId, int secaoId)
         {
-            return ListarItens(pontoDemandaId).Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == categoriaId));
+            return ListarItens(pontoDemandaId).DaSecao(secaoId);
         }
 
         public void AtualizarItem(long pontoDemandaId, long integranteId, ListaItem item)
