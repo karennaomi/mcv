@@ -33,8 +33,8 @@ namespace LM.Core.Tests
             var usuario = _fakes.Usuario();
             usuario.Id = 0;
             var app = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-            //using (new TransactionScope())
-            //{
+            using (new TransactionScope())
+            {
                 try
                 {
                     usuario = app.Criar(usuario);
@@ -45,7 +45,7 @@ namespace LM.Core.Tests
                 {
                     throw ex;
                 }
-            //}
+            }
         }
 
         [Test]
