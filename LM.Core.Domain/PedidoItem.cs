@@ -35,7 +35,7 @@ namespace LM.Core.Domain
 
         public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Quantidade <= 0) yield return new ValidationResult("Quantidade deve ser maior que zero.", new[] { "QuantidadeConsumo" });
+            if (Quantidade <= 0) yield return new ValidationResult("Quantidade deve ser maior que zero.", new[] { "Quantidade" });
         }
     }
 }
