@@ -35,6 +35,11 @@ namespace LM.Core.Application
             return itens.Where(i => i.Status == status);
         }
 
+        public static IOrderedEnumerable<PedidoItem> OrdenadoPorStatus(this IEnumerable<PedidoItem> itens)
+        {
+            return itens.OrderBy(i => i.Status);
+        }
+
         public static IEnumerable<Produto> SomenteProdutosDoCatalogoOuDoPontoDeDemanda(this IEnumerable<Produto> produtos, long pontoDemandaId)
         {
             return produtos.Where(Produto.ProtectProductPredicate(pontoDemandaId));

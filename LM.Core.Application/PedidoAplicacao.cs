@@ -32,7 +32,7 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).NaoExluidoPeloUsuario().OrdenadoPorSecao().ThenBy(i => i.Status);
+            return _repositorio.ListarItens(pontoDemandaId).NaoExluidoPeloUsuario().OrdenadoPorStatus();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorSecao(long pontoDemandaId, int secaoId)
