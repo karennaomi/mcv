@@ -6,6 +6,6 @@ namespace LM.Core.Domain.Repositorio
     {
         IEnumerable<PedidoItem> ListarItens(long pontoDemandaId);
         PedidoItem AdicionarItem(long pontoDemandaId, PedidoItem item);
-        void Salvar();
+        void Salvar(bool skipValidation = false);
     }
 }

@@ -48,9 +48,13 @@ namespace LM.Core.RepositorioEF
             return produtoRepo.Criar(produto, usuarioId);
         }
 
-        public void Salvar()
+        public void Salvar(bool skipValidation = false)
         {
+            if (skipValidation) _contexto.Configuration.ValidateOnSaveEnabled = false;
+            
             _contexto.SaveChanges();
+            
+            if (skipValidation) _contexto.Configuration.ValidateOnSaveEnabled = true;
         }
     }
 }

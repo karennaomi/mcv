@@ -56,7 +56,7 @@ namespace LM.Core.Application
             if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode remove-lo.");
             item.Status = StatusPedido.ExcluidoPeloUsuario;
             item.DataAlteracao = DateTime.Now;
-            _repositorio.Salvar();
+            _repositorio.Salvar(true);
         }
 
         public void AtualizarQuantidadeDoItem(long pontoDemandaId, long usuarioId, long itemId, decimal quantidade)
