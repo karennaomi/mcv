@@ -14,6 +14,7 @@ namespace LM.Core.Tests
     public class RecuperarSenhaAplicacaoTests
     {
         private const string UrlTrocarSenha = "http://teste.com/trocarsenha";
+        private const string ImageHost = "http://img.teste.com";
 
         [Test]
         public void CriaUmaRecuperacaoDeSenha()
@@ -22,7 +23,7 @@ namespace LM.Core.Tests
             {
                 var app = new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
                 new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF())), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
-                var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha);
+                var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha, ImageHost);
                 Assert.IsTrue(recuperarSenha.Id > 0);
                 Assert.IsNotNull(recuperarSenha.Usuario);
             }
@@ -34,7 +35,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var app = GetApp();
-                var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha);
+                var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha, ImageHost);
                 var token = recuperarSenha.Token;
                 var usuarioId = recuperarSenha.Usuario.Id;
                 

@@ -6,7 +6,7 @@ namespace LM.Core.Application
 {
     public interface IRecuperarSenhaAplicacao
     {
-        RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl);
+        RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl, string imageHost);
         bool ValidarToken(Guid token);
         void TrocarSenha(Guid token, string novaSenha);
     }
@@ -24,13 +24,13 @@ namespace LM.Core.Application
             _appNotificacao = appNotificacao;
         }
 
-        public RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl)
+        public RecuperarSenha RecuperarSenha(string email, string trocarSenhaUrl, string imageHost)
         {
             var usuario = _appUsuario.Obter(email);
             var recuperarSenha = new RecuperarSenha {Usuario = new Usuario {Id = usuario.Id}};
             _repositorio.Criar(recuperarSenha);
             recuperarSenha.Usuario = usuario;
-            EnviarEmail(recuperarSenha, trocarSenhaUrl);
+            EnviarEmail(recuperarSenha, trocarSenhaUrl, imageHost);
             return recuperarSenha;
         }
 
@@ -48,9 +48,9 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        private void EnviarEmail(RecuperarSenha recuperarSenha, string trocarSenhaUrl)
+        private void EnviarEmail(RecuperarSenha recuperarSenha, string trocarSenhaUrl, string imageHost)
         {
-            var extraParams = new { Url = trocarSenhaUrl, recuperarSenha.Token };
+            var extraParams = new { Url = trocarSenhaUrl, recuperarSenha.Token, ImageHost = imageHost };
             _appNotificacao.Notificar(null, recuperarSenha.Usuario.Integrante, null, TipoTemplateMensagem.RecuperarSenha, extraParams);
         }
     }
