@@ -25,7 +25,7 @@ namespace LM.Core.Tests
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O campo Ean é de preenchimento obrigatório.", error.ErrorMessage);
+            Assert.AreEqual("Ops! Parece que você esqueceu de digitar o campo Ean.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Ean", error.MemberNames.ElementAt(0));
         }

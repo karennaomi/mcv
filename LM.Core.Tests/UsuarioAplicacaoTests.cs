@@ -143,7 +143,7 @@ namespace LM.Core.Tests
             _mockUsuarioRepo.Usuario = usuarioLogin;
             var app = ObterAppUsuario(_mockUsuarioRepo.GetMockedRepo(), _mockContratoRepo.GetMockedRepo());
             var ex = Assert.Throws<LoginInvalidoException>(() => app.ValidarLogin("usuario@login.com", "789456"));
-            Assert.AreEqual("Usuário desativado.", ex.Message);
+            Assert.AreEqual("Este e-mail esta desativado.", ex.Message);
         }
 
         [Test]

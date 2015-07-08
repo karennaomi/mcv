@@ -97,7 +97,7 @@ namespace LM.Core.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ops! Parece que você esqueceu de digitar o campo {0}.
+        ///   Looks up a localized string similar to Ops! Parece que você esqueceu de digitar o campo {0}..
         /// </summary>
         public static string Default_Validation_Required {
             get {

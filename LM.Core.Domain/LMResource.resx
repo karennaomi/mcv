@@ -124,7 +124,7 @@
     <value>O campo {0} deve possuir no mínimo {1} caracteres.</value>
   </data>
   <data name="Default_Validation_Required" xml:space="preserve">
-    <value>Ops! Parece que você esqueceu de digitar o campo {0}</value>
+    <value>Ops! Parece que você esqueceu de digitar o campo {0}.</value>
   </data>
   <data name="Default_Validation_RegularExpression" xml:space="preserve">
     <value>O formato do campo {0} é inválido.</value>
