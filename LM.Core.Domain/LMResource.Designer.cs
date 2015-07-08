@@ -97,7 +97,7 @@ namespace LM.Core.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O campo {0} é de preenchimento obrigatório..
+        ///   Looks up a localized string similar to Ops! Parece que você esqueceu de digitar o campo {0}.
         /// </summary>
         public static string Default_Validation_Required {
             get {
@@ -142,7 +142,7 @@ namespace LM.Core.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuário desativado..
+        ///   Looks up a localized string similar to Este e-mail esta desativado..
         /// </summary>
         public static string Usuario_LoginDesativado {
             get {
@@ -160,7 +160,7 @@ namespace LM.Core.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Usuário não encontrado.
+        ///   Looks up a localized string similar to Sinto muito, mas não encontrei este e-mail. Tente novamente, por favor!.
         /// </summary>
         public static string Usuario_NaoEncontrado {
             get {

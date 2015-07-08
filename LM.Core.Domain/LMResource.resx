@@ -124,7 +124,7 @@
     <value>O campo {0} deve possuir no mínimo {1} caracteres.</value>
   </data>
   <data name="Default_Validation_Required" xml:space="preserve">
-    <value>O campo {0} é de preenchimento obrigatório.</value>
+    <value>Ops! Parece que você esqueceu de digitar o campo {0}</value>
   </data>
   <data name="Default_Validation_RegularExpression" xml:space="preserve">
     <value>O formato do campo {0} é inválido.</value>
@@ -139,13 +139,13 @@
     <value>Seu e-mail ou senha não conferem. Tente novamente!</value>
   </data>
   <data name="Usuario_LoginDesativado" xml:space="preserve">
-    <value>Usuário desativado.</value>
+    <value>Este e-mail esta desativado.</value>
   </data>
   <data name="Usuario_Validation_DataNascimento" xml:space="preserve">
     <value>O usuário deve ter {0} anos ou mais.</value>
   </data>
   <data name="Usuario_NaoEncontrado" xml:space="preserve">
-    <value>Usuário não encontrado</value>
+    <value>Sinto muito, mas não encontrei este e-mail. Tente novamente, por favor!</value>
   </data>
   <data name="Integrante_NaoPodeAtualizarQuemJaEhUsuario" xml:space="preserve">
     <value>Não pode atualizar um usuário do sistema.</value>
