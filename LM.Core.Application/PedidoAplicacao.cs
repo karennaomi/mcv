@@ -53,7 +53,7 @@ namespace LM.Core.Application
         public void RemoverItem(long pontoDemandaId, long usuarioId, long itemId)
         {
             var item = ObterItem(pontoDemandaId, itemId);
-            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode remove-lo.");
+            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException(string.Format("Sinto muito! Os pedidos do(a) {0} só podem ser excluídos por ele(a).", item.Integrante.Nome));
             item.Status = StatusPedido.ExcluidoPeloUsuario;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar(true);
@@ -62,7 +62,7 @@ namespace LM.Core.Application
         public void AtualizarQuantidadeDoItem(long pontoDemandaId, long usuarioId, long itemId, decimal quantidade)
         {
             var item = ObterItem(pontoDemandaId, itemId);
-            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException("Somente quem criou o item pode alterá-lo.");
+            if (item.Integrante.Usuario.Id != usuarioId) throw new ApplicationException(string.Format("Sinto muito! Os pedidos do(a) {0} só podem ser alterados por ele(a).", item.Integrante.Nome));
             item.QuantidadeSugestaoCompra = quantidade;
             item.DataAlteracao = DateTime.Now;
             _repositorio.Salvar();
