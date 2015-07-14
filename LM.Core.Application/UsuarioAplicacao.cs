@@ -17,16 +17,19 @@ namespace LM.Core.Application
         Usuario ValidarLogin(string email, string senha);
         void AtualizarStatusCadastro(long usuarioId, StatusCadastro statusCadastro, long? pontoDemandaId = null);
         void AtualizarDeviceInfo(long usuarioId, string deviceType, string deviceId);
+        void FinalizarCadastro(long usuarioId, long pontoDemandaId, string imageHost);
     }
 
     public class UsuarioAplicacao : IUsuarioAplicacao
     {
         private readonly IRepositorioUsuario _repositorio;
         private readonly IContratoAplicacao _appContrato;
-        public UsuarioAplicacao(IRepositorioUsuario repositorio, IContratoAplicacao appContrato)
+        private readonly INotificacaoAplicacao _appNotificacao;
+        public UsuarioAplicacao(IRepositorioUsuario repositorio, IContratoAplicacao appContrato, INotificacaoAplicacao appNotificacao)
         {
             _repositorio = repositorio;
             _appContrato = appContrato;
+            _appNotificacao = appNotificacao;
         }
 
         public Usuario Obter(long id)
@@ -116,6 +119,14 @@ namespace LM.Core.Application
             usuario.DeviceType = deviceType;
             usuario.DeviceId = deviceId;
             _repositorio.Salvar();
+        }
+
+        public void FinalizarCadastro(long usuarioId, long pontoDemandaId, string imageHost)
+        {
+            AtualizarStatusCadastro(usuarioId, StatusCadastro.UsuarioOk, pontoDemandaId);
+            var destinatario = Obter(usuarioId).Integrante;
+            var extraParams = new { ImageHost = imageHost };
+            _appNotificacao.Notificar(null, destinatario, null, TipoTemplateMensagem.CadastroCompleto, extraParams);
         }
     }
 }

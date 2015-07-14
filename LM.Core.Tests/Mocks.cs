@@ -154,5 +154,14 @@ namespace LM.Core.Tests
             return mock.Object;
         }
     }
+
+    public class MockNotificacaoApp
+    {
+        public INotificacaoAplicacao GetMockedApp()
+        {
+            var mock = new Mock<INotificacaoAplicacao>();
+            return mock.Object;
+        }
+    }
 }
 

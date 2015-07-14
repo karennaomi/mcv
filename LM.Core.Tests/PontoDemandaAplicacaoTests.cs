@@ -240,7 +240,7 @@ namespace LM.Core.Tests
 
         private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo, IRepositorioContrato contratoRepo)
         {
-            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo));
+            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo), new MockNotificacaoApp().GetMockedApp());
         }
 
         private IPontoDemandaAplicacao ObterAppPontoDemanda(IRepositorioPontoDemanda pontoDemandaRepo, IUsuarioAplicacao appUsuario)

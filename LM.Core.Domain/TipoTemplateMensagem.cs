@@ -8,6 +8,7 @@
         PedidoItemCriado = 3,
         RecuperarSenha = 4,
         ConviteIntegrante = 5,
-        FinalizarCompra = 6
+        FinalizarCompra = 6,
+        CadastroCompleto = 7
     }
 }

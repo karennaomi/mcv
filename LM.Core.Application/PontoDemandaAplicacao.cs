@@ -14,7 +14,7 @@ namespace LM.Core.Application
         void Desativar(long usuarioId, long pontoDemandaId);
         IList<PontoDemanda> Listar(long usuarioId);
         PontoDemanda Obter(long usuarioId, long pontoDemandaId);
-        PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia);
+        PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia, string imageHost);
         long VerificarPontoDemanda(long usuarioId, long pontoDemandaId);
         Loja AdicionarLojaFavorita(long usuarioId, long pontoDemandaId, Loja loja);
         void RemoverLojaFavorita(long usuarioId, long pontoDemandaId, string localizadorId);
@@ -62,13 +62,13 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia)
+        public PontoDemanda DefinirFrequenciaDeCompra(long usuarioId, long pontoDemandaId, short frequencia, string imageHost)
         {
             var pontoDemanda = Obter(usuarioId, pontoDemandaId);
             pontoDemanda.QuantidadeDiasAlertaReposicao = frequencia;
             pontoDemanda.QuantidadeDiasCoberturaEstoque = 3;
             _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.FrequenciaDeCompraCompleta, pontoDemandaId);
-            _appUsuario.AtualizarStatusCadastro(usuarioId, StatusCadastro.UsuarioOk, pontoDemandaId);
+            _appUsuario.FinalizarCadastro(usuarioId, pontoDemandaId, imageHost);
             _repositorio.Salvar();
             return pontoDemanda;
         }

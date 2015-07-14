@@ -15,14 +15,13 @@ namespace LM.Core.Tests
     {
         private const string UrlTrocarSenha = "http://teste.com/trocarsenha";
         private const string ImageHost = "http://img.teste.com";
-
+        private readonly INotificacaoAplicacao _appNotificacao = new MockNotificacaoApp().GetMockedApp();
         [Test]
         public void CriaUmaRecuperacaoDeSenha()
         {
             using (new TransactionScope())
             {
-                var app = new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF())), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
+                var app = new RecuperarSenhaAplicacao(new RecuperarSenhaEF(), new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF()), _appNotificacao), _appNotificacao);
                 var recuperarSenha = app.RecuperarSenha("thanos@marvel.com", UrlTrocarSenha, ImageHost);
                 Assert.IsTrue(recuperarSenha.Id > 0);
                 Assert.IsNotNull(recuperarSenha.Usuario);
@@ -42,7 +41,7 @@ namespace LM.Core.Tests
                 var app2 = GetApp();
                 app2.TrocarSenha(token, "abc123def");
 
-                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF()));
+                var appUsuario = new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF()), _appNotificacao);
                 var usuario = appUsuario.Obter(usuarioId);
                 Assert.IsTrue(PasswordHash.ValidatePassword("abc123def", usuario.Senha));
             }
@@ -69,10 +68,10 @@ namespace LM.Core.Tests
             Assert.IsTrue(mockedApp.ValidarToken(new Guid("176CA494-E477-410C-967D-B059A49003C3")));
         }
 
-        private static IRecuperarSenhaAplicacao GetApp()
+        private IRecuperarSenhaAplicacao GetApp()
         {
             return new RecuperarSenhaAplicacao(new RecuperarSenhaEF(),
-                new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF())), new NotificacaoAplicacao(null, new TemplateMensagemAplicacao(new TemplateMensagemEF()), new FilaItemAplicacao(new FilaItemEF())));
+                new UsuarioAplicacao(new UsuarioEF(), new ContratoAplicacao(new ContratoEF()), _appNotificacao), _appNotificacao);
         }
 
         private static IRecuperarSenhaAplicacao GetMockedApp()

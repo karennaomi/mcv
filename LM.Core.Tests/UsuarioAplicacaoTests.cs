@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
-using Moq;
 using NUnit.Framework;
 using System.Linq;
 using System.Transactions;
@@ -19,6 +17,7 @@ namespace LM.Core.Tests
         private Fakes _fakes;
         private MockUsuarioRepo _mockUsuarioRepo;
         private MockContratoRepo _mockContratoRepo;
+
         [TestFixtureSetUp]
         public void Init()
         {
@@ -186,7 +185,7 @@ namespace LM.Core.Tests
 
         private static IUsuarioAplicacao ObterAppUsuario(IRepositorioUsuario usuarioRepo, IRepositorioContrato contratoRepo)
         {
-            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo));
+            return new UsuarioAplicacao(usuarioRepo, new ContratoAplicacao(contratoRepo), new MockNotificacaoApp().GetMockedApp());
         }
     }
 }
