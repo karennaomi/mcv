@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LM.Core.Domain
 {
@@ -24,14 +25,30 @@ namespace LM.Core.Domain
         public virtual CompraItemSubstituto ItemSubstituto { get; set; }
     }
 
-    public class ListaCompraItem : CompraItem
+    public class ListaCompraItem : CompraItem, IValidatableObject
     {
         public virtual ListaItem Item { get; set; }
+
+        public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Status == StatusCompra.Comprado && Quantidade == 0)
+            {
+                yield return new ValidationResult(string.Format("Atenção! Não se esqueça de preencher a quantidade do produto {0} que comprou.", Item.Produto.Nome()), new[] { "Quantidade" });
+            }
+        }
     }
 
-    public class PedidoCompraItem : CompraItem
+    public class PedidoCompraItem : CompraItem, IValidatableObject
     {
         public virtual PedidoItem Item { get; set; }
+
+        public System.Collections.Generic.IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Status == StatusCompra.Comprado && Quantidade == 0)
+            {
+                yield return new ValidationResult(string.Format("Atenção! Não se esqueça de preencher a quantidade do produto {0} que comprou.", Item.Produto.Nome()), new[] { "Quantidade" });
+            }
+        }
     }
 
     public class CompraItemSubstituto
