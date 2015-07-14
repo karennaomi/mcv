@@ -87,6 +87,10 @@ namespace LM.Core.Domain
             {
                 Usuario.Login = integrante.Email;
             }
+            if (integrante.Animal != null)
+            {
+                Animal = integrante.Animal;
+            }
             Email = integrante.Email;
             Nome = integrante.Nome;
             DataNascimento = integrante.DataNascimento;
