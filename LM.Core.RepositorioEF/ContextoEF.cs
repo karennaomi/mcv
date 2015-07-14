@@ -25,6 +25,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<LegacyToken> LegacyTokens { get; set; }
         public DbSet<EmailCapturado> EmailsCapturados { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
+        public DbSet<Animal> Animais { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -72,6 +73,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new LegacyTokenConfig());
             modelBuilder.Configurations.Add(new ContratoConfig());
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());
+            modelBuilder.Configurations.Add(new AnimalConfig());
         }
     }
 }

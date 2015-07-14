@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
@@ -14,6 +15,7 @@ namespace LM.Core.Application
         Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante);
         void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
         void Convidar(long pontoDemandaId, long usuarioId, long id);
+        IEnumerable<Animal> Animais();
     }
 
     public class IntegranteAplicacao : IIntegranteAplicacao
@@ -72,6 +74,11 @@ namespace LM.Core.Application
             var remetente = pontoDemanda.GruposDeIntegrantes.Single(g => g.Integrante.Usuario != null && g.Integrante.Usuario.Id == usuarioId).Integrante;
             _appNotificacao.Notificar(remetente, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, null);
             _repositorio.Salvar();
+        }
+
+        public IEnumerable<Animal> Animais()
+        {
+            return _repositorio.Animais();
         }
     }
 }

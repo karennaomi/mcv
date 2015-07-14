@@ -48,6 +48,7 @@ namespace LM.Core.Tests
                 integrante.Sexo = null;
                 integrante.Email = null;
                 integrante.Telefone = null;
+                integrante.Animal = new Animal{ Id = 1};
                 var app = ObterAppIntegrante(new IntegranteEF());
                 try
                 {

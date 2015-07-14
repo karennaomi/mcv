@@ -185,6 +185,20 @@ namespace LM.Core.Tests
             var emailsCapturados = _contexto.EmailsCapturados;
             Assert.IsTrue(emailsCapturados.Any());
         }
+
+        [Test]
+        public void MapearAnimais()
+        {
+            var animais = _contexto.Animais;
+            Assert.IsTrue(animais.Any());
+        }
+
+        [Test]
+        public void MapearIntegrantePet()
+        {
+            var integrante = _contexto.Integrantes.First(i => i.Tipo == TipoIntegrante.Pet);
+            Assert.IsNotNull(integrante.Animal);
+        }
     }
 }
 

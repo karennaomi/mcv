@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace LM.Core.Domain.Repositorio
 {
     public interface IRepositorioIntegrante
@@ -8,5 +10,6 @@ namespace LM.Core.Domain.Repositorio
         void VerificarSeCpfJaExiste(string cpf);
         void VerificarSeEmailJaExiste(string email);
         void Salvar();
+        IEnumerable<Animal> Animais();
     }
 }

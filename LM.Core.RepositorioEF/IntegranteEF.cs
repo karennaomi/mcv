@@ -3,6 +3,7 @@ using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace LM.Core.RepositorioEF
 {
@@ -24,6 +25,7 @@ namespace LM.Core.RepositorioEF
         public Integrante Criar(Integrante integrante)
         {
             integrante = _contexto.Integrantes.Add(integrante);
+            if (integrante.Animal != null) _contexto.Entry(integrante.Animal).State = EntityState.Unchanged;
             foreach (var grupoDeIntegrantes in integrante.GruposDeIntegrantes)
             {
                 _contexto.Entry(grupoDeIntegrantes.PontoDemanda).State = EntityState.Unchanged;
@@ -45,6 +47,11 @@ namespace LM.Core.RepositorioEF
         public void Salvar()
         {
             _contexto.SaveChanges();
+        }
+
+        public IEnumerable<Animal> Animais()
+        {
+            return _contexto.Animais.Where(a => a.Ativo);
         }
     }
 }

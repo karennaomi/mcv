@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animal.cs" />
     <Compile Include="BuscaLojaResult.cs" />
     <Compile Include="Categoria.cs" />
     <Compile Include="Cidade.cs" />
