@@ -40,10 +40,10 @@ namespace LM.Core.Domain
         public string Telefone { get; set; }
         public string Sexo { get; set; }
         public TipoIntegrante Tipo { get; set; }
+        public int? AnimalId { get; set; }
 
         public virtual Usuario Usuario { get; set; }
         public virtual ICollection<GrupoDeIntegrantes> GruposDeIntegrantes { get; set; }
-        public virtual Animal Animal { get; set; }
 
         public int ObterIdade()
         {
@@ -87,16 +87,13 @@ namespace LM.Core.Domain
             {
                 Usuario.Login = integrante.Email;
             }
-            if (integrante.Animal != null)
-            {
-                Animal = integrante.Animal;
-            }
             Email = integrante.Email;
             Nome = integrante.Nome;
             DataNascimento = integrante.DataNascimento;
             Sexo = integrante.Sexo;
             Telefone = integrante.Telefone;
             Cpf = integrante.Cpf;
+            AnimalId = integrante.AnimalId;
         }
 
         public bool PodeSerConvidado()

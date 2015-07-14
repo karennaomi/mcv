@@ -34,6 +34,17 @@ namespace LM.Core.Tests
             return integrante;
         }
 
+        internal Integrante IntegrantePet()
+        {
+            var integrante = new Integrante
+            {
+                Nome = "Douradinho",
+                AnimalId = 3,
+                GruposDeIntegrantes = new Collection<GrupoDeIntegrantes>()
+            };
+            return integrante;
+        }
+
         internal PontoDemanda PontoDemanda()
         {
             var usuario = Usuario();

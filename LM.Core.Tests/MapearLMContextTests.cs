@@ -197,7 +197,7 @@ namespace LM.Core.Tests
         public void MapearIntegrantePet()
         {
             var integrante = _contexto.Integrantes.First(i => i.Tipo == TipoIntegrante.Pet);
-            Assert.IsNotNull(integrante.Animal);
+            Assert.IsNotNull(integrante.AnimalId);
         }
     }
 }

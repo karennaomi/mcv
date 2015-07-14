@@ -22,8 +22,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.Email).HasColumnName("TX_EMAIL");
             Property(i => i.Cpf).HasColumnName("NR_CPF");
             Property(i => i.Tipo).HasColumnName("ID_TIPO");
-
-            HasOptional(i => i.Animal).WithMany().Map(m => m.MapKey("ID_ANIMAL"));
+            Property(i => i.AnimalId).HasColumnName("ID_ANIMAL");
         }
     }
 }

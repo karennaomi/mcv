@@ -48,7 +48,7 @@ namespace LM.Core.Tests
                 integrante.Sexo = null;
                 integrante.Email = null;
                 integrante.Telefone = null;
-                integrante.Animal = new Animal{ Id = 1};
+                integrante.AnimalId = 1;
                 var app = ObterAppIntegrante(new IntegranteEF());
                 try
                 {
@@ -89,6 +89,24 @@ namespace LM.Core.Tests
             Assert.AreEqual("12345678901", integranteAtualizado.Cpf);
             Assert.AreEqual("2165498754", integranteAtualizado.Telefone);
             Assert.AreEqual("f", integranteAtualizado.Sexo);
+        }
+
+        [Test]
+        public void AtualizarIntegrantePet()
+        {
+            var integranteParaAtualizar = SetIntegranteInMockRepo(_fakes.IntegrantePet());
+            integranteParaAtualizar.AnimalId = 3;
+            _mockRepo.Integrante = integranteParaAtualizar;
+            var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
+
+            var integrante = _fakes.IntegrantePet();
+            integrante.Id = 200;
+            integrante.Nome = "Bidu";
+            integrante.AnimalId = 1 ;
+
+            var integranteAtualizado = app.Atualizar(100, 1, integrante);
+            Assert.AreEqual("Bidu", integranteAtualizado.Nome);
+            Assert.AreEqual(1, integranteAtualizado.AnimalId);
         }
 
         [Test]
