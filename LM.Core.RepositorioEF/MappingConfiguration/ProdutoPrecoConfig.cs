@@ -13,7 +13,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(g => g.PrecoMin).HasColumnName("VL_PRECO_MIN_PRODUTO").IsOptional();
             Property(g => g.PrecoMax).HasColumnName("VL_PRECO_MAX_PRODUTO").IsOptional();
             Property(p => p.DataPreco).HasColumnName("DT_PRECO_PRODUTO").IsOptional();
-            Property(p => p.DataPreco).HasColumnName("FL_ATIVO").IsOptional();
+            Property(p => p.Ativo).HasColumnName("FL_ATIVO").IsOptional();
             Property(p => p.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(p => p.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
         }

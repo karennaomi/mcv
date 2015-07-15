@@ -23,7 +23,7 @@ namespace LM.Core.Tests
         public void MapearContratoUsuario()
         {
             var usuario = _contexto.Usuarios.First();
-            Assert.IsTrue(usuario.Contratos.Any());
+            Assert.IsNotNull(usuario.Contratos.First());
         }
 
         [Test]
@@ -33,16 +33,16 @@ namespace LM.Core.Tests
             Assert.IsNotNull(pontoDemanda.Endereco);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade.Uf);
-            Assert.IsTrue(pontoDemanda.GruposDeIntegrantes.Any());
+            Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First());
             Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First().Integrante);
-            Assert.IsTrue(pontoDemanda.Listas.Any());
+            Assert.IsNotNull(pontoDemanda.Listas.First());
         }
 
         [Test]
         public void MapearPontoDemandaLojasFavoritas()
         {
             var pontoDemanda = _contexto.PontosDemanda.Find(20908);
-            Assert.IsTrue(pontoDemanda.LojasFavoritas.Any());
+            Assert.IsNotNull(pontoDemanda.LojasFavoritas.First());
             Assert.IsNotNull(pontoDemanda.LojasFavoritas.First().Info.Endereco);
         }
 
@@ -51,7 +51,7 @@ namespace LM.Core.Tests
         public void MapearIntegrante()
         {
             var integrante = _contexto.Integrantes.First(i => i.Usuario != null);
-            Assert.IsTrue(integrante.GruposDeIntegrantes.Any());
+            Assert.IsNotNull(integrante.GruposDeIntegrantes.First());
             Assert.IsNotNull(integrante.GruposDeIntegrantes.First().PontoDemanda);
             Assert.IsNotNull(integrante.Usuario);
         }
@@ -61,8 +61,8 @@ namespace LM.Core.Tests
         public void MapearCategorias()
         {
             var secao = _contexto.Categorias.Single(c => c.Nome == "LIMPEZA");
-            Assert.IsTrue(secao.Imagens.Any());
-            Assert.IsTrue(secao.SubCategorias.Any());
+            Assert.IsNotNull(secao.Imagens.First());
+            Assert.IsNotNull(secao.SubCategorias.First());
         }
 
         [Test]
@@ -70,8 +70,8 @@ namespace LM.Core.Tests
         {
             var produto = _contexto.Produtos.Find(8);
             Assert.IsNotNull(produto.Info);
-            Assert.IsTrue(produto.Imagens.Any());
-            Assert.IsTrue(produto.Categorias.Any());
+            Assert.IsNotNull(produto.Imagens.First());
+            Assert.IsNotNull(produto.Categorias.First());
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace LM.Core.Tests
         {
             var lista = _contexto.Listas.First();
             Assert.IsNotNull(lista.PontoDemanda);
-            Assert.IsTrue(lista.Itens.Any());
+            Assert.IsNotNull(lista.Itens.First());
             Assert.IsNotNull(lista.Itens.First().Periodo);
         }
 
@@ -152,10 +152,10 @@ namespace LM.Core.Tests
         public void MapearFilaItens()
         {
             var filaItemMensagem = _contexto.FilaItens.OfType<FilaItemMensagem>().First();
-            Assert.IsTrue(filaItemMensagem.FilaMensagens.Any());
+            Assert.IsNotNull(filaItemMensagem.FilaMensagens.First());
 
             var filaItemProduto = _contexto.FilaItens.OfType<FilaItemProduto>().First();
-            Assert.IsTrue(filaItemProduto.FilaProdutos.Any());
+            Assert.IsNotNull(filaItemProduto.FilaProdutos.First());
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace LM.Core.Tests
         public void MapearUfs()
         {
             var ufs = _contexto.Ufs;
-            Assert.IsTrue(ufs.Any());
+            Assert.IsNotNull(ufs.First());
         }
 
         [Test]
@@ -184,14 +184,14 @@ namespace LM.Core.Tests
         public void MapearEmailsCapturados()
         {
             var emailsCapturados = _contexto.EmailsCapturados;
-            Assert.IsTrue(emailsCapturados.Any());
+            Assert.IsNotNull(emailsCapturados.First());
         }
 
         [Test]
         public void MapearAnimais()
         {
             var animais = _contexto.Animais;
-            Assert.IsTrue(animais.Any());
+            Assert.IsNotNull(animais.First());
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace LM.Core.Tests
         public void MapearProdutoPrecos()
         {
             var precos = _contexto.Set<ProdutoPreco>();
-            Assert.IsTrue(precos.Any());
+            Assert.IsNotNull(precos.First());
         }
     }
 }
