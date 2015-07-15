@@ -74,6 +74,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new ContratoConfig());
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());
             modelBuilder.Configurations.Add(new AnimalConfig());
+            modelBuilder.Configurations.Add(new ProdutoPrecoConfig());
         }
     }
 }

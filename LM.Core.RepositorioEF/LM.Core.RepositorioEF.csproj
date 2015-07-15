@@ -48,6 +48,7 @@
     <Compile Include="CorreiosEF.cs" />
     <Compile Include="LancamentoEstoque.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
+    <Compile Include="MappingConfiguration\ProdutoPrecoConfig.cs" />
     <Compile Include="MappingConfiguration\EmailCapturadoConfig.cs" />
     <Compile Include="MappingConfiguration\ContratoConfig.cs" />
     <Compile Include="MappingConfiguration\FilaProdutoConfig.cs" />

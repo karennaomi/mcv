@@ -32,6 +32,7 @@ namespace LM.Core.Domain
         public virtual ICollection<Imagem> Imagens { get; set; }
         public virtual ICollection<Categoria> Categorias { get; set; }
         public virtual ICollection<PontoDemanda> PontosDemanda { get; set; }
+        public virtual ICollection<ProdutoPreco> Precos { get; set; }
 
         public string Nome()
         {
@@ -49,6 +50,22 @@ namespace LM.Core.Domain
                 (produto =>
                     ((produto.PontosDemanda == null || !produto.PontosDemanda.Any() ||
                       produto.PontosDemanda.Any(pontoDemanda => pontoDemanda.Id == pontoDemandaId))));
+        }
+
+        public decimal PrecoMedio()
+        {
+            if (Precos == null) return 0;
+            var preco = Precos.FirstOrDefault(p => p.Ativo);
+            if (preco == null) return 0;
+            if (preco.PrecoMax.HasValue && preco.PrecoMin.HasValue)
+            {
+                return (preco.PrecoMax.Value + preco.PrecoMin.Value) / 2;
+            }
+            if (preco.PrecoMin.HasValue) 
+            {
+                return preco.PrecoMin.Value;
+            }
+            return preco.PrecoMax.HasValue ? preco.PrecoMax.Value : 0;
         }
     }
 

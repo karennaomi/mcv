@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using LM.Core.Domain;
 using LM.Core.RepositorioEF;
 using NUnit.Framework;
 using System.Linq;
@@ -198,6 +199,13 @@ namespace LM.Core.Tests
         {
             var integrante = _contexto.Integrantes.First(i => i.Tipo == TipoIntegrante.Pet);
             Assert.IsNotNull(integrante.AnimalId);
+        }
+
+        [Test]
+        public void MapearProdutoPrecos()
+        {
+            var precos = _contexto.Set<ProdutoPreco>();
+            Assert.IsTrue(precos.Any());
         }
     }
 }

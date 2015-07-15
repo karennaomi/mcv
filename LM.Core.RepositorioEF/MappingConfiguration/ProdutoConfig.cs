@@ -20,6 +20,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasMany(p => p.Imagens).WithMany().Map(m => m.ToTable("TB_PRODUTO_IMAGEM").MapLeftKey("ID_PRODUTO").MapRightKey("ID_IMAGEM"));
             HasMany(p => p.Categorias).WithMany().Map(m => m.ToTable("TB_PRODUTO_CATEGORIA").MapLeftKey("ID_PRODUTO").MapRightKey("ID_CATEGORIA"));
             HasMany(p => p.PontosDemanda).WithMany().Map(m => m.MapLeftKey("ID_PRODUTO").MapRightKey("ID_PONTO_REAL_DEMANDA").ToTable("TB_Produto_Ponto_Real_Demanda"));
+            HasMany(p => p.Precos).WithRequired().Map(m => m.MapKey("ID_PRODUTO"));
         }
     }
 
