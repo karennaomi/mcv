@@ -17,6 +17,7 @@ namespace LM.Core.Tests
     {
         private Fakes _fakes;
         private MockIntegranteRepo _mockRepo;
+        private const string ImageHost = "http://img.teste.com";
         [TestFixtureSetUp]
         public void Init()
         {
@@ -233,7 +234,7 @@ namespace LM.Core.Tests
             convidado.GruposDeIntegrantes = integrante.GruposDeIntegrantes;
             _mockRepo.Convidado = convidado;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
-            app.Convidar(100, 1, 201);
+            app.Convidar(100, 1, 201, ImageHost);
             Assert.IsTrue(convidado.DataConvite.Value.Date == DateTime.Now.Date);
             Assert.IsTrue(convidado.EhUsuarioConvidado);
         }

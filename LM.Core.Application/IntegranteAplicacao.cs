@@ -14,7 +14,7 @@ namespace LM.Core.Application
         Integrante Criar(long pontoDemandaId, Integrante integrante);
         Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante);
         void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
-        void Convidar(long pontoDemandaId, long usuarioId, long id);
+        void Convidar(long pontoDemandaId, long usuarioId, long id, string imageHost);
         IEnumerable<Animal> Animais();
     }
 
@@ -64,7 +64,7 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public void Convidar(long pontoDemandaId, long usuarioId, long id)
+        public void Convidar(long pontoDemandaId, long usuarioId, long id, string imageHost)
         {
             var convidado = Obter(pontoDemandaId, id);
             if (!convidado.PodeSerConvidado()) throw new ApplicationException(LMResource.Integrante_NaoPodeSerConvidado);
@@ -72,7 +72,8 @@ namespace LM.Core.Application
             convidado.EhUsuarioConvidado = true;
             var pontoDemanda = convidado.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda;
             var remetente = pontoDemanda.GruposDeIntegrantes.Single(g => g.Integrante.Usuario != null && g.Integrante.Usuario.Id == usuarioId).Integrante;
-            _appNotificacao.Notificar(remetente, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, null);
+            var extraParams = new { ImageHost = imageHost };
+            _appNotificacao.Notificar(remetente, convidado, pontoDemanda, TipoTemplateMensagem.ConviteIntegrante, extraParams);
             _repositorio.Salvar();
         }
 
