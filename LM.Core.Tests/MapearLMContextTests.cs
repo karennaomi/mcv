@@ -207,6 +207,13 @@ namespace LM.Core.Tests
             var precos = _contexto.Set<ProdutoPreco>();
             Assert.IsNotNull(precos.First());
         }
+
+        [Test]
+        public void MapearContatos()
+        {
+            var contatos = _contexto.Contatos;
+            Assert.IsNotNull(contatos.First());
+        }
     }
 }
 

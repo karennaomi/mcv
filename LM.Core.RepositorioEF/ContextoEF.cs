@@ -26,6 +26,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<EmailCapturado> EmailsCapturados { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
         public DbSet<Animal> Animais { get; set; }
+        public DbSet<Contato> Contatos { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -75,6 +76,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());
             modelBuilder.Configurations.Add(new AnimalConfig());
             modelBuilder.Configurations.Add(new ProdutoPrecoConfig());
+            modelBuilder.Configurations.Add(new ContatoConfig());
         }
     }
 }
