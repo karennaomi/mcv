@@ -15,7 +15,7 @@ namespace LM.Core.Domain
 
         public struct Integrante
         {
-            public const int IdadeMinimaCadastro = 13;
+            public const int IdadeMinimaCadastro = 0;
             public const int DiasMinimosParaConvidarNovamente = 1;
             public const int TamanhoMaximoNome = 70;
             public const int TamanhoMaximoEmail = 50;
