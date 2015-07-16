@@ -10,6 +10,7 @@ namespace LM.Core.Application
     {
         void NotificarIntegrantesDoPontoDamanda(Integrante remetente, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams);
         void Notificar(Integrante remetente, Integrante destinatario, PontoDemanda pontoDemanda, TipoTemplateMensagem tipoTemplate, object extraParams);
+        void EnviarEmail(string assunto, string corpo, string emailDestinatario);
     }
 
     public class NotificacaoAplicacao : INotificacaoAplicacao
@@ -72,7 +73,7 @@ namespace LM.Core.Application
             _pushRestService.Post("sendpushmessage", content);
         }
 
-        private void EnviarEmail(string assunto, string corpo, string emailDestinatario)
+        public void EnviarEmail(string assunto, string corpo, string emailDestinatario)
         {
             var filaItem = new FilaItemMensagem();
             filaItem.AdicionarMensagem(new FilaMensagemEmail
