@@ -64,16 +64,16 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void NaoValidaUsuarioComMenosDe13Anos()
+        public void NaoValidaUsuarioComMenosDe0Anos()
         {
             var usuario = _fakes.Usuario();
-            usuario.Integrante.DataNascimento = DateTime.Now.AddYears(-12);
+            usuario.Integrante.DataNascimento = DateTime.Now.AddYears(1);
             var validationResults = new List<ValidationResult>();
             var result = Validator.TryValidateObject(usuario, new ValidationContext(usuario), validationResults, true);
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("O usuário deve ter 13 anos ou mais.", error.ErrorMessage);
+            Assert.AreEqual("O usuário deve ter 0 anos ou mais.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
             Assert.AreEqual("Integrante.DataNascimento", error.MemberNames.ElementAt(0));
         }

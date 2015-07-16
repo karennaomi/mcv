@@ -110,10 +110,10 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void IntegranteComMenosDe13AnosComEmailNaoPodeSerConvidado()
+        public void IntegranteComMenosDe0AnosComEmailNaoPodeSerConvidado()
         {
             var integrante = _fakes.Integrante();
-            integrante.DataNascimento = DateTime.Now.AddYears(-12);
+            integrante.DataNascimento = DateTime.Now.AddYears(1);
             Assert.IsFalse(integrante.PodeSerConvidado());
         }
 
