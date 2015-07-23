@@ -1,5 +1,12 @@
 param([string]$v = "", [string]$m = "", [string]$b = "release")
 
+$ciHost="http://ci.smv.br"
+$devJob="LM_Core"
+$homJob="LM_Core"
+$devToken="D10C42FA01A2435EA3BF92D8D2C5C4FB"
+$homToken="D10C42FA01A2435EA3BF92D8D2C5C4FB"
+
+
 $latestTag = Invoke-Expression 'git describe --abbrev=0 --tags 2>$null'
 if($latestTag -eq $null) {
 	$latestTag = "v0.0.0"
@@ -19,9 +26,20 @@ function PushToReleaseBranch() {
 }
 
 function TriggerBuild() {
-	$url="http://ci.smv.br/job/DEV_LM_Core/build?token=D10C42FA01A2435EA3BF92D8D2C5C4FB"
+	$url="$ciHost/job/$devJob/build?token=$devToken"
 	Write-Host ("Triggering build on {0}" -f $url) 
 	(New-Object System.Net.WebClient).DownloadString("$url");
+}
+
+function TriggerBuildWithTag($tag) {
+	$url="$ciHost/job/$homJob/buildWithParameters?token=$homToken&tag=$tag"
+	Write-Host ("Triggering build on {0}" -f $url) 
+	(New-Object System.Net.WebClient).DownloadString("$url");
+}
+
+function Publish($tagVersion) {
+	PushTag $tagVersion
+	TriggerBuildWithTag $tagVersion
 }
 
 if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d)+') {
@@ -32,22 +50,19 @@ if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d)+') {
 
 	if($v -eq "") {
 		PushToReleaseBranch
+		TriggerBuild
 	} elseif($v -eq "major") {
 		$majorNumber = $majorCurrent + 1
-		PushTag "v$majorNumber.0.0"
+		Publish "v$majorNumber.0.0"
 	} elseif ($v -eq "minor") {
 		$minorNumber = $minorCurrent + 1
-		PushTag "v$majorCurrent.$minorNumber.0"
+		Publish "v$majorCurrent.$minorNumber.0"
 	} elseif ($v -eq "patch") {
 		$patchNumber = $patchCurrent + 1
-		PushTag "v$majorCurrent.$minorCurrent.$patchNumber"
+		Publish "v$majorCurrent.$minorCurrent.$patchNumber"
 	} else {
 		Write-Host "Invalid version: $v"
 	}	
-
-	TriggerBuild
-
 } else {
 	Write-Host "$latestTag is a invalid tag."
 }
-
