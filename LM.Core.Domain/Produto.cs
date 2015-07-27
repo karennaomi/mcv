@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LM.Core.Domain
@@ -20,20 +19,11 @@ namespace LM.Core.Domain
         }
 
         public int Id { get; set; }
-
-        private string _ean;
+        
         [LMRequired]
-        public string Ean 
-        { 
-            get { return _ean; }
-            set
-            {
-                _ean = value;
-                EanValido = ValidarEan(value);
-            } 
-        }
-
-        public bool EanValido { get; set; }
+        [LMMaxLength(Constantes.Produto.TamanhoMaximoEan)]
+        public string Ean { get; set; }
+        
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
@@ -76,21 +66,6 @@ namespace LM.Core.Domain
                 return preco.PrecoMin.Value;
             }
             return preco.PrecoMax.HasValue ? preco.PrecoMax.Value : 0;
-        }
-
-        private static bool ValidarEan(string ean)
-        {
-            if(string.IsNullOrWhiteSpace(ean))return false;
-            
-            var tamanhoEan = ean.Length;
-            if (!Constantes.Produto.TamanhosEanValidos.Contains(tamanhoEan)) return false;
-
-            var digitoVerificador = int.Parse(ean[tamanhoEan - 1].ToString());
-            var digitos = ean.Substring(0, tamanhoEan - 1);
-            var primeiroMultiplicador = tamanhoEan%2 == 0 ? 3 : 1;
-            var soma = digitos.Select((d, i) => int.Parse(d.ToString()) * ((i % 2 == 0) ? primeiroMultiplicador : 4 - primeiroMultiplicador)).Sum();
-            var resultado = ((1000 - soma) % 10);
-            return resultado == digitoVerificador;
         }
     }
 

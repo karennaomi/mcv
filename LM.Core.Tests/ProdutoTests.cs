@@ -23,7 +23,6 @@ namespace LM.Core.Tests
             produto.Ean = null;
             var validationResults = new List<ValidationResult>();
             var result = Validator.TryValidateObject(produto, new ValidationContext(produto), validationResults, true);
-            Assert.IsFalse(produto.EanValido);
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
@@ -33,84 +32,20 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void NaoValidaEanComMenosDe8Caracteres()
+        public void NaoValidaEanComMaisDe13Caracteres()
         {
             var produto = _fakes.Produto();
-            produto.Ean = "1234567";
-            Assert.IsFalse(produto.EanValido);
+            produto.Ean = "12345678901234";
+            var validationResults = new List<ValidationResult>();
+            var result = Validator.TryValidateObject(produto, new ValidationContext(produto), validationResults, true);
+            Assert.IsFalse(result);
+            Assert.AreEqual(1, validationResults.Count);
+            var error = validationResults[0];
+            Assert.AreEqual("O campo Ean deve possuir no máximo 13 caracteres.", error.ErrorMessage);
+            Assert.AreEqual(1, error.MemberNames.Count());
+            Assert.AreEqual("Ean", error.MemberNames.ElementAt(0));
         }
 
-        [Test]
-        public void ValidaEanCom8Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "78605831";
-            Assert.IsTrue(produto.EanValido);
-        }
-
-        [Test]
-        public void NaoValidaEanCom9Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "123456789";
-            Assert.IsFalse(produto.EanValido);
-        }
-
-        [Test]
-        public void NaoValidaEanCom10Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "1234567890";
-            Assert.IsFalse(produto.EanValido);
-        }
-
-        [Test]
-        public void NaoValidaEanCom11Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "12345678901";
-            Assert.IsFalse(produto.EanValido);
-        }
-
-        [Test]
-        public void ValidaEanCom12Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "722358073443";
-            Assert.IsTrue(produto.EanValido);
-        }
-
-        [Test]
-        public void ValidaEanCom13Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "7891099353640";
-            Assert.IsTrue(produto.EanValido);
-        }
-
-        [Test]
-        public void ValidaEanCom14Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "12345678901231";
-            Assert.IsTrue(produto.EanValido);
-        }
-
-        [Test]
-        public void NaoValidaEanComMaisDe14Caracteres()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "123456789012345";
-            Assert.IsFalse(produto.EanValido);
-        }
-
-        [Test]
-        public void NaoValidaEanComDigitoVerificadorErrado()
-        {
-            var produto = _fakes.Produto();
-            produto.Ean = "1234567890123";
-            Assert.IsFalse(produto.EanValido);
-        }
 
         [Test]
         public void PrecoMedioIgualAZeroSeNaoTiverPreco()

@@ -25,7 +25,7 @@ namespace LM.Core.Domain
 
         public struct Produto
         {
-            public static int[] TamanhosEanValidos = {8, 12, 13, 14};
+            public const int TamanhoMaximoEan = 13;
         }
 
         public struct Categoria
