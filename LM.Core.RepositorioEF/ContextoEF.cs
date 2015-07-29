@@ -22,13 +22,18 @@ namespace LM.Core.RepositorioEF
         public DbSet<Loja> Lojas { get; set; }
         public DbSet<RecuperarSenha> RecuperarSenhas { get; set; }
         public DbSet<FilaItem> FilaItens { get; set; }
-        public DbSet<LegacyToken> LegacyTokens { get; set; }
         public DbSet<EmailCapturado> EmailsCapturados { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
         public DbSet<Animal> Animais { get; set; }
         public DbSet<Contato> Contatos { get; set; }
 
         public ContextoEF() : base("SOL")
+        {
+            Database.SetInitializer<ContextoEF>(null);
+            DbInterception.Add(new FtsInterceptor());
+        }
+
+        public ContextoEF(string connStringName) : base(connStringName)
         {
             Database.SetInitializer<ContextoEF>(null);
             DbInterception.Add(new FtsInterceptor());
@@ -71,7 +76,6 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new FilaMensagemEmailConfig());
             modelBuilder.Configurations.Add(new FilaMensagemSmsConfig());
             modelBuilder.Configurations.Add(new FilaProdutoConfig());
-            modelBuilder.Configurations.Add(new LegacyTokenConfig());
             modelBuilder.Configurations.Add(new ContratoConfig());
             modelBuilder.Configurations.Add(new EmailCapturadoConfig());
             modelBuilder.Configurations.Add(new AnimalConfig());

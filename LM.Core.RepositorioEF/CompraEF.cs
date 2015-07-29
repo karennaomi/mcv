@@ -9,9 +9,11 @@ namespace LM.Core.RepositorioEF
     public class CompraEF : IRepositorioCompra
     {
         private readonly ContextoEF _contexto;
-        public CompraEF()
+        private readonly IRepositorioProcedures _repoProcedures;
+        public CompraEF(IRepositorioProcedures repoProcedures)
         {
             _contexto = new ContextoEF();
+            _repoProcedures = repoProcedures;
         }
 
         public Compra Obter(long pontoDemandaId, long id)
@@ -26,10 +28,9 @@ namespace LM.Core.RepositorioEF
 
         public void LancarEstoque(Compra compra)
         {
-            var lancamentoEstoque = new LancamentoEstoque(_contexto);
             foreach (var compraItem in compra.Itens)
             {
-                lancamentoEstoque.Lancar(compra.PontoDemanda.Id, 1, compraItem.ProdutoId, compraItem.Quantidade, compra.Integrante.Id);
+                _repoProcedures.LancarEstoque(compra.PontoDemanda.Id, 1, compraItem.ProdutoId, compraItem.Quantidade, compra.Integrante.Id);
             }
         }
 
@@ -42,9 +43,7 @@ namespace LM.Core.RepositorioEF
                 var compraItemIdParam = new SqlParameter("@id", compraItem.Id);
                 _contexto.Database.ExecuteSqlCommand("UPDATE [dbo].[TB_Compra_Item] SET ID_PRODUTO = @produtoId WHERE ID_COMPRA_ITEM = @id", produtoIdParam, compraItemIdParam);
 
-                var eanParam = new SqlParameter("@EAN", produto.Ean);
-                var produtoNomeParam = new SqlParameter("@NomeProduto", produto.Nome());
-                _contexto.Database.ExecuteSqlCommand("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
+                _repoProcedures.InserirProdutoNaFila(produto.Ean, produto.Nome());
 
                 compraItem.ProdutoId = produto.Id;
             }

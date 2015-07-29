@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
@@ -16,21 +17,22 @@ namespace LM.Core.Tests
     {
         private Fakes _fakes;
         private MockCompraAtivaRepo _mockRepo;
+        private ContextoEF _contexto;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
             _mockRepo = new MockCompraAtivaRepo();
+            _contexto = new ContextoEF();
         }
 
         [Test]
         public void CriaUmaCompraAtiva()
         {
-            using (new TransactionScope())
-            {
-                var compraAtiva = ObterAppCompraAtiva(new CompraAtivaEF(), new Mock<IServicoRest>().Object).AtivarCompra(3, 1);
-                Assert.IsTrue(compraAtiva.Id > 0);
-            }
+            var usuario = _contexto.Usuarios.First();
+            var pontoDemanda = _contexto.PontosDemanda.First();
+            var compraAtiva = ObterAppCompraAtiva(new CompraAtivaEF(), new Mock<IServicoRest>().Object).AtivarCompra(usuario.Id, pontoDemanda.Id);
+            Assert.IsTrue(compraAtiva.Id > 0);
         }
 
         [Test]

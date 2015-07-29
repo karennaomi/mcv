@@ -9,13 +9,16 @@ namespace LM.Core.RepositorioEF
     public class ListaEF : IRepositorioLista
     {
         private readonly ContextoEF _contexto;
-        public ListaEF()
+        private readonly IRepositorioProcedures _repoLancamentoEstoque;
+        public ListaEF(IRepositorioProcedures repoLancamentoEstoque)
         {
             _contexto = new ContextoEF();
+            _repoLancamentoEstoque = repoLancamentoEstoque;
         }
-        public ListaEF(ContextoEF contexto)
+        public ListaEF(ContextoEF contexto, IRepositorioProcedures repoLancamentoEstoque)
         {
             _contexto = contexto;
+            _repoLancamentoEstoque = repoLancamentoEstoque;
         }
 
         public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
@@ -47,8 +50,7 @@ namespace LM.Core.RepositorioEF
 
         public void LancarEstoque(long pontoDemandaId, long integranteId, int? produtoId, decimal? quantidade)
         {
-            var lancamentoEstoque = new LancamentoEstoque(_contexto);
-            lancamentoEstoque.Lancar(pontoDemandaId, 5, produtoId, quantidade, integranteId);
+            _repoLancamentoEstoque.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, integranteId);
         }
     }
 }

@@ -77,6 +77,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="SetupTests.cs" />
     <Compile Include="CompraAplicacaoTests.cs" />
     <Compile Include="CompraAtivaTests.cs" />
     <Compile Include="CompraAtivaAplicacaoTests.cs" />

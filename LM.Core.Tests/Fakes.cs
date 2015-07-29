@@ -1,34 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using LM.Core.Domain;
 using System;
-using NUnit.Framework;
 
 namespace LM.Core.Tests
 {
     internal class Fakes
     {
-        internal Usuario Usuario()
+        internal const string Email1 = "joedoe@mail.com";
+
+        internal Usuario Usuario(string email = Email1)
         {
             return new Usuario
             {
-                Login = "joe123@doe.com",
+                Login = email,
                 Senha = "123456",
-                Integrante = Integrante()
+                Integrante = Integrante(email)
             };
         }
 
-        internal Integrante Integrante()
+        internal Integrante Integrante(string email = Email1)
         {
             var integrante = new Integrante
             {
                 DataNascimento = DateTime.Now.AddYears(-18),
                 Nome = "Joe Doe",
                 Sexo = "M",
-                Email = "joe123@doe.com",
+                Email = email,
                 Telefone = "989998999",
+                Tipo = TipoIntegrante.Familia,
                 GruposDeIntegrantes = new Collection<GrupoDeIntegrantes>()
             };
             return integrante;
@@ -40,21 +40,22 @@ namespace LM.Core.Tests
             {
                 Nome = "Douradinho",
                 AnimalId = 3,
+                Tipo = TipoIntegrante.Pet,
                 GruposDeIntegrantes = new Collection<GrupoDeIntegrantes>()
             };
             return integrante;
         }
 
-        internal PontoDemanda PontoDemanda()
+        internal PontoDemanda PontoDemanda(Usuario usuario = null)
         {
-            var usuario = Usuario();
-            usuario.Id = 7;
+            var u = usuario ?? Usuario();
+            u.Id = 7;
             return new PontoDemanda
             {
                 Id = 666,
                 Tipo = TipoPontoDemanda.Praia,
                 Endereco = Endereco(),
-                UsuarioCriador = usuario
+                UsuarioCriador = u
             };
         }
 
@@ -114,13 +115,16 @@ namespace LM.Core.Tests
             };
         }
 
+        private int _produtoCount;
         internal Produto Produto(string categoria = "Categoria de teste")
         {
+            _produtoCount = ++_produtoCount;
             return new Produto
             {
-                Info = new ProdutoInfo { Nome = "Macarrão Tabajara" },
-                Ean = "ajsh278aska",
-                Categorias = new Collection<Categoria> { new Categoria { CategoriaPai = new Categoria {Nome = categoria} }}
+                Info = new ProdutoInfo { Nome = "Macarrão Tabajara " + _produtoCount },
+                Ean = "ajsh278aska" + _produtoCount,
+                Imagens = new Collection<Imagem>{Imagem()},
+                Categorias = new Collection<Categoria> { new Categoria { CategoriaPai = new Categoria {Nome = categoria}, Nome = "SubCategoria " + categoria}}
             };
         }
 
@@ -138,14 +142,30 @@ namespace LM.Core.Tests
 
         internal PedidoItem PedidoItem(StatusPedido status = StatusPedido.Comprado, string categoria = "")
         {
-            return new PedidoItem { Produto = Produto(categoria), Status = status };
+            return new PedidoItem
+            {
+                Produto = Produto(categoria), 
+                Status = status,
+                QuantidadeSugestaoCompra = 1
+            };
         }
 
-        internal ListaCompraItem ListaCompraItem()
+        internal ListaCompraItem ListaCompraItem(ListaItem item = null)
         {
             return new ListaCompraItem
             {
-                Item = ListaItem(),
+                Item = item ?? ListaItem(),
+                Quantidade = 3,
+                Valor = 4.5M,
+                Status = StatusCompra.Comprado
+            };
+        }
+
+        internal PedidoCompraItem PedidoCompraItem(PedidoItem item = null)
+        {
+            return new PedidoCompraItem
+            {
+                Item = item ?? PedidoItem(),
                 Quantidade = 3,
                 Valor = 4.5M,
                 Status = StatusCompra.Comprado
@@ -162,7 +182,7 @@ namespace LM.Core.Tests
             const int lojaId = 3620;
             var listaItemIds = new[] { new[] { 15, 27393 } };
             var pedidoItemIds = new[] { new[] { 10187, 23271 }, new[] { 10188, 102 } };
-            
+
             return new Compra
             {
                 PontoDemanda = new PontoDemanda { Id = pontoDemandaId },
@@ -188,7 +208,7 @@ namespace LM.Core.Tests
                 Nome = "Lista de teste",
                 Itens = new Collection<ListaItem>
                 {
-                    ListaItem(true, "B"), ListaItem(true, "A"), ListaItem(),
+                    ListaItem(true, "B"), ListaItem(true, "A"), ListaItem(false, "C"), ListaItem(false, "D")
                 }
             };
         }
@@ -200,7 +220,106 @@ namespace LM.Core.Tests
 
         internal Contrato Contrato()
         {
-            return new Contrato{ Ativo = true, Conteudo = "Lorem ipsum dolor sit amet"};
+            return new Contrato { Ativo = true, Conteudo = "Lorem ipsum dolor sit amet", DataInclusao = DateTime.Now.AddDays(-10), InicioVigencia = DateTime.Now.AddDays(-10), FimVigencia = DateTime.Now.AddYears(10) };
+        }
+
+        internal Imagem Imagem()
+        {
+            return new Imagem {Path = "/imagem/limpeza.jpg"};
+        }
+
+        internal Categoria Categoria()
+        {
+            return new Categoria
+            {
+                Nome = "LIMPEZA", 
+                Imagens = new Collection<Imagem> { Imagem() },
+                SubCategorias = new Collection<Categoria> { new Categoria { Nome = "ÁLCOOL & REMOVEDOR" } }
+            };
+        }
+
+        internal RecuperarSenha RecuperarSenha()
+        {
+            return new RecuperarSenha();
+        }
+
+        internal FilaItemMensagem FilaItemMensagem()
+        {
+            return new FilaItemMensagem
+            {
+                FilaMensagens = new Collection<FilaMensagem>
+                {
+                    new FilaMensagemEmail
+                    {
+                        Assunto = "Assunto teste",
+                        Corpo = "Lorem ipsum dolor sit amet",
+                        EmailDestinatario = Email1,
+                    }
+                }
+            };
+        }
+
+        internal FilaItemProduto FilaItemProduto()
+        {
+            return new FilaItemProduto
+            {
+                FilaProdutos = new Collection<FilaProduto>
+                {
+                    new FilaProduto
+                    {
+                        Descricao = "Lorem ipsum",
+                        Ean = "1234567890123",
+                        ProdutoId = 123,
+                        Imagem = "/imagem/produto.jpg"
+                    }
+                }
+            };
+        }
+
+        internal EmailCapturado EmailCapturado()
+        {
+            return new EmailCapturado {Email = Email1};
+        }
+
+        internal Animal Animal()
+        {
+            return new Animal {Nome = "Cachorro"};
+        }
+
+        internal ProdutoPreco ProdutoPreco()
+        {
+            return new ProdutoPreco {PrecoMax = 50, PrecoMin = 20, DataPreco = DateTime.Now};
+        }
+
+        internal Contato Contato()
+        {
+            return new Contato {Email = Email1, Mensagem = "Lorem Ipsum", Nome = "Joe Doe"};
+        }
+
+        internal Compra Compra()
+        {
+            return new Compra
+            {
+                DataCapturaPrimeiroItemCompra = DateTime.Now.AddHours(-2),
+                DataInicioCompra = DateTime.Now.AddHours(-2),
+                DataFimCompra = DateTime.Now,
+                DataInclusao = DateTime.Now,
+                Itens = new Collection<CompraItem>()
+            };
+        }
+
+        internal Cidade Cidade()
+        {
+            return new Cidade
+            {
+                Nome = "São Paulo",
+                Uf = new Uf { Nome = "São Paulo", Sigla = "SP"}
+            };
+        }
+
+        internal Periodo PeriodoEventual()
+        {
+            return new Periodo{ Nome = "eventual", Id = 1};
         }
     }
 }

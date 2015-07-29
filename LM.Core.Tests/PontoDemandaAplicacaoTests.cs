@@ -21,6 +21,7 @@ namespace LM.Core.Tests
         private MockPontoDemandaRepo _mockRepo;
         private MockUsuarioRepo _mockUsuarioRepo;
         private MockContratoRepo _mockContratoRepo;
+        private ContextoEF _contexto;
         [TestFixtureSetUp]
         public void Init()
         {
@@ -31,6 +32,7 @@ namespace LM.Core.Tests
             {
                 Contrato = _fakes.Contrato()
             };
+            _contexto = new ContextoEF();
         }
 
         [Test]
@@ -39,7 +41,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario("usuario_w@mail.com"));
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
@@ -56,11 +58,11 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario("usuario_x@mail.com"));
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
-                pontoDemanda.Endereco.Cidade = new Cidade { Id = 159 };
+                pontoDemanda.Endereco.Cidade = new Cidade {Id = _contexto.Cidades.First().Id};
                 app.Criar(usuario.Id, pontoDemanda);
                 var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
                 Assert.IsTrue(pontoDemandaNovo.Id > 0);
@@ -74,7 +76,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario("usuario_y@mail.com"));
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;
@@ -106,20 +108,17 @@ namespace LM.Core.Tests
         [Test]
         public void AdicionarLojaFavoritaNoPontoDemanda()
         {
-            using (new TransactionScope())
-            {
-                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario());
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
-                var pontoDemanda = _fakes.PontoDemanda();
-                pontoDemanda.Id = 0;
-                pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
-                var loja = app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, _fakes.Loja());
+            var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
+            var usuario = appUsuario.Criar(_fakes.Usuario("teste@lojafavorita.com"));
+            var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
+            var pontoDemanda = _fakes.PontoDemanda();
+            pontoDemanda.Id = 0;
+            pontoDemanda = app.Criar(usuario.Id, pontoDemanda);
+            var loja = app.AdicionarLojaFavorita(usuario.Id, pontoDemanda.Id, _fakes.Loja());
 
-                var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
-                Assert.IsTrue(loja.Id > 0);
-                Assert.IsTrue(pontoDemandaComLoja.LojasFavoritas.All(l => l.Id > 0));
-            }
+            var pontoDemandaComLoja = app.Obter(usuario.Id, pontoDemanda.Id);
+            Assert.IsTrue(loja.Id > 0);
+            Assert.IsTrue(pontoDemandaComLoja.LojasFavoritas.All(l => l.Id > 0));
         }
 
         [Test]
@@ -128,7 +127,7 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario());
+                var usuario = appUsuario.Criar(_fakes.Usuario("usuario_remover_loja@mail.com"));
                 var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
                 var pontoDemanda = _fakes.PontoDemanda();
                 pontoDemanda.Id = 0;

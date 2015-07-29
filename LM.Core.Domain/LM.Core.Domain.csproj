@@ -72,7 +72,6 @@
     <Compile Include="GooglePlaceSearchResult.cs" />
     <Compile Include="GoogleResult.cs" />
     <Compile Include="IItem.cs" />
-    <Compile Include="LegacyToken.cs" />
     <Compile Include="LMHelper.cs" />
     <Compile Include="LMResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -102,8 +101,8 @@
     <Compile Include="Repositorio\IRepositorioContrato.cs" />
     <Compile Include="Repositorio\IRepositorioEmailCapturado.cs" />
     <Compile Include="Repositorio\IRepositorioCorreios.cs" />
+    <Compile Include="Repositorio\IRepositorioProcedures.cs" />
     <Compile Include="Repositorio\IRepositorioUf.cs" />
-    <Compile Include="Repositorio\IRepositorioLegacyToken.cs" />
     <Compile Include="Repositorio\IRepositorioFilaItem.cs" />
     <Compile Include="Repositorio\IRepositorioLojaFavorita.cs" />
     <Compile Include="Repositorio\IRepositorioRecuperarSenha.cs" />

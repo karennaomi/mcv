@@ -12,7 +12,7 @@ namespace LM.Core.RepositorioEF
         public ComandoCriarCompra(ContextoEF contexto, Compra novaCompra)
         {
             _contexto = contexto;
-            _listaRepo = new ListaEF(_contexto);
+            _listaRepo = new ListaEF(_contexto, new Procedures(_contexto));
             _novaCompra = novaCompra;
         }
 
@@ -63,7 +63,7 @@ namespace LM.Core.RepositorioEF
         {
             var listaItem = new ListaItem
             {
-                Periodo = new Periodo {Id = 12 /* Eventual */},
+                Periodo = _contexto.Set<Periodo>().Single(p => p.Nome == "eventual"),
                 QuantidadeConsumo = compraItem.Quantidade,
                 QuantidadeEstoque = compraItem.Quantidade
             };

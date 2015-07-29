@@ -16,13 +16,15 @@ namespace LM.Core.Tests
     public class PedidoAplicacaoTests
     {
         private static long _pontoDemandaId;
-        private Fakes _fakes;
+        private readonly Fakes _fakes;
         private readonly MockPedidoRepo _mockRepo;
+        private readonly ContextoEF _contexto;
         public PedidoAplicacaoTests()
         {
             _pontoDemandaId = new ContextoEF().PontosDemanda.First().Id;
             _fakes = new Fakes();
             _mockRepo = new MockPedidoRepo();
+            _contexto = new ContextoEF();
         }
 
         [Test]
@@ -33,43 +35,38 @@ namespace LM.Core.Tests
             var item = new PedidoItem
             {
                 QuantidadeSugestaoCompra = 5,
-                Produto = new Produto { Id = 26270 },
-                Integrante = new Integrante { Usuario = new Usuario { Id = 2 }}
+                Produto = _contexto.Produtos.First(),
+                Integrante = _contexto.Integrantes.First()
             };
 
-            using (new TransactionScope())
-            {
-                item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
-                Assert.IsTrue(item.Id > 0);
-            }
+            item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
+            Assert.IsTrue(item.Id > 0);
         }
-
+        
         [Test]
         public void NaoPodeAdiconarUmItemRepetidoEmUmPedido()
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
-
+            var produto = _contexto.Produtos.OrderByDescending(p => p.Id).First(); //O teste de cima adiciona um produto, então pegar outro pra testar
+            var integrante = _contexto.Integrantes.First();
             var item1 = new PedidoItem
             {
                 QuantidadeSugestaoCompra = 5,
-                Produto = new Produto { Id = 25861 },
-                Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
+                Produto = produto,
+                Integrante = integrante
             };
 
             var item2 = new PedidoItem
             {
                 QuantidadeSugestaoCompra = 2,
-                Produto = new Produto { Id = 25861 },
-                Integrante = new Integrante { Usuario = new Usuario { Id = 2 } }
+                Produto = produto,
+                Integrante = integrante
             };
 
-            using (new TransactionScope())
-            {
-                item1 = pedidoApp.AdicionarItem(_pontoDemandaId, item1);
-                Assert.IsTrue(item1.Id > 0);
-                var app2 = ObterPedidoApp(new PedidoEF());
-                Assert.Throws<ApplicationException>(() => app2.AdicionarItem(_pontoDemandaId, item2));
-            }
+            item1 = pedidoApp.AdicionarItem(_pontoDemandaId, item1);
+            Assert.IsTrue(item1.Id > 0);
+            var app2 = ObterPedidoApp(new PedidoEF());
+            Assert.Throws<ApplicationException>(() => app2.AdicionarItem(_pontoDemandaId, item2));
         }
 
         [Test]
@@ -77,15 +74,12 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
 
-            var itens = pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000);
+            var itens = pedidoApp.ListarItens(_pontoDemandaId);
             var item = itens.First();
             var totalDeItems = itens.Count();
             
-            using (new TransactionScope())
-            {
-                pedidoApp.RemoverItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id);
-                Assert.IsTrue(pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).Count() == totalDeItems - 1);
-            }
+            pedidoApp.RemoverItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id);
+            Assert.IsTrue(pedidoApp.ListarItens(_pontoDemandaId).Count() == totalDeItems - 1);
         }
 
         [Test]
@@ -102,11 +96,11 @@ namespace LM.Core.Tests
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
 
-            var item = pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First();
+            var item = pedidoApp.ListarItens(_pontoDemandaId).First();
             using (new TransactionScope())
             {
                 pedidoApp.AtualizarQuantidadeDoItem(_pontoDemandaId, item.Integrante.Usuario.Id, item.Id, 12);
-                Assert.AreEqual(12, pedidoApp.ListarItensPorSecao(_pontoDemandaId, 2000).First().QuantidadeSugestaoCompra);
+                Assert.AreEqual(12, pedidoApp.ListarItens(_pontoDemandaId).First(i => i.Id == item.Id).QuantidadeSugestaoCompra);
             }
         }
 

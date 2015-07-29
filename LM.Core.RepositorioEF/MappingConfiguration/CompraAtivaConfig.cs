@@ -14,7 +14,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(c => c.FimCompra).HasColumnName("DT_Fim").IsOptional();
 
             HasRequired(c => c.PontoDemanda).WithMany().Map(m => m.MapKey("ID_Ponto_Real_Demanda"));
-            HasRequired(c => c.Usuario).WithMany().Map(m => m.MapKey("ID_Usuario"));
+            HasRequired(c => c.Usuario).WithMany().Map(m => m.MapKey("ID_Usuario")).WillCascadeOnDelete(false);
         }
     }
 }

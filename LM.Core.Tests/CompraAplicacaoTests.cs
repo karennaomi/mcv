@@ -15,11 +15,19 @@ namespace LM.Core.Tests
     {
         private Fakes _fakes;
         private MockCompraRepo _mockRepo;
+        private IRepositorioProcedures _repoProcedures;
+        private Integrante _integrante;
+        private PontoDemanda _pontoDemanda;
+        private ContextoEF _contexto;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
             _mockRepo = new MockCompraRepo();
+            _contexto = new ContextoEF();
+            _integrante = _contexto.Usuarios.First().Integrante;
+            _pontoDemanda = _contexto.PontosDemanda.First();
+            _repoProcedures = new Mock<IRepositorioProcedures>().Object;
         }
 
         [Test]
@@ -27,13 +35,17 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var compra = _fakes.CompraNotSoFake();
+                var compra = _fakes.Compra();
+                compra.Integrante = _integrante;
+                compra.PontoDemanda = _pontoDemanda;
+                compra.Itens.Add(_fakes.ListaCompraItem(_pontoDemanda.Listas.First().Itens.First()));
                 var compraAtivaRepo = new CompraAtivaEF();
-                AtivarCompra(compra, compraAtivaRepo);
-                var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
+                var compraAtivaApp = ObterAppCompraAtiva(compraAtivaRepo);
+                compraAtivaApp.AtivarCompra(compra.Integrante.Usuario.Id, compra.PontoDemanda.Id);
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
-                Assert.IsFalse(new CompraAtivaAplicacao(compraAtivaRepo, null).ExisteCompraAtiva(compra.PontoDemanda.Id));
+                Assert.IsFalse(compraAtivaApp.ExisteCompraAtiva(compra.PontoDemanda.Id));
             }
         }
 
@@ -42,18 +54,21 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var compra = _fakes.CompraNotSoFake();
+                var compra = _fakes.Compra();
+                compra.Integrante = _integrante;
+                compra.PontoDemanda = _pontoDemanda;
                 var compraAtivaRepo = new CompraAtivaEF();
                 AtivarCompra(compra, compraAtivaRepo);
-                var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
-                var listaItemIds = new[] { new[] { 16, 27394 }, new[] { 17, 27398 } };
-                var compraItemOriginal = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[0][0] }, ProdutoId = listaItemIds[0][1], Quantidade = 2, Valor = 2.5M };
-                var compraItemSubstituto = new ListaCompraItem { Item = new ListaItem { Id = listaItemIds[1][0] }, ProdutoId = listaItemIds[1][1], Quantidade = 1, Valor = 1, };
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
+                var item1 = _pontoDemanda.Listas.First().Itens.First();
+                var item2 = _pontoDemanda.Listas.First().Itens.Skip(1).First();
+                var compraItemOriginal = new ListaCompraItem { Item = item1, ProdutoId = item1.Produto.Id, Quantidade = 2, Valor = 2.5M };
+                var compraItemSubstituto = new ListaCompraItem { Item = item2, ProdutoId = item2.Produto.Id, Quantidade = 1, Valor = 1, };
 
                 compra.AdicionarItemSubstituto(compraItemOriginal, compraItemSubstituto, "teste");
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
-                Assert.AreEqual(5, compra.Itens.Count);
+                Assert.AreEqual(2, compra.Itens.Count);
                 Assert.IsTrue(compra.Itens.Any(i => i.ItemSubstituto != null));
                 Assert.AreEqual(StatusCompra.ItemSubstituido, compraItemOriginal.Status);
                 Assert.AreEqual(StatusCompra.Comprado, compraItemSubstituto.Status);
@@ -65,10 +80,12 @@ namespace LM.Core.Tests
         {
             using (new TransactionScope())
             {
-                var compra = _fakes.CompraNotSoFake();
+                var compra = _fakes.Compra();
+                compra.Integrante = _integrante;
+                compra.PontoDemanda = _pontoDemanda;
                 var compraAtivaRepo = new CompraAtivaEF();
                 AtivarCompra(compra, compraAtivaRepo);
-                var app = ObterAppCompra(new CompraEF(), compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
                 
                 var item = _fakes.ListaCompraItem();
                 item.Item.Produto.Categorias.First().Id = 2;
@@ -77,15 +94,17 @@ namespace LM.Core.Tests
                 compra = app.Criar(compra);
                 
                 Assert.IsTrue(compra.Id > 0);
-                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Id == 12));
-                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Count() == 2);
+                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Nome == "eventual"));
+                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Count() == 1);
             }
         }
 
         [Test]
         public void CriarCompraDefinePedidosComStatusCorretos()
         {
-            var compra = _fakes.CompraNotSoFake();
+            var compra = _fakes.Compra();
+            compra.Integrante = _integrante;
+            compra.PontoDemanda = _pontoDemanda;
             compra.PontoDemanda.Id = 100;
             compra.Itens.Clear();
             compra.Itens.Add(new PedidoCompraItem { Status = StatusCompra.AgoraNao, Item = new PedidoItem { Id = 1 }, ProdutoId = 1, Quantidade = 1, Valor = 1.25M });

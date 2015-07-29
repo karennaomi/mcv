@@ -28,13 +28,10 @@ namespace LM.Core.Tests
         [Test]
         public void CriarIntegrante()
         {
-            using (new TransactionScope())
-            {
-                var integrante = _fakes.Integrante();
-                var app = ObterAppIntegrante(new IntegranteEF());
-                integrante = app.Criar(1, integrante);
-                Assert.IsTrue(integrante.Id > 0);
-            }
+            var integrante = _fakes.Integrante("novo_integrante@mail.com");
+            var app = ObterAppIntegrante(new IntegranteEF());
+            integrante = app.Criar(1, integrante);
+            Assert.IsTrue(integrante.Id > 0);
         }
 
         [Test]

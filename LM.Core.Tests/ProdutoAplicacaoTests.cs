@@ -14,17 +14,19 @@ namespace LM.Core.Tests
     {
         private Fakes _fakes;
         private MockProdutoRepo _mockRepo;
+        private ContextoEF _contexto;
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
             _mockRepo = new MockProdutoRepo();
+            _contexto = new ContextoEF("SqlServer");
         }
 
         [Test]
         public void BuscaUmProduto()
         {
-            var app = ObterAppProduto(new ProdutoEF());
+            var app = ObterAppProduto(new ProdutoEF(_contexto));
             var produtos = app.Buscar(100, "arroz");
             Assert.IsTrue(produtos.Any());
         }
@@ -32,7 +34,7 @@ namespace LM.Core.Tests
         [Test]
         public void BuscaUmProdutoPorParteDoNome()
         {
-            var app = ObterAppProduto(new ProdutoEF());
+            var app = ObterAppProduto(new ProdutoEF(_contexto));
             var produtos = app.Buscar(100, "arro");
             Assert.IsTrue(produtos.Any());
         }
@@ -40,7 +42,7 @@ namespace LM.Core.Tests
         [Test]
         public void BuscaUmProdutoComEspaco()
         {
-            var app = ObterAppProduto(new ProdutoEF());
+            var app = ObterAppProduto(new ProdutoEF(_contexto));
             var produtos = app.Buscar(100, "carne de ra");
             Assert.IsTrue(produtos.Any());
         }
@@ -48,7 +50,7 @@ namespace LM.Core.Tests
         [Test]
         public void BuscaUmProdutoPorEan()
         {
-            var app = ObterAppProduto(new ProdutoEF());
+            var app = ObterAppProduto(new ProdutoEF(_contexto));
             var produtos = app.Buscar(100, "3700123302360");
             Assert.IsTrue(produtos.Any());
         }

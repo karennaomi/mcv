@@ -29,7 +29,7 @@ namespace LM.Core.Tests
         [Test]
         public void CriaUsuario()
         {
-            var usuario = _fakes.Usuario();
+            var usuario = _fakes.Usuario("novo_usuario@mail.com");
             usuario.Id = 0;
             var app = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
             using (new TransactionScope())

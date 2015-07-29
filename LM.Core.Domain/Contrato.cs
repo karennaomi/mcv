@@ -4,6 +4,11 @@ namespace LM.Core.Domain
 {
     public class Contrato
     {
+        public Contrato()
+        {
+            DataInclusao = DateTime.Now;
+        }
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public int Numero { get; set; }

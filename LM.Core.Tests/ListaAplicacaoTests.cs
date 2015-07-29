@@ -1,7 +1,9 @@
 ﻿using System;
 using LM.Core.Application;
 using LM.Core.Domain;
+using LM.Core.Domain.Repositorio;
 using LM.Core.RepositorioEF;
+using Moq;
 using NUnit.Framework;
 using System.Linq;
 using System.Transactions;
@@ -11,27 +13,38 @@ namespace LM.Core.Tests
     [TestFixture]
     public class ListaAplicacaoTests
     {
-        private static long _pontoDemandaId, _integranteId, _usuarioId;
-        public ListaAplicacaoTests()
+        private static long _integranteId, _usuarioId;
+        private PontoDemanda _pontoDemanda; 
+        private Fakes _fakes;
+        private Produto _produto1, _produto2;
+
+        [TestFixtureSetUp]
+        public void Init()
         {
-            var pontoDemanda = new ContextoEF().PontosDemanda.First();
-            _pontoDemandaId = pontoDemanda.Id;
-            var integrante = pontoDemanda.GruposDeIntegrantes.First().Integrante;
+            var contexto = new ContextoEF();
+            _pontoDemanda = contexto.PontosDemanda.First();
+
+            var integrante = _pontoDemanda.GruposDeIntegrantes.First().Integrante;
             _integranteId = integrante.Id;
             _usuarioId = integrante.Usuario.Id;
+
+            _fakes = new Fakes();
+
+            _produto1 = contexto.Produtos.Add(_fakes.Produto());
+            _produto2 = contexto.Produtos.Add(_fakes.Produto());
+            contexto.SaveChanges();
         }
         
         [Test]
-        public void AdiconarUmItemEmUmaLista()
+        public void NaoPodeAdiconarUmItemRepetidoEmUmaLista()
         {
             var listaApp = ObterListaApp();
-            const int produtoId = 23271;
             var item1 = new ListaItem
             {
                 QuantidadeConsumo = 5,
                 QuantidadeEstoque = 3,
-                Periodo = new Periodo { Id = 5 },
-                Produto = new Produto { Id = produtoId }
+                Periodo = new Periodo { Id = 4 },
+                Produto = _produto2
             };
 
             var item2 = new ListaItem
@@ -39,20 +52,17 @@ namespace LM.Core.Tests
                 QuantidadeConsumo = 2,
                 QuantidadeEstoque = 4,
                 Periodo = new Periodo { Id = 2 },
-                Produto = new Produto { Id = produtoId }
+                Produto = _produto2
             };
             
-            using (new TransactionScope())
-            {
-                item1 = listaApp.AdicionarItem(_usuarioId, _pontoDemandaId, item1);
-                Assert.IsTrue(item1.Id > 0);
-                var listaApp2 = ObterListaApp();
-                Assert.Throws<ApplicationException>(() => listaApp2.AdicionarItem(_usuarioId, _pontoDemandaId, item2));
-            }
+            item1 = listaApp.AdicionarItem(_usuarioId, _pontoDemanda.Id, item1);
+            Assert.IsTrue(item1.Id > 0);
+            var listaApp2 = ObterListaApp();
+            Assert.Throws<ApplicationException>(() => listaApp2.AdicionarItem(_usuarioId, _pontoDemanda.Id, item2));
         }
 
         [Test]
-        public void NaoPodeAdiconarUmItemRepetidoEmUmaLista()
+        public void AdiconarUmItemEmUmaLista()
         {
             var listaApp = ObterListaApp();
 
@@ -60,15 +70,12 @@ namespace LM.Core.Tests
             {
                 QuantidadeConsumo = 5,
                 QuantidadeEstoque = 3,
-                Periodo = new Periodo { Id = 5 },
-                Produto = new Produto { Id = 23271 }
+                Periodo = new Periodo { Id = 2 },
+                Produto = _produto1
             };
 
-            using (new TransactionScope())
-            {
-                item = listaApp.AdicionarItem(_usuarioId, _pontoDemandaId, item);
-                Assert.IsTrue(item.Id > 0);
-            }
+            item = listaApp.AdicionarItem(_usuarioId, _pontoDemanda.Id, item);
+            Assert.IsTrue(item.Id > 0);
         }
 
         [Test]
@@ -76,14 +83,14 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var itens = listaApp.ListarItens(_pontoDemandaId).ToList();
+            var itens = listaApp.ListarItens(_pontoDemanda.Id).ToList();
             var idItem = itens.First().Id;
             var totalDeItems = itens.Count();
             
             using (new TransactionScope())
             {
-                listaApp.DesativarItem(_pontoDemandaId, idItem);
-                Assert.IsTrue(listaApp.ListarItens(_pontoDemandaId).Count() == totalDeItems - 1);
+                listaApp.DesativarItem(_pontoDemanda.Id, idItem);
+                Assert.IsTrue(listaApp.ListarItens(_pontoDemanda.Id).Count() == totalDeItems - 1);
             }
 
         }
@@ -93,7 +100,7 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var secoes = listaApp.ListarSecoes(_pontoDemandaId);
+            var secoes = listaApp.ListarSecoes(_pontoDemanda.Id);
             Assert.IsTrue(secoes.All(s => s.SubCategorias.Count > 0));
         }
 
@@ -101,13 +108,9 @@ namespace LM.Core.Tests
         public void AtualizarEstoqueDeUmItemDeUmaLista()
         {
             var listaApp = ObterListaApp();
-
-            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
-            using (new TransactionScope())
-            {
-                listaApp.AtualizarEstoqueDoItem(_pontoDemandaId, _integranteId, item.Id, 12);
-                Assert.AreEqual(12, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().QuantidadeEstoque);    
-            }
+            var item = _pontoDemanda.Listas.First().Itens.First();
+            listaApp.AtualizarEstoqueDoItem(_pontoDemanda.Id, _integranteId, item.Id, 12);
+            Assert.AreEqual(12, listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == item.Id).QuantidadeEstoque);    
         }
 
         [Test]
@@ -116,8 +119,9 @@ namespace LM.Core.Tests
             using (new TransactionScope())
             {
                 var listaApp = ObterListaApp();
-                listaApp.AtualizarConsumoDoItem(_pontoDemandaId, 186, 5);
-                Assert.AreEqual(5, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().QuantidadeConsumo);
+                var item = _pontoDemanda.Listas.First().Itens.First();
+                listaApp.AtualizarConsumoDoItem(_pontoDemanda.Id, item.Id, 8);
+                Assert.AreEqual(8, listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == item.Id).QuantidadeConsumo);
             }
         }
 
@@ -125,38 +129,30 @@ namespace LM.Core.Tests
         public void AtualizarPeriodoDeUmItemDeUmaLista()
         {
             var listaApp = ObterListaApp();
-
-            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
-            using (new TransactionScope())
-            {
-                listaApp.AtualizarPeriodoDoItem(_pontoDemandaId, item.Id, 5);
-                Assert.AreEqual(5, listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First().Periodo.Id);
-            }
+            var item = _pontoDemanda.Listas.First().Itens.First();
+            listaApp.AtualizarPeriodoDoItem(_pontoDemanda.Id, item.Id, 3);
+            Assert.AreEqual(3, listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == item.Id).Periodo.Id);
         }
 
         [Test]
         public void AtualizarUmItemDeUmaLista()
         {
             var listaApp = ObterListaApp();
-
-            var item = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
+            var item = _pontoDemanda.Listas.First().Itens.First();
             var itemToUpdate = new ListaItem
             {
                 Id = item.Id,
-                QuantidadeConsumo = 5,
-                QuantidadeEstoque = 3,
+                QuantidadeConsumo = 9,
+                QuantidadeEstoque = 7,
                 Periodo = new Periodo { Id = 2 },
                 EhEssencial = true
             };
-            using (new TransactionScope())
-            {
-                listaApp.AtualizarItem(_pontoDemandaId, _integranteId, itemToUpdate);
-                var updatedItem = listaApp.ListarItensPorSecao(_pontoDemandaId, 12000).First();
-                Assert.AreEqual(5, updatedItem.QuantidadeConsumo);
-                Assert.AreEqual(3, updatedItem.QuantidadeEstoque);
-                Assert.AreEqual(2, updatedItem.Periodo.Id);
-                Assert.IsTrue(updatedItem.EhEssencial);
-            }
+            listaApp.AtualizarItem(_pontoDemanda.Id, _integranteId, itemToUpdate);
+            var updatedItem = listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == itemToUpdate.Id);
+            Assert.AreEqual(9, updatedItem.QuantidadeConsumo);
+            Assert.AreEqual(7, updatedItem.QuantidadeEstoque);
+            Assert.AreEqual(2, updatedItem.Periodo.Id);
+            Assert.IsTrue(updatedItem.EhEssencial);
         }
 
         [Test]
@@ -164,7 +160,7 @@ namespace LM.Core.Tests
         public void BuscaUmItemDaLista()
         {
             var app = ObterListaApp();
-            var itens = app.BuscarItens(_pontoDemandaId, "Bombom");
+            var itens = app.BuscarItens(_pontoDemanda.Id, "Bombom");
             Assert.IsTrue(itens.Any());
         }
 
@@ -173,13 +169,13 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
 
-            var itens = listaApp.ListarItens(_pontoDemandaId);
+            var itens = listaApp.ListarItens(_pontoDemanda.Id);
             Assert.IsTrue(itens.Any());
         }
 
         private static IListaAplicacao ObterListaApp()
         {
-            return new ListaAplicacao(new ListaEF());
+            return new ListaAplicacao(new ListaEF(new Mock<IRepositorioProcedures>().Object));
         }
     }
 }

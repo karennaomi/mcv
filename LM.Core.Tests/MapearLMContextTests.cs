@@ -14,7 +14,7 @@ namespace LM.Core.Tests
         [Test]
         public void MapearUsuarios()
         {
-            var usuario = _contexto.Usuarios.OrderBy(u => u.Id).Skip(50).First();
+            var usuario = _contexto.Usuarios.First();
             Assert.IsNotNull(usuario.StatusUsuarioPontoDemanda);
             Assert.IsNotNull(usuario.Integrante);
         }
@@ -33,19 +33,17 @@ namespace LM.Core.Tests
             Assert.IsNotNull(pontoDemanda.Endereco);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade);
             Assert.IsNotNull(pontoDemanda.Endereco.Cidade.Uf);
-            Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First());
-            Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First().Integrante);
             Assert.IsNotNull(pontoDemanda.Listas.First());
+            Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First().Integrante);
         }
 
         [Test]
         public void MapearPontoDemandaLojasFavoritas()
         {
-            var pontoDemanda = _contexto.PontosDemanda.Find(20908);
+            var pontoDemanda = _contexto.PontosDemanda.First();
             Assert.IsNotNull(pontoDemanda.LojasFavoritas.First());
             Assert.IsNotNull(pontoDemanda.LojasFavoritas.First().Info.Endereco);
         }
-
 
         [Test]
         public void MapearIntegrante()
@@ -56,11 +54,10 @@ namespace LM.Core.Tests
             Assert.IsNotNull(integrante.Usuario);
         }
 
-
         [Test]
         public void MapearCategorias()
         {
-            var secao = _contexto.Categorias.Single(c => c.Nome == "LIMPEZA");
+            var secao = _contexto.Categorias.First(c => c.Nome == "LIMPEZA");
             Assert.IsNotNull(secao.Imagens.First());
             Assert.IsNotNull(secao.SubCategorias.First());
         }
@@ -68,7 +65,7 @@ namespace LM.Core.Tests
         [Test]
         public void MapearProdutos()
         {
-            var produto = _contexto.Produtos.Find(8);
+            var produto = _contexto.Produtos.First();
             Assert.IsNotNull(produto.Info);
             Assert.IsNotNull(produto.Imagens.First());
             Assert.IsNotNull(produto.Categorias.First());
@@ -93,35 +90,19 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void MapearCompra()
-        {
-            var compra = _contexto.Compras.First();
-            Assert.IsNotNull(compra.PontoDemanda);
-            Assert.IsNotNull(compra.Integrante);
-            //Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any());
-            //Assert.IsTrue(compra.Itens.OfType<PedidoCompraItem>().Any());
-        }
-
-        [Test]
-        public void MapearCompraItemSubstituto()
-        {
-            var compra = _contexto.Compras.First(c => c.Id == 20585);
-            Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
-        }
-
-        [Test]
-        public void MapearCidades()
-        {
-            var cidade = _contexto.Cidades.First();
-            Assert.IsNotNull(cidade.Uf);
-        }
-
-        [Test]
         public void MapearCompraAtiva()
         {
             var comrpaAtiva = _contexto.ComprasAtivas.First();
             Assert.IsNotNull(comrpaAtiva.PontoDemanda);
             Assert.IsNotNull(comrpaAtiva.Usuario);
+        }
+
+        [Test]
+        public void MapearCorreiosCep()
+        {
+            var contextoCorreios = new ContextoCorreiosEF();
+            var endereco = contextoCorreios.EnderecosCorreios.First();
+            Assert.IsNotNull(endereco);
         }
 
         [Test]
@@ -159,28 +140,6 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void MapearLegacyTokens()
-        {
-            var legacyToken = _contexto.LegacyTokens.First();
-            Assert.IsNotNull(legacyToken);
-        }
-
-        [Test]
-        public void MapearUfs()
-        {
-            var ufs = _contexto.Ufs;
-            Assert.IsNotNull(ufs.First());
-        }
-
-        [Test]
-        public void MapearCorreiosCep()
-        {
-            var contextoCorreios = new ContextoCorreiosEF();
-            var endereco = contextoCorreios.EnderecosCorreios.First();
-            Assert.IsNotNull(endereco);
-        }
-
-        [Test]
         public void MapearEmailsCapturados()
         {
             var emailsCapturados = _contexto.EmailsCapturados;
@@ -204,8 +163,8 @@ namespace LM.Core.Tests
         [Test]
         public void MapearProdutoPrecos()
         {
-            var precos = _contexto.Set<ProdutoPreco>();
-            Assert.IsNotNull(precos.First());
+            var preco = _contexto.Set<ProdutoPreco>().First();
+            Assert.IsNotNull(preco);
         }
 
         [Test]
@@ -214,6 +173,35 @@ namespace LM.Core.Tests
             var contatos = _contexto.Contatos;
             Assert.IsNotNull(contatos.First());
         }
+
+        [Test]
+        public void MapearCompra()
+        {
+            var compra = _contexto.Compras.First();
+            Assert.IsNotNull(compra.PontoDemanda);
+            Assert.IsNotNull(compra.Integrante);
+        }
+
+        [Test]
+        public void MapearCompraItemSubstituto()
+        {
+            var compra = _contexto.Compras.First();
+            Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
+        }
+
+        //[Test]
+        //public void MapearCidades()
+        //{
+        //    var cidade = _contexto.Cidades.First();
+        //    Assert.IsNotNull(cidade.Uf);
+        //}
+
+        //[Test]
+        //public void MapearUfs()
+        //{
+        //    var ufs = _contexto.Ufs;
+        //    Assert.IsNotNull(ufs.First());
+        //}
     }
 }
 
