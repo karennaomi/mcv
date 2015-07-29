@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using LM.Core.Domain.Servicos;
@@ -94,7 +95,7 @@ namespace LM.Core.Tests
                 compra = app.Criar(compra);
                 
                 Assert.IsTrue(compra.Id > 0);
-                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Nome == "eventual"));
+                Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Any(i => i.Item.Periodo.Nome.Equals("eventual", StringComparison.InvariantCultureIgnoreCase)));
                 Assert.IsTrue(compra.Itens.OfType<ListaCompraItem>().Count() == 1);
             }
         }

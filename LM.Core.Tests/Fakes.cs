@@ -319,7 +319,7 @@ namespace LM.Core.Tests
 
         internal Periodo PeriodoEventual()
         {
-            return new Periodo{ Nome = "eventual", Id = 1};
+            return new Periodo{ Nome = "Eventual", Id = 1};
         }
     }
 }

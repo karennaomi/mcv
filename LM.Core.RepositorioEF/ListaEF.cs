@@ -52,5 +52,10 @@ namespace LM.Core.RepositorioEF
         {
             _repoLancamentoEstoque.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, integranteId);
         }
+
+        public IEnumerable<Periodo> PeriodosDeConsumo()
+        {
+            return _contexto.Set<Periodo>();
+        }
     }
 }

@@ -63,7 +63,7 @@ namespace LM.Core.RepositorioEF
         {
             var listaItem = new ListaItem
             {
-                Periodo = _contexto.Set<Periodo>().Single(p => p.Nome == "eventual"),
+                Periodo = _contexto.Set<Periodo>().Single(p => p.Nome.Equals("eventual", StringComparison.InvariantCultureIgnoreCase)),
                 QuantidadeConsumo = compraItem.Quantidade,
                 QuantidadeEstoque = compraItem.Quantidade
             };

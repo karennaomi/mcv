@@ -20,6 +20,7 @@ namespace LM.Core.Application
         void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
         void AtualizarEhEssencialDoItem(long pontoDemandaId, long itemId, bool ehEssencial);
         IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
+        IEnumerable<Periodo> PeriodosDeConsumo();
     }
 
     public class ListaAplicacao : IListaAplicacao
@@ -126,6 +127,11 @@ namespace LM.Core.Application
             var item = ListarItens(pontoDemandaId).SingleOrDefault(i => i.Id == itemId);
             if (item == null) throw new ApplicationException("A lista não possui o item informado.");
             return item;
+        }
+
+        public IEnumerable<Periodo> PeriodosDeConsumo()
+        {
+            return _repositorio.PeriodosDeConsumo();
         }
     }
 }
