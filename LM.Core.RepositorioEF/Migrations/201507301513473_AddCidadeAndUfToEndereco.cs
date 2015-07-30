@@ -7,8 +7,8 @@ namespace LM.Core.RepositorioEF.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.TB_ENDERECO", "NM_CIDADE", c => c.String());
-            AddColumn("dbo.TB_ENDERECO", "NM_UF", c => c.String());
+            AddColumn("dbo.TB_ENDERECO", "NM_CIDADE", c => c.String(maxLength:50));
+            AddColumn("dbo.TB_ENDERECO", "NM_UF", c => c.String(maxLength:2));
         }
         
         public override void Down()
