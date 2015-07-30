@@ -20,30 +20,17 @@ namespace LM.Core.Application
     public class EnderecoAplicacao : IEnderecoAplicacao
     {
         private readonly IServicoRest _servicoRest;
-        private readonly IList<ICepAplicacao> _servicosDeCep;
-        public EnderecoAplicacao(IList<ICepAplicacao> servicosDeCep, [Named("GoogleGeocodeService")]IServicoRest servicoRest)
+        private readonly ICepAplicacao _servicoDeCep;
+        public EnderecoAplicacao(ICepAplicacao servicoDeCep, [Named("GoogleGeocodeService")]IServicoRest servicoRest)
         {
-            _servicosDeCep = servicosDeCep;
+            _servicoDeCep = servicoDeCep;
             _servicoRest = servicoRest;
             if (_servicoRest.Host == null) _servicoRest.Host = new Uri("http://maps.googleapis.com/maps/api/geocode/");
         }
 
         public Endereco BuscarPorCep(string cep)
         {
-            foreach (var servicoDeCep in _servicosDeCep)
-            {
-                try
-                {
-                    var endereco = servicoDeCep.BuscarPorCep(cep);
-                    return endereco;
-
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-            throw new ApplicationException("Não foi possível localizar um endereço por cep.");
+            return _servicoDeCep.BuscarPorCep(cep);
        }
 
         public IList<Endereco> BuscarPorEndereco(string endereco)
