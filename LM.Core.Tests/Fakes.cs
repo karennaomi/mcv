@@ -59,14 +59,14 @@ namespace LM.Core.Tests
             };
         }
 
-        internal Endereco Endereco()
+        internal Endereco Endereco(string appendLogradouro = "")
         {
             return new Endereco
             {
                 Cidade = "São Paulo", 
                 Uf = "SP",
                 Alias = "Casa de sap",
-                Logradouro = "Rua dos bobos",
+                Logradouro = "Rua dos bobos" + appendLogradouro,
                 Numero = 0,
                 Bairro = "Vl Olimpia",
                 Cep = "04458001",
@@ -87,7 +87,7 @@ namespace LM.Core.Tests
                 Info = new LojaInfo
                 {
                     RazaoSocial = "TESTE SA" + _lojaId,
-                    Endereco = new Endereco { Alias = "Teste " + _lojaId, Logradouro = "teste " + _lojaId, Latitude = -23.5238023M, Longitude = -46.644144M }
+                    Endereco = Endereco(_lojaId.ToString())
                 }
             };
         }

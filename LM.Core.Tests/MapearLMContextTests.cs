@@ -53,6 +53,13 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void MapearEndereco()
+        {
+            var endereco = _contexto.Set<Endereco>().First();
+            Assert.IsNotNull(endereco);
+        }
+
+        [Test]
         public void MapearCategorias()
         {
             var secao = _contexto.Categorias.First(c => c.Nome == "LIMPEZA");

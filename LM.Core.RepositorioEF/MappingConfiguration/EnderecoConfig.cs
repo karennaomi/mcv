@@ -20,8 +20,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(e => e.Longitude).HasColumnName("NR_ENDERECO_LONGITUDE").HasColumnType("decimal").HasPrecision(20, 15);
             Property(e => e.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(e => e.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
-            Ignore(e => e.Cidade);
-            Ignore(e => e.Uf);
+            Property(e => e.Cidade).HasColumnName("NM_CIDADE").IsOptional();
+            Property(e => e.Uf).HasColumnName("NM_UF").IsOptional();
         }
     }
 }
