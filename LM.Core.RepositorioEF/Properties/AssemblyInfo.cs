@@ -41,7 +41,7 @@ namespace LM.Core.RepositorioEF.Properties
 {
     internal struct Version
     {
-        public const string CurrentVersion = "1.10.4";
+        public const string CurrentVersion = "1.11.0";
     }
 }
 
