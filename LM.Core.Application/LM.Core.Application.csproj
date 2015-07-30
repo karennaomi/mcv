@@ -61,11 +61,9 @@
     <Compile Include="EnderecoPostmonService.cs" />
     <Compile Include="EnderecoViaCepService.cs" />
     <Compile Include="GooglePlaceService.cs" />
-    <Compile Include="UfAplicacao.cs" />
     <Compile Include="FilaItemAplicacao.cs" />
     <Compile Include="RecuperarSenhaAplicacao.cs" />
     <Compile Include="TemplateMensagemAplicacao.cs" />
-    <Compile Include="CidadeAplicacao.cs" />
     <Compile Include="CategoriaAplicacao.cs" />
     <Compile Include="CompraAplicacao.cs" />
     <Compile Include="CompraAtivaAplicacao.cs" />

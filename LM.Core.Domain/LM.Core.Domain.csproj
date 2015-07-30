@@ -48,7 +48,6 @@
     <Compile Include="Animal.cs" />
     <Compile Include="BuscaLojaResult.cs" />
     <Compile Include="Categoria.cs" />
-    <Compile Include="Cidade.cs" />
     <Compile Include="Compra.cs" />
     <Compile Include="CompraAtiva.cs" />
     <Compile Include="CompraItem.cs" />
@@ -102,12 +101,10 @@
     <Compile Include="Repositorio\IRepositorioEmailCapturado.cs" />
     <Compile Include="Repositorio\IRepositorioCorreios.cs" />
     <Compile Include="Repositorio\IRepositorioProcedures.cs" />
-    <Compile Include="Repositorio\IRepositorioUf.cs" />
     <Compile Include="Repositorio\IRepositorioFilaItem.cs" />
     <Compile Include="Repositorio\IRepositorioLojaFavorita.cs" />
     <Compile Include="Repositorio\IRepositorioRecuperarSenha.cs" />
     <Compile Include="Repositorio\IRepositorioTemplateMensagem.cs" />
-    <Compile Include="Repositorio\IRepositorioCidade.cs" />
     <Compile Include="Repositorio\IRepositorioCategoria.cs" />
     <Compile Include="Repositorio\IRepositorioCompra.cs" />
     <Compile Include="Repositorio\IRepositorioCompraAtiva.cs" />
@@ -127,7 +124,6 @@
     <Compile Include="TipoTemplateMensagem.cs" />
     <Compile Include="TemplateMensagem.cs" />
     <Compile Include="TipoPontoDemanda.cs" />
-    <Compile Include="UF.cs" />
     <Compile Include="Usuario.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,10 @@
     <Compile Include="ComandoAtualizarPontoDemanda.cs" />
     <Compile Include="ContextoCorreiosEF.cs" />
     <Compile Include="CorreiosEF.cs" />
+    <Compile Include="Migrations\201507292210098_FirstMigration.cs" />
+    <Compile Include="Migrations\201507292210098_FirstMigration.Designer.cs">
+      <DependentUpon>201507292210098_FirstMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedures.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
     <Compile Include="MappingConfiguration\ContatoConfig.cs" />
@@ -58,12 +62,7 @@
     <Compile Include="MappingConfiguration\EmailCapturadoConfig.cs" />
     <Compile Include="MappingConfiguration\ContratoConfig.cs" />
     <Compile Include="MappingConfiguration\FilaProdutoConfig.cs" />
-    <Compile Include="Migrations\201507281402036_FirstMigration.cs" />
-    <Compile Include="Migrations\201507281402036_FirstMigration.Designer.cs">
-      <DependentUpon>201507281402036_FirstMigration.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="UfEF.cs" />
     <Compile Include="FilaItemEF.cs" />
     <Compile Include="FtsInterceptor.cs" />
     <Compile Include="LojaFavoritaEF.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="TemplateMensagemEF.cs" />
     <Compile Include="CompraEF.cs" />
     <Compile Include="CompraAtivaEF.cs" />
-    <Compile Include="CidadeEF.cs" />
     <Compile Include="CategoriaEF.cs" />
     <Compile Include="ContextoEF.cs" />
     <Compile Include="IntegranteEF.cs" />
@@ -119,8 +117,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507281402036_FirstMigration.resx">
-      <DependentUpon>201507281402036_FirstMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201507292210098_FirstMigration.resx">
+      <DependentUpon>201507292210098_FirstMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

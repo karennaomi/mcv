@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace LM.Core.Tests
 {
@@ -46,7 +41,7 @@ namespace LM.Core.Tests
             var endereco = _fakes.Endereco();
             endereco.Logradouro = null;
             endereco.Bairro = null;
-            endereco.Cidade.Nome = null;
+            endereco.Cidade = null;
             Assert.AreEqual("SP", endereco.ToString());
         }
 
@@ -56,8 +51,8 @@ namespace LM.Core.Tests
             var endereco = _fakes.Endereco();
             endereco.Logradouro = null;
             endereco.Bairro = null;
-            endereco.Cidade.Nome = null;
-            endereco.Cidade.Uf.Sigla = null;
+            endereco.Cidade = null;
+            endereco.Uf = null;
             Assert.AreEqual("", endereco.ToString());
         }
     }

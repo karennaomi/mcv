@@ -21,17 +21,16 @@ namespace LM.Core.Domain
         public decimal Longitude { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-
-        public virtual Cidade Cidade { get; set; }
+        public string Cidade { get; set; }
+        public string Uf { get; set; }
 
         public override string ToString()
         {
             var sb = new StringBuilder(Logradouro);
             if(!string.IsNullOrWhiteSpace(Logradouro)) Adicionar(sb, Numero, ", ");
             Adicionar(sb, Bairro, " - ");
-            if (Cidade == null) return sb.ToString();
-            Adicionar(sb, Cidade.Nome, " ");
-            if (Cidade.Uf != null) Adicionar(sb, Cidade.Uf.Sigla, " - ");
+            if (!string.IsNullOrEmpty(Cidade)) Adicionar(sb, Cidade, " ");
+            if (!string.IsNullOrEmpty(Uf)) Adicionar(sb, Uf, " - ");
             return sb.ToString();
         }
 

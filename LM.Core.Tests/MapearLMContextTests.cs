@@ -31,8 +31,6 @@ namespace LM.Core.Tests
         {
             var pontoDemanda = _contexto.PontosDemanda.First();
             Assert.IsNotNull(pontoDemanda.Endereco);
-            Assert.IsNotNull(pontoDemanda.Endereco.Cidade);
-            Assert.IsNotNull(pontoDemanda.Endereco.Cidade.Uf);
             Assert.IsNotNull(pontoDemanda.Listas.First());
             Assert.IsNotNull(pontoDemanda.GruposDeIntegrantes.First().Integrante);
         }

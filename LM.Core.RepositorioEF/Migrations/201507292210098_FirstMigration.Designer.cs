@@ -13,7 +13,7 @@ namespace LM.Core.RepositorioEF.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201507281402036_FirstMigration"; }
+            get { return "201507292210098_FirstMigration"; }
         }
         
         string IMigrationMetadata.Source

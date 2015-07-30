@@ -53,24 +53,6 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void CriarPontoDemandaComIdDeCidade()
-        {
-            using (new TransactionScope())
-            {
-                var appUsuario = ObterAppUsuario(new UsuarioEF(), new ContratoEF());
-                var usuario = appUsuario.Criar(_fakes.Usuario("usuario_x@mail.com"));
-                var app = new PontoDemandaAplicacao(new PontoDemandaEF(), ObterAppUsuario(new UsuarioEF(), new ContratoEF()));
-                var pontoDemanda = _fakes.PontoDemanda();
-                pontoDemanda.Id = 0;
-                pontoDemanda.Endereco.Cidade = new Cidade {Id = _contexto.Cidades.First().Id};
-                app.Criar(usuario.Id, pontoDemanda);
-                var pontoDemandaNovo = app.Obter(usuario.Id, pontoDemanda.Id);
-                Assert.IsTrue(pontoDemandaNovo.Id > 0);
-                Assert.IsTrue(pontoDemandaNovo.Listas.Any());
-            }
-        }
-
-        [Test]
         public void CriarPontoDemandaComLojasFavoritas()
         {
             using (new TransactionScope())

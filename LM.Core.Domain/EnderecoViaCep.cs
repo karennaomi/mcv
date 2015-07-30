@@ -5,7 +5,7 @@
         private readonly Endereco _endereco;
         public EnderecoViaCep()
         {
-            _endereco = new Endereco{Cidade = new Cidade {Uf = new Uf()}};
+            _endereco = new Endereco();
         }
         
         public string Cep
@@ -28,14 +28,14 @@
 
         public string Localidade
         {
-            get { return _endereco.Cidade.Nome; }
-            set { _endereco.Cidade.Nome = value; }
+            get { return _endereco.Cidade; }
+            set { _endereco.Cidade = value; }
         }
 
         public string Uf
         {
-            get { return _endereco.Cidade.Uf.Sigla; }
-            set { _endereco.Cidade.Uf.Sigla = value; }
+            get { return _endereco.Uf; }
+            set { _endereco.Uf = value; }
         }
 
         public Endereco ObterEndereco()

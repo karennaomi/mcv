@@ -27,11 +27,8 @@ namespace LM.Core.Domain
                 Numero = GetNumber(),
                 Bairro = GetComponentShortNameValue("neighborhood"),
                 Cep = cep.Length == 5 ? cep + "-000" : cep,
-                Cidade = new Cidade
-                {
-                    Nome = GetComponentShortNameValue("administrative_area_level_2"),
-                    Uf = new Uf { Sigla = GetComponentShortNameValue("administrative_area_level_1"), }
-                },
+                Cidade = GetComponentShortNameValue("administrative_area_level_2"),
+                Uf = GetComponentShortNameValue("administrative_area_level_1"),
                 Latitude = Geometry.Location.Lat,
                 Longitude = Geometry.Location.Lng,
             };

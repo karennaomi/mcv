@@ -15,8 +15,6 @@ namespace LM.Core.RepositorioEF
         public DbSet<Lista> Listas { get; set; }
         public DbSet<PedidoItem> PedidoItens { get; set; }
         public DbSet<Compra> Compras { get; set; }
-        public DbSet<Cidade> Cidades { get; set; }
-        public DbSet<Uf> Ufs { get; set; }
         public DbSet<CompraAtiva> ComprasAtivas { get; set; }
         public DbSet<TemplateMensagem> TemplatesMensagens { get; set; }
         public DbSet<Loja> Lojas { get; set; }
@@ -47,8 +45,6 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new GrupoDeIntegrantesConfig());
             modelBuilder.Configurations.Add(new IntegranteConfig());
             modelBuilder.Configurations.Add(new EnderecoConfig());
-            modelBuilder.Configurations.Add(new CidadeConfig());
-            modelBuilder.Configurations.Add(new UfConfig());
             modelBuilder.Configurations.Add(new CategoriaConfig());
             modelBuilder.Configurations.Add(new ProdutoConfig());
             modelBuilder.Configurations.Add(new ProdutoInfoConfig());

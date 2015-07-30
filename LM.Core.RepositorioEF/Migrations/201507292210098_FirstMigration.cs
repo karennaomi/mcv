@@ -43,28 +43,6 @@ namespace LM.Core.RepositorioEF.Migrations
                 .PrimaryKey(t => t.ID_IMAGEM);
             
             CreateTable(
-                "dbo.TB_CIDADE",
-                c => new
-                    {
-                        ID_CIDADE = c.Int(nullable: false, identity: true),
-                        NM_CIDADE = c.String(),
-                        ID_UF = c.Short(nullable: false),
-                    })
-                .PrimaryKey(t => t.ID_CIDADE)
-                .ForeignKey("dbo.TB_UF", t => t.ID_UF, cascadeDelete: true)
-                .Index(t => t.ID_UF);
-            
-            CreateTable(
-                "dbo.TB_UF",
-                c => new
-                    {
-                        ID_UF = c.Short(nullable: false, identity: true),
-                        SG_UF = c.String(),
-                        NM_UF = c.String(),
-                    })
-                .PrimaryKey(t => t.ID_UF);
-            
-            CreateTable(
                 "dbo.TB_Compra",
                 c => new
                     {
@@ -160,11 +138,8 @@ namespace LM.Core.RepositorioEF.Migrations
                         NR_ENDERECO_LONGITUDE = c.Decimal(nullable: false, precision: 20, scale: 15),
                         DT_INC = c.DateTime(),
                         DT_ALT = c.DateTime(),
-                        ID_CIDADE = c.Int(),
                     })
-                .PrimaryKey(t => t.ID_ENDERECO)
-                .ForeignKey("dbo.TB_CIDADE", t => t.ID_CIDADE)
-                .Index(t => t.ID_CIDADE);
+                .PrimaryKey(t => t.ID_ENDERECO);
             
             CreateTable(
                 "dbo.TB_LISTA_PRODUTO",
@@ -409,7 +384,7 @@ namespace LM.Core.RepositorioEF.Migrations
                     })
                 .PrimaryKey(t => t.ID_CompraAtiva)
                 .ForeignKey("dbo.TB_PONTO_REAL_DEMANDA", t => t.ID_Ponto_Real_Demanda, cascadeDelete: true)
-                .ForeignKey("dbo.TB_USUARIO", t => t.ID_Usuario, cascadeDelete: false)
+                .ForeignKey("dbo.TB_USUARIO", t => t.ID_Usuario)
                 .Index(t => t.ID_Ponto_Real_Demanda)
                 .Index(t => t.ID_Usuario);
             
@@ -484,17 +459,6 @@ namespace LM.Core.RepositorioEF.Migrations
                 .PrimaryKey(t => t.ID_FILA_PRODUTO)
                 .ForeignKey("dbo.TB_Fila", t => t.ID_FILA, cascadeDelete: true)
                 .Index(t => t.ID_FILA);
-            
-            CreateTable(
-                "dbo.TB_Token_Smv",
-                c => new
-                    {
-                        TOKEN_SMV = c.Guid(nullable: false),
-                        DT_INICIO = c.DateTime(nullable: false),
-                        DT_VALIDADE = c.DateTime(nullable: false),
-                        ID_USUARIO = c.Long(nullable: false),
-                    })
-                .PrimaryKey(t => t.TOKEN_SMV);
             
             CreateTable(
                 "dbo.TB_USUARIO_RECUPERAR_SENHA",
@@ -642,9 +606,7 @@ namespace LM.Core.RepositorioEF.Migrations
             DropForeignKey("dbo.TB_PRODUTO_CATEGORIA", "ID_PRODUTO", "dbo.TB_PRODUTO");
             DropForeignKey("dbo.TB_LISTA_PRODUTO_ITEM", "ID_PERIODO_CONSUMO", "dbo.TB_PERIODO_CONSUMO");
             DropForeignKey("dbo.TB_PONTO_REAL_DEMANDA", "ID_ENDERECO", "dbo.TB_ENDERECO");
-            DropForeignKey("dbo.TB_ENDERECO", "ID_CIDADE", "dbo.TB_CIDADE");
             DropForeignKey("dbo.TB_GRUPO_INTEGRANTE", "ID_INTEGRANTE", "dbo.TB_INTEGRANTE");
-            DropForeignKey("dbo.TB_CIDADE", "ID_UF", "dbo.TB_UF");
             DropForeignKey("dbo.TB_CATEGORIA", "ID_CATEGORIA_PAI", "dbo.TB_CATEGORIA");
             DropForeignKey("dbo.TB_Categoria_Imagem", "ID_IMAGEM", "dbo.TB_IMAGEM");
             DropForeignKey("dbo.TB_Categoria_Imagem", "ID_CATEGORIA", "dbo.TB_CATEGORIA");
@@ -682,7 +644,6 @@ namespace LM.Core.RepositorioEF.Migrations
             DropIndex("dbo.TB_LISTA_PRODUTO_ITEM", new[] { "ID_PRODUTO" });
             DropIndex("dbo.TB_LISTA_PRODUTO_ITEM", new[] { "ID_PERIODO_CONSUMO" });
             DropIndex("dbo.TB_LISTA_PRODUTO", new[] { "ID_PONTO_REAL_DEMANDA" });
-            DropIndex("dbo.TB_ENDERECO", new[] { "ID_CIDADE" });
             DropIndex("dbo.TB_PONTO_REAL_DEMANDA", new[] { "ID_USUARIO_CRIADOR" });
             DropIndex("dbo.TB_PONTO_REAL_DEMANDA", new[] { "ID_ENDERECO" });
             DropIndex("dbo.TB_GRUPO_INTEGRANTE", new[] { "ID_PONTO_REAL_DEMANDA" });
@@ -690,7 +651,6 @@ namespace LM.Core.RepositorioEF.Migrations
             DropIndex("dbo.TB_INTEGRANTE", new[] { "ID_USUARIO" });
             DropIndex("dbo.TB_Compra", new[] { "ID_PONTO_REAL_DEMANDA" });
             DropIndex("dbo.TB_Compra", new[] { "ID_INTEGRANTE" });
-            DropIndex("dbo.TB_CIDADE", new[] { "ID_UF" });
             DropIndex("dbo.TB_CATEGORIA", new[] { "ID_CATEGORIA_PAI" });
             DropTable("dbo.TB_Contrato_Usuario");
             DropTable("dbo.TB_Ponto_Real_Demanda_Loja");
@@ -700,7 +660,6 @@ namespace LM.Core.RepositorioEF.Migrations
             DropTable("dbo.TB_Categoria_Imagem");
             DropTable("dbo.TB_Mensagem");
             DropTable("dbo.TB_USUARIO_RECUPERAR_SENHA");
-            DropTable("dbo.TB_Token_Smv");
             DropTable("dbo.TB_Fila_Produto");
             DropTable("dbo.TB_Fila_Mensagem");
             DropTable("dbo.TB_Fila");
@@ -726,8 +685,6 @@ namespace LM.Core.RepositorioEF.Migrations
             DropTable("dbo.TB_GRUPO_INTEGRANTE");
             DropTable("dbo.TB_INTEGRANTE");
             DropTable("dbo.TB_Compra");
-            DropTable("dbo.TB_UF");
-            DropTable("dbo.TB_CIDADE");
             DropTable("dbo.TB_IMAGEM");
             DropTable("dbo.TB_CATEGORIA");
             DropTable("dbo.TB_Animal");

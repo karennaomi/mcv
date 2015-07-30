@@ -63,7 +63,8 @@ namespace LM.Core.Tests
         {
             return new Endereco
             {
-                Cidade = new Cidade {Nome = "São Paulo", Uf = new Uf{Sigla = "SP"}},
+                Cidade = "São Paulo", 
+                Uf = "SP",
                 Alias = "Casa de sap",
                 Logradouro = "Rua dos bobos",
                 Numero = 0,
@@ -305,15 +306,6 @@ namespace LM.Core.Tests
                 DataFimCompra = DateTime.Now,
                 DataInclusao = DateTime.Now,
                 Itens = new Collection<CompraItem>()
-            };
-        }
-
-        internal Cidade Cidade()
-        {
-            return new Cidade
-            {
-                Nome = "São Paulo",
-                Uf = new Uf { Nome = "São Paulo", Sigla = "SP"}
             };
         }
 

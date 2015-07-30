@@ -105,9 +105,6 @@ namespace LM.Core.Tests.Migrations
             compra.AdicionarItemSubstituto(_fakes.ListaCompraItem(lista.Itens.Skip(2).First()), _fakes.ListaCompraItem(lista.Itens.Skip(3).First()), "teste");
             context.Compras.Add(compra);
 
-            //Cidades
-            context.Cidades.Add(_fakes.Cidade());
-
             //Periodo
             context.Set<Periodo>().Add(_fakes.PeriodoEventual());
 

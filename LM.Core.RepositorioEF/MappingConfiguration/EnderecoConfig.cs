@@ -20,32 +20,8 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(e => e.Longitude).HasColumnName("NR_ENDERECO_LONGITUDE").HasColumnType("decimal").HasPrecision(20, 15);
             Property(e => e.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(e => e.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
-
-            HasOptional(e => e.Cidade).WithMany().Map(m => m.MapKey("ID_CIDADE"));
-        }
-    }
-
-    public class CidadeConfig : EntityTypeConfiguration<Cidade>
-    {
-        public CidadeConfig()
-        {
-            ToTable("TB_CIDADE");
-            HasKey(c => c.Id);
-            Property(e => e.Id).HasColumnName("ID_CIDADE");
-            Property(e => e.Nome).HasColumnName("NM_CIDADE");
-            HasRequired(e => e.Uf).WithMany().Map(m => m.MapKey("ID_UF"));
-        }
-    }
-
-    public class UfConfig : EntityTypeConfiguration<Uf>
-    {
-        public UfConfig()
-        {
-            ToTable("TB_UF");
-            HasKey(c => c.Id);
-            Property(e => e.Id).HasColumnName("ID_UF");
-            Property(e => e.Nome).HasColumnName("NM_UF");
-            Property(e => e.Sigla).HasColumnName("SG_UF");
+            Ignore(e => e.Cidade);
+            Ignore(e => e.Uf);
         }
     }
 }
