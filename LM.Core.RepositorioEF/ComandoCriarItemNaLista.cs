@@ -22,6 +22,7 @@ namespace LM.Core.RepositorioEF
             _novoItem.Produto = ChecarProduto(_novoItem.Produto, usuarioId);
             _novoItem.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == _novoItem.Periodo.Id);
             _novoItem.DataInclusao = DateTime.Now;
+            _novoItem.AtualizadoPor = _contexto.Usuarios.Find(usuarioId);
             _lista.Itens.Add(_novoItem);
             _contexto.SaveChanges();
             return _novoItem;

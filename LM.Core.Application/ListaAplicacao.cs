@@ -9,16 +9,16 @@ namespace LM.Core.Application
     public interface IListaAplicacao
     {
         Lista ObterListaPorPontoDemanda(long pontoDemandaId);
-        ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item);
-        void DesativarItem(long pontoDemandaId, long itemId);
         IList<Categoria> ListarSecoes(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItens(long pontoDemandaId);
         IEnumerable<ListaItem> ListarItensPorSecao(long pontoDemandaId, int secaoId);
-        void AtualizarItem(long pontoDemandaId, long integranteId, ListaItem item);
-        void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade);
-        void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade);
-        void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId);
-        void AtualizarEhEssencialDoItem(long pontoDemandaId, long itemId, bool ehEssencial);
+        ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item);
+        void DesativarItem(long usuarioId, long pontoDemandaId, long itemId);
+        void AtualizarItem(long usuarioId, long pontoDemandaId, ListaItem item);
+        void AtualizarConsumoDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarEstoqueDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade);
+        void AtualizarPeriodoDoItem(long usuarioId, long pontoDemandaId, long itemId, int periodoId);
+        void AtualizarEhEssencialDoItem(long usuarioId, long pontoDemandaId, long itemId, bool ehEssencial);
         IEnumerable<ListaItem> BuscarItens(long pontoDemandaId, string termo);
         IEnumerable<Periodo> PeriodosDeConsumo();
     }
@@ -38,22 +38,6 @@ namespace LM.Core.Application
             return lista;
         }
 
-        public ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item)
-        {
-            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            if (lista.JaExisteProdutoNaLista(item)) throw new ApplicationException("Este produto já existe na lista.");
-            _repositorio.AdicionarItem(lista, item, usuarioId);
-            return item;
-        }
-
-        public void DesativarItem(long pontoDemandaId, long itemId)
-        {
-            var item = ObterItem(pontoDemandaId, itemId);
-            item.DataAlteracao = DateTime.Now;
-            item.Status = "I";
-            _repositorio.Salvar();
-        }
-
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
@@ -70,49 +54,68 @@ namespace LM.Core.Application
             return ListarItens(pontoDemandaId).DaSecao(secaoId);
         }
 
-        public void AtualizarItem(long pontoDemandaId, long integranteId, ListaItem item)
+        public ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item)
+        {
+            var lista = ObterListaPorPontoDemanda(pontoDemandaId);
+            if (lista.JaExisteProdutoNaLista(item)) throw new ApplicationException("Este produto já existe na lista.");
+            _repositorio.AdicionarItem(lista, item, usuarioId);
+            return item;
+        }
+
+        public void DesativarItem(long usuarioId, long pontoDemandaId, long itemId)
+        {
+            var item = ObterItem(pontoDemandaId, itemId);
+            item.DataAlteracao = DateTime.Now;
+            item.Status = "I";
+            _repositorio.Salvar();
+        }
+
+        public void AtualizarItem(long usuarioId, long pontoDemandaId, ListaItem item)
         {
             var itemToUpdate = ObterItem(pontoDemandaId, item.Id);
             itemToUpdate.QuantidadeConsumo = item.QuantidadeConsumo;
             itemToUpdate.QuantidadeEstoque = item.QuantidadeEstoque;
             itemToUpdate.EhEssencial = item.EhEssencial;
-            _repositorio.AtualizarPeriodoDoItem(itemToUpdate, item.Periodo.Id);
             itemToUpdate.DataAlteracao = DateTime.Now;
-            _repositorio.LancarEstoque(pontoDemandaId, integranteId, itemToUpdate.Produto.Id, itemToUpdate.QuantidadeEstoque);
+            _repositorio.AtualizarItem(itemToUpdate, item.Periodo.Id, usuarioId);
+            _repositorio.LancarEstoque(pontoDemandaId, usuarioId, itemToUpdate.Produto.Id, itemToUpdate.QuantidadeEstoque);
             _repositorio.Salvar();
         }
 
-        public void AtualizarConsumoDoItem(long pontoDemandaId, long itemId, decimal quantidade)
+        public void AtualizarConsumoDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade)
         {
-            var item = ObterItem(pontoDemandaId, itemId);
-            item.QuantidadeConsumo = quantidade;
-            item.DataAlteracao = DateTime.Now;
+            var itemToUpdate = ObterItem(pontoDemandaId, itemId);
+            itemToUpdate.QuantidadeConsumo = quantidade;
+            itemToUpdate.DataAlteracao = DateTime.Now;
+            _repositorio.AtualizarItem(itemToUpdate, itemToUpdate.Periodo.Id, usuarioId);
             _repositorio.Salvar();
         }
 
-        public void AtualizarEstoqueDoItem(long pontoDemandaId, long integranteId, long itemId, decimal quantidade)
+        public void AtualizarEstoqueDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade)
         {
-            var item = ObterItem(pontoDemandaId, itemId);
-            item.QuantidadeEstoque = quantidade;
-            item.DataAlteracao = DateTime.Now;
-            _repositorio.LancarEstoque(pontoDemandaId, integranteId, item.Produto.Id, quantidade);
+            var itemToUpdate = ObterItem(pontoDemandaId, itemId);
+            itemToUpdate.QuantidadeEstoque = quantidade;
+            itemToUpdate.DataAlteracao = DateTime.Now;
+            _repositorio.AtualizarItem(itemToUpdate, itemToUpdate.Periodo.Id, usuarioId);
+            _repositorio.LancarEstoque(pontoDemandaId, usuarioId, itemToUpdate.Produto.Id, quantidade);
             _repositorio.Salvar();
         }
 
-        public void AtualizarPeriodoDoItem(long pontoDemandaId, long itemId, int periodoId)
+        public void AtualizarPeriodoDoItem(long usuarioId, long pontoDemandaId, long itemId, int periodoId)
         {
-            var item = ObterItem(pontoDemandaId, itemId);
-            if (item.Periodo.Id == periodoId) return;
-            item.DataAlteracao = DateTime.Now;
-            _repositorio.AtualizarPeriodoDoItem(item, periodoId);
+            var itemToUpdate = ObterItem(pontoDemandaId, itemId);
+            if (itemToUpdate.Periodo.Id == periodoId) return;
+            itemToUpdate.DataAlteracao = DateTime.Now;
+            _repositorio.AtualizarItem(itemToUpdate, periodoId, usuarioId);
             _repositorio.Salvar();
         }
 
-        public void AtualizarEhEssencialDoItem(long pontoDemandaId, long itemId, bool ehEssencial)
+        public void AtualizarEhEssencialDoItem(long usuarioId, long pontoDemandaId, long itemId, bool ehEssencial)
         {
-            var item = ObterItem(pontoDemandaId, itemId);
-            item.EhEssencial = ehEssencial;
-            item.DataAlteracao = DateTime.Now;
+            var itemToUpdate = ObterItem(pontoDemandaId, itemId);
+            itemToUpdate.EhEssencial = ehEssencial;
+            itemToUpdate.DataAlteracao = DateTime.Now;
+            _repositorio.AtualizarItem(itemToUpdate, itemToUpdate.Periodo.Id, usuarioId);
             _repositorio.Salvar();
         }
 

@@ -31,9 +31,10 @@ namespace LM.Core.RepositorioEF
             return new ComandoCriarItemNaLista(_contexto, lista, novoItem).Executar(usuarioId);
         }
 
-        public void AtualizarPeriodoDoItem(ListaItem item, int periodoId)
+        public void AtualizarItem(ListaItem item, int periodoId, long usuarioId)
         {
             item.Periodo = _contexto.Set<Periodo>().Single(p => p.Id == periodoId);
+            item.AtualizadoPor = _contexto.Usuarios.Find(usuarioId);
         }
 
         public IEnumerable<ListaItem> BuscarItens(Lista lista, long pontoDemandaId, string termo)
@@ -48,9 +49,10 @@ namespace LM.Core.RepositorioEF
             _contexto.SaveChanges();
         }
 
-        public void LancarEstoque(long pontoDemandaId, long integranteId, int? produtoId, decimal? quantidade)
+        public void LancarEstoque(long pontoDemandaId, long usuarioId, int? produtoId, decimal? quantidade)
         {
-            _repoLancamentoEstoque.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, integranteId);
+            var usuario = _contexto.Usuarios.Find(usuarioId);
+            _repoLancamentoEstoque.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, usuario.Integrante.Id);
         }
 
         public IEnumerable<Periodo> PeriodosDeConsumo()

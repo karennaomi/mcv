@@ -89,7 +89,7 @@ namespace LM.Core.Tests
             
             using (new TransactionScope())
             {
-                listaApp.DesativarItem(_pontoDemanda.Id, idItem);
+                listaApp.DesativarItem(_usuarioId, _pontoDemanda.Id, idItem);
                 Assert.IsTrue(listaApp.ListarItens(_pontoDemanda.Id).Count() == totalDeItems - 1);
             }
 
@@ -120,7 +120,7 @@ namespace LM.Core.Tests
             {
                 var listaApp = ObterListaApp();
                 var item = _pontoDemanda.Listas.First().Itens.First();
-                listaApp.AtualizarConsumoDoItem(_pontoDemanda.Id, item.Id, 8);
+                listaApp.AtualizarConsumoDoItem(_usuarioId, _pontoDemanda.Id, item.Id, 8);
                 Assert.AreEqual(8, listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == item.Id).QuantidadeConsumo);
             }
         }
@@ -130,7 +130,7 @@ namespace LM.Core.Tests
         {
             var listaApp = ObterListaApp();
             var item = _pontoDemanda.Listas.First().Itens.First();
-            listaApp.AtualizarPeriodoDoItem(_pontoDemanda.Id, item.Id, 3);
+            listaApp.AtualizarPeriodoDoItem(_usuarioId, _pontoDemanda.Id, item.Id, 3);
             Assert.AreEqual(3, listaApp.ListarItens(_pontoDemanda.Id).First(i => i.Id == item.Id).Periodo.Id);
         }
 
