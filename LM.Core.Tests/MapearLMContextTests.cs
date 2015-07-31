@@ -83,6 +83,7 @@ namespace LM.Core.Tests
             Assert.IsNotNull(lista.PontoDemanda);
             Assert.IsNotNull(lista.Itens.First());
             Assert.IsNotNull(lista.Itens.First().Periodo);
+            Assert.IsNotNull(lista.Itens.First().AtualizadoPor);
         }
 
         [Test]

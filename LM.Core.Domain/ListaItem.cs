@@ -27,6 +27,7 @@ namespace LM.Core.Domain
         public bool EhEssencial { get; set; }
         public virtual Lista Lista { get; set; }
         public virtual Periodo Periodo { get; set; }
+        public virtual Usuario AtualizadoPor { get; set; }
 
         public PontoDemanda ObterPontoDemanda()
         {

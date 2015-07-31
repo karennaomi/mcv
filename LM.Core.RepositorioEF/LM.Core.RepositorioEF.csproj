@@ -83,6 +83,10 @@
     <Compile Include="Migrations\201507301513473_AddCidadeAndUfToEndereco.Designer.cs">
       <DependentUpon>201507301513473_AddCidadeAndUfToEndereco.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507311459054_AddUsuarioToListaItem.cs" />
+    <Compile Include="Migrations\201507311459054_AddUsuarioToListaItem.Designer.cs">
+      <DependentUpon>201507311459054_AddUsuarioToListaItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedures.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
     <Compile Include="MappingConfiguration\ContatoConfig.cs" />
@@ -161,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507301513473_AddCidadeAndUfToEndereco.resx">
       <DependentUpon>201507301513473_AddCidadeAndUfToEndereco.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507311459054_AddUsuarioToListaItem.resx">
+      <DependentUpon>201507311459054_AddUsuarioToListaItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

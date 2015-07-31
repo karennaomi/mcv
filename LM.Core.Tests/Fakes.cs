@@ -129,7 +129,7 @@ namespace LM.Core.Tests
             };
         }
 
-        internal ListaItem ListaItem(bool ehSugestaoDeCompra = false, string categoria = "")
+        internal ListaItem ListaItem(bool ehSugestaoDeCompra = false, string categoria = "", Usuario usuario = null)
         {
             return new ListaItem
             {
@@ -137,7 +137,8 @@ namespace LM.Core.Tests
                 EhSugestaoDeCompra = ehSugestaoDeCompra,
                 QuantidadeConsumo = 5,
                 QuantidadeEstoque = 3,
-                Periodo = new Periodo { Id = 1 }
+                Periodo = new Periodo { Id = 1 },
+                AtualizadoPor = usuario ?? Usuario()
             };
         }
 
@@ -201,7 +202,7 @@ namespace LM.Core.Tests
             };
         }
 
-        internal Lista Lista()
+        internal Lista Lista(Usuario usuario = null)
         {
             return new Lista
             {
@@ -209,7 +210,7 @@ namespace LM.Core.Tests
                 Nome = "Lista de teste",
                 Itens = new Collection<ListaItem>
                 {
-                    ListaItem(true, "B"), ListaItem(true, "A"), ListaItem(false, "C"), ListaItem(false, "D")
+                    ListaItem(true, "B", usuario), ListaItem(true, "A", usuario), ListaItem(false, "C", usuario), ListaItem(false, "D", usuario)
                 }
             };
         }

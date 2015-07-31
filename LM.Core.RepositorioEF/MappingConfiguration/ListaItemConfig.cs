@@ -23,6 +23,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
 
             HasRequired(i => i.Produto).WithMany().Map(m => m.MapKey("ID_PRODUTO"));
             HasRequired(i => i.Periodo).WithMany().Map(m => m.MapKey("ID_PERIODO_CONSUMO"));
+            HasOptional(i => i.AtualizadoPor).WithMany().Map(m => m.MapKey("ID_USUARIO")).WillCascadeOnDelete(false);
         }
     }
 }

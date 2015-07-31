@@ -57,7 +57,7 @@ namespace LM.Core.Tests.Migrations
             context.ComprasAtivas.Add(compraAtiva);
 
             //Lista
-            var lista = _fakes.Lista();
+            var lista = _fakes.Lista(pontoDemanda.UsuarioCriador);
             lista.PontoDemanda = pontoDemanda;
             context.Listas.Add(lista);
             context.SaveChanges();
