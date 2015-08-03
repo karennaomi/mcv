@@ -31,7 +31,7 @@ namespace LM.Core.Application
         {
             IEnumerable<IItem> pedidos = _appPedido.ListarItensPorStatus(pontoDemandaId, StatusPedido.Pendente);
             IEnumerable<IItem> itens = _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra);
-            return pedidos.Union(itens).OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome);
+            return pedidos.Union(itens);
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
