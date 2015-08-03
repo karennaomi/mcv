@@ -13,7 +13,6 @@ namespace LM.Core.Domain
         public string Nome { get; set; }
         public string LocalizadorId { get; set; }
         public string LocalizadorOrigem { get; set; }
-        public string Telefone { get; set; }
         public string Proximidade { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
@@ -32,6 +31,7 @@ namespace LM.Core.Domain
         public string RazaoSocial { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
+        public string Telefone { get; set; }
 
         public virtual Endereco Endereco { get; set; }
     }

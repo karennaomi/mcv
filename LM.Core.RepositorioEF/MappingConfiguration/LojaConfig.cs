@@ -15,7 +15,6 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(l => l.LocalizadorOrigem).HasColumnName("TX_ORIGEM");
             Property(l => l.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(l => l.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
-            Ignore(l => l.Telefone);
             Ignore(l => l.Proximidade);
 
             HasRequired(p => p.Info).WithRequiredPrincipal();
@@ -30,6 +29,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             HasKey(l => l.Id);
             Property(l => l.Id).HasColumnName("ID_LOJA");
             Property(l => l.RazaoSocial).HasColumnName("NM_RAZAO_SOCIAL");
+            Property(l => l.Telefone).HasColumnName("TX_TELEFONE_LOJA");
             Property(l => l.DataInclusao).HasColumnName("DT_INC").IsOptional();
             Property(l => l.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
 

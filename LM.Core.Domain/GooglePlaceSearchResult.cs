@@ -23,10 +23,10 @@ namespace LM.Core.Domain
                 LocalizadorId = PlaceId,
                 LocalizadorOrigem = "google",
                 Nome = Name,
-                Telefone = FormattedPhoneNumber,
                 Proximidade = Vicinity,
                 Info = new LojaInfo
                 {
+                    Telefone = FormattedPhoneNumber,
                     Endereco = CreateEndereco()
                 }
             };
