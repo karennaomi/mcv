@@ -48,7 +48,7 @@ function Publish($tag) {
 	TriggerBuildWithTag $tag
 }
 
-if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d)+') {
+if($latestTag -match 'v(?<major>\d+)\.?(?<minor>\d+)\.(?<patch>\d+)') {
 
 	$majorCurrent = [convert]::ToInt32($matches['major'])
 	$minorCurrent = [convert]::ToInt32($matches['minor'])
