@@ -87,6 +87,10 @@
     <Compile Include="Migrations\201507311459054_AddUsuarioToListaItem.Designer.cs">
       <DependentUpon>201507311459054_AddUsuarioToListaItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508041818429_MoveTelefoneFromLojaToLojaMasterData.cs" />
+    <Compile Include="Migrations\201508041818429_MoveTelefoneFromLojaToLojaMasterData.Designer.cs">
+      <DependentUpon>201508041818429_MoveTelefoneFromLojaToLojaMasterData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedures.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
     <Compile Include="MappingConfiguration\ContatoConfig.cs" />
@@ -168,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507311459054_AddUsuarioToListaItem.resx">
       <DependentUpon>201507311459054_AddUsuarioToListaItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508041818429_MoveTelefoneFromLojaToLojaMasterData.resx">
+      <DependentUpon>201508041818429_MoveTelefoneFromLojaToLojaMasterData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
