@@ -22,7 +22,7 @@ namespace LM.Core.Application
 
         public static IEnumerable<T> DaSecao<T>(this IEnumerable<T> itens, int secaoId) where T : IItem
         {
-            return itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == secaoId));
+            return secaoId == 0 ? itens : itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == secaoId));
         }
 
         public static IEnumerable<PedidoItem> NaoExluidoPeloUsuario(this IEnumerable<PedidoItem> itens)
