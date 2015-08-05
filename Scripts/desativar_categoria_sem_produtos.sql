@@ -1,0 +1,2 @@
+update TB_Categoria set  FL_CATEGORIA_ATIVA = 0
+where ID_CATEGORIA in (select ID_CATEGORIA from TB_Categoria where ID_CATEGORIA not in (select ID_CATEGORIA from TB_Produto_Categoria) and CD_CATEGORIA_NIVEL != 1)
