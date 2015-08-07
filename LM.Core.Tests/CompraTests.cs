@@ -26,6 +26,15 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void PodeCriarCompraComItemDuplicadoDesdeQueUmSejaListaItemEOutroPedidoItem()
+        {
+            var compra = _fakes.CompraNotSoFake();
+            var item = compra.Itens.OfType<ListaCompraItem>().First();
+            compra.Itens.Add(new PedidoCompraItem { Item = new PedidoItem { Id = 123 }, ProdutoId = item.ProdutoId, Quantidade = 1, Valor = 1.5M, Status = StatusCompra.NaoEncontrado });
+            Assert.DoesNotThrow(compra.Validar);
+        }
+
+        [Test]
         public void CompraDevePossuirItens()
         {
             var compra = _fakes.CompraNotSoFake();
