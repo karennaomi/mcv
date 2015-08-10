@@ -7,15 +7,35 @@ namespace LM.Core.Domain
 {
     public class Produto
     {
-        public Produto() : this(0)
-        { }
+        public Produto() { }
 
-        public Produto(int categoriaId)
+        public Produto(string nome, string ean, string origem, int categoriaId, string imagemPath = "")
         {
             DataInclusao = DateTime.Now;
             Ativo = true;
-            Origem = "usuario";
-            if(categoriaId > 0) Categorias = new Collection<Categoria> {new Categoria {Id = categoriaId}};
+            Ean = ean;
+            Origem = origem;
+            DefinirNome(nome);
+            DefinirImagem(imagemPath);
+            DefinirCategoria(categoriaId);
+        }
+
+        private void DefinirNome(string nome)
+        {
+            if(string.IsNullOrEmpty(nome)) throw new ApplicationException("O produto deve possuir um nome.");
+            Info = new ProdutoInfo {Nome = nome};
+        }
+
+        private void DefinirImagem(string imagemPath)
+        {
+            if (Imagens == null) Imagens = new Collection<Imagem>();
+            Imagens.Add(string.IsNullOrEmpty(imagemPath) ? new Imagem { Id = 1 } : new Imagem { Interface = ImagemInterface.All, Resolucao = ImagemResolucao.NotAssigned, Path = imagemPath });
+        }
+
+        private void DefinirCategoria(int categoriaId)
+        {
+            if (categoriaId <= 0) categoriaId = 3;
+            Categorias = new Collection<Categoria> { new Categoria { Id = categoriaId } };
         }
 
         public int Id { get; set; }

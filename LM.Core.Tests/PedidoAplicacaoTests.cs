@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
@@ -42,12 +43,30 @@ namespace LM.Core.Tests
             item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
             Assert.IsTrue(item.Id > 0);
         }
-        
+
+        [Test]
+        public void AdiconarUmItemEmUmPedidoComProdutoNovo()
+        {
+            var pedidoApp = ObterPedidoApp(new PedidoEF());
+
+            var item = new PedidoItem
+            {
+                QuantidadeSugestaoCompra = 5,
+                Produto = new Produto("Teste", "1234567890123", "app_teste", 2),
+                Integrante = _contexto.Integrantes.First()
+            };
+
+            item = pedidoApp.AdicionarItem(_pontoDemandaId, item);
+            Assert.IsTrue(item.Id > 0);
+            Assert.IsTrue(item.Produto.Id > 0);
+            Assert.IsTrue(item.Produto.ImagemPrincipal().Id == 1);
+        }
+
         [Test]
         public void NaoPodeAdiconarUmItemRepetidoEmUmPedido()
         {
             var pedidoApp = ObterPedidoApp(new PedidoEF());
-            var produto = _contexto.Produtos.OrderByDescending(p => p.Id).First(); //O teste de cima adiciona um produto, então pegar outro pra testar
+            var produto = _contexto.Produtos.OrderByDescending(p => p.Id).Skip(1).First(); //O teste de cima adiciona um produto, então pegar outro pra testar
             var integrante = _contexto.Integrantes.First();
             var item1 = new PedidoItem
             {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data.Entity;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace LM.Core.RepositorioEF
         public Produto Criar(Produto produto, long usuarioId)
         {
             RelacionaCategorias(produto);
+            RelacionaImagens(produto);
             RelacionaPontosDemanda(produto, usuarioId);
             CriarFilaProcessamentoProduto(produto);
             produto = _contexto.Produtos.Add(produto);
@@ -39,6 +41,14 @@ namespace LM.Core.RepositorioEF
             foreach (var categoria in categorias)
             {
                 produto.Categorias.Add(_contexto.Categorias.Single(c => c.Id == categoria.Id));
+            }
+        }
+
+        private void RelacionaImagens(Produto produto)
+        {
+            foreach (var imagem in produto.Imagens.Where(i => i.Id > 0))
+            {
+                _contexto.Entry(imagem).State = EntityState.Unchanged;
             }
         }
 
