@@ -1,4 +1,6 @@
-﻿using LM.Core.Domain;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
@@ -21,6 +23,8 @@ namespace LM.Core.Application
 
         public Produto Criar(Produto produto, long usuarioId)
         {
+            if(produto.Categorias == null) produto.Categorias = new Collection<Categoria>();
+            if (!produto.Categorias.Any()) produto.Categorias.Add(new Categoria { Id = 3 });
             produto = _repositorio.Criar(produto, usuarioId);
             _repositorio.Salvar();
             return produto;
