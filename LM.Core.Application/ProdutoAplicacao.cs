@@ -37,7 +37,7 @@ namespace LM.Core.Application
 
         public IEnumerable<Produto> Buscar(long pontoDemandaId, string termo)
         {
-            return _repositorio.Buscar(termo).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId);
+            return _repositorio.Buscar(termo).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId).OrdenadoPorSecao();
         }
     }
 }

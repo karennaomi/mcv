@@ -15,6 +15,11 @@ namespace LM.Core.Application
                     .ToList();
         }
 
+        public static IOrderedEnumerable<Produto> OrdenadoPorSecao(this IEnumerable<Produto> produtos)
+        {
+            return produtos.OrderBy(p => p.Categorias.First().CategoriaPai.Nome).ThenBy(p => p.Categorias.First().Nome);
+        }
+
         public static IOrderedEnumerable<T> OrdenadoPorSecao<T>(this IEnumerable<T> itens) where T : IItem
         {
             return itens.OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome).ThenBy(i => i.Produto.Categorias.First().Nome);
