@@ -20,11 +20,15 @@ CREATE TABLE [dbo].[EnderecoCorreios](
 	[Complemento] [varchar](500) NULL,
 	[Nome] [varchar](500) NULL
 ) ON [PRIMARY]
-
 GO
 
 SET ANSI_PADDING OFF
 GO
+
+select * from [EnderecoCorreios]
+truncate table [EnderecoCorreios]
+
+ALTER TABLE [EnderecoCorreios] DROP CONSTRAINT PK_CEP
 
 insert into [EnderecoCorreios] 
 select log_logradouro.ufe_sg, log_localidade.loc_no,  log_bairro.bai_no, log_logradouro.tlo_tx+' ' + log_logradouro.log_no as log_no, log_logradouro.cep,  log_logradouro.log_complemento,'' as nome
@@ -51,8 +55,8 @@ select  log_unid_oper.ufe_sg, log_localidade.loc_no, log_bairro.bai_no as  bai_n
 from log_unid_oper,  log_localidade, log_bairro
 where  log_unid_oper.loc_nu=log_localidade.loc_nu and  log_unid_oper.bai_nu = log_bairro.bai_nu and log_unid_oper.cep != '';
 
-delete from [EnderecoCorreios] where Nome = 'UD Barra do Garças'
-
 select Cep, count(Cep) from [EnderecoCorreios] group by Cep having count(Cep) > 1
+select * from [EnderecoCorreios] where Cep = '78600971' --resultado da query acima
+delete from [EnderecoCorreios] where Nome = 'UD Barra do Garças' --remove um dos repetidos
 
 ALTER TABLE [EnderecoCorreios] ADD CONSTRAINT PK_CEP PRIMARY KEY CLUSTERED (Cep);
