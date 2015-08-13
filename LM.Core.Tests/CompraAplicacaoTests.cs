@@ -66,7 +66,7 @@ namespace LM.Core.Tests
                 var compraItemOriginal = new ListaCompraItem { Item = item1, ProdutoId = item1.Produto.Id, Quantidade = 2, Valor = 2.5M };
                 var compraItemSubstituto = new ListaCompraItem { Item = item2, ProdutoId = item2.Produto.Id, Quantidade = 1, Valor = 1, };
 
-                compra.AdicionarItemSubstituto(compraItemOriginal, compraItemSubstituto, "teste");
+                compra.AdicionarItemSubstituto(compraItemOriginal, compraItemSubstituto, _fakes.MotivosSubstituicao().First());
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
                 Assert.AreEqual(2, compra.Itens.Count);

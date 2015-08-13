@@ -96,6 +96,7 @@
       <DependentUpon>LMResource.resx</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="MotivoSubstituicao.cs" />
     <Compile Include="PasswordHash.cs" />
     <Compile Include="PedidoItem.cs" />
     <Compile Include="CustomException\IntegranteNaoPertenceAPontoDemandaException.cs" />

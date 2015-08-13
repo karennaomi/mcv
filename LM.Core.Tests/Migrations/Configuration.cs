@@ -94,6 +94,9 @@ namespace LM.Core.Tests.Migrations
             //Contatos
             context.Contatos.Add(_fakes.Contato());
 
+            //Motivo Substituicao
+            _fakes.MotivosSubstituicao().ToList().ForEach(m => context.MotivosSubstituicao.Add(m));
+
             //Compras
             var compra = _fakes.Compra();
             compra.Integrante = usuario.Integrante;
@@ -102,7 +105,7 @@ namespace LM.Core.Tests.Migrations
             compra.Itens.Add(_fakes.ListaCompraItem(lista.Itens.First()));
             compra.Itens.Add(_fakes.ListaCompraItem(lista.Itens.Skip(1).First()));
             compra.Itens.Add(_fakes.PedidoCompraItem(pedidoItem));
-            compra.AdicionarItemSubstituto(_fakes.ListaCompraItem(lista.Itens.Skip(2).First()), _fakes.ListaCompraItem(lista.Itens.Skip(3).First()), "teste");
+            compra.AdicionarItemSubstituto(_fakes.ListaCompraItem(lista.Itens.Skip(2).First()), _fakes.ListaCompraItem(lista.Itens.Skip(3).First()), context.MotivosSubstituicao.Local.First());
             context.Compras.Add(compra);
 
             //Periodo

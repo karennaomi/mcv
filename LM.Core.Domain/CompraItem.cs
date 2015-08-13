@@ -60,7 +60,7 @@ namespace LM.Core.Domain
 
         public long SubstitutoId { get; set; }
         public virtual CompraItem Original { get; set; }
-        public string Motivo { get; set; }
+        public MotivoSubstituicao Motivo { get; set; }
         public DateTime? DataInclusao { get; set; }
     }
 }

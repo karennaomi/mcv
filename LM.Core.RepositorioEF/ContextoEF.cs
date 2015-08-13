@@ -24,6 +24,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<Contrato> Contratos { get; set; }
         public DbSet<Animal> Animais { get; set; }
         public DbSet<Contato> Contatos { get; set; }
+        public DbSet<MotivoSubstituicao> MotivosSubstituicao { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -77,6 +78,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new AnimalConfig());
             modelBuilder.Configurations.Add(new ProdutoPrecoConfig());
             modelBuilder.Configurations.Add(new ContatoConfig());
+            modelBuilder.Configurations.Add(new MotivoSubstituicaoConfig());
         }
     }
 }

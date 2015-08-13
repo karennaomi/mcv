@@ -195,19 +195,11 @@ namespace LM.Core.Tests
             Assert.IsNotNull(compra.Itens.First(i => i.ItemSubstituto != null).ItemSubstituto.Original);
         }
 
-        //[Test]
-        //public void MapearCidades()
-        //{
-        //    var cidade = _contexto.Cidades.First();
-        //    Assert.IsNotNull(cidade.Uf);
-        //}
-
-        //[Test]
-        //public void MapearUfs()
-        //{
-        //    var ufs = _contexto.Ufs;
-        //    Assert.IsNotNull(ufs.First());
-        //}
+        [Test]
+        public void MapearMotivosSubstituicao()
+        {
+            var motivos = _contexto.MotivosSubstituicao;
+            Assert.IsNotNull(motivos.First());
+        }
     }
 }
-

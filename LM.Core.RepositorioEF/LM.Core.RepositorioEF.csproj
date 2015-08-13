@@ -75,6 +75,7 @@
     <Compile Include="ComandoAtualizarPontoDemanda.cs" />
     <Compile Include="ContextoCorreiosEF.cs" />
     <Compile Include="CorreiosEF.cs" />
+    <Compile Include="MappingConfiguration\MotivoSubstituicaoConfig.cs" />
     <Compile Include="Migrations\201507292210098_FirstMigration.cs" />
     <Compile Include="Migrations\201507292210098_FirstMigration.Designer.cs">
       <DependentUpon>201507292210098_FirstMigration.cs</DependentUpon>

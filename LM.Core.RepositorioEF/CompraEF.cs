@@ -59,6 +59,11 @@ namespace LM.Core.RepositorioEF
             }
         }
 
+        public IEnumerable<MotivoSubstituicao> MotivosSubstituicao()
+        {
+            return _contexto.MotivosSubstituicao;
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();

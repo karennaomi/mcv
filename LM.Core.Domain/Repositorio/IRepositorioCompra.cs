@@ -10,6 +10,7 @@ namespace LM.Core.Domain.Repositorio
         void LancarEstoque(Compra compra);
         void PreencherProdutoId(IEnumerable<CompraItem> itens);
         void PreencheTabelaRelacionamentoCompraPedido(IEnumerable<PedidoCompraItem> itens);
+        IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
         void Salvar();
     }
 }

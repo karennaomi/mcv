@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using LM.Core.Domain;
 using System;
+using NUnit.Framework.Constraints;
 
 namespace LM.Core.Tests
 {
@@ -313,6 +314,14 @@ namespace LM.Core.Tests
         internal Periodo PeriodoEventual()
         {
             return new Periodo{ Nome = "Eventual", Id = 1};
+        }
+
+        internal IList<MotivoSubstituicao> MotivosSubstituicao()
+        {
+            return new List<MotivoSubstituicao> {
+                new MotivoSubstituicao { Id = 1, Motivo = "Não encontrei", Ativo = true },
+                new MotivoSubstituicao { Id = 2, Motivo = "Preço", Ativo = true },
+            };
         }
     }
 }

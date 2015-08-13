@@ -25,7 +25,7 @@ namespace LM.Core.Domain
         public virtual Integrante Integrante { get; set; }
         public virtual ICollection<CompraItem> Itens { get; set; }
 
-        public void AdicionarItemSubstituto(CompraItem itemOriginal, CompraItem itemSubstituto, string motivo)
+        public void AdicionarItemSubstituto(CompraItem itemOriginal, CompraItem itemSubstituto, MotivoSubstituicao motivo)
         {
             itemSubstituto.Status = StatusCompra.Comprado;
             itemOriginal.Status = StatusCompra.ItemSubstituido;

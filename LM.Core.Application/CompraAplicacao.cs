@@ -11,6 +11,7 @@ namespace LM.Core.Application
         IEnumerable<IItem> ListarSugestao(long pontoDemandaId);
         Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
+        IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
     }
 
     public class CompraAplicacao : ICompraAplicacao
@@ -55,6 +56,11 @@ namespace LM.Core.Application
             _compraRepo.Salvar();
             _compraRepo.PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
             return compra;
+        }
+
+        public IEnumerable<MotivoSubstituicao> MotivosSubstituicao()
+        {
+            return _compraRepo.MotivosSubstituicao();
         }
 
         private static void AtualizarStatusItensPedido(IEnumerable<PedidoCompraItem> itens)

@@ -10,9 +10,9 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             ToTable("TB_Compra_Item_Substituto");
             HasKey(i => i.SubstitutoId);
             Property(i => i.SubstitutoId).HasColumnName("ID_COMPRA_ITEM_SUBSTITUTO");
-            Property(i => i.Motivo).HasColumnName("TX_MOTIVO");
             Property(i => i.DataInclusao).HasColumnName("DT_INC").IsOptional();
 
+            HasRequired(i => i.Motivo).WithMany().Map(m => m.MapKey("ID_MOTIVO"));
             HasRequired(i => i.Original).WithOptional().Map(m => m.MapKey("ID_COMPRA_ITEM_PRINCIPAL"));
         }
     }
