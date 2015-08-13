@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Collections.ObjectModel;
+using LM.Core.Domain;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -18,9 +19,8 @@ namespace LM.Core.Tests
         [Test]
         public void NaoPodeCriarCompraComItemDuplicado()
         {
-            var compra = _fakes.CompraNotSoFake();
-            var item = compra.Itens.OfType<ListaCompraItem>().First();
-            compra.Itens.Add(new ListaCompraItem { Item = new ListaItem { Id = item.Id }, ProdutoId = item.ProdutoId, Quantidade = 1, Valor = 1.5M, Status = StatusCompra.NaoEncontrado });
+            var compra = GetCompra();
+            compra.Itens.Add(new ListaCompraItem {ProdutoId = 666});
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("Existem itens duplicados na sua compra.", ex.Message);
         }
@@ -28,17 +28,16 @@ namespace LM.Core.Tests
         [Test]
         public void PodeCriarCompraComItemDuplicadoDesdeQueUmSejaListaItemEOutroPedidoItem()
         {
-            var compra = _fakes.CompraNotSoFake();
-            var item = compra.Itens.OfType<ListaCompraItem>().First();
-            compra.Itens.Add(new PedidoCompraItem { Item = new PedidoItem { Id = 123 }, ProdutoId = item.ProdutoId, Quantidade = 1, Valor = 1.5M, Status = StatusCompra.NaoEncontrado });
+            var compra = GetCompra();
+            compra.Itens.Add(new PedidoCompraItem {ProdutoId = 666});
             Assert.DoesNotThrow(compra.Validar);
         }
 
         [Test]
         public void CompraDevePossuirItens()
         {
-            var compra = _fakes.CompraNotSoFake();
-            compra.Itens = null;
+            var compra = GetCompra();
+            compra.Itens = new Collection<CompraItem>();
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("A compra deve possuir itens.", ex.Message);
         }
@@ -46,7 +45,7 @@ namespace LM.Core.Tests
         [Test]
         public void CompraDevePossuirPontoDemanda()
         {
-            var compra = _fakes.CompraNotSoFake();
+            var compra = GetCompra();
             compra.PontoDemanda = null;
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("A compra deve possuir ponto de demanda.", ex.Message);
@@ -55,7 +54,7 @@ namespace LM.Core.Tests
         [Test]
         public void CompraDevePossuirIntegrante()
         {
-            var compra = _fakes.CompraNotSoFake();
+            var compra = GetCompra();
             compra.Integrante = null;
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("A compra deve possuir integrante.", ex.Message);
@@ -64,10 +63,34 @@ namespace LM.Core.Tests
         [Test]
         public void CompraDevePossuirUsuario()
         {
-            var compra = _fakes.CompraNotSoFake();
+            var compra = GetCompra();
             compra.Integrante.Usuario = null;
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("O integrante da compra deve possuir um usuário.", ex.Message);
+        }
+
+        [Test]
+        public void NaoPodeComprarUmItemNovoQueJaExisteNaListaDeDespensa()
+        {
+            var compra = GetCompra();
+            compra.PontoDemanda.Listas = new Collection<Lista>{new Lista { PontoDemanda = compra.PontoDemanda}};
+            compra.PontoDemanda.Listas.First().Itens = new Collection<ListaItem>{new ListaItem{ Id = 21, Produto = new Produto{Id = 667}}};
+            compra.Itens.Add(new ListaCompraItem { ProdutoId = 667, Item = new ListaItem { Produto = new Produto { Id = 667 } } });
+            var ex = Assert.Throws<ApplicationException>(compra.Validar);
+            Assert.AreEqual("Você esta tentando adicionar um item que já existe na sua lista.", ex.Message);
+        }
+
+        private Compra GetCompra()
+        {
+            var compra = _fakes.Compra();
+            compra.PontoDemanda = _fakes.PontoDemanda();
+            compra.PontoDemanda.Listas = new Collection<Lista> { new Lista { PontoDemanda = compra.PontoDemanda } };
+            compra.Integrante = _fakes.Integrante();
+            compra.Integrante.Id = 1;
+            compra.Integrante.Usuario = _fakes.Usuario();
+            compra.Integrante.Usuario.Id = 1;
+            compra.Itens = new Collection<CompraItem> {new ListaCompraItem {ProdutoId = 666, Item = new ListaItem {Id = 20, Produto = new Produto{ Id = 666 }}}};
+            return compra;
         }
     }
 }
