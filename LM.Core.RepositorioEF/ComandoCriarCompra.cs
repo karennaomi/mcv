@@ -51,7 +51,7 @@ namespace LM.Core.RepositorioEF
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
-                    listaCompraItem.Item = listaCompraItem.Item.Id == 0 ? CriarItemNaLista(listaCompraItem, lista) : listaCompraItem.Item = listaItens.Single(i => i.Id == listaCompraItem.Item.Id);
+                    listaCompraItem.Item = listaCompraItem.Item.Id == 0 ? CriarItemNaLista(listaCompraItem, lista) : listaItens.Single(i => i.Id == listaCompraItem.Item.Id);
                 }
                 else if (compraItem is PedidoCompraItem)
                 {
