@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Collections.ObjectModel;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace LM.Core.Application
 
         public Compra Criar(Compra compra)
         {
-            compra.PontoDemanda.Listas.Add(_appLista.ObterListaPorPontoDemanda(compra.PontoDemanda.Id));
+            if(compra.PontoDemanda.Listas == null) compra.PontoDemanda.Listas = new Collection<Lista> {_appLista.ObterListaPorPontoDemanda(compra.PontoDemanda.Id)};
             compra.Validar();
             compra = _compraRepo.Criar(compra);
             _appCompraAtiva.FinalizarCompra(compra.PontoDemanda.Id);
