@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using LM.Core.Domain;
 using System.Linq;
 
@@ -42,6 +43,11 @@ namespace LM.Core.RepositorioEF
             var listaItens = lista.Itens;
             foreach (var compraItem in _novaCompra.Itens)
             {
+                if (compraItem.ItemSubstituto != null && compraItem.ItemSubstituto.Motivo != null)
+                {
+                    _contexto.Entry(compraItem.ItemSubstituto.Motivo).State = EntityState.Unchanged;
+                }
+
                 if (compraItem is ListaCompraItem)
                 {
                     var listaCompraItem = compraItem as ListaCompraItem;
