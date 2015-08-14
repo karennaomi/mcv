@@ -43,7 +43,7 @@ namespace LM.Core.Tests
                 var compraAtivaRepo = new CompraAtivaEF();
                 var compraAtivaApp = ObterAppCompraAtiva(compraAtivaRepo);
                 compraAtivaApp.AtivarCompra(compra.Integrante.Usuario.Id, compra.PontoDemanda.Id);
-                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo, compra.PontoDemanda.Listas.First());
                 compra = app.Criar(compra);
                 Assert.IsTrue(compra.Id > 0);
                 Assert.IsFalse(compraAtivaApp.ExisteCompraAtiva(compra.PontoDemanda.Id));
@@ -60,7 +60,7 @@ namespace LM.Core.Tests
                 compra.PontoDemanda = _pontoDemanda;
                 var compraAtivaRepo = new CompraAtivaEF();
                 AtivarCompra(compra, compraAtivaRepo);
-                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo, compra.PontoDemanda.Listas.First());
                 var item1 = _pontoDemanda.Listas.First().Itens.First();
                 var item2 = _pontoDemanda.Listas.First().Itens.Skip(1).First();
                 var compraItemOriginal = new ListaCompraItem { Item = item1, ProdutoId = item1.Produto.Id, Quantidade = 2, Valor = 2.5M };
@@ -86,7 +86,7 @@ namespace LM.Core.Tests
                 compra.PontoDemanda = _pontoDemanda;
                 var compraAtivaRepo = new CompraAtivaEF();
                 AtivarCompra(compra, compraAtivaRepo);
-                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo);
+                var app = ObterAppCompra(new CompraEF(_repoProcedures), compraAtivaRepo, compra.PontoDemanda.Listas.First());
                 
                 var item = _fakes.ListaCompraItem();
                 item.Item.Produto.Categorias.First().Id = 2;
@@ -138,14 +138,14 @@ namespace LM.Core.Tests
             Assert.AreEqual(1, listaSugestao.OfType<PedidoItem>().Count());
         }
 
-        private CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo, IRepositorioCompraAtiva compraAtivaRepo)
+        private CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo, IRepositorioCompraAtiva compraAtivaRepo, Lista lista = null)
         {
             return new CompraAplicacao(compraRepo, ObterAppPedido(), ObterAppLista(), ObterAppCompraAtiva(compraAtivaRepo));
         }
 
-        private IListaAplicacao ObterAppLista()
+        private IListaAplicacao ObterAppLista(Lista lista = null)
         {
-            var mockRepo = new MockListaRepo {Lista = _fakes.Lista()};
+            var mockRepo = new MockListaRepo { Lista = lista ?? _fakes.Lista() };
             return new ListaAplicacao(mockRepo.GetMockedRepo());
         }
 

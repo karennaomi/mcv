@@ -116,6 +116,7 @@ namespace LM.Core.Tests
         public IRepositorioLista GetMockedRepo()
         {
             var mock = new Mock<IRepositorioLista>();
+            mock.Setup(m => m.ObterListaPorPontoDemanda(1)).Returns(Lista);
             mock.Setup(m => m.ObterListaPorPontoDemanda(100)).Returns(Lista);
             return mock.Object;
         }

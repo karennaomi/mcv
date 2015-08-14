@@ -47,6 +47,7 @@ namespace LM.Core.Application
 
         public Compra Criar(Compra compra)
         {
+            compra.PontoDemanda.Listas.Add(_appLista.ObterListaPorPontoDemanda(compra.PontoDemanda.Id));
             compra.Validar();
             compra = _compraRepo.Criar(compra);
             _appCompraAtiva.FinalizarCompra(compra.PontoDemanda.Id);
