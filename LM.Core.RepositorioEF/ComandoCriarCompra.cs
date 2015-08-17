@@ -67,30 +67,47 @@ namespace LM.Core.RepositorioEF
 
         private ListaItem CriarItemNaLista(CompraItem compraItem, Lista lista)
         {
-            var listaItem = new ListaItem
+            var produto = ObterProdutoDoCompraItem(compraItem);
+
+            var listaItem = lista.Itens.FirstOrDefault(i => i.Produto.Id == produto.Id);
+            
+            if(listaItem == null)
             {
-                Periodo = _contexto.Set<Periodo>().Single(p => p.Nome.Equals("eventual", StringComparison.InvariantCultureIgnoreCase)),
-                QuantidadeConsumo = compraItem.Quantidade,
-                QuantidadeEstoque = compraItem.Quantidade
-            };
+                listaItem = new ListaItem
+                {
+                    Periodo = _contexto.Set<Periodo>().Single(p => p.Nome.Equals("eventual", StringComparison.InvariantCultureIgnoreCase)),
+                    QuantidadeConsumo = compraItem.Quantidade,
+                    QuantidadeEstoque = compraItem.Quantidade,
+                    Produto = produto
+                };
+                return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
+            }
+            
+            listaItem.QuantidadeEstoque += compraItem.Quantidade;
+            return listaItem;
+        }
+
+        private static Produto ObterProdutoDoCompraItem(CompraItem compraItem)
+        {
+            Produto produto;
             var listaCompraItem = compraItem as ListaCompraItem;
             if (listaCompraItem != null)
             {
-                listaItem.Produto = listaCompraItem.Item.Produto;
+                produto = listaCompraItem.Item.Produto;
             }
             else
             {
                 var item = compraItem as PedidoCompraItem;
-                if(item != null)
+                if (item != null)
                 {
-                    listaItem.Produto = item.Item.Produto;
+                    produto = item.Item.Produto;
                 }
                 else
                 {
                     throw new ApplicationException("Tipo de compra item inválido.");
                 }
             }
-            return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
+            return produto;
         }
     }
 }
