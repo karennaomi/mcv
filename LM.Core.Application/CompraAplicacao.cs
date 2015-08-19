@@ -38,7 +38,9 @@ namespace LM.Core.Application
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
         {
-            return _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra).ListarSecoes();
+            IEnumerable<IItem> pedidos = _appPedido.ListarItens(pontoDemandaId);
+            IEnumerable<IItem> itens = _appLista.ListarItens(pontoDemandaId).Where(i => i.EhSugestaoDeCompra);
+            return pedidos.Union(itens).ListarSecoes();
         }
 
         public Compra Obter(long pontoDemandaId, long id)
