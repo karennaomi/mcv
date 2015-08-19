@@ -10,9 +10,22 @@ namespace LM.Core.Application
         {
             return
                 itens.Select(i => i.Produto.Categorias.Select(c => c.CategoriaPai).First())
-                    .Distinct()
+                    .Distinct(new CategoriaComparer())
                     .OrderBy(c => c.Nome)
                     .ToList();
+        }
+
+        private class CategoriaComparer : IEqualityComparer<Categoria>
+        {
+            public bool Equals(Categoria x, Categoria y)
+            {
+                return x.Id == y.Id;
+            }
+
+            public int GetHashCode(Categoria obj)
+            {
+                return obj.Id.GetHashCode();
+            }
         }
 
         public static IOrderedEnumerable<Produto> OrdenadoPorSecao(this IEnumerable<Produto> produtos)
