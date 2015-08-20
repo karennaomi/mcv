@@ -64,6 +64,11 @@ namespace LM.Core.RepositorioEF
             return _contexto.MotivosSubstituicao;
         }
 
+        public IEnumerable<Compra> Listar(long pontoDemandaId)
+        {
+            return _contexto.Compras.Where(c => c.PontoDemanda.Id == pontoDemandaId);
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();

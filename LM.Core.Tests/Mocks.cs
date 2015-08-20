@@ -1,4 +1,5 @@
-﻿using LM.Core.Application;
+﻿using System.Linq;
+using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -136,10 +137,13 @@ namespace LM.Core.Tests
 
     public class MockCompraRepo
     {
+        public IEnumerable<Compra> Compras { private get; set; }
+
         public IRepositorioCompra GetMockedRepo()
         {
             var mock = new Mock<IRepositorioCompra>();
             mock.Setup(m => m.Criar(It.IsAny<Compra>())).Returns<Compra>(x => x);
+            mock.Setup(m => m.Listar(It.IsAny<long>())).Returns<long>(x => Compras.Where(c => c.PontoDemanda.Id == x));
             return mock.Object;
         }
     }

@@ -13,6 +13,7 @@ namespace LM.Core.Application
         Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
         IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
+        IEnumerable<CompraItem> ListarItensSubstitutos(long pontoDemandaId, long itemId);
     }
 
     public class CompraAplicacao : ICompraAplicacao
@@ -65,6 +66,21 @@ namespace LM.Core.Application
         public IEnumerable<MotivoSubstituicao> MotivosSubstituicao()
         {
             return _compraRepo.MotivosSubstituicao();
+        }
+
+        public IEnumerable<CompraItem> ListarItensSubstitutos(long pontoDemandaId, long itemId)
+        {
+            var compras = _compraRepo.Listar(pontoDemandaId).ToList();
+            var compraItens = new List<CompraItem>();
+            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i => i.ItemSubstituto != null && ((ListaCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
+            {
+                compraItens.AddRange(listaCompraItems);    
+            }
+            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<PedidoCompraItem>().Where(i => i.ItemSubstituto != null && ((PedidoCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
+            {
+                compraItens.AddRange(listaCompraItems);
+            }
+            return compraItens;
         }
 
         private static void AtualizarStatusItensPedido(IEnumerable<PedidoCompraItem> itens)

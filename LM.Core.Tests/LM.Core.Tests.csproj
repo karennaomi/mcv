@@ -101,6 +101,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ListaSubstitutosTests.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SetupTests.cs" />
     <Compile Include="CompraAplicacaoTests.cs" />

@@ -5,6 +5,7 @@ namespace LM.Core.Domain.Repositorio
 {
     public interface IRepositorioCompra
     {
+        IEnumerable<Compra> Listar(long pontoDemandaId);
         Compra Obter(long pontoDemandaId, long id);
         Compra Criar(Compra compra);
         void LancarEstoque(Compra compra);
