@@ -69,6 +69,11 @@ namespace LM.Core.RepositorioEF
             return _contexto.Compras.Where(c => c.PontoDemanda.Id == pontoDemandaId);
         }
 
+        public void RecalcularSugestao(long pontoDemandaId)
+        {
+            _repoProcedures.RecalcularSugestao(pontoDemandaId);
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();

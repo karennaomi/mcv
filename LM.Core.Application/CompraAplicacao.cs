@@ -60,6 +60,7 @@ namespace LM.Core.Application
             _compraRepo.Salvar();
             _compraRepo.LancarEstoque(compra);
             _compraRepo.PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
+            _compraRepo.RecalcularSugestao(compra.PontoDemanda.Id);
             return compra;
         }
 

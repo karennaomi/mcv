@@ -12,6 +12,9 @@ namespace LM.Core.Domain.Repositorio
         void PreencherProdutoId(IEnumerable<CompraItem> itens);
         void PreencheTabelaRelacionamentoCompraPedido(IEnumerable<PedidoCompraItem> itens);
         IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
+        void RecalcularSugestao(long pontoDemandaId);
         void Salvar();
+
+        
     }
 }

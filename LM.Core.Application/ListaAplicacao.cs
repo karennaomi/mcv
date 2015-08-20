@@ -58,7 +58,8 @@ namespace LM.Core.Application
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
             if (lista.JaExisteProdutoNaLista(item)) throw new ApplicationException("Este produto já existe na lista.");
-            _repositorio.AdicionarItem(lista, item, usuarioId);
+            item = _repositorio.AdicionarItem(lista, item, usuarioId);
+            _repositorio.RecalcularSugestao(pontoDemandaId, item.Produto.Id);
             return item;
         }
 
@@ -80,6 +81,7 @@ namespace LM.Core.Application
             _repositorio.AtualizarItem(itemToUpdate, item.Periodo.Id, usuarioId);
             _repositorio.LancarEstoque(pontoDemandaId, usuarioId, itemToUpdate.Produto.Id, itemToUpdate.QuantidadeEstoque);
             _repositorio.Salvar();
+            _repositorio.RecalcularSugestao(pontoDemandaId, itemToUpdate.Produto.Id);
         }
 
         public void AtualizarConsumoDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade)
@@ -89,6 +91,7 @@ namespace LM.Core.Application
             itemToUpdate.DataAlteracao = DateTime.Now;
             _repositorio.AtualizarItem(itemToUpdate, itemToUpdate.Periodo.Id, usuarioId);
             _repositorio.Salvar();
+            _repositorio.RecalcularSugestao(pontoDemandaId, itemToUpdate.Produto.Id);
         }
 
         public void AtualizarEstoqueDoItem(long usuarioId, long pontoDemandaId, long itemId, decimal quantidade)
@@ -99,6 +102,7 @@ namespace LM.Core.Application
             _repositorio.AtualizarItem(itemToUpdate, itemToUpdate.Periodo.Id, usuarioId);
             _repositorio.LancarEstoque(pontoDemandaId, usuarioId, itemToUpdate.Produto.Id, quantidade);
             _repositorio.Salvar();
+            _repositorio.RecalcularSugestao(pontoDemandaId, itemToUpdate.Produto.Id);
         }
 
         public void AtualizarPeriodoDoItem(long usuarioId, long pontoDemandaId, long itemId, int periodoId)

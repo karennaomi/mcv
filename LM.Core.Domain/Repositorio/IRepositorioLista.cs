@@ -10,6 +10,7 @@ namespace LM.Core.Domain.Repositorio
         IEnumerable<ListaItem> BuscarItens(Lista lista, long pontoDemandaId, string termo);
         void LancarEstoque(long pontoDemandaId, long usuarioId, int? produtoId, decimal? quantidade);
         IEnumerable<Periodo> PeriodosDeConsumo();
+        void RecalcularSugestao(long pontoDemandaId, int produtoId);
         void Salvar();
     }
 }

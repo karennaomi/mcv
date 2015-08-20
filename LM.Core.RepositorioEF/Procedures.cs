@@ -22,7 +22,7 @@ namespace LM.Core.RepositorioEF
             var produtoIdParam = new SqlParameter("@IDProduto", produtoId);
             var quantidadeParam = new SqlParameter("@QtLancada", quantidade);
             var integranteIdParam = new SqlParameter("@IDIntegrante", integranteId);
-            _contexto.Database.ExecuteSqlCommand("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
+            _contexto.Database.ExecuteSqlCommandAsync("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
                 produtoIdParam, quantidadeParam, integranteIdParam);
         }
 
@@ -31,7 +31,17 @@ namespace LM.Core.RepositorioEF
         {
             var eanParam = new SqlParameter("@EAN", ean);
             var produtoNomeParam = new SqlParameter("@NomeProduto", nome);
-            _contexto.Database.ExecuteSqlCommand("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
+            _contexto.Database.ExecuteSqlCommandAsync("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
+        }
+
+
+        public void RecalcularSugestao(long pontoDemandaId, int? produtoId)
+        {
+            var pontoDemandaIdParam = new SqlParameter("@ID_PONTO_REAL_DEMANDA", pontoDemandaId);
+            var produtoIdParam = new SqlParameter("@ID_PRODUTO", produtoId);
+            _contexto.Database.ExecuteSqlCommandAsync(
+                "SP_SPSS_CALCULO_SUGESTAO_PONTO_DEMANDA @ID_PONTO_REAL_DEMANDA, @ID_PRODUTO", pontoDemandaIdParam,
+                produtoIdParam);
         }
     }
 }

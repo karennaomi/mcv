@@ -9,16 +9,16 @@ namespace LM.Core.RepositorioEF
     public class ListaEF : IRepositorioLista
     {
         private readonly ContextoEF _contexto;
-        private readonly IRepositorioProcedures _repoLancamentoEstoque;
-        public ListaEF(IRepositorioProcedures repoLancamentoEstoque)
+        private readonly IRepositorioProcedures _repoProcedures;
+        public ListaEF(IRepositorioProcedures repoProcedures)
         {
             _contexto = new ContextoEF();
-            _repoLancamentoEstoque = repoLancamentoEstoque;
+            _repoProcedures = repoProcedures;
         }
         public ListaEF(ContextoEF contexto, IRepositorioProcedures repoLancamentoEstoque)
         {
             _contexto = contexto;
-            _repoLancamentoEstoque = repoLancamentoEstoque;
+            _repoProcedures = repoLancamentoEstoque;
         }
 
         public Lista ObterListaPorPontoDemanda(long pontoDemandaId)
@@ -52,12 +52,17 @@ namespace LM.Core.RepositorioEF
         public void LancarEstoque(long pontoDemandaId, long usuarioId, int? produtoId, decimal? quantidade)
         {
             var usuario = _contexto.Usuarios.Find(usuarioId);
-            _repoLancamentoEstoque.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, usuario.Integrante.Id);
+            _repoProcedures.LancarEstoque(pontoDemandaId, 5, produtoId, quantidade, usuario.Integrante.Id);
         }
 
         public IEnumerable<Periodo> PeriodosDeConsumo()
         {
             return _contexto.Set<Periodo>();
+        }
+
+        public void RecalcularSugestao(long pontoDemandaId, int produtoId)
+        {
+            _repoProcedures.RecalcularSugestao(pontoDemandaId, produtoId);
         }
     }
 }
