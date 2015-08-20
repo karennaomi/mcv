@@ -57,8 +57,8 @@ namespace LM.Core.Application
             _appCompraAtiva.FinalizarCompra(compra.PontoDemanda.Id);
             AtualizarStatusItensPedido(compra.Itens.OfType<PedidoCompraItem>());
             _compraRepo.PreencherProdutoId(compra.Itens); //Campo desnecessário no modelo, mas quem fez não sabe dizer onde é usado ou mudar para usar o produto associado ao item se necessário
-            _compraRepo.LancarEstoque(compra);
             _compraRepo.Salvar();
+            _compraRepo.LancarEstoque(compra);
             _compraRepo.PreencheTabelaRelacionamentoCompraPedido(compra.Itens.OfType<PedidoCompraItem>()); //Aqui o id do pedido foi movido para a propria tabela de item da compra  mas como não sabem onde mudar nas procs preencho essa tabela pra não quebrar procs
             return compra;
         }

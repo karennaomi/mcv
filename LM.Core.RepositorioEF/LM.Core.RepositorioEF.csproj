@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201508131504053_MotivoSubstituicao.Designer.cs">
       <DependentUpon>201508131504053_MotivoSubstituicao.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508201847466_UpdateProdutoModelValidation.cs" />
+    <Compile Include="Migrations\201508201847466_UpdateProdutoModelValidation.Designer.cs">
+      <DependentUpon>201508201847466_UpdateProdutoModelValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedures.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
     <Compile Include="MappingConfiguration\ContatoConfig.cs" />
@@ -183,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508131504053_MotivoSubstituicao.resx">
       <DependentUpon>201508131504053_MotivoSubstituicao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508201847466_UpdateProdutoModelValidation.resx">
+      <DependentUpon>201508201847466_UpdateProdutoModelValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
