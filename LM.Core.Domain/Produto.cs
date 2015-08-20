@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LM.Core.Domain
@@ -22,7 +23,6 @@ namespace LM.Core.Domain
 
         private void DefinirNome(string nome)
         {
-            if(string.IsNullOrEmpty(nome)) throw new ApplicationException("O produto deve possuir um nome.");
             Info = new ProdutoInfo {Nome = nome};
         }
 
@@ -39,11 +39,8 @@ namespace LM.Core.Domain
         }
 
         public int Id { get; set; }
-        
-        [LMRequired]
         [LMMaxLength(Constantes.Produto.TamanhoMaximoEan)]
         public string Ean { get; set; }
-        
         public bool Ativo { get; set; }
         public DateTime? DataInclusao { get; set; }
         public DateTime? DataAlteracao { get; set; }
@@ -92,6 +89,7 @@ namespace LM.Core.Domain
     public class ProdutoInfo
     {
         public int Id { get; set; }
+        [LMRequired]
         public string Nome { get; set; }
         public string Marca { get; set; }
     }

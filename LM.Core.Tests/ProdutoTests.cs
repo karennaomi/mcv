@@ -17,18 +17,18 @@ namespace LM.Core.Tests
         }
 
         [Test]
-        public void NaoValidaEanNulo()
+        public void NaoValidaNomeNulo()
         {
             var produto = _fakes.Produto();
-            produto.Ean = null;
+            produto.Info = new ProdutoInfo();
             var validationResults = new List<ValidationResult>();
-            var result = Validator.TryValidateObject(produto, new ValidationContext(produto), validationResults, true);
+            var result = Validator.TryValidateObject(produto.Info, new ValidationContext(produto.Info), validationResults, true);
             Assert.IsFalse(result);
             Assert.AreEqual(1, validationResults.Count);
             var error = validationResults[0];
-            Assert.AreEqual("Ops! Parece que você esqueceu de digitar o campo Ean.", error.ErrorMessage);
+            Assert.AreEqual("Ops! Parece que você esqueceu de digitar o campo Nome.", error.ErrorMessage);
             Assert.AreEqual(1, error.MemberNames.Count());
-            Assert.AreEqual("Ean", error.MemberNames.ElementAt(0));
+            Assert.AreEqual("Nome", error.MemberNames.ElementAt(0));
         }
 
         [Test]
