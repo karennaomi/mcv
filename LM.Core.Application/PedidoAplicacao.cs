@@ -32,17 +32,17 @@ namespace LM.Core.Application
 
         public IEnumerable<PedidoItem> ListarItens(long pontoDemandaId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).NaoExluidoPeloUsuario().OrdenadoPorStatus();
+            return _repositorio.ListarItens(pontoDemandaId).NaoExluidoPeloUsuario().OrdenadoPorStatus().OrdenadoPorNomeDoProduto();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorSecao(long pontoDemandaId, int secaoId)
         {
-            return _repositorio.ListarItens(pontoDemandaId).DaSecao(secaoId).NaoExluidoPeloUsuario();
+            return _repositorio.ListarItens(pontoDemandaId).DaSecao(secaoId).NaoExluidoPeloUsuario().OrdenadoPorNomeDoProduto();
         }
 
         public IEnumerable<PedidoItem> ListarItensPorStatus(long pontoDemandaId, StatusPedido status)
         {
-            return _repositorio.ListarItens(pontoDemandaId).DoStatus(status);
+            return _repositorio.ListarItens(pontoDemandaId).DoStatus(status).OrdenadoPorNomeDoProduto();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId, StatusPedido status)

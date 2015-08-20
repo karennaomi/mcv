@@ -41,7 +41,7 @@ namespace LM.Core.Application
         public IEnumerable<ListaItem> ListarItens(long pontoDemandaId)
         {
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
-            return lista.Itens.SomenteAtivos().OrdenadoPorSecao();
+            return lista.Itens.SomenteAtivos().OrdenadoPorSecao().OrdenadoPorNomeDoProduto();
         }
 
         public IList<Categoria> ListarSecoes(long pontoDemandaId)
@@ -51,7 +51,7 @@ namespace LM.Core.Application
 
         public IEnumerable<ListaItem> ListarItensPorSecao(long pontoDemandaId, int secaoId)
         {
-            return ListarItens(pontoDemandaId).DaSecao(secaoId);
+            return ListarItens(pontoDemandaId).DaSecao(secaoId).OrdenadoPorNomeDoProduto();
         }
 
         public ListaItem AdicionarItem(long usuarioId, long pontoDemandaId, ListaItem item)

@@ -38,6 +38,16 @@ namespace LM.Core.Application
             return itens.OrderBy(i => i.Produto.Categorias.First().CategoriaPai.Nome).ThenBy(i => i.Produto.Categorias.First().Nome);
         }
 
+        public static IOrderedEnumerable<T> OrdenadoPorNomeDoProduto<T>(this IEnumerable<T> itens) where T : IItem
+        {
+            return itens.OrderBy(i => i.Produto.Nome());
+        }
+
+        public static IOrderedEnumerable<T> OrdenadoPorNomeDoProduto<T>(this IOrderedEnumerable<T> itens) where T : IItem
+        {
+            return itens.ThenBy(i => i.Produto.Nome());
+        }
+
         public static IEnumerable<T> DaSecao<T>(this IEnumerable<T> itens, int secaoId) where T : IItem
         {
             return secaoId == 0 ? itens : itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == secaoId));
