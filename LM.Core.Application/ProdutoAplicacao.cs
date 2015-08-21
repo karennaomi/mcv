@@ -32,12 +32,12 @@ namespace LM.Core.Application
 
         public IEnumerable<Produto> ListarPorCategoria(long pontoDemandaId, int categoriaId)
         {
-            return _repositorio.ListarPorCategoria(categoriaId).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId);
+            return _repositorio.ListarPorCategoria(categoriaId).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId).OrdenadoPorNome();
         }
 
         public IEnumerable<Produto> Buscar(long pontoDemandaId, string termo)
         {
-            return _repositorio.Buscar(termo).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId).OrdenadoPorSecao();
+            return _repositorio.Buscar(termo).SomenteProdutosDoCatalogoOuDoPontoDeDemanda(pontoDemandaId).OrdenadoPorSecao().OrdenadoPorNome();
         }
     }
 }

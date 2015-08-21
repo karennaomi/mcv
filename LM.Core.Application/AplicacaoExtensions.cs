@@ -48,6 +48,11 @@ namespace LM.Core.Application
             return itens.ThenBy(i => i.Produto.Nome());
         }
 
+        public static IOrderedEnumerable<Produto> OrdenadoPorNome(this IEnumerable<Produto> itens)
+        {
+            return itens.OrderBy(i => i.Nome());
+        }
+
         public static IEnumerable<T> DaSecao<T>(this IEnumerable<T> itens, int secaoId) where T : IItem
         {
             return secaoId == 0 ? itens : itens.Where(i => i.Produto.Categorias.Any(c => c.CategoriaPai.Id == secaoId));
