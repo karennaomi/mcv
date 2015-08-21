@@ -11,6 +11,7 @@ namespace LM.Core.RepositorioEF
         {
             _contexto = new ContextoEF();
         }
+
         public Procedures(ContextoEF contexto)
         {
             _contexto = contexto;
