@@ -1,5 +1,4 @@
-﻿
-namespace LM.Core.Domain.Repositorio
+﻿namespace LM.Core.Domain.Repositorio
 {
     public interface IRepositorioProcedures
     {

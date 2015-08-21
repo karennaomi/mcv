@@ -42,10 +42,8 @@ namespace LM.Core.RepositorioEF
                 var produtoIdParam = new SqlParameter("@produtoId", produto.Id);
                 var compraItemIdParam = new SqlParameter("@id", compraItem.Id);
                 _contexto.Database.ExecuteSqlCommand("UPDATE [dbo].[TB_Compra_Item] SET ID_PRODUTO = @produtoId WHERE ID_COMPRA_ITEM = @id", produtoIdParam, compraItemIdParam);
-
-                _repoProcedures.InserirProdutoNaFila(produto.Ean, produto.Nome());
-
                 compraItem.ProdutoId = produto.Id;
+                _repoProcedures.InserirProdutoNaFila(produto.Ean, produto.Nome());
             }
         }
 

@@ -1,5 +1,5 @@
-﻿using System.Data.SqlClient;
-using LM.Core.Domain.Repositorio;
+﻿using LM.Core.Domain.Repositorio;
+using System.Data.SqlClient;
 
 namespace LM.Core.RepositorioEF
 {
@@ -15,23 +15,23 @@ namespace LM.Core.RepositorioEF
             _contexto = contexto;
         }
 
-        public async void LancarEstoque(long pontoDemandaId, int origem, int? produtoId, decimal? quantidade, long integranteId)
+        public void LancarEstoque(long pontoDemandaId, int origem, int? produtoId, decimal? quantidade, long integranteId)
         {
             var pontoDemandaIdParam = new SqlParameter("@IDPReD", pontoDemandaId);
             var origemParam = new SqlParameter("@IDOrigemLancamentoEstoque", origem);
             var produtoIdParam = new SqlParameter("@IDProduto", produtoId);
             var quantidadeParam = new SqlParameter("@QtLancada", quantidade);
             var integranteIdParam = new SqlParameter("@IDIntegrante", integranteId);
-            await _contexto.Database.ExecuteSqlCommandAsync("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
+            _contexto.Database.ExecuteSqlCommand("SP_APP_EFETUA_LANCAMENTO_ESTOQUE @IDPReD, @IDOrigemLancamentoEstoque, @IDProduto, @QtLancada, @IDIntegrante", pontoDemandaIdParam, origemParam,
                 produtoIdParam, quantidadeParam, integranteIdParam);
         }
 
 
-        public async void InserirProdutoNaFila(string ean, string nome)
+        public void InserirProdutoNaFila(string ean, string nome)
         {
             var eanParam = new SqlParameter("@EAN", ean);
             var produtoNomeParam = new SqlParameter("@NomeProduto", nome);
-            await _contexto.Database.ExecuteSqlCommandAsync("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
+            _contexto.Database.ExecuteSqlCommand("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
         }
 
 
