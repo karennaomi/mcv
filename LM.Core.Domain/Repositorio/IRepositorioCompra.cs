@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LM.Core.Domain.Repositorio
 {
@@ -14,7 +13,5 @@ namespace LM.Core.Domain.Repositorio
         IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
         void RecalcularSugestao(long pontoDemandaId);
         void Salvar();
-
-        
     }
 }

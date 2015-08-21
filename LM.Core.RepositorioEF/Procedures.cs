@@ -34,12 +34,11 @@ namespace LM.Core.RepositorioEF
             _contexto.Database.ExecuteSqlCommand("SP_INSERE_PRODUTO_NOVO_FILA @EAN, @NomeProduto", eanParam, produtoNomeParam);
         }
 
-
-        public async void RecalcularSugestao(long pontoDemandaId, int? produtoId)
+        public void RecalcularSugestao(long pontoDemandaId, int? produtoId = null)
         {
             var pontoDemandaIdParam = new SqlParameter("@ID_PONTO_REAL_DEMANDA", pontoDemandaId);
             var produtoIdParam = new SqlParameter("@ID_PRODUTO", produtoId);
-            await _contexto.Database.ExecuteSqlCommandAsync(
+            _contexto.Database.ExecuteSqlCommand(
                 "SP_SPSS_CALCULO_SUGESTAO_PONTO_DEMANDA @ID_PONTO_REAL_DEMANDA, @ID_PRODUTO", pontoDemandaIdParam,
                 produtoIdParam);
         }
