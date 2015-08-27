@@ -69,7 +69,7 @@ namespace LM.Core.Tests
             Assert.AreEqual("O integrante da compra deve possuir um usuário.", ex.Message);
         }
 
-        [Test]
+       /* [Test]
         public void NaoPodeComprarUmItemNovoQueJaExisteNaListaDeDespensa()
         {
             var compra = GetCompra();
@@ -78,7 +78,7 @@ namespace LM.Core.Tests
             compra.Itens.Add(new ListaCompraItem { ProdutoId = 667, Item = new ListaItem { Produto = new Produto { Id = 667 } } });
             var ex = Assert.Throws<ApplicationException>(compra.Validar);
             Assert.AreEqual("Você esta tentando adicionar um item que já existe na sua lista.", ex.Message);
-        }
+        }*/
 
         private Compra GetCompra()
         {
