@@ -40,7 +40,7 @@ namespace LM.Core.RepositorioEF
         {
             var produtoEF = new ProdutoEF(_contexto);
             var produtosIds = produtoEF.Buscar(termo).Where(Produto.ProtectProductPredicate(pontoDemandaId)).Select(p => p.Id);
-            return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id));
+            return lista.Itens.Where(i => produtosIds.Contains(i.Produto.Id) && i.Produto.Ativo == true);
         }
 
         public void Salvar()
