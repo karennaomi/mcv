@@ -14,7 +14,7 @@ namespace LM.Core.Application
         Compra Criar(Compra compra);
         IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
         IEnumerable<CompraItem> ListarItensSubstitutos(long pontoDemandaId, long itemId);
-        IEnumerable<CompraItem> ListarSubs(long pontoDemandaId, long itemId);
+        IEnumerable<CompraItem> ListarSubs(long pontoDemandaId, long itemId) ;
     }
 
     public class CompraAplicacao : ICompraAplicacao
@@ -88,6 +88,11 @@ namespace LM.Core.Application
         public IEnumerable<CompraItem> ListarSubs(long pontoDemandaId, long ItemId)
         {
             var compraItens = new List<CompraItem>();
+            var compras = _compraRepo.Listar(pontoDemandaId).ToList();
+            foreach (var listaCompraItens in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i=> i.ItemSubstituto != null)))
+            {
+                compraItens.AddRange(listaCompraItens);    
+            }
 
             return compraItens;
         }
