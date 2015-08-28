@@ -83,8 +83,9 @@ namespace LM.Core.RepositorioEF
                 return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
             }
             listaItem.Status = "A";
-            listaItem.QuantidadeEstoque += compraItem.Quantidade;
+            listaItem.QuantidadeEstoque = 0;
             listaItem.DataAlteracao = DateTime.Now;
+            
             return listaItem;
         }
 

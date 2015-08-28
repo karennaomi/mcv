@@ -77,10 +77,10 @@ namespace LM.Core.Application
             {
                 compraItens.AddRange(listaCompraItems);    
             }
-            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<PedidoCompraItem>().Where(i => i.ItemSubstituto != null && ((PedidoCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
-            {
-                compraItens.AddRange(listaCompraItems);
-            }
+           // foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<PedidoCompraItem>().Where(i => i.ItemSubstituto != null && ((PedidoCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
+            //{
+             //   compraItens.AddRange(listaCompraItems);
+           // }
             return compraItens;
         }
 
