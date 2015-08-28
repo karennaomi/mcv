@@ -14,6 +14,7 @@ namespace LM.Core.Application
         Compra Criar(Compra compra);
         IEnumerable<MotivoSubstituicao> MotivosSubstituicao();
         IEnumerable<CompraItem> ListarItensSubstitutos(long pontoDemandaId, long itemId);
+        IEnumerable<CompraItem> ListarSubs(long pontoDemandaId, long itemId);
     }
 
     public class CompraAplicacao : ICompraAplicacao
