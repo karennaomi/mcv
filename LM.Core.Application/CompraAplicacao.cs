@@ -89,7 +89,7 @@ namespace LM.Core.Application
         {
             var compraItens = new List<CompraItem>();
             var compras = _compraRepo.Listar(pontoDemandaId).ToList();
-            foreach (var listaCompraItens in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i => i.ItemSubstituto != null && ((ListaCompraItem)i.ItemSubstituto.Original).Item.Id == ItemId)))
+            foreach (var listaCompraItens in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i => i.ItemSubstituto != null)))
             {
                 compraItens.AddRange(listaCompraItens);    
             }
