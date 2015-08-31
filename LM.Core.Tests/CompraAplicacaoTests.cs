@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
@@ -124,11 +125,6 @@ namespace LM.Core.Tests
             Assert.AreEqual(StatusPedido.Pendente, compra.Itens.OfType<PedidoCompraItem>().Single(i => i.Item.Id == 5).Item.Status);
         }
 
-        private static void AtivarCompra(Compra compra, IRepositorioCompraAtiva repo)
-        {
-            repo.AtivarCompra(compra.Integrante.Usuario.Id, compra.PontoDemanda.Id);
-        }
-
         [Test]
         public void ListaSugestaoDeCompra()
         {
@@ -136,6 +132,69 @@ namespace LM.Core.Tests
             var listaSugestao = app.ListarSugestao(100).ToList();
             Assert.AreEqual(2, listaSugestao.OfType<ListaItem>().Count());
             Assert.AreEqual(1, listaSugestao.OfType<PedidoItem>().Count());
+        }
+
+        [Test]
+        public void ListarItensSubstitutosParaListaItens()
+        {
+            var app = ObterAppCompraParaTestarSubstitutos();
+            var substitutos = app.ListarItensSubstitutos(100, 1).ToList();
+            Assert.AreEqual(2, substitutos.Count());
+            Assert.IsTrue(substitutos.Any(i => i.Id == 200));
+            Assert.IsTrue(substitutos.Any(i => i.Id == 202));
+        }
+
+        [Test]
+        public void ListarItensSubstitutosParaPedidoItens()
+        {
+            var app = ObterAppCompraParaTestarSubstitutos();
+            var substitutos = app.ListarItensSubstitutos(100, 2).ToList();
+            Assert.AreEqual(1, substitutos.Count());
+            Assert.IsTrue(substitutos.Any(i => i.Id == 203));
+        }
+
+        private CompraAplicacao ObterAppCompraParaTestarSubstitutos()
+        {
+            var pontoDemanda = _fakes.PontoDemanda();
+            pontoDemanda.Id = 100;
+
+            var compra1 = _fakes.Compra();
+            compra1.PontoDemanda = pontoDemanda;
+
+            var compra2 = _fakes.Compra();
+            compra2.PontoDemanda = pontoDemanda;
+
+            var itemOriginal1 = new ListaCompraItem {Item = new ListaItem {Id = 1}};
+            var itemOriginal2 = new PedidoCompraItem {Item = new PedidoItem {Id = 2}};
+
+            compra1.Itens.Add(new ListaCompraItem
+            {
+                Id = 200,
+                ItemSubstituto = new CompraItemSubstituto {Original = itemOriginal1}
+            });
+            compra1.Itens.Add(new ListaCompraItem {Id = 201});
+
+            compra2.Itens.Add(new ListaCompraItem
+            {
+                Id = 202,
+                ItemSubstituto = new CompraItemSubstituto {Original = itemOriginal1}
+            });
+            compra2.Itens.Add(new PedidoCompraItem
+            {
+                Id = 203,
+                ItemSubstituto = new CompraItemSubstituto {Original = itemOriginal2}
+            });
+
+            var compras = new List<Compra> {compra1, compra2};
+            _mockRepo.Compras = compras;
+
+            var app = ObterAppCompra(_mockRepo.GetMockedRepo(), null);
+            return app;
+        }
+
+        private static void AtivarCompra(Compra compra, IRepositorioCompraAtiva repo)
+        {
+            repo.AtivarCompra(compra.Integrante.Usuario.Id, compra.PontoDemanda.Id);
         }
 
         private CompraAplicacao ObterAppCompra(IRepositorioCompra compraRepo, IRepositorioCompraAtiva compraAtivaRepo, Lista lista = null)

@@ -47,7 +47,6 @@ namespace LM.Core.Domain
             if (Integrante.Usuario == null || Integrante.Usuario.Id == 0) throw new ApplicationException("O integrante da compra deve possuir um usuário.");
             if (Itens.OfType<ListaCompraItem>().Where(i => i.ProdutoId != null).GroupBy(i => i.ProdutoId).Any(g => g.Count() > 1)) throw new ApplicationException("Existem itens duplicados na sua compra.");
             if (Itens.OfType<PedidoCompraItem>().Where(i => i.ProdutoId != null).GroupBy(i => i.ProdutoId).Any(g => g.Count() > 1)) throw new ApplicationException("Existem itens duplicados na sua compra.");
-           // if (Itens.OfType<ListaCompraItem>().Where(compraItem => compraItem.Item.Id == 0).Any(compraItemComItemNovo => PontoDemanda.Listas.First().Itens.Any(itemDespensa => itemDespensa.Produto.Id == compraItemComItemNovo.Item.Produto.Id))) throw new ApplicationException("Você esta tentando adicionar um item que já existe na sua lista.");
         }
     }
 }
