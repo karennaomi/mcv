@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
@@ -73,16 +74,28 @@ namespace LM.Core.Application
         {
             var compras = _compraRepo.Listar(pontoDemandaId).ToList();
             var compraItens = new List<CompraItem>();
-            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i => i.ItemSubstituto != null && ((ListaCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
+            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<ListaCompraItem>().Where(i => i.ItemSubstituto != null && ObterItemId(i.ItemSubstituto.Original) == itemId)))
             {
                 compraItens.AddRange(listaCompraItems);    
             }
-            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<PedidoCompraItem>().Where(i => i.ItemSubstituto != null && ((PedidoCompraItem)i.ItemSubstituto.Original).Item.Id == itemId)))
+            foreach (var listaCompraItems in compras.Select(c => c.Itens.OfType<PedidoCompraItem>().Where(i => i.ItemSubstituto != null && ObterItemId(i.ItemSubstituto.Original) == itemId)))
             {
                 compraItens.AddRange(listaCompraItems);
             }
             return compraItens;
         }
+
+        private long ObterItemId(CompraItem compraItem)
+        {
+            if (compraItem is ListaCompraItem) return ((ListaCompraItem) compraItem).Item.Id;
+            else if (compraItem is PedidoCompraItem) return ((PedidoCompraItem)compraItem).Item.Id;
+            else
+            {
+                throw new ApplicationException("Tipo do item de compra inválido");
+            }
+        }
+
+
 
         private static void AtualizarStatusItensPedido(IEnumerable<PedidoCompraItem> itens)
         {

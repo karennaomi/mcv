@@ -137,7 +137,7 @@ namespace LM.Core.Tests
 
     public class MockCompraRepo
     {
-        public IEnumerable<Compra> Compras { private get; set; }
+        public IEnumerable<Compra> Compras { get; set; }
 
         public IRepositorioCompra GetMockedRepo()
         {

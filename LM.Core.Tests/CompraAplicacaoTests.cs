@@ -145,12 +145,22 @@ namespace LM.Core.Tests
         }
 
         [Test]
+        public void ListarItensSubstitutosPedidoSubstituidoPorItemDaLista()
+        {
+            var app = ObterAppCompraParaTestarSubstitutos();
+            var substitutos = app.ListarItensSubstitutos(100, 1).ToList();
+            Assert.AreEqual(2, substitutos.Count());
+            Assert.IsTrue(substitutos.Any(i => i.Id == 200));
+            Assert.IsTrue(substitutos.Any(i => i.Id == 202));
+        }
+
+        [Test]
         public void ListarItensSubstitutosParaPedidoItens()
         {
             var app = ObterAppCompraParaTestarSubstitutos();
-            var substitutos = app.ListarItensSubstitutos(100, 2).ToList();
+            var substitutos = app.ListarItensSubstitutos(100, 3).ToList();
             Assert.AreEqual(1, substitutos.Count());
-            Assert.IsTrue(substitutos.Any(i => i.Id == 203));
+            Assert.IsTrue(substitutos.Any(i => i.Id == 204));
         }
 
         private CompraAplicacao ObterAppCompraParaTestarSubstitutos()
@@ -164,8 +174,12 @@ namespace LM.Core.Tests
             var compra2 = _fakes.Compra();
             compra2.PontoDemanda = pontoDemanda;
 
+            var compra3 = _fakes.Compra();
+            compra3.PontoDemanda = pontoDemanda;
+
             var itemOriginal1 = new ListaCompraItem {Item = new ListaItem {Id = 1}};
             var itemOriginal2 = new PedidoCompraItem {Item = new PedidoItem {Id = 2}};
+            var itemOriginal3 = new PedidoCompraItem { Item = new PedidoItem { Id = 3 } };
 
             compra1.Itens.Add(new ListaCompraItem
             {
@@ -185,7 +199,13 @@ namespace LM.Core.Tests
                 ItemSubstituto = new CompraItemSubstituto {Original = itemOriginal2}
             });
 
-            var compras = new List<Compra> {compra1, compra2};
+            compra3.Itens.Add(new ListaCompraItem
+            {
+                Id = 204,
+                ItemSubstituto = new CompraItemSubstituto { Original = itemOriginal3}
+            });
+
+            var compras = new List<Compra> {compra1, compra2, compra3};
             _mockRepo.Compras = compras;
 
             var app = ObterAppCompra(_mockRepo.GetMockedRepo(), null);
