@@ -20,6 +20,7 @@ namespace LM.Core.RepositorioEF.MappingConfiguration
             Property(i => i.DataAlteracao).HasColumnName("DT_ALT").IsOptional();
             Property(i => i.EhSugestaoDeCompra).HasColumnName("FL_ALERTA_SUGESTAO_COMPRA");
             Property(i => i.EhEssencial).HasColumnName("FL_NBO");
+            Property(i => i.EhSubstituto).HasColumnName("FL_SUBSTITUTO");
 
             HasRequired(i => i.Produto).WithMany().Map(m => m.MapKey("ID_PRODUTO"));
             HasRequired(i => i.Periodo).WithMany().Map(m => m.MapKey("ID_PERIODO_CONSUMO"));

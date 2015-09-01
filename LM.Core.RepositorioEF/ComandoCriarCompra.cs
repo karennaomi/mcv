@@ -78,13 +78,15 @@ namespace LM.Core.RepositorioEF
                     Periodo = _contexto.Set<Periodo>().Single(p => p.Nome.Equals("eventual", StringComparison.InvariantCultureIgnoreCase)),
                     QuantidadeConsumo = compraItem.Quantidade,
                     QuantidadeEstoque = compraItem.Quantidade,
-                    Produto = produto
+                    Produto = produto,
+                    EhSubstituto = compraItem.ItemSubstituto != null
                 };
                 return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
             }
             listaItem.Status = "A";
-            listaItem.QuantidadeEstoque = compraItem.Quantidade;
             listaItem.DataAlteracao = DateTime.Now;
+            listaItem.QuantidadeEstoque = compraItem.Quantidade;
+            listaItem.EhSubstituto = compraItem.ItemSubstituto != null;
             
             return listaItem;
         }

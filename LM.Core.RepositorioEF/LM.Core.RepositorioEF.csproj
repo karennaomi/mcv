@@ -100,6 +100,10 @@
     <Compile Include="Migrations\201508201847466_UpdateProdutoModelValidation.Designer.cs">
       <DependentUpon>201508201847466_UpdateProdutoModelValidation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509011841548_AddEhSubstitutoToListaItem.cs" />
+    <Compile Include="Migrations\201509011841548_AddEhSubstitutoToListaItem.Designer.cs">
+      <DependentUpon>201509011841548_AddEhSubstitutoToListaItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Procedures.cs" />
     <Compile Include="MappingConfiguration\AnimalConfig.cs" />
     <Compile Include="MappingConfiguration\ContatoConfig.cs" />
@@ -190,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508201847466_UpdateProdutoModelValidation.resx">
       <DependentUpon>201508201847466_UpdateProdutoModelValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509011841548_AddEhSubstitutoToListaItem.resx">
+      <DependentUpon>201509011841548_AddEhSubstitutoToListaItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

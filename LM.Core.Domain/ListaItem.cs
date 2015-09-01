@@ -25,6 +25,7 @@ namespace LM.Core.Domain
         public decimal? ValorMedioDeConsumoPorIntegrante { get; set; }
         public bool EhSugestaoDeCompra { get; set; }
         public bool EhEssencial { get; set; }
+        public bool EhSubstituto { get; set; }
         public virtual Lista Lista { get; set; }
         public virtual Periodo Periodo { get; set; }
         public virtual Usuario AtualizadoPor { get; set; }
