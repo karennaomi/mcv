@@ -39,7 +39,9 @@ namespace LM.Core.Application
 
         public CompraAtiva DesativarCompra(long pontoDemandaId)
         {
-            return DefinarDataFimCompraAtiva(pontoDemandaId, TipoTemplateMensagem.DesativarCompra);
+            var compraAtiva = DefinarDataFimCompraAtiva(pontoDemandaId, TipoTemplateMensagem.DesativarCompra);
+            _repositorio.Salvar();
+            return compraAtiva;
         }
 
         public CompraAtiva FinalizarCompra(long pontoDemandaId)
@@ -51,7 +53,6 @@ namespace LM.Core.Application
         {
             var compraAtiva = Obter(pontoDemandaId);
             compraAtiva.FimCompra = DateTime.Now;
-            _repositorio.Salvar();
             _appNotificacao.NotificarIntegrantesDoPontoDamanda(compraAtiva.Usuario.Integrante, compraAtiva.PontoDemanda, template, new { Action = "compras" });
             return compraAtiva;
         }
