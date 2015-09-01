@@ -79,7 +79,8 @@ namespace LM.Core.RepositorioEF
                     QuantidadeConsumo = compraItem.Quantidade,
                     QuantidadeEstoque = compraItem.Quantidade,
                     Produto = produto,
-                    EhSubstituto = compraItem.ItemSubstituto != null
+                    EhSubstituto = compraItem.ItemSubstituto != null,
+                    AtualizadoPor = _novaCompra.Integrante.Usuario
                 };
                 return _listaRepo.AdicionarItem(lista, listaItem, _novaCompra.Integrante.Usuario.Id);
             }
