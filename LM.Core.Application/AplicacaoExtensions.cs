@@ -87,5 +87,10 @@ namespace LM.Core.Application
         {
             return itens.Where(i => i.Status == "A");
         }
+
+        public static IEnumerable<ListaItem> QueNaoSaoSubstitutos(this IEnumerable<ListaItem> itens)
+        {
+            return itens.Where(i => !i.EhSubstituto);
+        }
     }
 }
