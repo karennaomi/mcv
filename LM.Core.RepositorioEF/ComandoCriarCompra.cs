@@ -86,7 +86,7 @@ namespace LM.Core.RepositorioEF
             }
             listaItem.Status = "A";
             listaItem.DataAlteracao = DateTime.Now;
-            listaItem.QuantidadeEstoque = compraItem.Quantidade;
+            listaItem.QuantidadeEstoque += compraItem.Quantidade;
             return listaItem;
         }
 
