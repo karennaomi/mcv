@@ -14,8 +14,17 @@ namespace LM.Core.Application
         {
             _pushServiceClient = new RestClient(host);
         }
-        
-        public Task Post(string endPoint, object content)
+
+        public void Post(string endPoint, object content)
+        {
+            var request = new RestRequest(endPoint);
+            request.AddHeader("Content-Type", "application/json; charset=utf-8");
+            request.AddJsonBody(content);
+            var response = _pushServiceClient.Post(request);
+            CheckResponse(response);
+        }
+
+        public Task PostAsync(string endPoint, object content)
         {
             var request = new RestRequest(endPoint);
             request.AddHeader("Content-Type", "application/json; charset=utf-8");
