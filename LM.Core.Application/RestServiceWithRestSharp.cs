@@ -49,18 +49,8 @@ namespace LM.Core.Application
 
         private static void CheckResponse(IRestResponse response)
         {
-            switch (response.ResponseStatus)
-            {
-                case ResponseStatus.Error:
-                case ResponseStatus.Aborted:
-                    if (response.StatusCode == HttpStatusCode.NotFound)
-                        throw new ObjetoNaoEncontradoException("O recurso buscado não foi encontrado");
-                    throw new ApplicationException("Ocorreu um erro na requisição com o serviço.");
-                case ResponseStatus.TimedOut:
-                    throw new ApplicationException("O tempo de execução do serviço esgotou.");
-                default:
-                    return;
-            }
+            if (response.StatusCode == HttpStatusCode.NotFound) throw new ObjetoNaoEncontradoException("O recurso buscado não foi encontrado");
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.NoContent && response.StatusCode != HttpStatusCode.Created) throw new ApplicationException("Ocorreu um erro na requisição com o serviço.");
         }
 
         public Uri Host
