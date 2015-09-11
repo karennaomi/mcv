@@ -7,6 +7,7 @@ namespace LM.Core.Application
     public interface IPlanoAplicacao
     {
         IList<Plano> Listar();
+        Plano Obter(int id);
     }
 
     public class PlanoAplicacao : IPlanoAplicacao
@@ -20,6 +21,11 @@ namespace LM.Core.Application
         public IList<Plano> Listar()
         {
             return _repositorio.Listar();
+        }
+
+        public Plano Obter(int id)
+        {
+            return _repositorio.Obter(id);
         }
     }
 }

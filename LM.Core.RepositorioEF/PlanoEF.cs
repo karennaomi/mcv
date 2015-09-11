@@ -17,5 +17,10 @@ namespace LM.Core.RepositorioEF
         {
             return _contexto.Planos.AsNoTracking().Where(p => p.Ativo).ToList();
         }
+
+        public Plano Obter(int id)
+        {
+            return _contexto.Planos.Find(id);
+        }
     }
 }
