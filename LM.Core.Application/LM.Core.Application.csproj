@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AplicacaoExtensions.cs" />
+    <Compile Include="PlanoAplicacao.cs" />
     <Compile Include="ContatoAplicacao.cs" />
     <Compile Include="ContratoAplicacao.cs" />
     <Compile Include="EmailCapturadoAplicacao.cs" />

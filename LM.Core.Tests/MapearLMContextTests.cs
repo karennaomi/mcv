@@ -201,5 +201,12 @@ namespace LM.Core.Tests
             var motivos = _contexto.MotivosSubstituicao;
             Assert.IsNotNull(motivos.First());
         }
+
+        [Test]
+        public void MapearPlano()
+        {
+            var plano = _contexto.Planos;
+            Assert.IsNotNull(plano.First());
+        }
     }
 }

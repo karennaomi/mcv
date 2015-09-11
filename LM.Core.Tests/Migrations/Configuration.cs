@@ -111,6 +111,9 @@ namespace LM.Core.Tests.Migrations
             //Periodo
             context.Set<Periodo>().Add(_fakes.PeriodoEventual());
 
+            //Planos
+            context.Planos.Add(_fakes.Plano());
+
             try
             {
                 context.SaveChanges();

@@ -110,11 +110,13 @@
     <Compile Include="ListaItem.cs" />
     <Compile Include="Loja.cs" />
     <Compile Include="Periodo.cs" />
+    <Compile Include="Plano.cs" />
     <Compile Include="PontoDemanda.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="ProdutoPreco.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecuperarSenha.cs" />
+    <Compile Include="Repositorio\IRepositorioPlano.cs" />
     <Compile Include="Repositorio\IRepositorioContato.cs" />
     <Compile Include="Repositorio\IRepositorioContrato.cs" />
     <Compile Include="Repositorio\IRepositorioEmailCapturado.cs" />

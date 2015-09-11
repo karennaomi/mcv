@@ -295,5 +295,13 @@ namespace LM.Core.Tests
                 new MotivoSubstituicao { Id = 2, Motivo = "Preço", Ativo = true },
             };
         }
+
+        internal Plano Plano()
+        {
+            return new Plano
+            {
+                Nome = "Anual", Periodo = 12, Valor = 13.90M, Chamada = "Muito mais economia!"
+            };
+        }
     }
 }
