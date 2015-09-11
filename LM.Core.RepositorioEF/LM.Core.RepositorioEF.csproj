@@ -69,6 +69,10 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201509111734436_PlanoModel.cs" />
+    <Compile Include="Migrations\201509111734436_PlanoModel.Designer.cs">
+      <DependentUpon>201509111734436_PlanoModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlanoEF.cs" />
     <Compile Include="ContatoEF.cs" />
     <Compile Include="ContratoEF.cs" />
@@ -199,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509011841548_AddEhSubstitutoToListaItem.resx">
       <DependentUpon>201509011841548_AddEhSubstitutoToListaItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509111734436_PlanoModel.resx">
+      <DependentUpon>201509111734436_PlanoModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
