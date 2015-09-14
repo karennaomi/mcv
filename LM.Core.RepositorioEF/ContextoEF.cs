@@ -81,6 +81,8 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new ContatoConfig());
             modelBuilder.Configurations.Add(new MotivoSubstituicaoConfig());
             modelBuilder.Configurations.Add(new PlanoConfig());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
