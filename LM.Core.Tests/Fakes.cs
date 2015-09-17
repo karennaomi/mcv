@@ -303,5 +303,13 @@ namespace LM.Core.Tests
                 Nome = "Anual", Periodo = 12, Valor = 13.90M, Chamada = "Muito mais economia!"
             };
         }
+
+        internal Assinatura Assinatura(Usuario usuario, Plano plano)
+        {
+            return new Assinatura
+            {
+                Usuario = usuario, Plano = plano, Status = AssinaturaStatus.Ativa
+            };
+        }
     }
 }

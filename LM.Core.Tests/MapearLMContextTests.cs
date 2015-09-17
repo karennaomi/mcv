@@ -1,5 +1,4 @@
-﻿using System;
-using LM.Core.Domain;
+﻿using LM.Core.Domain;
 using LM.Core.RepositorioEF;
 using NUnit.Framework;
 using System.Linq;
@@ -205,8 +204,15 @@ namespace LM.Core.Tests
         [Test]
         public void MapearPlano()
         {
-            var plano = _contexto.Planos;
-            Assert.IsNotNull(plano.First());
+            var planos = _contexto.Planos;
+            Assert.IsNotNull(planos.First());
+        }
+
+        [Test]
+        public void MapearAssinatura()
+        {
+            var assinaturas = _contexto.Assinaturas;
+            Assert.IsNotNull(assinaturas.First());
         }
     }
 }

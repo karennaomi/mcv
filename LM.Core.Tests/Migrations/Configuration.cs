@@ -112,7 +112,11 @@ namespace LM.Core.Tests.Migrations
             context.Set<Periodo>().Add(_fakes.PeriodoEventual());
 
             //Planos
-            context.Planos.Add(_fakes.Plano());
+            var plano = _fakes.Plano();
+            context.Planos.Add(plano);
+
+            //Assinaturas
+            context.Assinaturas.Add(_fakes.Assinatura(usuario, plano));
 
             try
             {

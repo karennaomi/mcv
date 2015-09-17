@@ -26,6 +26,7 @@ namespace LM.Core.RepositorioEF
         public DbSet<Contato> Contatos { get; set; }
         public DbSet<MotivoSubstituicao> MotivosSubstituicao { get; set; }
         public DbSet<Plano> Planos { get; set; }
+        public DbSet<Assinatura> Assinaturas { get; set; }
 
         public ContextoEF() : base("SOL")
         {
@@ -81,6 +82,7 @@ namespace LM.Core.RepositorioEF
             modelBuilder.Configurations.Add(new ContatoConfig());
             modelBuilder.Configurations.Add(new MotivoSubstituicaoConfig());
             modelBuilder.Configurations.Add(new PlanoConfig());
+            modelBuilder.Configurations.Add(new AssinaturaConfig());
 
             base.OnModelCreating(modelBuilder);
         }
