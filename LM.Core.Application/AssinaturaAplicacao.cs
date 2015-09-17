@@ -44,6 +44,7 @@ namespace LM.Core.Application
             assinaturaParaAtualizar.DataAlteracao = DateTime.Now;
             assinaturaParaAtualizar.Status = status;
             _repositorio.Salvar();
+            return assinaturaParaAtualizar;
         }
     }
 }
