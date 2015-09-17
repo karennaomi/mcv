@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System.Data.Entity;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,14 @@ namespace LM.Core.RepositorioEF
 
         public Assinatura Criar(Assinatura assinatura)
         {
-            assinatura = _contexto.Assinaturas.Add(assinatura);
+            _contexto.Entry(assinatura.Usuario).State = EntityState.Unchanged;
+            _contexto.Entry(assinatura.Plano).State = EntityState.Unchanged;
+            return _contexto.Assinaturas.Add(assinatura);
+        }
+
+        public void Salvar()
+        {
             _contexto.SaveChanges();
-            return assinatura;
         }
     }
 }

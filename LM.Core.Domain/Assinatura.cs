@@ -4,7 +4,7 @@ namespace LM.Core.Domain
 {
     public enum AssinaturaStatus
     {
-        Ativa, BloqueadaPagamentoRecusado, Expirada
+        Ativa, BloqueadaPagamentoRecusado, Expirada, AguardandoPagamento
     }
 
     public class Assinatura

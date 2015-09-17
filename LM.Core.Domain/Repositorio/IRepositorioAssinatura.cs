@@ -7,5 +7,6 @@ namespace LM.Core.Domain.Repositorio
         Assinatura Obter(int id);
         IList<Assinatura> Listar(int usuarioId);
         Assinatura Criar(Assinatura assinatura);
+        void Salvar();
     }
 }

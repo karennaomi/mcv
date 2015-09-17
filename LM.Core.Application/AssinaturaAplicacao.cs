@@ -1,4 +1,5 @@
-﻿using LM.Core.Domain;
+﻿using System;
+using LM.Core.Domain;
 using LM.Core.Domain.Repositorio;
 using System.Collections.Generic;
 
@@ -9,6 +10,7 @@ namespace LM.Core.Application
         Assinatura Obter(int id);
         IList<Assinatura> Listar(int usuarioId);
         Assinatura Criar(Assinatura assinatura);
+        Assinatura AtualizarStatus(int assinaturaId, AssinaturaStatus status);
     }
 
     public class AssinaturaAplicacao : IAssinaturaAplicacao
@@ -31,7 +33,17 @@ namespace LM.Core.Application
 
         public Assinatura Criar(Assinatura assinatura)
         {
-            return _repositorio.Criar(assinatura);
+            assinatura = _repositorio.Criar(assinatura);
+            _repositorio.Salvar();
+            return assinatura;
+        }
+
+        public Assinatura AtualizarStatus(int assinaturaId, AssinaturaStatus status)
+        {
+            var assinaturaParaAtualizar = Obter(assinaturaId);
+            assinaturaParaAtualizar.DataAlteracao = DateTime.Now;
+            assinaturaParaAtualizar.Status = status;
+            _repositorio.Salvar();
         }
     }
 }
