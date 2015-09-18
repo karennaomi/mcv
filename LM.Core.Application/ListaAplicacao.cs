@@ -59,6 +59,7 @@ namespace LM.Core.Application
             var lista = ObterListaPorPontoDemanda(pontoDemandaId);
             if (lista.JaExisteProdutoNaLista(item)) throw new ApplicationException("Este produto já existe na lista.");
             item = _repositorio.AdicionarItem(lista, item, usuarioId);
+            _repositorio.LancarEstoque(pontoDemandaId, usuarioId, item.Produto.Id, item.QuantidadeEstoque);
             _repositorio.RecalcularSugestao(pontoDemandaId, item.Produto.Id);
             return item;
         }
