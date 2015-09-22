@@ -14,6 +14,7 @@ namespace LM.Core.Application
         Integrante Criar(long pontoDemandaId, Integrante integrante);
         Integrante Atualizar(long pontoDemandaId, long usuarioId, Integrante integrante);
         void Desativar(long pontoDemandaId, long usuarioId, long integranteId);
+        void RemoverDoPonto(long pontoDemandaId, long usuarioId, long integranteId);
         void Convidar(long pontoDemandaId, long usuarioId, long id, string imageHost);
         IEnumerable<Animal> Animais();
     }
@@ -60,7 +61,7 @@ namespace LM.Core.Application
             _repositorio.Salvar();
         }
 
-        public void RemoverDoGrupo(long pontoDemandaId, long usuarioId, long integranteId)
+        public void RemoverDoPonto(long pontoDemandaId, long usuarioId, long integranteId)
         {
             var integrante = Obter(pontoDemandaId, integranteId);
             ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
