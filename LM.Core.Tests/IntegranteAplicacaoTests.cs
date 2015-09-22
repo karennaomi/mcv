@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Validation;
+﻿using System.Collections.ObjectModel;
+using System.Data.Entity.Validation;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
@@ -190,7 +191,7 @@ namespace LM.Core.Tests
         public void PodeDesativarUmIntegranteQuePertenceAoPonteDemanda()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
-            integrante.Usuario = new Usuario { Id = 2 };
+            integrante.Usuario = new Usuario { Id = 2, StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>{ new StatusUsuarioPontoDemanda{ StatusCadastro = StatusCadastro.CadastroIniciado}}};
             _mockRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             Assert.IsTrue(integrante.Ativo);

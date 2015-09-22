@@ -55,13 +55,45 @@ namespace LM.Core.Application
         public void Desativar(long pontoDemandaId, long usuarioId, long integranteId)
         {
             var integrante = Obter(pontoDemandaId, integranteId);
-            if(integrante.Usuario != null)
-            { 
-                if (integrante.Usuario.Id == usuarioId) throw new ApplicationException(LMResource.Integrante_NaoPodeDesativar);
-                if (integrante.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda.UsuarioCriador.Id == integrante.Usuario.Id) throw new ApplicationException("Não pode excluir o criador da casa.");
-            }
+            ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
             integrante.Ativo = false;
             _repositorio.Salvar();
+        }
+
+        public void RemoverDoGrupo(long pontoDemandaId, long usuarioId, long integranteId)
+        {
+            var integrante = Obter(pontoDemandaId, integranteId);
+            ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
+            var grupoIntegrante = integrante.GruposDeIntegrantes.SingleOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
+            integrante.GruposDeIntegrantes.Remove(grupoIntegrante);
+            ResetarStatus(pontoDemandaId, integrante);
+        }
+
+        private static void ValidarAcaoNoIntegrante(long pontoDemandaId, long usuarioId, Integrante integrante)
+        {
+            if (integrante.Usuario.Id == usuarioId) throw new ApplicationException(LMResource.Integrante_NaoPodeDesativar);
+            if (integrante.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda.UsuarioCriador.Id == integrante.Usuario.Id)
+                throw new ApplicationException("Não pode excluir o criador da casa.");
+        }
+
+        private static void ResetarStatus(long pontoDemandaId, Integrante integrante)
+        {
+            if(integrante.Usuario == null) throw new ApplicationException("Usuário não cadastrado.");
+            integrante.Usuario.StatusUsuarioPontoDemanda.Clear();
+            integrante.Usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = StatusCadastro.UsuarioNaoCadastrado,
+                DataInclusao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                PontoDemandaId = pontoDemandaId
+            });
+            integrante.Usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
+            {
+                StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta,
+                DataInclusao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
+                PontoDemandaId = pontoDemandaId
+            });
         }
 
         public void Convidar(long pontoDemandaId, long usuarioId, long id, string imageHost)
