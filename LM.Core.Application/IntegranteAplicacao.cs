@@ -72,6 +72,7 @@ namespace LM.Core.Application
 
         private static void ValidarAcaoNoIntegrante(long pontoDemandaId, long usuarioId, Integrante integrante)
         {
+            if (integrante.Usuario == null) return;
             if (integrante.Usuario.Id == usuarioId) throw new ApplicationException(LMResource.Integrante_NaoPodeDesativar);
             if (integrante.GruposDeIntegrantes.Single(g => g.PontoDemanda.Id == pontoDemandaId).PontoDemanda.UsuarioCriador.Id == integrante.Usuario.Id)
                 throw new ApplicationException("Não pode excluir o criador da casa.");
