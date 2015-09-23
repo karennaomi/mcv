@@ -65,9 +65,7 @@ namespace LM.Core.Application
         {
             var integrante = Obter(pontoDemandaId, integranteId);
             ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
-            var grupoIntegrante = integrante.GruposDeIntegrantes.SingleOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
-            integrante.GruposDeIntegrantes.Remove(grupoIntegrante);
-            _repositorio.RemoverGrupo(grupoIntegrante);
+            _repositorio.RemoverGrupo(integrante, pontoDemandaId);
             if (integrante.Usuario == null)
             {
                 _repositorio.Remover(integrante);
@@ -90,14 +88,6 @@ namespace LM.Core.Application
         private static void ResetarStatus(long pontoDemandaId, Integrante integrante)
         {
             if(integrante.GruposDeIntegrantes.Any()) return;
-            integrante.Usuario.StatusUsuarioPontoDemanda.Clear();
-            integrante.Usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
-            {
-                StatusCadastro = StatusCadastro.UsuarioNaoCadastrado,
-                DataInclusao = DateTime.Now,
-                DataAlteracao = DateTime.Now,
-                PontoDemandaId = pontoDemandaId
-            });
             integrante.Usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
             {
                 StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta,

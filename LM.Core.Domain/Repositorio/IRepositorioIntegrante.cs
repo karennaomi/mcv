@@ -10,7 +10,7 @@ namespace LM.Core.Domain.Repositorio
         void VerificarSeCpfJaExiste(string cpf);
         void VerificarSeEmailJaExiste(string email);
         void Remover(Integrante integrante);
-        void RemoverGrupo(GrupoDeIntegrantes grupo);
+        void RemoverGrupo(Integrante  integrante, long pontoDemandaId);
         void Salvar();
         IEnumerable<Animal> Animais();
     }

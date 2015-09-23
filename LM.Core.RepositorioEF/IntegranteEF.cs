@@ -48,9 +48,10 @@ namespace LM.Core.RepositorioEF
             _contexto.Integrantes.Remove(integrante);
         }
 
-        public void RemoverGrupo(GrupoDeIntegrantes grupoIntegrante)
+        public void RemoverGrupo(Integrante integrante, long pontoDemandaId)
         {
-            _contexto.Entry(grupoIntegrante).State = EntityState.Deleted;
+            var grupoIntegrante = integrante.GruposDeIntegrantes.FirstOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
+            _contexto.Set<GrupoDeIntegrantes>().Remove(grupoIntegrante);
         }
 
         public void Salvar()

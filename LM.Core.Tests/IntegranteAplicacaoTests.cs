@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Linq;
 using LM.Core.Application;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
@@ -235,6 +237,17 @@ namespace LM.Core.Tests
             app.Convidar(100, 1, 201, ImageHost);
             Assert.IsTrue(convidado.DataConvite.Value.Date == DateTime.Now.Date);
             Assert.IsTrue(convidado.EhUsuarioConvidado);
+        }
+
+        [Test]
+        public void RemoverIntegranteDoGrupo()
+        {
+            var app1 = ObterAppIntegrante(new IntegranteEF());
+            var integrante = _fakes.Integrante("teste_remover_do_ponto@teste.com");
+            integrante.Usuario = new Usuario { Login = "teste_remover_do_ponto@teste.com", Senha = "123456", StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>{new StatusUsuarioPontoDemanda{ StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta }}};
+            integrante = app1.Criar(1, integrante);
+            var app2 = ObterAppIntegrante(new IntegranteEF());
+            app2.RemoverDoPonto(1, 1, integrante.Id);
         }
 
         private Integrante SetIntegranteInMockRepo(Integrante integrante)
