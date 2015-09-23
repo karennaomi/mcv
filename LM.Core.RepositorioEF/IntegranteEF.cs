@@ -48,6 +48,11 @@ namespace LM.Core.RepositorioEF
             _contexto.Integrantes.Remove(integrante);
         }
 
+        public void RemoverGrupo(GrupoDeIntegrantes grupoIntegrante)
+        {
+            _contexto.Entry(grupoIntegrante).State = EntityState.Deleted;
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();

@@ -67,6 +67,7 @@ namespace LM.Core.Application
             ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
             var grupoIntegrante = integrante.GruposDeIntegrantes.SingleOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
             integrante.GruposDeIntegrantes.Remove(grupoIntegrante);
+            _repositorio.RemoverGrupo(grupoIntegrante);
             if (integrante.Usuario == null)
             {
                 _repositorio.Remover(integrante);
