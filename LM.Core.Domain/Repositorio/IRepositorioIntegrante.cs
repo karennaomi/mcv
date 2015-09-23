@@ -9,6 +9,7 @@ namespace LM.Core.Domain.Repositorio
         Integrante Criar(Integrante integrante);
         void VerificarSeCpfJaExiste(string cpf);
         void VerificarSeEmailJaExiste(string email);
+        void Remover(Integrante integrante);
         void Salvar();
         IEnumerable<Animal> Animais();
     }

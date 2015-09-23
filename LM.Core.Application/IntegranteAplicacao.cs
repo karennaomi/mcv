@@ -67,7 +67,15 @@ namespace LM.Core.Application
             ValidarAcaoNoIntegrante(pontoDemandaId, usuarioId, integrante);
             var grupoIntegrante = integrante.GruposDeIntegrantes.SingleOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
             integrante.GruposDeIntegrantes.Remove(grupoIntegrante);
-            ResetarStatus(pontoDemandaId, integrante);
+            if (integrante.Usuario == null)
+            {
+                _repositorio.Remover(integrante);
+            }
+            else
+            {
+                ResetarStatus(pontoDemandaId, integrante);
+            }
+            _repositorio.Salvar();
         }
 
         private static void ValidarAcaoNoIntegrante(long pontoDemandaId, long usuarioId, Integrante integrante)
@@ -80,7 +88,7 @@ namespace LM.Core.Application
 
         private static void ResetarStatus(long pontoDemandaId, Integrante integrante)
         {
-            if(integrante.Usuario == null) throw new ApplicationException("Usuário não cadastrado.");
+            if(integrante.GruposDeIntegrantes.Any()) return;
             integrante.Usuario.StatusUsuarioPontoDemanda.Clear();
             integrante.Usuario.StatusUsuarioPontoDemanda.Add(new StatusUsuarioPontoDemanda
             {

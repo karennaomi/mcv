@@ -43,6 +43,11 @@ namespace LM.Core.RepositorioEF
             if (_contexto.Integrantes.AsNoTracking().Any(i => i.Email == email)) throw new IntegranteExistenteException("Email", "E-mail");
         }
 
+        public void Remover(Integrante integrante)
+        {
+            _contexto.Integrantes.Remove(integrante);
+        }
+
         public void Salvar()
         {
             _contexto.SaveChanges();
