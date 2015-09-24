@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using LM.Core.Domain;
 using LM.Core.Domain.CustomException;
 using LM.Core.Domain.Repositorio;
@@ -14,12 +15,21 @@ namespace LM.Core.RepositorioEF
         {
             _contexto = new ContextoEF();
         }
+        public IntegranteEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
+        }
 
         public Integrante Obter(long id)
         {
             var integrante = _contexto.Integrantes.Find(id);
             if (integrante == null) throw new ObjetoNaoEncontradoException("Integrante não encontrado, id " + id);
             return integrante;
+        }
+
+        public Integrante Obter(string email)
+        {
+            return _contexto.Integrantes.FirstOrDefault(i => i.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public Integrante Criar(Integrante integrante)
@@ -29,7 +39,6 @@ namespace LM.Core.RepositorioEF
             {
                 _contexto.Entry(grupoDeIntegrantes.PontoDemanda).State = EntityState.Unchanged;
             }
-            _contexto.SaveChanges();
             return integrante;
         }
 
@@ -52,11 +61,6 @@ namespace LM.Core.RepositorioEF
         {
             var grupoIntegrante = integrante.GruposDeIntegrantes.FirstOrDefault(g => g.PontoDemanda.Id == pontoDemandaId);
             _contexto.Set<GrupoDeIntegrantes>().Remove(grupoIntegrante);
-        }
-
-        public void Salvar()
-        {
-            _contexto.SaveChanges();
         }
 
         public IEnumerable<Animal> Animais()

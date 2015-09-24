@@ -13,6 +13,10 @@ namespace LM.Core.RepositorioEF
         {
             _contexto = new ContextoEF();
         }
+        public PontoDemandaEF(ContextoEF contexto)
+        {
+            _contexto = contexto;
+        }
 
         public IList<PontoDemanda> Listar(long usuarioId)
         {

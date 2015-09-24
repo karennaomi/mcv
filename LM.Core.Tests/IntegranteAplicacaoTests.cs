@@ -19,20 +19,20 @@ namespace LM.Core.Tests
     public class IntegranteAplicacaoTests
     {
         private Fakes _fakes;
-        private MockIntegranteRepo _mockRepo;
+        private MockUnitOfWorkRepo _mockRepo;
         private const string ImageHost = "http://img.teste.com";
         [TestFixtureSetUp]
         public void Init()
         {
             _fakes = new Fakes();
-            _mockRepo = new MockIntegranteRepo();
+            _mockRepo = new MockUnitOfWorkRepo();
         }
-
+        
         [Test]
         public void CriarIntegrante()
         {
             var integrante = _fakes.Integrante("novo_integrante@mail.com");
-            var app = ObterAppIntegrante(new IntegranteEF());
+            var app = ObterAppIntegrante(new UnitOfWorkEF());
             integrante = app.Criar(1, integrante);
             Assert.IsTrue(integrante.Id > 0);
         }
@@ -50,7 +50,7 @@ namespace LM.Core.Tests
                 integrante.Email = null;
                 integrante.Telefone = null;
                 integrante.AnimalId = 1;
-                var app = ObterAppIntegrante(new IntegranteEF());
+                var app = ObterAppIntegrante(new UnitOfWorkEF());
                 try
                 {
                     integrante = app.Criar(1, integrante);
@@ -70,7 +70,7 @@ namespace LM.Core.Tests
         {
             var integranteParaAtualizar = SetIntegranteInMockRepo(_fakes.Integrante());
             integranteParaAtualizar.Usuario = new Usuario { Id = 1 };
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
 
             var integrante = _fakes.Integrante();
@@ -97,7 +97,7 @@ namespace LM.Core.Tests
         {
             var integranteParaAtualizar = SetIntegranteInMockRepo(_fakes.IntegrantePet());
             integranteParaAtualizar.AnimalId = 3;
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
 
             var integrante = _fakes.IntegrantePet();
@@ -114,7 +114,7 @@ namespace LM.Core.Tests
         public void NãoPodeAtualizarIntegranteComEmailJaExistente()
         {
             var integranteParaAtualizar = SetIntegranteInMockRepo(_fakes.Integrante());
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             var integrante = _fakes.Integrante();
             integrante.Usuario = new Usuario { Id = 1 };
@@ -127,7 +127,7 @@ namespace LM.Core.Tests
         public void NãoPodeAtualizarIntegranteQueNaoPertenceAoPontoDeDemanda()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Atualizar(9999, 1, integrante));
         }
@@ -138,7 +138,7 @@ namespace LM.Core.Tests
             var integranteParaAtualizar = _fakes.Integrante();
             integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
             integranteParaAtualizar.Usuario = new Usuario { Id = 2 };
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             
             var integrante = _fakes.Integrante();
@@ -154,7 +154,7 @@ namespace LM.Core.Tests
             var integranteParaAtualizar = _fakes.Integrante();
             integranteParaAtualizar.Usuario = new Usuario { Id = 1 };
             integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
 
             var integrante = _fakes.Integrante();
             integrante.Id = 200;
@@ -170,7 +170,7 @@ namespace LM.Core.Tests
             var integranteParaAtualizar = _fakes.Integrante();
             integranteParaAtualizar = SetIntegranteInMockRepo(integranteParaAtualizar);
             integranteParaAtualizar.Usuario = null;
-            _mockRepo.Integrante = integranteParaAtualizar;
+            _mockRepo.MockIntegranteRepo.Integrante = integranteParaAtualizar;
 
             var integrante = _fakes.Integrante();
             integrante.Id = 200;
@@ -184,7 +184,7 @@ namespace LM.Core.Tests
         public void NaoPodeDesativarUmIntegranteQueNaoPertenceAoPontoDeDemanda()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             Assert.Throws<IntegranteNaoPertenceAPontoDemandaException>(() => app.Desativar(9999, 1, 200));
         }
@@ -194,7 +194,7 @@ namespace LM.Core.Tests
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
             integrante.Usuario = new Usuario { Id = 2, StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>{ new StatusUsuarioPontoDemanda{ StatusCadastro = StatusCadastro.CadastroIniciado}}};
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             Assert.IsTrue(integrante.Ativo);
             app.Desativar(100, 1, 200);
@@ -206,7 +206,7 @@ namespace LM.Core.Tests
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
             integrante.Usuario = new Usuario { Id = 1 };
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             var ex = Assert.Throws<ApplicationException>(() => app.Desativar(100, 1, 200));
             Assert.AreEqual("Não pode desativar integrante.", ex.Message);
@@ -217,7 +217,7 @@ namespace LM.Core.Tests
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
             integrante.Usuario = new Usuario { Id = 7 }; //Usuario criardor do ponto, ver em Fakes.PontoDemanda
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             var ex = Assert.Throws<ApplicationException>(() => app.Desativar(100, 1, 200));
             Assert.AreEqual("Não pode excluir o criador da casa.", ex.Message);
@@ -227,12 +227,12 @@ namespace LM.Core.Tests
         public void ConvidarIntegrante()
         {
             var integrante = SetIntegranteInMockRepo(_fakes.Integrante());
-            _mockRepo.Integrante = integrante;
+            _mockRepo.MockIntegranteRepo.Integrante = integrante;
             var convidado = SetIntegranteInMockRepo(_fakes.Integrante());
             convidado.Usuario = null;
             convidado.Id = 201;
             convidado.GruposDeIntegrantes = integrante.GruposDeIntegrantes;
-            _mockRepo.Convidado = convidado;
+            _mockRepo.MockIntegranteRepo.Convidado = convidado;
             var app = ObterAppIntegrante(_mockRepo.GetMockedRepo());
             app.Convidar(100, 1, 201, ImageHost);
             Assert.IsTrue(convidado.DataConvite.Value.Date == DateTime.Now.Date);
@@ -242,11 +242,11 @@ namespace LM.Core.Tests
         [Test]
         public void RemoverIntegranteDoGrupo()
         {
-            var app1 = ObterAppIntegrante(new IntegranteEF());
+            var app1 = ObterAppIntegrante(new UnitOfWorkEF());
             var integrante = _fakes.Integrante("teste_remover_do_ponto@teste.com");
             integrante.Usuario = new Usuario { Login = "teste_remover_do_ponto@teste.com", Senha = "123456", StatusUsuarioPontoDemanda = new Collection<StatusUsuarioPontoDemanda>{new StatusUsuarioPontoDemanda{ StatusCadastro = StatusCadastro.EtapaDeInformacoesPessoaisCompleta }}};
             integrante = app1.Criar(1, integrante);
-            var app2 = ObterAppIntegrante(new IntegranteEF());
+            var app2 = ObterAppIntegrante(new UnitOfWorkEF());
             app2.RemoverDoPonto(1, 1, integrante.Id);
         }
 
@@ -261,7 +261,7 @@ namespace LM.Core.Tests
             return integrante;
         }
 
-        private static IIntegranteAplicacao ObterAppIntegrante(IRepositorioIntegrante repo)
+        private static IIntegranteAplicacao ObterAppIntegrante(IUnitOfWork repo)
         {
             var notificacaoApp = new NotificacaoAplicacao(new Mock<IServicoRest>().Object, new Mock<ITemplateMensagemAplicacao>().Object, new Mock<IFilaItemAplicacao>().Object);
             return new IntegranteAplicacao(repo, notificacaoApp);

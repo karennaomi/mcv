@@ -56,6 +56,20 @@ namespace LM.Core.Tests
         }
     }
 
+    public class MockUnitOfWorkRepo
+    {
+        public MockIntegranteRepo MockIntegranteRepo = new MockIntegranteRepo();
+        public MockPontoDemandaRepo MockPontoDemandaRepo = new MockPontoDemandaRepo();
+
+        public IUnitOfWork GetMockedRepo()
+        {
+            var mock = new Mock<IUnitOfWork>();
+            mock.SetupGet(m => m.IntegranteRepo).Returns(MockIntegranteRepo.GetMockedRepo);
+            mock.SetupGet(m => m.PontoDemandaRepo).Returns(MockPontoDemandaRepo.GetMockedRepo);
+            return mock.Object;
+        }
+    }
+
     public class MockIntegranteRepo
     {
         public Integrante Integrante { get; set; }
@@ -169,4 +183,5 @@ namespace LM.Core.Tests
         }
     }
 }
+
 
