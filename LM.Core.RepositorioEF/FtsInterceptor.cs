@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure.Interception;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace LM.Core.RepositorioEF
@@ -12,7 +13,10 @@ namespace LM.Core.RepositorioEF
         private const string FullTextPrefix = "-FTSPREFIX-";
         public static string Fts(string search)
         {
-            return string.Format("({0}\"{1}*\")", FullTextPrefix, search);
+            var tokens = search.Split(' ').ToList();
+            var formatedTokens = tokens.Select(t => "\"" + t + "*\"");
+            search = string.Join(" AND ", formatedTokens);
+            return string.Format("({0}{1})", FullTextPrefix, search);
         }
         public void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
         {
@@ -49,6 +53,7 @@ namespace LM.Core.RepositorioEF
                 value = value.Replace(FullTextPrefix, ""); // remove prefix we added n linq query
                 value = value.Substring(1, value.Length - 2); // remove %% escaping by linq translator from string.Contains to sql LIKE
                 parameter.Value = value.Replace(" ", "%");
+                parameter.Value = value.Replace("%AND%", " AND ");
                 cmd.CommandText = Regex.Replace(text, string.Format(@"\[(\w*)\].\[(\w*)\]\s*LIKE\s*@{0}\s?(?:ESCAPE N?'~')", parameter.ParameterName), string.Format(@"contains([$1].[$2], @{0})", parameter.ParameterName));
                 if (text == cmd.CommandText) throw new Exception("FTS was not replaced on: " + text);
                 text = cmd.CommandText;

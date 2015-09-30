@@ -43,7 +43,7 @@ namespace LM.Core.Tests
         public void BuscaUmProdutoComEspaco()
         {
             var app = ObterAppProduto(new ProdutoEF(_contexto));
-            var produtos = app.Buscar(100, "agua mineral");
+            var produtos = app.Buscar(100, "leite batavo");
             Assert.IsTrue(produtos.Any());
         }
 
