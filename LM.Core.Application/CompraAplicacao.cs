@@ -53,6 +53,7 @@ namespace LM.Core.Application
         public Compra Criar(Compra compra)
         {
             if(compra.PontoDemanda.Listas == null) compra.PontoDemanda.Listas = new Collection<Lista> {_appLista.ObterListaPorPontoDemanda(compra.PontoDemanda.Id)};
+            if(_appCompraAtiva.ExisteCompraAtiva(compra.PontoDemanda.Id)) throw new ApplicationException("Não existe uma compra ativa.");
             compra.Validar();
             compra = _compraRepo.Criar(compra);
             AtualizarStatusItensPedido(compra.Itens.OfType<PedidoCompraItem>());
