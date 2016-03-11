@@ -1,0 +1,41 @@
+<html ng-app="listaTelefonica">
+<head>
+	<title>Meu contador virtual</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<style>
+		.jumbotron {
+			width: 600px;
+			text-align: center;
+			margin-top: 20px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.table {
+			margin-top: 20px;
+		}
+		.form-control {
+			margin-bottom: 5px;
+		}
+		.selecionado{background-color: yellow;}
+	</style>
+	<script src="angular.js"></script>
+	<script src="angular-locale_pt-br.js"></script>
+	
+</head>
+<body ng-controller="listaTelefonicaCtrl">
+	<div class="jumbotron">
+		<h2>Informe seus dados</h2>
+		<hr/>
+		<input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome"/>
+		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone"/>
+		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="CPF"/>
+		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Razao Social"/>
+		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Nome Fantasia"/>
+		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="CNPJ"/>
+		<button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)">Salvar</button>
+	
+	</div>
+	<div ng-include="'footer.html'">
+	</div>
+</body>
+</html>

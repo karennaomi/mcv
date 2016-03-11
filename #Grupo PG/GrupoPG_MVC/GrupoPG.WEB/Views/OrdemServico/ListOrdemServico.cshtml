@@ -1,0 +1,159 @@
+﻿@model IEnumerable<PG.Domain.OrdemServico>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Banco.NomeBanco)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContaContabil.NomeConta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Equipe.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PC.ModeloEquipamento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoFixacao.NomeTipoFixacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoInstalacao.NomeTipoInstalacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoMaquina.NomeTipoMaquina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sinalizacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocalizacaoMaquina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NomeContato)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TelefoneContato)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Habilitada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaUnificado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Defeito)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Serie)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataEntrega)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoraEntrega)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataFinalizacao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DtChegada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HrChegada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DtChegadaTransportadora)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HrChegadaTransportadora)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Banco.NomeBanco)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContaContabil.NomeConta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Equipe.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PC.ModeloEquipamento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoFixacao.NomeTipoFixacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoInstalacao.NomeTipoInstalacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoMaquina.NomeTipoMaquina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sinalizacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocalizacaoMaquina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NomeContato)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TelefoneContato)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Habilitada)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValorTotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaUnificado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Defeito)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Serie)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataEntrega)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoraEntrega)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataFinalizacao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DtChegada)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HrChegada)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DtChegadaTransportadora)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HrChegadaTransportadora)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

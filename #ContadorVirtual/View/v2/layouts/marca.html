@@ -1,0 +1,35 @@
+  <div  class="page">
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+        <div class="content-block-inner">
+			<div class="shop-area">
+                            <div  ng-class-even="'floatright single-shop'" ng-class-odd="'floatleft single-shop'"  ng-repeat="modelo in modelos">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#/frota/{{modelo.FrotaID}}"><img ng-src="{{modelo.Fotos[0].url}}" alt="{{modelo.Modelo}}" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#/frota/{{modelo.FrotaID}}">{{modelo.Modelo}} {{modelo.AnoModelo}} {{modelo.Cor}}</a></h3>
+							<div class="price-box">
+								<span class="new-price">{{modelo.Valor}}</span>
+							</div>
+						</div>					
+					</div>
+				</div>
+			
+			</div>
+			<div class="pagination">
+				<ul>
+					<li><a href="#">Prev</a></li>
+					<li class="active"><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">Next</a></li>
+				</ul>
+			</div>
+        </div>
+      </div>
+    </div>
+  </div>

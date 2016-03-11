@@ -1,0 +1,303 @@
+﻿<html lang="pt" ng-app="cadastroMCV" >
+    <head>
+        <title>Meu Contador Virtual</title>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="Contabilidade, contabilidade virtual, nota fiscal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/layout.css" rel="stylesheet" />
+        <script src="js/angular.js"></script>
+        <script src="js/angular-locale_pt-br.js"></script>
+        <script src="js/angular-messages.js"></script>
+        <script src="assets/js/jquery.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.mask.js"></script>
+        <script src="assets/js/init.js"></script>
+        <script src="js/controller/CadastroCtrl.js"></script>
+     
+    </head>
+    <body ng-controller="cadastroMCVCtrl">
+        <article class="modal fade show in modal-cadastro" tabindex="-1">
+            <div class="modal-dialog">
+                <div id="1" name="1" class="modal-content" ng_show="showMe==1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">                          
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" />
+                    </div>
+                    <div class="modal-body">
+                        <div class="cadastro-titles">
+                            <h1>Bem vindo ao Meu Contador Virtual!</h1>
+                            <p>
+                                Nas próximas telas iremos dar início ao seu cadastro.
+                            </p>
+                        </div>
+                        <a href="#" ng-click="Proximo('2')" class="btn btn-lg btn-pf">Cadastro Pessoa Física</a>
+                        <a href="#" ng-click="Proximo('4')"  class="btn btn-lg btn-pj">Cadastro Pessoa Jurídica</a>
+                        <div>
+                            <a href="#" class="btn btn-link btn-cancelar">> Cancelar</a>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div class="modal-content modal-pf" ng-show="showMe==2" id="2" name="2" >
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Cadastro Pessoa Física</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="cadastro-form">
+                            <label class="center-block">
+                                Nome Completo:
+                                <input type="text" class="form-control" name="nome" ng-model="usuario.nome" />
+                            </label>
+                            
+                            <label class="center-block">
+                                E-mail de Contato:
+                                <input type="email" class="form-control" ng-model="usuario.email"/>
+                            </label>
+                            <label class="center-block">
+                                CPF:
+                                <input type="text" class="form-control" ng-model="usuario.cpf" />
+                            </label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Senha:
+                                        <input type="password" class="form-control" ng-model="usuario.senha" />
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Repetir Senha:
+                                        <input type="password" class="form-control" ng-model="usuario.repeat" />
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" value="Cadastrar" class="btn btn-lg btn-pf"  ng-click="adicionarUser(usuario,3)" />
+                        </form>
+                    </div>
+                </div>
+                <div id="3" name="3" ng-show="showMe==3" class="modal-content modal-pf">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Cadastro Pessoa Física</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="cadastro-titles">
+                            <h2>Sucesso!</h2>
+                            <p>
+                                Seu cadastro foi realizado com sucesso, comece agora mesmo o Meu Contador Virtual.
+                            </p>
+                        </div>
+                        <a class="btn btn-lg btn-pf" ng-click="showMe = 4">Iniciar</a>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div id="4" name="4" ng-show="showMe==4" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Cadastro Pessoa Jurídica <small>1 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="cadastro-form">
+                            <label class="center-block">
+                                Nome Completo:
+                                <input type="text" class="form-control"  ng-model="usuario.nome" />
+                            </label>
+                            <label class="center-block">
+                                E-mail de Contato:
+                                <input type="email" class="form-control"  ng-model="usuario.email" />
+                            </label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Senha:
+                                        <input type="password" class="form-control"  ng-model="usuario.senha"/>
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Repetir Senha:
+                                        <input type="password" class="form-control"  ng-model="usuario.repeat"/>
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" value="Próxima Etapa" class="btn btn-lg btn-pj"  ng-click="adicionarUser(usuario,5)"  />
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div id="5" ng-show="showMe==5" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Consultar CNPJ <small>2 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="cadastro-form">
+                            <label class="center-block">
+                                CNPJ:
+                                <input type="text" class="form-control" />
+                            </label>
+                            <input type="submit" value="Consultar" id="buscar-btn" ng-click="consultarCNPJ()" class="btn btn-lg btn-pj" />
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div id="6" ng-show="showMe==cnpjnook" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Consultar CNPJ <small>2 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger">
+                            Prezado, informamos que o CNPJ consultado<br />
+                            não está apto para a consulta.
+                        </div>
+                        <form class="cadastro-form">
+                            <label class="center-block">
+                                Informar novo CNPJ:
+                                <input type="text" class="form-control" />
+                            </label>
+                            <input type="submit" value="Consultar Novamente" class="btn btn-lg btn-pj" />
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div id="7" ng-show="showMe==cnpjok" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Consultar CNPJ <small>2 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-success">
+                            Obrigado por aguardar!<br />
+                            O CNPJ informado está apto para prosseguir.
+                        </div>
+                        <form class="cadastro-form">
+                            <input type="submit" value="Proxima Etapa" class="btn btn-lg btn-pj" />
+                        </form>
+                    </div>
+                </div>
+                <div id="8" name="8"  ng-show="showMe==8" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Pagamento Via Cartão de Crédito <small>3 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="cadastro-form">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="card" /> <img src="assets/img/img-visa.png" />
+                                </label>
+                                <label>
+                                    <input type="radio" name="card" /> <img src="assets/img/img-mastercard.png" />
+                                </label>
+                            </div>
+                            <label class="center-block">
+                                Nome Impresso no Cartão:
+                                <input type="text" class="form-control" />
+                            </label>
+                            <label class="center-block">
+                                Número do Cartão:
+                                <input type="text" class="form-control" />
+                            </label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Validade:
+                                        <input type="text" class="form-control" />
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Codigo de Segurança:
+                                        <input type="text" class="form-control" />
+                                    </label>
+                                </div>
+                            </div>
+                            <label class="center-block">
+                                Senha:
+                                <input type="password" class="form-control" />
+                            </label>
+                            <input type="submit" value="Proxima Etapa" class="btn btn-lg btn-pj" />
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div id="9" ng-show="showMe==9" class="modal-content modal-pj">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Pagamento Via Cartão de Crédito <small>3 de 5</small></h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-success">
+                            Pagamento realizado com sucesso!
+                        </div>
+                        <form class="cadastro-form">
+                            <input type="submit" value="Proxima Etapa" class="btn btn-lg btn-pj" />
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+             </div>
+        </article><!-- /.modal -->
+        <div class="modal fade" id="buscar-modal" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Buscar CNPJ</h4>
+                    </div>
+                    <div class="modal-body" style="height:250px;">
+                        <p>Preencha com o texto da imagem</p>
+                        <br />
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Texto</label>
+                                <div class="col-md-5">
+                                    <input type="text" id="img-input" value="" class="form-control caixa-grande" />
+                                </div>
+                            </div>
+                            <div class="form-group img-captcha">
+                                <div class="col-md-offset-2 col-md-6">
+                                    <div style="float:left;">
+                                        <img id="captcha-img" title="Informe o texto da imagem" class="hidden" />
+                                    </div>
+                                    <div style="float:right;">
+                                        <a href="#" id="buscar-captcha-btn" class="btn btn-warning btn-sm"><i class="glyphicon glyphicon-refresh"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="height:80px;">
+                        <p class="bg-danger pull-left hidden msg" style="padding:10px 20px;">
+                            <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;<strong><span id="msgErro-span"></span></strong>
+                        </p>
+                        <button type="button" id="fechar-button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" id="buscarDados-btn" class="btn btn-primary">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>

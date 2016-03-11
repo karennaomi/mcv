@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'bariol_regularregular';
+    src: url('fonts/bariol_regular-webfont.eot');
+    src: url('fonts/bariol_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/bariol_regular-webfont.woff2') format('woff2'),
+         url('fonts/bariol_regular-webfont.woff') format('woff'),
+         url('fonts/bariol_regular-webfont.ttf') format('truetype'),
+         url('fonts/bariol_regular-webfont.svg#bariol_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body { background: #333 }
+
+/*MODAL CADASTRO*/
+.modal-cadastro { color: #999; font-size: 20px; font-family: 'bariol_regularregular'; }
+.modal-cadastro .modal-dialog {  width: auto; max-width: 800px; }
+.modal-cadastro .modal-content { border: 0; border-radius: 0; box-shadow: none;  }
+.modal-cadastro .modal-header { margin: 0 60px; padding: 40px 0 20px; }
+.modal-cadastro .modal-body { margin: 0 60px; padding: 20px 0 40px; }
+.modal-cadastro .close { text-shadow: none; position: absolute; right: 0; top: -20px; font-size: 12px; color: #cccccc; opacity: 1; }
+
+.modal-cadastro .modal-header h1 { margin: 0; font-size: 35px; }
+.modal-cadastro .modal-header small { padding-top: 15px; font-size: 17px; color: #cccccc; float: right }
+.modal-cadastro .modal-pf .modal-header h1 { color: #41c88e }
+.modal-cadastro .modal-pj .modal-header h1 { color: #ff8a21 }
+
+/*BOTOES*/
+.btn.btn-cancelar { color: #cbcbcb; padding: 10px 0; }
+.btn.btn-pf { border-radius: 0; background: #41c88e no-repeat right 10px center; color: #fff; }
+.btn.btn-pj { border-radius: 0; background: #ff8a21 no-repeat right 10px center; color: #fff; }
+.btn-lg.btn-pf,
+.btn-lg.btn-pj { padding-right: 40px; background-image: url(../img/ico-btn-pf.png); font-size: 20px; }
+.btn-lg.btn-pj { background-image: url(../img/ico-btn-pj.png); }
+.btn + .btn { margin-left: 20px; }
+.btn.btn-add { color: #41c88e; font-size: 15px; padding: 10px 0 0; }
+
+/*TITULOS*/
+.cadastro-titles { padding: 30px 0 20px; }
+.cadastro-titles h1,
+.cadastro-titles h2 { color: #41c88e; font-size: 35px; margin: 0;  }
+.cadastro-titles p { font-size: 25px; }
+
+/*AVISOS*/
+.modal-cadastro .alert { background: none; border: 0; padding: 20px 0 20px 70px; font-size: 25px; }
+.modal-cadastro .alert-danger { background: url(../img/ico-alert-danger.png) no-repeat left center; color: #e74c3c; }
+.modal-cadastro .alert-success { background: url(../img/ico-alert-success.png) no-repeat left center; color: #999; }
+.modal-cadastro .alert-loading { background: url(../img/spinner.gif) no-repeat left center; color: #999; }
+
+
+/*FORMULARIOS*/
+.cadastro-form .form-control { margin-bottom: 20px; border-color: #e1e1e1; border-radius: 0; height: 42px; outline: 0; box-shadow: none; }
+.cadastro-form label { font-weight: normal; }
+.cadastro-form .radio label + label { margin-left: 20px; }
+.cadastro-form .radio input { top: 10px }
+.cadastro-form legend { width: auto; border: 0; font-size: 25px; color: #ff8a21 }
+
+.cadastro-steps { list-style: none; margin: 0; padding: 40px 0 }
+.cadastro-steps li { padding: 0 20px; text-align: center; font-size: 18px; width: 20%; float: left; position: relative; }
+.cadastro-steps li:before { position: relative; z-index: 2; content: ''; display: block; width: 55px; height: 55px; border-radius: 100px; background: #70d6aa; margin: 0 auto 10px; }
+.cadastro-steps li.active:before { border: #70d6aa 10px solid; background: #fff; }
+.cadastro-steps li.done:before { background-image: url(../img/ico-steps.png); background-position: center center; background-repeat: no-repeat }
+.cadastro-steps li + li:after { position: absolute; left: -50%; top: 25px; display: block; content: ''; width: 100%; height: 7px; background: #70d6aa }
+.cadastro-steps.steps-sm li { font-size: 13px; }
+.cadastro-steps.steps-sm li:before { width: 42px; height: 42px; }
+.cadastro-steps.steps-sm li + li:after { top: 18px; }

@@ -1,0 +1,330 @@
+<html ng-app="listaordemservico">
+<head>
+	<meta charset="UTF-8">
+	<title>Controle de Ordem de Serviço</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<style>
+		.jumbotron {
+			width: 1200px;
+			text-align: center;
+			margin-top: 20px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		h3 {
+			margin-bottom: 30px;
+		}
+		.table {
+			margin-top: 20px;
+		}
+		.form-control {
+			margin-bottom: 5px;
+		}
+		.selecionado {
+			background-color: yellow;
+		}
+		.negrito {
+			font-weight: bold;
+		}
+	</style>
+	<script src="angular.js"></script>
+	<script src="js/masks.js"></script>
+	<script src="js/ui-bootstrap-tpls-0.14.3.js"></script>
+	<script src="angular-messages.js"></script>
+	<script>
+		angular.module("listaordemservico", ["ngMessages"]);
+		angular.module("listaordemservico").controller("listaordemservicoCtrl", function ($scope, $http) {
+			$scope.app = "Ordem de Serviço";
+
+			var carregarOS = function(){ $scope.ordemServicos = $http.get("http://localhost:59731/api/OrdemServicos").success(function (data) {
+				$scope.ordemServicos = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});
+			}
+
+			$scope.bancos  = $http.get("http://localhost:59731/api/Bancos").success(function (data) {
+				$scope.bancos = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});
+
+			$scope.tpFixacaos  = $http.get("http://localhost:59731/api/TipoFixacaos").success(function (data) {
+				$scope.tpFixacaos = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});				
+
+
+			$scope.tpMaquinas  = $http.get("http://localhost:59731/api/TipoMaquinas").success(function (data) {
+				$scope.tpMaquinas = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});				
+
+
+			$scope.tpInstalacoes  = $http.get("http://localhost:59731/api/TipoInstalacaos").success(function (data) {
+				$scope.tpInstalacoes = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});				
+
+			$scope.equipes  = $http.get("http://localhost:59731/api/Equipes").success(function (data) {
+				$scope.equipes = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});							
+			
+
+			$scope.contascontabeis  = $http.get("http://localhost:59731/api/ContaContabils").success(function (data) {
+				$scope.contascontabeis = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
+				});							
+			
+
+			/*$scope.ordemServicos = [
+				{nome: "Pedro", telefone: "99998888", cor: "blue"},
+				{nome: "Ana", telefone: "99998877", cor: "yellow"},
+				{nome: "Maria", telefone: "99998866", cor: "red"}
+			];*/
+			$scope.operadoras = [
+				{nome: "Oi", codigo: 14, categoria: "Celular"},
+				{nome: "Vivo", codigo: 15, categoria: "Celular"},
+				{nome: "Tim", codigo: 41, categoria: "Celular"},
+				{nome: "GVT", codigo: 25, categoria: "Fixo"},
+				{nome: "Embratel", codigo: 21, categoria: "Fixo"}
+			];
+			$scope.adicionarContato = function (ordemServico) {
+				$http.post("http://localhost:59731/api/OrdemServicos", ordemServico)
+				delete $scope.ordemServico;
+				$scope.contatoForm.$setPristine();
+				carregarOS();
+
+			};
+			$scope.apagarContatos = function (ordemServicos) {
+				$scope.ordemServicos = ordemServicos.filter(function (ordemServico) {
+					if (!ordemServico.selecionado) return ordemServico;
+				});
+			};
+			$scope.isContatoSelecionado = function (ordemServicos) {
+				return ordemServicos.some(function (ordemServico) {
+					return ordemServico.selecionado;
+				});
+			};
+			carregarOS();
+
+		});
+	</script>
+</head>
+<body ng-controller="listaordemservicoCtrl">
+	<div class="jumbotron">
+		<h3>{{app}}</h3>
+		<form name="contatoForm">
+			<div class="container">
+				<div class=row>
+
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.bancoId" ng-options="banco.id as banco.nomeBanco for banco in bancos">
+							<option value="">Banco</option>
+						</select>
+						
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.nrOrdemServico" name="nrordemservico" placeholder="Numero OS" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.nomeContato" name="nome" placeholder="Nome" ng-required="true"/>
+					</div>
+
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.sinalizacao" name="sinalizacao" placeholder="sinalização" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.habilitada" name="habilitada" placeholder="Está habilitada ?" ng-required="true"/>
+					</div>
+				</div>
+	
+				<div class="row">
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.endereco.logradouro" name="logradrouro" placeholder="Logradouro" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.endereco.numero" name="numero" placeholder="número" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.endereco.CidadeId" name="cidade" placeholder="cidade" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.endereco.Uf">
+							<option value="rj">RIO DE JANEIRO</option>
+						</select>
+						
+				</div>
+
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.tipoInstalacaoId" ng-options="tpInstalacao.id as tpInstalacao.nomeTipoInstalacao for tpInstalacao in tpInstalacoes">
+							<option value="">Tipo Instalação</option>
+						</select>
+
+					</div>
+
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.valorTotal" name="valorTotal" placeholder="valor total" ng-required="true"/>
+					</div>
+
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.defeito" name="defeito" placeholder="Defeito" ng-required="true"/>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.contaContabilId" ng-options="conta.id as conta.nomeConta for conta in contascontabeis">
+							<option value="">Conta Contabil</option>
+						</select>
+						
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.serie" name="serie" placeholder="Serie" ng-required="true" ng-minlength="10"/>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.tipoMaquinaId" ng-options="tpMaquina.id as tpMaquina.nomeTipoMaquina for tpMaquina in tpMaquinas">
+							<option value="">Tipo Maquina</option>
+						</select>
+
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.tipoFixacaoID" ng-options="tpFixacao.id as tpFixacao.nomeTipoFixacao for tpFixacao in tpFixacaos">
+							<option value="">Tipo Fixação</option>
+						</select>
+					
+					</div>
+
+					<div class="col-md-2">
+						<select class="form-control" ng-model="ordemServico.ordemServico.equipeId" ng-options="equipe.id as equipe.nomeEquipe for equipe in equipes">
+							<option value="">Equipe</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.pcId" name="pcId" placeholder="pcId" ng-required="true" ng-minlength="10"/>
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.dataEntrega" name="dataEntrega" placeholder="dataEntrega" ng-required="true" ng-minlength="10"/>
+				
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.horaEntrega" name="horaEntrega" placeholder="horaEntrega" ng-required="true" ng-minlength="10"/>
+				
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.dataFinalizacao" ui-mask="99/99/9999" name="dataFinalizacao" placeholder="dataFinalizacao" ng-required="true" ng-minlength="10"/>
+					</div>
+				</div>
+			
+				<div class="row">
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.dtChegada" name="dtChegada" placeholder="dtChegada" ng-required="true" ng-minlength="10"/>
+
+					</div>
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.dtChegadaTransportadora" name="dtChegadaTransportadora" placeholder="Nome" ng-required="true" ng-minlength="10"/>
+						
+					</div>
+
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.hrChegadaTransportadora" name="hrChegadaTransportadora" placeholder="Nome" ng-required="true" ng-minlength="10"/-->
+			
+					</div>
+
+					<div class="col-md-2">
+						<input class="form-control" type="text" ng-model="ordemServico.telefoneContato" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/"/>
+						
+					</div>
+
+					<div class="col-md-2">
+
+								
+					</div>
+
+					<div class="col-md-2">
+						
+					</div>
+				
+				</div>
+			</div>			
+
+
+		<button class="btn btn-primary btn-block" ng-click="adicionarContato(ordemServico)" >Adicionar Ordem de Serviço</button>
+		<button class="btn btn-danger btn-block" ng-click="apagarContatos(ordemServicos)" ng-if="isContatoSelecionado(ordemServicos)">Apagar Contatos</button>
+			
+			
+			
+			
+
+			</div>
+		</form>
+		<div>
+			<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?"/>
+		</div>
+		
+		<table ng-show="ordemServicos.length > 0" class="table">
+			<tr|>
+				<th></th>
+				<th>Número OS</th>
+				<th>Nome Contato</th>
+				<th>Telefone Contato</th>
+				<th>Data Entrega</th>
+				<th>Hora Entrega</th>
+				<th>Data Transportadora</th>
+				<th>Hora Transportadora</th>
+				<th>Sinalização</th>
+				<th>Série</th>
+				<th>Defeito</th>
+				<th>Valor Orçamento</th>
+				<th></th>
+			</tr>
+			<tr ng-class="{'selecionado negrito': ordemServico.selecionado}" ng-repeat="ordemServico in ordemServicos | filter:criterioDeBusca ">
+				<td><input type="checkbox" ng-model="ordemServico.selecionado"/></td>
+				<td>{{ordemServico.nrOrdemServico}}</td>
+				<td>{{ordemServico.nomeContato}}</td>
+				<td>{{ordemServico.telefoneContato}}</td>
+				<td>{{ordemServico.dataEntrega | date:'dd/MM/yyyy'}}</td>
+				<td>{{ordemServico.horaEntrega | date:'HH:mm'}}</td>
+				<td>{{ordemServico.dtChegadaTransportadora | date:'dd/MM/yyyy'}}</td>
+				<td>{{ordemServico.hrTransportadora | date:'HH:mm'}}</td>
+				<td>{{ordemServico.sinalizacao}}</td>
+				<td>{{ordemServico.serie}}</td>
+				<td>{{ordemServico.defeito}}</td>
+				<td>{{ordemServico.valorTotal}}</td>
+				
+				<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
+			</tr>
+		</table>
+		<hr/>
+		
+
+		<!--div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+			<div ng-message="required">
+				Por favor, preencha o campo nome!
+			</div>
+			<div ng-message="minlength">
+				O campo nome deve ter no mínimo 10 caracteres.
+			</div>
+		</div>
+
+		<div ng-show="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty" class="alert alert-danger">
+			Por favor, preencha o campo telefone!
+		</div>
+		<div ng-show="contatoForm.telefone.$error.pattern" class="alert alert-danger">
+			O campo telefone deve ter o formato DDDDD-DDDD.
+ng-disabled="contatoForm.$invalid"
+
+		</div-->
+		
+	</div>
+	<div ng-include="'footer.html'"></div>
+</body>
+</html>
+

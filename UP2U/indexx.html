@@ -1,0 +1,95 @@
+<html>
+<head>
+	    <meta charset="utf-8" />
+	<title>UP2U</title>
+    <!-- Modernizr -->
+    <script src="/bundles/modernizr?v=qVODBytEBVVePTNtSFXgRX0NCEjh9U_Oj8ePaSiRcGg1"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" type="text/css" href="font-awesome.min.css">
+    <!-- Font Ubuntu -->
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500' rel='stylesheet' type='text/css'>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<nav class="nav" role="naviagation">
+		<div class="container">
+			 <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="#home"><span class="link-underline">Home</span></a></li>
+                        <li><a href="#technology"><span class="link-underline">Tecnologia</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="link-underline">Soluções</span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#retail"><span class="link-underline">Varejo</span></a></li>
+                                <li><a href="#industry"><span class="link-underline">Industria</span></a></li>
+                                
+                            </ul><!-- end ul.dropdown-menu -->
+                        </li><!-- end li.dropdown -->
+                        <li><a href="#about"><span class="link-underline">Sobre</span></a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="link-underline">Contato</span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#contact"><span class="link-underline">Comercial</span></a></li>
+                                <li><a href="#careers"><span class="link-underline">Carreiras</span></a></li>
+                                
+                            </ul><!-- end ul.dropdown-menu -->
+                        </li><!-- end li.dropdown -->
+                        <li><a href="#clients"><span class="link-underline">Clientes</span></a></li>
+                    </ul><!-- end ul.nav.navbar-nav -->
+		</div>
+	</nav>
+
+    <div ng-app="homeApp" ng-controller="HomeCtrl" class="section-content">
+        
+
+        
+
+<section class="sectionInitial">
+    <div id="home"><h2>Home</h2></div>
+
+    <div id="carouselInitial" class="carousel slide carousel-infoprice-intro" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carouselInitial" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselInitial" data-slide-to="1"></li>
+            <li data-target="#carouselInitial" data-slide-to="2"></li>
+        </ol><!-- end div.carousel-indicators -->
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <div class="carousel-caption">
+                    <p class="carouselDescription">
+                        EXPORTAÇÃO <br />DE PEQUENAS E MÉDICAS <br />PARA O MERCOSUL
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="carousel-caption">
+                    <p class="carouselDescription">
+                        Melhore margens. <br />Aumente vendas. <br />Defina suas estratégias.
+                    </p>
+                </div>
+            </div>
+        </div><!-- end div.carousel-inner -->
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carouselInitial" role="button" data-slide="prev">
+            
+            <img class="carousel-control-left" src="../Images/btn-carousel-left.png" />
+
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carouselInitial" role="button" data-slide="next">
+            
+            <img class="carousel-control-right" src="/Images/btn-carousel-right.png" />
+            <span class="sr-only">Next</span>
+        </a>
+    </div><!-- end div.carousel -->
+
+    <a class="scrollDown" href="#technology"></a>
+</section><!-- end section.sectionInitial -->
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<html lang="pt" ng-app="cadastroMCV">
+    <head>
+        <title>Meu Contador Virtual</title>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="Contabilidade, contabilidade virtual, nota fiscal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/layout.css" rel="stylesheet" />
+        <script src="js/angular.js"></script>
+        <script src="js/angular-locale_pt-br.js"></script>
+        <script src="js/angular-messages.js"></script>
+        <script src="assets/js/jquery.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.mask.js"></script>
+        <script src="js/controller/CadastroCtrl.js"></script>
+        <script src="assets/js/init.js"></script>
+        <script src="js/controller/CadastroCtrl.js"></script>
+    </head>
+    <body>
+        <article class="modal fade show in modal-cadastro" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" />
+                    </div>
+                    <div class="modal-body">
+                        <div class="cadastro-titles">
+                            <h1>Bem vindo ao Meu Contador Virtual!</h1>
+                            <p>
+                                Nas próximas telas iremos dar início ao seu cadastro.
+                            </p>
+                        </div>
+                        <a href="#" class="btn btn-lg btn-pf">Cadastro Pessoa Física</a>
+                        <a href="#" class="btn btn-lg btn-pj">Cadastro Pessoa Jurídica</a>
+                        <div>
+                            <a href="#" class="btn btn-link btn-cancelar">> Cancelar</a>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </article><!-- /.modal -->
+        
+    </body>
+</html>

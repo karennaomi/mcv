@@ -1,0 +1,123 @@
+<!doctype html> 
+<html ng-app="ngView"><head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<meta charset="utf-8"> 
+<meta name="viewport" content="width=device-width,initial-scale=1"> 
+<meta name="description" content=""> 
+<meta name="author" content=""> 
+<title>Contabilizei - Contabilidade Online</title> 
+<link rel="shortcut icon" href="../assets/img/contabilizei-favicon.ico"> 
+<link href="../assets/lib/bootstrap-3/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"> 
+<link href="../assets/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="all"> 
+<link href="../assets/lib/angular/modules/ngTable-0.3.1/ng-table.css" rel="stylesheet" media="all"> 
+<link href="../assets/lib/angular/modules/clearable/css/angular-clearable.css" type="text/css" rel="stylesheet" media="all"> 
+<link href="../assets/lib/jquery/select2/select2.css" rel="stylesheet" media="all"> 
+<link href="../assets/lib/jquery/select2/select2-bootstrap3.css" type="text/css" rel="stylesheet" media="all"> 
+<link href="../assets/lib/jquery/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" media="all"> 
+<link href="../assets/css/contabilizei-main.css" type="text/css" rel="stylesheet" media="all"> 
+<link href="css/login.css" type="text/css" rel="stylesheet" media="all"> <link href="css/sweetalert.css" type="text/css" rel="stylesheet" media="all">
+<link href="css/contabilizei-sistema-bs3.css" type="text/css" rel="stylesheet" media="all">  
+<link href="css/banner-tour.css" rel="stylesheet" type="text/css"> 
+<link href="css/indique.css" rel="stylesheet" type="text/css"> 
+<link href="css/indique-index.css" rel="stylesheet" type="text/css"> 
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet"> 
+<link href="//fonts.googleapis.com/css?family=Nunito:400,300,700" rel="stylesheet" type="text/css"> 
+<link rel="stylesheet" href="../assets/css/plataforma.1.5.css"> 
+<link href="../assets/css/introjs.css?1452518710276" rel="stylesheet" type="text/css">  <!--[if lt IE 9]><script src="../assets/js/html5shiv.js"></script><![endif]-->  
+<body ng-controller="MainCntl" class="auth" ng-cloak="">  
+	<script type="text/javascript">var dataLayer = [];</script>  <noscript>
+	<iframe src="//www.googletagmanager.com/ns.html?id=GTM-N9X6Z2" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> 
+	<script>
+	(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  	})(window,document,'script','dataLayer','GTM-N9X6Z2');
+  	</script>   
+  	<div class="top-alert"></div> 
+  	<div id="backdrop-loading" class="modal-backdrop" style="background-color: rgba(255, 255, 255, 0.7); display: none; z-index: 99999"> 
+  		<div class="msg-loading" align="center"><i class="icon-spinner icon-spin icon-2x"></i> 
+  		<span style="font-size: 22px"><strong>Carregando</strong></span></div> </div>    
+  		<div id="login-holder" data-ng-include="&apos;templates/view-login.html&apos;"></div>    
+  		<div id="onboarding" class="container-fluid" style="display: none"> 
+  			<div class="navbar navbar-default navbar-fixed-top" id="topoOnboarding"> 
+  				<div class="container"> 
+  					<div class="navbar-header"> 
+  						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> 
+  							<span class="sr-only">Toggle navigation</span> 
+  							<span class="icon-bar"></span> 
+  							<span class="icon-bar"></span> 
+  							<span class="icon-bar"></span> </button> 
+  							<a class="navbar-brand" href="" ng-click="processos()" target="_blank"> 
+  								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAjCAMAAADmBbXtAAAAeFBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////GqOSsAAAAJ3RSTlMAIPHBsOFw/OlQ96DPWw6WLhQIjrx/yLc+dwOp1jZjGtxMJodqR6P7V9bLAAAEV0lEQVRYw+2W6dqaMBBGQwgmRhZZBAQEXN/7v8NKQjC06Ne9tU/PH82jycwhkyHkXyV27pB/gCg6nwvyD7ApCfEg8rQk70zQoB1EBvqAvCtxAYgjIazQKllH3pKTJ/YmdafNAIgteUM6z43tKsMd8YYNrMqb0B6nGPAT8m6scFWf2+DSXjtSeVDsyZuRCM/aCPgRNDSqo9WJ/CrW2JAZ+zRQZxSuGh7S9HVNmCkTLZhqXFgk2/6E2v0qEQ8bW2QFhOQDPDBrxBDpBZbhAflBgstXieQ0tUUCKj4UcWlkjShueiE8YU1+iCNfPReZY0S+ixjI9ZdIYhEakx9hh98jsgW4MzrteyyRkrCr/nKRMuPA48hU66UCoz3A61kDO2x6Kb3sqss5E1zUpbntrIgTeRBMtYmaNWgYY4d7iptGcNmk3SRy8SX3opP2ZYxZItv78Dj8jRlqlWCbD7EOummpKYoVh2KTEMO1xzLyOHtnelnmy/b+PczA86IB0vGJspLC8ynkYCKohKSUHodfRF64FOKkRW4MMs/luDCjgCVypVLt5J5q9PKhO8Tqgcs0RRHA0LeTSuxjGV4+qsVTwZNh0g2uM+yRp1d34NO+vP9WI/ustFQFhwWYFuHYhff/RRDx2ExnpbWySzJAY8U6UpTWFBJTPPD2sYnHsYw3yp64PD2KDGOb3HIa6jYuOpWxRLh0RmIuKyVi7g4Zdh+JdJQfdKx49MpskT1myM2YXo0ntKawUjIRmXwIQ6BFLnrs4rB42Bt0SoRWY3+G/5FIgfMsViV4Yonk+AyuU2jxhIwofBzstLbTFSFSifBQj2+4fi5SdU6XuHCUSGG2CPwDkRZNMg9cYGuJSHyODPUjegIlComETNBpUCpRBz3RbLCeixwYxR0OZ95+JcKXIo4qLBUrdzUCpSWCL1HFdcUziAKcPAAebyRfJZI/EQk4+lsa1fRbRVzsTCx/wt4Rgc+hiYr4vTvi6kSWRTrJgzGvuUjyQWmt4FcmVkhsjEht8sugkTpShGVMVffYLp+RzSuRCyKyKHJ9fdhPkm8fsRZFTAnVJD6uzuk50L0tpHhCYE7xbqlr1WhfiaRol0UYzi9EqvwRbYP9oghxTX6G1xvSVKaGqGO9R7xkeo8siexHkT3OiyIBZDcTyWcie1VYJrCIF0VOAgMOsdnjCXLaVwahcqxCtRFuN3j098BLIgGyShvTciZyU9u/47jYWcWgoSWylVNYFaspVeAysUXUvQLgduFtCzxBlMQQFoAoWE7P4/3HZT4QkUWRUKBn/lHtdFOwrDftF17BXAl5mT9eFx7bGJHKB6eaYflkCJyxfH5FUf7nQaWJgvLk3CWDHE/w0tmmXmvBIfJW30hdCsGu44pZarbWPYzPhnJvKN8jE4Doi3R45N0uEwB1d9O6t0x3t9qj7mDqrgk5sQldoMchsPQjZ5oy57Reb+6/nck/QFo6Tk3+AS7p+bwj//lzfAIYAcT3BmOOuwAAAABJRU5ErkJggg==" style="width: 65%; padding-top:5px"> 
+  							</a> </div> 
+  								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
+  								<ul class="nav navbar-nav navbar-right"> 
+  									<li> 
+  							<button type="button" class="botao" ng-click="logout()"> 
+  							<span class="glyphicon glyphicon-off" aria-hidden="true">
+  							</span>&nbsp;&nbsp;Sair </button> </li> </ul> </div> </div> </div> 
+  							<div class="row"> <div class="col-md-offset-3 col-md-6 text-center"> <br><h3 style="line-height:1.6em">Identificamos que você está em um processo de configuração de conta.</h3> 
+  							<p><small>Prossiga abaixo:</small></p> <br> 
+  							<div class="list-group text-center"> 
+  								<a href="" ng-click="redirectOnboarding(empresa.cnpj)" class="list-group-item" style="border-radius:6px; padding:20px" ng-repeat="empresa in responsavel.listaEmpresaOnboarding">{{empresa.cnpj | cpfCnpj}} - {{empresa.razaoSocial}}</a> 
+  							</div> <br> <h5 ng-show="empresa.responsavel.listaEmpresa != null &amp;&amp; empresa.responsavel.listaEmpresa.length &gt; 0"><a href="" ng-click="redirectSistema()" style="text-decoration:underline">ou clique aqui para entrar na plataforma de contabilidade</a></h5> </div> </div> </div>    
+  							<div static-include="" src="&apos;header-sistema.html&apos;"></div> 
+  							<div id="main" class="container-fluid" ng-class="{&apos;main-container&apos;: exibeMenu}" style="display: none"> 
+  								<div ng-controller="IntroCrl as teste" class="" ng-cloak=""> <div ng-intro-options="IntroOptions" ng-intro-method="CallMe" ng-intro-oncomplete="CompletedEvent" ng-intro-onexit="ExitEvent" ng-intro-onchange="ChangeEvent" ng-intro-onbeforechange="BeforeChangeEvent" ng-intro-onafterchange="AfterChangeEvent" ng-intro-autostart="ShouldAutoStart"></div> 
+  							</div>    
+  							<div static-include="" src="&apos;menu-sistema.html&apos;"></div>    
+  							<div class="row"> <div class="col-sm-12 col-md-12" ng-view=""></div> 
+  						</div>    <hr> <footer> <div class="pull-left">© Contabilizei 2013-2015</div> 
+  						<div id="app-version" class="pull-right" style="font-size: 11px">v.1.23.2_11.01.2016</div> 
+  					</footer> </div>    <div static-include="" src="&apos;modais/dg-aliquota-atividade.html&apos;"></div>    
+  					<div static-include="" src="&apos;modais/modal-notificacao.html&apos;"></div>    
+  					<div static-include="" src="&apos;modais/modal-lista-notificacoes.html&apos;"></div> 
+  					<script type="text/javascript" src="../../assets/js/parametros.js" id="jsRef"></script> 
+  					<script type="text/javascript" src="../assets/lib/zero-clipboard/ZeroClipboard.min.js"></script> 
+  					<script type="text/javascript" src="../assets/lib/jquery/jquery-1.8.2.min.js"></script> 
+  					<script type="text/javascript" src="../assets/lib/jquery/select2/select2.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/jquery/select2/select2_locale_pt-BR.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular-intro/intro.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/angular-1.2/angular-custom.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/angular-1.2/angular-cookies.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/angular-1.2/angular-route.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/angular-1.2/angular-sanitize.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular-intro/angular-intro.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/modules/ui-bootstrap-0.11/custom/ui-bootstrap-custom-tpls-0.10.0.min.js">
+  							</script> 
+  							<script type="text/javascript" src="../assets/lib/underscore/underscore-min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/modules/restangular-1.4/restangular.min.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/modules/ngUpload/ng-upload.js"></script> 
+  							<script type="text/javascript" src="../assets/lib/angular/modules/ngTable-0.3.1/ng-table.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/angular/modules/google-chart/ng-google-chart.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/angular/modules/angular-load/angular-load.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/angular/http-auth-interceptor.js"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/dialog-module.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/transition.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/tab.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/tooltip.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/popover.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/modal.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/bootstrap-3/js/collapse.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/angular/modules/clearable/js/angular-clearable.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/uiWidget/jquery.ui.widget.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/fileUpload/jquery.fileupload.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/maskMoney-3.0.2/jquery.maskMoney.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/mask/jquery.mask.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/mask/masks.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/accounting/accounting.min.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/datetimepicker/jquery.datetimepicker.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/jquery/nicescroll/jquery.nicescroll.js"></script> 
+  	<script type="text/javascript" src="../assets/lib/contabilizei/pagamento/contabilizei-pagamento.js"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/jquery.card.js"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/iugu-v2.js"></script>  
+  	<script type="text/javascript" src="js/app.js?1452518710276"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/services.js?1452518710276"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/filters.js?1452518710276"></script> 
+  	<script type="text/javascript" src="../assets/js/bs3/directives.js?1452518710276"></script> 
+  	<script type="text/javascript" src="../assets/js/common-controllers/controller-utils.js?1452518710276"></script> 
+  	<script type="text/javascript" src="../assets/js/common-controllers/controller-contabil.js?1452518710276"></script> 
+  	<script type="text/javascript" src="js/constants/tour-steps.js?1452518710276"></script> 
+  	<script type="text/javascript" src="js/combined-controller.js?1452518710276"></script> 
+  	<script type="text/javascript" src="js/sweetalert.min.js"></script>  

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PedidoEnvioLoteRPS xmlns="http://www.prefeitura.sp.gov.br/nfe" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Cabecalho Versao="1" xmlns="">
+    <CPFCNPJRemetente>
+      <CNPJ>05633955000108</CNPJ>
+    </CPFCNPJRemetente>
+    <transacao>false</transacao>
+    <dtInicio>2016-01-20</dtInicio>
+    <dtFim>2016-01-20</dtFim>
+    <QtdRPS>1</QtdRPS>
+    <ValorTotalServicos>10.00</ValorTotalServicos>
+    <ValorTotalDeducoes>0.00</ValorTotalDeducoes>
+  </Cabecalho>
+  <RPS xmlns="">
+    <Assinatura>mYA6lArkjbTsA4s9lJqnwJaHHqZwWDIFknjLw+9HP5oody4QvfUAkatl4aYl0QuxiU0YspM64jOm+qCbz6fB3oDLkaNV2O+VL/1XpqQAbsvwTn7FGY0g4+jB3j9h6MXs7vZvN+hjlNAGT0ii9EdvK8CL8Saf9gRUmlVULojPVUsavftl0AtLskgC6SGol9QCEl82yVhejXbCglpY+HuPWVFmU0ZXZGZLVXnhvfMmJm5c+aXjg3fK0K/92AXfNKjUVKyMJen6E/k37YUTnHPwkAAWngRm9fJX5Ng0D0AL9/zwxWiLIZ2tUBwGc8r8FIva8brY+HYIj1xOH8Y09MOrEg==</Assinatura>
+    <ChaveRPS>
+      <InscricaoPrestador>12345678</InscricaoPrestador>
+      <SerieRPS>RPS</SerieRPS>
+      <NumeroRPS>1</NumeroRPS>
+    </ChaveRPS>
+    <TipoRPS>RPS</TipoRPS>
+    <DataEmissao>2016-01-20</DataEmissao>
+    <StatusRPS>N</StatusRPS>
+    <TributacaoRPS>T</TributacaoRPS>
+    <ValorServicos>10.00</ValorServicos>
+    <ValorDeducoes>0.00</ValorDeducoes>
+    <ValorPIS>0.00</ValorPIS>
+    <ValorCOFINS>0.00</ValorCOFINS>
+    <ValorINSS>0.00</ValorINSS>
+    <ValorIR>0.00</ValorIR>
+    <ValorCSLL>0.00</ValorCSLL>
+    <CodigoServico>0702</CodigoServico>
+    <AliquotaServicos>0.0500</AliquotaServicos>
+    <ISSRetido>false</ISSRetido>
+    <CPFCNPJTomador>
+      <CPF>03259432906</CPF>
+    </CPFCNPJTomador>
+    <RazaoSocialTomador>ALTEVIR CARDOSO NETO</RazaoSocialTomador>
+    <EnderecoTomador>
+      <Logradouro>DERVIL MICHELIN</Logradouro>
+      <NumeroEndereco>1385</NumeroEndereco>
+      <ComplementoEndereco>CASA</ComplementoEndereco>
+      <Bairro>JARDIM BRESSAN</Bairro>
+      <Cidade>3550308</Cidade>
+      <UF>PR</UF>
+      <CEP>85913130</CEP>
+    </EnderecoTomador>
+    <EmailTomador>altevir.cardoso@gmail.com</EmailTomador>
+    <Discriminacao>SERVICO TESTE</Discriminacao>
+  </RPS>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>X2wDa1SKedQ8ZWWWpyXsvNCyruY=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>cmV98F7SOQzA0bywYcF6Tzqd2AVntEjcbZRlREPpP0Cc4VlD9vOdfkknH0O00ixXqYzAlPB7wgmqntR+I18GQbLHxDJR4UKC+GSf6HHbLh/YKXb0AQNVVrbZiQD9qGPwOGJ53Yg0GE1TpQM1tox6g2e4fwjS4jQA+n0v8SMLtdxkeoQhilmdNUFDM6aop8fr4xeBM5nwksXOCtgBeBXrUEodBn9y7kWT/LyCUDwBP+G7Zg2mRr7cqRnhIpQD/f2JPHeRZR9n6GnaftBj7/mvD4pQt1CziIaC+B/tc0otsetMQM1JNUVHg6751t4LgoV6ijcelk6wLOnsZwLMglVkCw==</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>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</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+</PedidoEnvioLoteRPS>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx?wsdl" docRef="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" xmlns:q1="http://receita.fazenda.gov.br/" binding="q1:ConsultaMatrizSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" xmlns:q2="http://receita.fazenda.gov.br/" binding="q2:ConsultaMatrizSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

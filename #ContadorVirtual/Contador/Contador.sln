@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contador.Domain", "Contador.Domain\Contador.Domain.csproj", "{80817D41-C48C-4E9A-A015-F8FDF53F9A9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contador.Infra", "Contador.Infra\Contador.Infra.csproj", "{A829A50B-A33E-41A5-BFAE-03B7D08E6CBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contador.API", "Contador.API\Contador.API.csproj", "{B6F814E1-C95F-481A-9081-BB6B72ECFE67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80817D41-C48C-4E9A-A015-F8FDF53F9A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80817D41-C48C-4E9A-A015-F8FDF53F9A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80817D41-C48C-4E9A-A015-F8FDF53F9A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80817D41-C48C-4E9A-A015-F8FDF53F9A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A829A50B-A33E-41A5-BFAE-03B7D08E6CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A829A50B-A33E-41A5-BFAE-03B7D08E6CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A829A50B-A33E-41A5-BFAE-03B7D08E6CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A829A50B-A33E-41A5-BFAE-03B7D08E6CBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F814E1-C95F-481A-9081-BB6B72ECFE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F814E1-C95F-481A-9081-BB6B72ECFE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F814E1-C95F-481A-9081-BB6B72ECFE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F814E1-C95F-481A-9081-BB6B72ECFE67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

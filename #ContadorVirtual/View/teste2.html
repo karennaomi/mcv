@@ -1,0 +1,34 @@
+<html lang="pt">
+    <head>
+        <title>Meu Contador Virtual</title>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="Contabilidade, contabilidade virtual, nota fiscal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="assets/css/layout.css" rel="stylesheet" />
+        <script src="js/angular.js"></script>
+        <script src="js/angular-locale_pt-br.js"></script>
+        <script src="js/angular-messages.js"></script>
+        <script src="assets/js/jquery.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/jquery.mask.js"></script>
+        <script src="assets/js/init.js"></script>
+
+      
+</head>
+
+<div ng-app="app">
+<div ng-controller="AppCtrl">
+  <div class="box" ng-click="showMe = 1">
+    <p ng-show="showMe ==1">1</p>
+  </div>
+  <div class="box" ng-click="showMe = 2">
+    <p ng-show="showMe==2">2</p>
+  </div>
+  <div class="box" ng-click="showMe = 3">
+    <p ng-show="showMe ==3">3</p>
+  </div>
+</div>
+</div>
+
+</html>

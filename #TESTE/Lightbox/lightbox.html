@@ -1,0 +1,65 @@
+<html>
+<head>
+	<title></title>
+	<meta http-equi="Content-Type" content="text/xml; charset=UTF-8"/>
+	<script type="text/javascript" src="jquery-1.12.0.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.lightbox').click(function(){
+				$('.backgroud, .box').animate({'opacity':'.60'},500,'linear');
+				$('.box').animate({'opacity':'1.00'},500,'linear');
+				$('.backgroud,.box').css('display','block');
+			});
+
+			$('.close').click(function(){
+				$('.backgroud, .box').animate({'opacity':'0'},500, 'linear', function(){
+					$('.backgroud,.box').css('display', 'none');
+				})
+			})
+		});
+	</script>
+	<style type="text/css">
+		.backgroud{
+			position:absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #000000;
+			opacity: .0;
+			-moz-opacity:.0;
+			filter:alpha(opacity=0);
+			z-index:100;
+			display:none;
+		}
+		.box{
+			position: absolute;
+			top:20%;
+			left: 30%;
+			width: 600px;
+			height: 350px;
+			background-color: #ffffff;
+			z-index: 101;
+			padding: 14px;
+			border-radius: 4px;
+			-moz-border-radius:4px;
+			-webkit-border-radius:4px;
+			box-shadow: 2px 2px 2px #333333;
+			-moz-box-shadow: 2px 2px 2px #333333;
+			-webkit-box-shadow: 2px 2px 2px #333333;
+			display: none;
+		}
+		.close{
+			float: right;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<h2>Conteudo da pagina</h2>
+	<a href="#" class="lightbox">Abrir lightbox</a>
+	<div class="backgroud"></div>
+	<div class="box"><div class="close">X</div>Este é o lightbox</div>
+</body>
+</html>

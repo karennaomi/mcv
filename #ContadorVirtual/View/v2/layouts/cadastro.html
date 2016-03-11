@@ -1,0 +1,88 @@
+ <body ng-controller="cadastroMCVCtrl">
+        <article class="modal fade show in modal-cadastro" tabindex="-1">
+            <div class="modal-dialog">
+                <div id="1" name="1" class="modal-content" >
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" />
+                    </div>
+                    <div class="modal-body">
+                        <div class="cadastro-titles">
+                            <h1>Bem vindo ao Meu Contador Virtual!</h1>
+                            <p>
+                                Nas próximas telas iremos dar início ao seu cadastro.
+                            </p>
+                        </div>
+                        <a href="#" ng-click="Proximo('2')" class="btn btn-lg btn-pf">Cadastro Pessoa Física</a>
+                        <a href="#" ng-click="showMe = 2" class="btn btn-lg btn-pj">Cadastro Pessoa Jurídica</a>
+                        <div>
+                            <a href="#" class="btn btn-link btn-cancelar">> Cancelar</a>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+                <div class="modal-content modal-pf" ng_show="showMe==2" id="2" name="2"  ng-click="showMe = 3">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            (X) Fechar
+                        </button>
+                        <img src="assets/img/logo.png" height="20" />
+                        <h1>Cadastro Pessoa Física</h1>
+                    </div>
+                    <div class="modal-body">
+                        <form class="cadastro-form">
+                            <label class="center-block">
+                                Nome Completo:
+                                <input type="text" class="form-control" name="nome" ng-model="usuario.nome" />
+                            </label>
+                            <label class="center-block">
+                                E-mail de Contato:
+                                <input type="email" class="form-control" ng-model="usuario.email"/>
+                            </label>
+                            <label class="center-block">
+                                CPF:
+                                <input type="text" class="form-control" ng-model="usuario.cpd" />
+                            </label>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Senha:
+                                        <input type="password" class="form-control" ng-model="usuario.senha" />
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="center-block">
+                                        Repetir Senha:
+                                        <input type="password" class="form-control" ng-model="usuario.repeat" />
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" value="Cadastrar" class="btn btn-lg btn-pf" />
+                        </form>
+                    </div>
+                </div>
+
+
+        <div class="modal-content modal-pf" id="3" name="3" ng_show="showMe==3"   ng-click="showMe = 4">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    (X) Fechar
+                </button>
+                <img src="assets/img/logo.png" height="20" />
+                <h1>Cadastro Pessoa Física</h1>
+            </div>
+            <div class="modal-body">
+                <div class="cadastro-titles">
+                    <h2>Sucesso!</h2>
+                    <p>
+                        Seu cadastro foi realizado com sucesso, comece agora mesmo o Meu Contador Virtual.
+                    </p>
+                </div>
+                <a class="btn btn-lg btn-pf">Iniciar</a>
+            </div>
+        </div><!-- /.modal-content -->
+
+            </div><!-- /.modal-dialog -->
+        </article><!-- /.modal -->

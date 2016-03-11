@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<RetornoEnvioLoteRPS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.prefeitura.sp.gov.br/nfe">
+  <Cabecalho Versao="1" xmlns="">
+    <Sucesso>false</Sucesso>
+  </Cabecalho>
+  <Erro xmlns="">
+    <Codigo>1100</Codigo>
+    <Descricao>O CPF/CNPJ (05633955000108) do usuário autorizado a enviar a mensagem XML não confere com o CPF/CNPJ (05873151000178) usado na comunicação.</Descricao>
+  </Erro>
+</RetornoEnvioLoteRPS>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://receita.fazenda.gov.br/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://receita.fazenda.gov.br/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://receita.fazenda.gov.br/">
+      <s:element name="ConsultaMatriz">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strCNPJBasico" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ConsultaMatrizResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ConsultaMatrizResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ConsultaMatrizSoapIn">
+    <wsdl:part name="parameters" element="tns:ConsultaMatriz" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaMatrizSoapOut">
+    <wsdl:part name="parameters" element="tns:ConsultaMatrizResponse" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaMatrizHttpGetIn">
+    <wsdl:part name="strCNPJBasico" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaMatrizHttpGetOut">
+    <wsdl:part name="Body" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaMatrizHttpPostIn">
+    <wsdl:part name="strCNPJBasico" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ConsultaMatrizHttpPostOut">
+    <wsdl:part name="Body" />
+  </wsdl:message>
+  <wsdl:portType name="ConsultaMatrizSoap">
+    <wsdl:operation name="ConsultaMatriz">
+      <wsdl:input message="tns:ConsultaMatrizSoapIn" />
+      <wsdl:output message="tns:ConsultaMatrizSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ConsultaMatrizHttpGet">
+    <wsdl:operation name="ConsultaMatriz">
+      <wsdl:input message="tns:ConsultaMatrizHttpGetIn" />
+      <wsdl:output message="tns:ConsultaMatrizHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ConsultaMatrizHttpPost">
+    <wsdl:operation name="ConsultaMatriz">
+      <wsdl:input message="tns:ConsultaMatrizHttpPostIn" />
+      <wsdl:output message="tns:ConsultaMatrizHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ConsultaMatrizSoap" type="tns:ConsultaMatrizSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ConsultaMatriz">
+      <soap:operation soapAction="http://receita.fazenda.gov.br/ConsultaMatriz" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ConsultaMatrizSoap12" type="tns:ConsultaMatrizSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ConsultaMatriz">
+      <soap12:operation soapAction="http://receita.fazenda.gov.br/ConsultaMatriz" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ConsultaMatrizHttpGet" type="tns:ConsultaMatrizHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ConsultaMatriz">
+      <http:operation location="/ConsultaMatriz" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="Body" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ConsultaMatrizHttpPost" type="tns:ConsultaMatrizHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ConsultaMatriz">
+      <http:operation location="/ConsultaMatriz" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content part="Body" type="text/xml" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ConsultaMatriz">
+    <wsdl:port name="ConsultaMatrizSoap" binding="tns:ConsultaMatrizSoap">
+      <soap:address location="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ConsultaMatrizSoap12" binding="tns:ConsultaMatrizSoap12">
+      <soap12:address location="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ConsultaMatrizHttpGet" binding="tns:ConsultaMatrizHttpGet">
+      <http:address location="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ConsultaMatrizHttpPost" binding="tns:ConsultaMatrizHttpPost">
+      <http:address location="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgdarfws.app/ConsultaMatriz.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

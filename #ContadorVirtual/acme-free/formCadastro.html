@@ -1,0 +1,18 @@
+<html ng-app="cadastro">
+<head>
+	<title></title>
+	<script  src="js/angular.js"></script>
+	<script>
+		angular.module("cadastro", []);
+		angular.module("cadastro").controller("cadastroCtrl", function($scope){
+			$scope.app = "Cadastro";
+
+		});
+	</script>
+</head>
+<body>
+	<div ng-controller="cadastroCtrl">
+		<h4 ng-bind="app"></h4>
+	</div>
+</body>
+</html>

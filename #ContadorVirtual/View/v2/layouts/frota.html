@@ -1,0 +1,189 @@
+  <div data-page="single-product" class="page">
+    <!-- Scrollable page content-->
+    <div class="page-content">
+      <div class="content-block">
+      	<div class="slider-area">
+                                    <div class="ks-slider-custom">
+                                        <div data-pagination=".swiper-pagination" data-space-between="0" data-next-button=".swiper-button-next" data-prev-button=".swiper-button-prev" data-pagination-clickable="true" class="swiper-container swiper-init">
+                                            <div class="swiper-pagination"></div>
+                                            <div class="swiper-wrapper">
+                                                <div style="background-image:url(img/slider/1.png)" class="swiper-slide">
+                                                    <div class="slide-text">
+                                                        <p>N{{meu_nome}}</p>
+                                                        <h2>BIG SALE</h2>
+                                                        <a href="#">shop now</a>
+                                                    </div>
+                                                </div>
+                                                <div style="background-image:url(img/slider/2.jpg)" class="swiper-slide">
+                                                    <div class="slide-text">
+                                                        <p>New product 2015 {{2+2}}!</p>
+                                                        <h2>BIG SALE</h2>
+                                                        <a href="#">shop now</a>
+                                                    </div>
+                                                </div>
+                                                <div style="background-image:url(img/slider/3.jpg)" class="swiper-slide">
+                                                    <div class="slide-text">
+                                                        <p>New product 2015</p>
+                                                        <h2>BIG SALE</h2>
+                                                        <a href="#">shop now</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        <div class="content-block-inner">
+			<div class="single-product-area">
+				<div class="single-product">
+					<div class="single-product-img">
+						<a href="#"><img ng-src="{{carro.Fotos[0].url}}" alt="" /></a>
+					</div>
+					<div class="single-product-content">
+						<h1 class="product_title">{{carro.Marca}} {{carro.Modelo}}</h1>	
+						<div class="price-box">
+							<span class="new-price">{{carro.Valor}} </span>
+
+						</div>
+                                                <br>
+						<!--div class="pro-rating">
+							<a href="#"><i class="fa fa-star"></i></a>
+							<a href="#"><i class="fa fa-star"></i></a>
+							<a href="#"><i class="fa fa-star"></i></a>
+							<a href="#"><i class="fa fa-star"></i></a>
+							<a href="#"><i class="fa fa-star"></i></a>
+						</div-->	
+						<div class="short-description">
+                                                    <p><b>Versão : </b>{{carro.Versao}}</p>
+							<p><div ng-if="carro.Cambio == 0"><b>Cambio : </b> manual</div><div ng-if="carro.Cambio == 1"><b>Cambio:</b> Automatico</div></p>
+                                                        
+						</div>
+						<form action="#">
+							<div class="quantity">
+					
+								<a href="#">Interessado</a>
+							</div>
+						</form>						
+					</div>
+				</div>
+			</div>
+			<!--
+   <div class="related-product">
+				<div class="rel-title">
+					<h3>Related Products</h3>
+				</div>
+				<div class="single-shop-list">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#"><img src="img/product/4.jpg" alt="" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#">Convallis quam sit</a></h3>
+							<div class="pro-rating-s">
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+							</div>							
+							<div class="price-box">
+								<span class="new-price">£90.00</span>
+								<span class="old-price">£120.00</span>
+							</div>	
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+						</div>					
+					</div>
+				</div>
+				<div class="single-shop-list">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#"><img src="img/product/5.jpg" alt="" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#">Convallis quam sit</a></h3>
+							<div class="pro-rating-s">
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+							</div>							
+							<div class="price-box">
+								<span class="new-price">£90.00</span>
+								<span class="old-price">£120.00</span>
+							</div>	
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+						</div>					
+					</div>
+				</div>
+				<div class="single-shop-list">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#"><img src="img/product/6.jpg" alt="" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#">Convallis quam sit</a></h3>
+							<div class="pro-rating-s">
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+							</div>							
+							<div class="price-box">
+								<span class="new-price">£90.00</span>
+								<span class="old-price">£120.00</span>
+							</div>	
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+						</div>					
+					</div>
+				</div>
+				<div class="single-shop-list">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#"><img src="img/product/7.jpg" alt="" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#">Convallis quam sit</a></h3>
+							<div class="pro-rating-s">
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+							</div>							
+							<div class="price-box">
+								<span class="new-price">£90.00</span>
+								<span class="old-price">£120.00</span>
+							</div>	
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+						</div>					
+					</div>
+				</div>
+				<div class="single-shop-list">
+					<div class="shop-inner">
+						<div class="shop-img">
+							<a href="#"><img src="img/product/8.jpg" alt="" /></a>
+						</div>
+						<div class="shop-content">
+							<h3><a href="#">Convallis quam sit</a></h3>
+							<div class="pro-rating-s">
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-star"></i></a>
+							</div>							
+							<div class="price-box">
+								<span class="new-price">£90.00</span>
+								<span class="old-price">£120.00</span>
+							</div>	
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+						</div>					
+					</div>
+				</div>				
+			</div>
+            -->
+        </div>
+      </div>
+    </div>
+  </div>

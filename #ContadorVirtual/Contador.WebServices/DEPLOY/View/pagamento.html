@@ -1,0 +1,83 @@
+<html>
+    <head>
+      <meta charset="UTF-8">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="https://js.iugu.com/v2"></script>
+        <script type="text/javascript" src="/assets/formatter.js"></script>
+        <script type="text/javascript" src="js/checkout.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/assets/checkout.css">
+        <link rel="stylesheet" href="css/pagamento.css">
+    </head>
+    <div class="page-title">
+        <h1>Checkout Simples</h1>
+    </div>
+    
+    <body class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th class="tar">Valor</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <td>Mensalidade janeiro/2015</th>
+                            <td class="tar">R$ 59,90</th>
+                        </tr>
+                        
+                        <tr class="order-total">
+                            <td>TOTAL</th>
+                            <td class="tar">R$ 59,90</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-sm-6 credit-card-payment">
+                <form id="payment-form" action="sucesso.html" method="POST">
+                    <div class="btn-group payment-method-btn-group" data-toggle="buttons">
+                        <label class="btn btn-default active" id="credit-card-checkbox-label">
+                            <input checked type="checkbox" id="credit-card-checkbox" name="method" value="">Cartão de Crédito</input>
+                        </label>
+                        <label class="btn btn-default" id="bank-slip-checkbox-label">
+                            <input type="checkbox" id="bank-slip-checkbox" name="method" value="bank_slip">Boleto Bancário</input>
+                        </label>
+                    </div>
+                    <div class="usable-creditcard-form">
+                        <div class="wrapper">
+                            <div class="input-group nmb_a">
+                                <div class="icon ccic-brand"></div>
+                                <input autocomplete="off" class="credit_card_number" data-iugu="number" placeholder="Número do Cartão" type="text" value="" />
+                            </div>
+                            <div class="input-group nmb_b">
+                                <div class="icon ccic-cvv"></div>
+                                <input autocomplete="off" class="credit_card_cvv" data-iugu="verification_value" placeholder="CVV" type="text" value="" />
+                            </div>
+                            <div class="input-group nmb_c">
+                                <div class="icon ccic-name"></div>
+                                <input class="credit_card_name" data-iugu="full_name" placeholder="Titular do Cartão" type="text" value="" />
+                            </div>
+                            <div class="input-group nmb_d">
+                                <div class="icon ccic-exp"></div>
+                                <input autocomplete="off" class="credit_card_expiration" data-iugu="expiration" placeholder="MM/AA" type="text" value="" />
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/cc-icons.e8f4c6b4db3cc0869fa93ad535acbfe7.png" alt="Visa, Master, Diners. Amex" border="0" /> <a class="iugu-btn" href="http://iugu.com" tabindex="-1">
+                <img src="http://storage.pupui.com.br/9CA0F40E971643D1B7C8DE46BBC18396/assets/payments-by-iugu.1df7caaf6958f1b5774579fa807b5e7f.png" alt="Pagamentos por Iugu" border="0" />
+              </a>
+                        </div>
+                    </div>
+                    <input type="hidden" name="token" id="token" value="" readonly="true" size="64" style="text-align:center" />
+                    <div class="submit-div">
+                        <button type="submit" class="btn btn-primary">Pagar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+
+</html>
